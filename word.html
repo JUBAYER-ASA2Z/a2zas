@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>200 English Words - Qari Jubayer</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;font-family:'Hind Siliguri',sans-serif}
+body{margin:0;background:#FFEB00;color:#000}
+.top{position:sticky;top:0;z-index:99;background:#000;padding:12px;border-bottom:4px solid #FFEB00}
+.flex{display:flex;justify-content:space-between;align-items:center}
+.home{background:#FFEB00;color:#000;padding:8px 18px;border-radius:22px;text-decoration:none;font-weight:900}
+.title{color:#FFEB00;font-weight:900;font-size:18px}
+.search{display:flex;gap:8px;margin-top:10px}
+.search input{flex:1;padding:13px;border-radius:12px;border:3px solid #fff;background:#111;color:#fff;font-weight:700;font-size:16px}
+.search button{padding:12px 18px;border-radius:12px;background:#00e676;border:none;font-weight:900}
+.info{display:flex;justify-content:space-between;color:#fff;margin-top:8px;font-weight:700}
+.info b{color:#FFEB00}
+.wrap{max-width:600px;margin:auto;padding:12px}
+.card{background:#000;color:#fff;border:3px solid #fff;border-radius:16px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.left{flex:1}
+.en{color:#FFEB00;font-size:22px;font-weight:900;line-height:1.2}
+.pr{color:#00e676;font-size:16px;font-weight:700;margin:3px 0}
+.bn{color:#fff;font-size:18px;font-weight:700}
+.num{background:#FFEB00;color:#000;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;margin-left:10px}
+.footer{text-align:center;padding:16px;font-weight:700;border-top:3px solid #000}
+</style>
+</head>
+<body>
+<div class="top">
+<div class="flex"><a href="index.html" class="home">HOME</a><div class="title">WORD 200</div><div style="color:#fff;font-weight:900">EN+BN</div></div>
+<div class="search"><input id="s" onkeyup="doSearch()" placeholder="Search word... যেমন: water, book"><button onclick="doSearch()">🔍</button></div>
+<div class="info"><div>Charge: <b id="charge">100%</b></div><div>Total: <b>200</b></div><div>Found: <b id="found">200</b></div></div>
+</div>
+<div class="wrap" id="list"></div>
+<div class="footer">Developed By<br><b>Qari MD Jubayer Ahmed Siyam</b></div>
+
+<script>
+let words=[
+["Abandon","অ্যাবানডন","পরিত্যাগ করা"],
+["Ability","অ্যাবিলিটি","যোগ্যতা"],
+["Able","এবল","সক্ষম"],
+["About","অ্যাবাউট","সম্পর্কে"],
+["Above","অ্যাবাভ","উপরে"],
+["Abroad","অ্যাব্রড","বিদেশে"],
+["Absence","অ্যাবসেন্স","অনুপস্থিতি"],
+["Absolute","অ্যাবসোলিউট","পরম"],
+["Accept","অ্যাকসেপ্ট","গ্রহণ করা"],
+["Accident","অ্যাক্সিডেন্ট","দুর্ঘটনা"],
+["Account","অ্যাকাউন্ট","হিসাব"],
+["Achieve","অ্যাচিভ","অর্জন করা"],
+["Across","অ্যাক্রস","আড়াআড়ি"],
+["Action","অ্যাকশন","কাজ"],
+["Active","অ্যাকটিভ","সক্রিয়"],
+["Actor","অ্যাক্টর","অভিনেতা"],
+["Actual","অ্যাকচুয়াল","প্রকৃত"],
+["Add","অ্যাড","যোগ করা"],
+["Address","অ্যাড্রেস","ঠিকানা"],
+["Admire","অ্যাডমায়ার","প্রশংসা করা"],
+["Admit","অ্যাডমিট","স্বীকার করা"],
+["Adopt","অ্যাডপ্ট","দত্তক নেওয়া"],
+["Advance","অ্যাডভান্স","অগ্রিম"],
+["Advice","অ্যাডভাইস","উপদেশ"],
+["Affect","অ্যাফেক্ট","প্রভাবিত করা"],
+["Afford","অ্যাফোর্ড","সামর্থ্য থাকা"],
+["Afraid","অ্যাফ্রেইড","ভীত"],
+["After","আফটার","পরে"],
+["Again","এগেইন","আবার"],
+["Against","এগেইনস্ট","বিরুদ্ধে"],
+["Age","এজ","বয়স"],
+["Agent","এজেন্ট","প্রতিনিধি"],
+["Agree","এগ্রি","সম্মত হওয়া"],
+["Air","এয়ার","বাতাস"],
+["All","অল","সব"],
+["Allow","অ্যালাও","অনুমতি দেওয়া"],
+["Almost","অলমোস্ট","প্রায়"],
+["Alone","অ্যালোন","একা"],
+["Already","অলরেডি","ইতিমধ্যে"],
+["Also","অলসো","আরও"],
+["Always","অলওয়েজ","সবসময়"],
+["Amount","অ্যামাউন্ট","পরিমাণ"],
+["Animal","অ্যানিমেল","প্রাণী"],
+["Another","অ্যানাদার","অন্য"],
+["Answer","আনসার","উত্তর"],
+["Anxiety","অ্যাংজাইটি","উদ্বেগ"],
+["Any","এনি","যেকোনো"],
+["Apartment","অ্যাপার্টমেন্ট","ফ্ল্যাট"],
+["Appear","অ্যাপিয়ার","দেখা দেওয়া"],
+["Apple","অ্যাপল","আপেল"],
+["Apply","অ্যাপ্লাই","আবেদন করা"],
+["Area","এরিয়া","এলাকা"],
+["Argue","আর্গু","তর্ক করা"],
+["Arise","অ্যারাইজ","উদ্ভব হওয়া"],
+["Arms","আর্মস","অস্ত্র"],
+["Army","আর্মি","সেনাবাহিনী"],
+["Around","অ্যারাউন্ড","চারপাশে"],
+["Arrive","অ্যারাইভ","পৌঁছানো"],
+["Art","আর্ট","শিল্প"],
+["Ask","আস্ক","জিজ্ঞাসা করা"],
+["Attack","অ্যাটাক","আক্রমণ"],
+["Attention","অ্যাটেনশন","মনোযোগ"],
+["Attorney","অ্যাটর্নি","আইনজীবী"],
+["Audience","অডিয়েন্স","শ্রোতা"],
+["Author","অথর","লেখক"],
+["Available","অ্যাভেইলেবল","সহজলভ্য"],
+["Avoid","অ্যাভয়েড","এড়ানো"],
+["Away","অ্যাওয়ে","দূরে"],
+["Baby","বেবি","শিশু"],
+["Back","ব্যাক","পিছনে"],
+["Bad","ব্যাড","খারাপ"],
+["Bag","ব্যাগ","থলে"],
+["Balance","ব্যালেন্স","ভারসাম্য"],
+["Ball","বল","বল"],
+["Bank","ব্যাংক","ব্যাংক"],
+["Bar","বার","বার"],
+["Base","বেস","ভিত্তি"],
+["Basic","বেসিক","মৌলিক"],
+["Beach","বিচ","সমুদ্র সৈকত"],
+["Beautiful","বিউটিফুল","সুন্দর"],
+["Because","বিকজ","কারণ"],
+["Become","বিকাম","হওয়া"],
+["Bed","বেড","বিছানা"],
+["Before","বিফোর","আগে"],
+["Begin","বিগিন","শুরু করা"],
+["Behavior","বিহেভিয়ার","আচরণ"],
+["Behind","বিহাইন্ড","পিছনে"],
+["Belief","বিলিফ","বিশ্বাস"],
+["Believe","বিলিভ","বিশ্বাস করা"],
+["Bell","বেল","ঘণ্টা"],
+["Belong","বিলং","অন্তর্ভুক্ত হওয়া"],
+["Below","বিলো","নিচে"],
+["Benefit","বেনিফিট","সুবিধা"],
+["Best","বেস্ট","সেরা"],
+["Better","বেটার","আরও ভালো"],
+["Between","বিটুইন","মাঝে"],
+["Big","বিগ","বড়"],
+["Bill","বিল","বিল"],
+["Bird","বার্ড","পাখি"],
+["Birth","বার্থ","জন্ম"],
+["Bit","বিট","টুকরা"],
+["Black","ব্ল্যাক","কালো"],
+["Blood","ব্লাড","রক্ত"],
+["Blue","ব্লু","নীল"],
+["Board","বোর্ড","বোর্ড"],
+["Body","বডি","শরীর"],
+["Book","বুক","বই"],
+["Born","বর্ন","জন্মগ্রহণ"],
+["Both","বোথ","উভয়"],
+["Box","বক্স","বাক্স"],
+["Boy","বয়","ছেলে"],
+["Break","ব্রেক","ভাঙা"],
+["Bring","ব্রিং","আনা"],
+["Brother","ব্রাদার","ভাই"],
+["Build","বিল্ড","নির্মাণ করা"],
+["Business","বিজনেস","ব্যবসা"],
+["But","বাট","কিন্তু"],
+["Buy","বাই","কেনা"],
+["Call","কল","ডাকা"],
+["Camera","ক্যামেরা","ক্যামেরা"],
+["Can","ক্যান","পারা"],
+["Car","কার","গাড়ি"],
+["Care","কেয়ার","যত্ন"],
+["Carry","ক্যারি","বহন করা"],
+["Case","কেস","মামলা"],
+["Catch","ক্যাচ","ধরা"],
+["Cause","কজ","কারণ"],
+["Center","সেন্টার","কেন্দ্র"],
+["Chance","চান্স","সুযোগ"],
+["Change","চেঞ্জ","পরিবর্তন"],
+["Charge","চার্জ","চার্জ"],
+["Child","চাইল্ড","শিশু"],
+["Choice","চয়েস","পছন্দ"],
+["City","সিটি","শহর"],
+["Claim","ক্লেইম","দাবি"],
+["Class","ক্লাস","শ্রেণী"],
+["Clean","ক্লিন","পরিষ্কার"],
+["Clear","ক্লিয়ার","পরিষ্কার"],
+["Close","ক্লোজ","বন্ধ"],
+["Cold","কোল্ড","ঠান্ডা"],
+["Come","কাম","আসা"],
+["Common","কমন","সাধারণ"],
+["Company","কোম্পানি","কোম্পানি"],
+["Complete","কমপ্লিট","সম্পূর্ণ"],
+["Computer","কম্পিউটার","কম্পিউটার"],
+["Condition","কন্ডিশন","অবস্থা"],
+["Consider","কনসিডার","বিবেচনা করা"],
+["Control","কন্ট্রোল","নিয়ন্ত্রণ"],
+["Cost","কস্ট","খরচ"],
+["Country","কান্ট্রি","দেশ"],
+["Course","কোর্স","কোর্স"],
+["Court","কোর্ট","আদালত"],
+["Cover","কভার","ঢাকনা"],
+["Create","ক্রিয়েট","তৈরি করা"],
+["Crime","ক্রাইম","অপরাধ"],
+["Cup","কাপ","কাপ"],
+["Current","কারেন্ট","বর্তমান"],
+["Cut","কাট","কাটা"],
+["Dark","ডার্ক","অন্ধকার"],
+["Data","ডাটা","তথ্য"],
+["Daughter","ডটার","মেয়ে"],
+["Day","ডে","দিন"],
+["Dead","ডেড","মৃত"],
+["Deal","ডিল","চুক্তি"],
+["Death","ডেথ","মৃত্যু"],
+["Decide","ডিসাইড","সিদ্ধান্ত নেওয়া"],
+["Deep","ডিপ","গভীর"],
+["Defense","ডিফেন্স","প্রতিরক্ষা"],
+["Define","ডিফাইন","সংজ্ঞায়িত করা"],
+["Degree","ডিগ্রি","ডিগ্রি"],
+["Demand","ডিমান্ড","চাহিদা"],
+["Department","ডিপার্টমেন্ট","বিভাগ"],
+["Describe","ডেসক্রাইব","বর্ণনা করা"],
+["Design","ডিজাইন","নকশা"],
+["Desire","ডিজায়ার","ইচ্ছা"],
+["Detail","ডিটেইল","বিস্তারিত"],
+["Develop","ডেভেলপ","উন্নত করা"],
+["Die","ডাই","মারা যাওয়া"],
+["Difference","ডিফারেন্স","পার্থক্য"],
+["Difficult","ডিফিকাল্ট","কঠিন"],
+["Dinner","ডিনার","রাতের খাবার"],
+["Direction","ডিরেকশন","দিক"],
+["Discover","ডিসকভার","আবিষ্কার করা"],
+["Discuss","ডিসকাস","আলোচনা করা"],
+["Disease","ডিজিজ","রোগ"],
+["Do","ডু","করা"],
+["Doctor","ডক্টর","ডাক্তার"],
+["Dog","ডগ","কুকুর"],
+["Door","ডোর","দরজা"],
+["Down","ডাউন","নিচে"],
+["Dream","ড্রিম","স্বপ্ন"],
+["Dress","ড্রেস","পোশাক"],
+["Drink","ড্রিংক","পান করা"],
+["Drive","ড্রাইভ","চালানো"],
+["Drop","ড্রপ","ফোঁটা"]
+];
+
+let all = words.map((w,i)=>({id:i+1,en:w[0],pr:w[1],bn:w[2],key:(w[0]+w[2]).toLowerCase()}));
+
+function doSearch(){
+  let s=document.getElementById('s').value.toLowerCase().trim();
+  let f = s.length>=1? all.filter(x=>x.key.includes(s)) : all;
+  document.getElementById('found').innerText=f.length;
+  let list=document.getElementById('list'); list.innerHTML='';
+  f.slice(0,100).forEach(d=>{
+    let div=document.createElement('div'); div.className='card';
+    div.innerHTML=`<div class="left"><div class="en">${d.en}</div><div class="pr">[ ${d.pr} ]</div><div class="bn">👉 ${d.bn}</div></div><div class="num">${d.id}</div>`;
+    list.appendChild(div);
+  });
+}
+if(navigator.getBattery){ navigator.getBattery().then(b=>{ document.getElementById('charge').innerText=Math.round(b.level*100)+'%'; }); }
+doSearch();
+</script>
+</body>
+</html>

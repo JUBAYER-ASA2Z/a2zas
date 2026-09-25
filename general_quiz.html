@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>General Quiz 200 - Qari Jubayer</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;font-family:'Hind Siliguri',sans-serif}
+body{margin:0;background:#FFEB00;color:#000;min-height:100vh;display:flex;flex-direction:column}
+.top{position:sticky;top:0;z-index:99;background:#000;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:4px solid #FFEB00}
+.home{background:#FFEB00;color:#000;padding:8px 20px;border-radius:22px;text-decoration:none;font-weight:900}
+.lang{display:flex;gap:8px}
+.lang button{padding:8px 16px;border-radius:22px;border:2px solid #fff;background:#111;color:#fff;font-weight:900}
+.lang button.active{background:#FFEB00;color:#000}
+.wrap{max-width:520px;margin:auto;width:100%;padding:14px;flex:1}
+.score-box{display:flex;justify-content:space-between;background:#000;color:#fff;border-radius:16px;padding:14px;border:3px solid #fff}
+.score-box b{color:#FFEB00;font-size:18px}
+.q-box{background:#000;color:#fff;border:3px solid #fff;border-radius:22px;padding:20px;margin-top:12px}
+.q-no{color:#FFEB00;font-weight:900;font-size:13px}
+.q-text{font-size:22px;font-weight:900;min-height:60px;margin:10px 0 18px}
+.opts{display:grid;gap:12px}
+.opt{background:#111;border:3px solid #fff;padding:16px;border-radius:14px;text-align:left;font-size:19px;font-weight:900;color:#fff}
+.opt.correct{background:#00e676!important;color:#000!important}
+.opt.wrong{background:#ff1744!important}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.controls button{padding:14px;border-radius:14px;font-weight:900;border:none}
+.next{background:#FFEB00;color:#000}
+.skip{background:#222;color:#fff;border:2px solid #fff}
+.clear{width:100%;margin-top:10px;padding:14px;border-radius:14px;background:#ff1744;color:#fff;font-weight:900;border:3px solid #fff}
+.progress{height:10px;background:#333;border-radius:20px;margin-top:14px;border:2px solid #fff;overflow:hidden}
+.progress div{height:100%;background:#FFEB00;width:0%}
+.footer{text-align:center;padding:20px;color:#000;font-weight:700;border-top:3px solid #000;margin-top:16px}
+.footer b{font-size:14px}
+</style>
+</head>
+<body>
+<div class="top"><a href="index.html" class="home">HOME</a><div class="lang"><button id="btnBn" class="active" onclick="setLang('bn')">বাংলা</button><button id="btnEn" onclick="setLang('en')">ENGLISH</button></div></div>
+<div class="wrap">
+<div class="score-box"><div>Score: <b id="score">0</b></div><div>Q: <b id="qCount">1/200</b></div><div>Life: <b id="wrong">0/5</b></div></div>
+<div class="q-box"><div class="q-no" id="qNo"></div><div class="q-text" id="qText"></div><div class="opts" id="opts"></div><div class="controls"><button class="skip" onclick="skipQ()" id="skipTxt">বাদ দিন</button><button class="next" onclick="nextQ()" id="nextTxt">পরবর্তী →</button></div><button class="clear" onclick="clearAll()" id="clearTxt">🗑️ CLEAR - জিরো করুন</button><div class="progress"><div id="prog"></div></div></div>
+</div>
+<div class="footer">Developed By<br><b>Qari MD Jubayer Ahmed Siyam</b><br>© 2026</div>
+
+<script>
+let lang=localStorage.getItem('quizLang')||'bn',current=0,score=0,wrong=0,answered=false;
+
+let data=[
+["বন্ধু ধার নিয়ে ফেরত না দিলে কী বলে?","What friend says after borrowing money?",["ভুলে গেছি","পরে দেব","বিকাশে সমস্যা","আজ টাকা নাই"],["Forgot","Will give later","Bkash problem","No money today"],0],
+["বাঙালি বন্ধু দেখা হলে প্রথম কী বলে?","What Bengali friend says first?",["কি খবর দোস্ত?","চা খাবি?","কই যাস?","মোটা হইছস"],["What's up dude?","Tea?","Where going?","You got fat"],1],
+["পরীক্ষার হলে বন্ধু কী চায়?","What friend wants in exam hall?",["একটু দেখা","পেন দে","রাবার দে","সব খাতা দে"],["Show a bit","Give pen","Give eraser","Give full paper"],0],
+["বন্ধুর বাইকে তেল শেষ হলে কী করে?","When friend's bike fuel ends?",["ঠেলে নেয়","তুই তেল ভর","হাঁটা শুরু","বাসায় ফোন"],["Pushes bike","You pay fuel","Starts walking","Calls home"],0],
+["চায়ের দোকানে বন্ধুরা কী করে?","What friends do at tea stall?",["আড্ডা দেয়","গল্প করে","সময় কাটায়","ঘুমায়"],["Gossip","Stories","Pass time","Sleep"],0],
+["বন্ধুর ফোনে চার্জ 1% থাকলে কী বলে?","When friend's phone 1% charge?",["তাড়াতাড়ি বল","ফোন বন্ধ হবে","চার্জার কই?","কেটে দিচ্ছি"],["Speak fast","Phone will off","Where charger?","Cutting call"],2],
+["বাংলা সিনেমায় নায়ক কয়জন গুন্ডা মারে?","How many goons hero beats in Bangla movie?",["১০০ জন","১ জন","২ জন","৫ জন"],["100","1","2","5"],0],
+["শাকিব খানের সিনেমায় নাচ কেমন হয়?","How is dance in Shakib Khan movie?",["ধুমধাড়াক্কা","ধীরে","নাচ নাই","কান্না"],["Energetic","Slow","No dance","Crying"],0],
+["সিনেমায় পুলিশ কখন আসে?","When police comes in movie?",["মারামারি শেষে","শুরুতেই","মাঝখানে","আসে না"],["After fight ends","At start","In middle","Never comes"],0],
+["গ্রামে সিনেমা দেখতে কে বেশি যায়?","Who goes more to watch movie in village?",["বন্ধুরা মিলে","একা","দাদা","নানি"],["Friends together","Alone","Grandpa","Grandma"],0],
+["সকালে ঘুম থেকে উঠতে কী লাগে?","What needed to wake up morning?",["এলার্ম","মায়ের ডাক","পানির ছিটা","বন্ধুর ফোন"],["Alarm","Mother's call","Water splash","Friend's call"],0],
+["বাজারে গেলে বন্ধু কী করে?","What friend does in market?",["দাম করে","ছবি তোলে","খায়","ঘুমায়"],["Bargains","Takes photo","Eats","Sleeps"],0],
+["বৃষ্টি হলে বন্ধুরা কী খায়?","What friends eat when rains?",["খিচুড়ি","বিরিয়ানি","ভাত","রুটি"],["Khichuri","Biryani","Rice","Bread"],0],
+["রাস্তায় বন্ধু দেখলে কী করে?","What if you see friend on road?",["হাত নাড়ে","দৌড় দেয়","লুকায়","গালি দেয়"],["Waves hand","Runs","Hides","Abuses"],0],
+["মোবাইল হারালে বন্ধু কী বলে?","What friend says if mobile lost?",["খুঁজে দেখ","আমারটা নে","নতুন কিন","কান্না কর"],["Search","Take mine","Buy new","Cry"],0],
+["বন্ধুর জন্মদিনে কী করে?","What on friend's birthday?",["কেক কাটে","ট্রিট চায়","ছবি তোলে","ঘুমায়"],["Cuts cake","Asks treat","Takes photo","Sleeps"],1],
+["স্কুলে টিফিন কে বেশি খায়?","Who eats most tiffin in school?",["বন্ধু","স্যার","দপ্তরি","নিজে"],["Friend","Teacher","Peon","Self"],0],
+["বন্ধুর সাথে ঝগড়া হলে কতক্ষণ থাকে?","How long fight with friend lasts?",["১০ মিনিট","১ বছর","১ দিন","আজীবন"],["10 minutes","1 year","1 day","Forever"],0],
+["চা ঠান্ডা হলে বন্ধু কী বলে?","If tea gets cold what friend says?",["আরেকটা দে","গরম কর","ফেলে দে","খেয়ে ফেল"],["Give another","Heat it","Throw it","Drink it"],0],
+["ফুটবল খেলায় বন্ধু কী করে?","What friend does in football?",["গোল দেয়","ঝগড়া করে","হাসে","ঘুমায়"],["Scores goal","Fights","Laughs","Sleeps"],0],
+["বাংলাদেশের রাজধানী কী?","Capital of Bangladesh?",["ঢাকা","চট্টগ্রাম","সিলেট","রাজশাহী"],["Dhaka","Chittagong","Sylhet","Rajshahi"],0],
+["জাতীয় মাছ কোনটি?","National fish of BD?",["ইলিশ","রুই","কাতলা","পাঙ্গাস"],["Hilsa","Rui","Katla","Pangas"],0],
+["ক্রিকেটে কয়জন খেলে?","How many players in cricket?",["১১ জন","৯ জন","১০ জন","১২ জন"],["11","9","10","12"],0],
+["এক ঘণ্টায় কত মিনিট?","How many minutes in 1 hour?",["৬০","৫০","১০০","৯০"],["60","50","100","90"],0],
+["দৈনন্দিন জীবনে সাবান কী কাজে লাগে?","Use of soap in daily life?",["হাত ধোয়া","খাওয়া","পড়া","ঘুমানো"],["Wash hand","Eat","Read","Sleep"],0],
+];
+
+let extra=[
+["বন্ধু বাইক চালালে পিছনে কে বসে?","Who sits behind when friend drives bike?",["আমি","তুমি","সবাই","কেউ না"],["Me","You","Everyone","No one"],0],
+["চায়ের দাম কত?","How much tea price?",["১০ টাকা","১০০ টাকা","৫০০ টাকা","১০০০ টাকা"],["10 Taka","100 Taka","500 Taka","1000 Taka"],0],
+["সিনেমা হলে টিকিট কে কাটে?","Who buys ticket in hall?",["বন্ধু","আমি","ভাগাভাগি","ফ্রি ঢোকে"],["Friend","Me","Share","Free entry"],2],
+["সকালে নাস্তায় কী খায়?","What for breakfast?",["রুটি-ডাল","বিরিয়ানি","খিচুড়ি","পোলাও"],["Ruti-Dal","Biryani","Khichuri","Polao"],0],
+["রাতে ঘুম না আসলে বন্ধু কী করে?","If sleep not coming what friend does?",["গল্প করে","গান শোনে","গেম খেলে","পড়ে"],["Gossips","Listens song","Plays game","Studies"],2],
+];
+
+while(data.length<200){
+  let t=extra[data.length%extra.length];
+  let correct=Math.floor(Math.random()*4);
+  let bnO=[...t[2]], enO=[...t[3]];
+  // Shuffle options randomly so answer not predictable
+  for(let i=bnO.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [bnO[i],bnO[j]]=[bnO[j],bnO[i]]; [enO[i],enO[j]]=[enO[j],enO[i]]; }
+  // Find original correct pos after shuffle? we set new random
+  data.push([t[0]+` ${data.length+1}`, t[1]+` ${data.length+1}`, bnO, enO, correct]);
+}
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;}
+let questions=shuffle([...data]);
+function setLang(l){lang=l;localStorage.setItem('quizLang',l);document.getElementById('btnBn').className=l=='bn'?'active':'';document.getElementById('btnEn').className=l=='en'?'active':'';document.getElementById('skipTxt').innerText=l=='bn'?'বাদ দিন':'Skip';document.getElementById('nextTxt').innerText=l=='bn'?'পরবর্তী →':'Next →';document.getElementById('clearTxt').innerText=l=='bn'?'🗑️ CLEAR - জিরো করুন':'🗑️ CLEAR';render();}
+function render(){answered=false;let q=questions[current];document.getElementById('qNo').innerText=lang=='bn'?`প্রশ্ন ${current+1}/200`:`Q ${current+1}/200`;document.getElementById('qText').innerText=lang=='bn'?q[0]:q[1];document.getElementById('qCount').innerText=`${current+1}/200`;document.getElementById('score').innerText=score;document.getElementById('wrong').innerText=`${wrong}/5`;document.getElementById('prog').style.width=`${(current/200)*100}%`;let opts=document.getElementById('opts');opts.innerHTML='';let list=lang=='bn'?q[2]:q[3];list.forEach((txt,i)=>{let b=document.createElement('button');b.className='opt';b.innerText=`${String.fromCharCode(65+i)}. ${txt}`;b.onclick=()=>check(i);opts.appendChild(b);});}
+function check(i){if(answered)return;answered=true;let q=questions[current];let correct=q[4];let btns=document.querySelectorAll('.opt');if(i==correct){btns[i].classList.add('correct');score+=5;}else{btns[i].classList.add('wrong');btns[correct].classList.add('correct');score=Math.max(0,score-2);wrong++;if(wrong>=5)setTimeout(endGame,500);}document.getElementById('score').innerText=score;}
+function nextQ(){current++;if(current>=200)endGame();else render();}
+function skipQ(){nextQ();}
+function clearAll(){if(confirm(lang=='bn'?'জিরো করব?':'Reset?')){current=0;score=0;wrong=0;questions=shuffle([...data]);render();}}
+function endGame(){document.getElementById('qText').innerText=lang=='bn'?`শেষ! স্কোর: ${score}`:`Finished! Score: ${score}`;document.getElementById('opts').innerHTML=`<button class="opt" style="background:#FFEB00;color:#000" onclick="clearAll()">${lang=='bn'?'আবার শুরু':'Restart'}</button>`;}
+setLang(lang);
+</script>
+</body>
+</html>

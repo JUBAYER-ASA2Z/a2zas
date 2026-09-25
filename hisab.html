@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hisab Black v5 - JUBAYER</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{font-family:'Hind Siliguri',sans-serif}
+body{background:#050505;color:#fff}
+.glass{background:#101010;border:1px solid #232323}
+.inputDark{background:#141414;border:1.5px solid #2a2a2a;color:#fff;font-size:15px}
+.inputDark:focus{border-color:#FFEB00;outline:none}
+.tabActive{background:#FFEB00;color:#000;border-color:#FFEB00;box-shadow:0 0 18px rgba(255,235,0,.45)}
+.wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-22deg);font-weight:900;font-size:52px;color:rgba(33,150,243,0.13);pointer-events:none}
+</style>
+</head>
+<body class="pb-[70px]">
+<!-- HEADER -->
+<div class="sticky top-0 z-30 bg-black border-b border-zinc-800 px-3 py-3 flex justify-between items-center">
+<a href="index.html" class="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center font-black text-[22px]">⌂</a>
+<div class="flex-1 mx-2"><input id="shopName" class="w-full bg-zinc-900 border border-zinc-700 text-yellow-300 font-black text-[14px] px-4 py-2 rounded-full text-center outline-none" value="আমার দোকান"></div>
+<div class="flex bg-zinc-900 rounded-full p-1 border border-zinc-800"><button onclick="setLang('bn')" id="bnBtn" class="px-4 py-1.5 rounded-full bg-yellow-400 text-black font-black text-[12px]">বাংলা</button><button onclick="setLang('en')" id="enBtn" class="px-4 py-1.5 rounded-full text-zinc-500 font-bold text-[12px]">EN</button></div>
+</div>
+
+<div class="max-w-[560px] mx-auto p-3">
+<div class="text-center py-3"><h1 id="appTitle" class="font-black text-[28px]">আমার দৈনন্দিন <span class="text-yellow-400">হিসাব</span></h1><p id="autoDate" class="mt-2 inline-block bg-zinc-900 border border-zinc-800 text-[12px] px-4 py-1 rounded-full font-mono tracking-wide">--</p></div>
+
+<!-- INPUT TABS BIGGER -->
+<div class="grid grid-cols-4 gap-2 mt-2">
+<button onclick="setInputTab('income')" id="itIncome" class="tabActive py-4 rounded-2xl font-black text-[13px] border-2">💰<br><span id="tIncome">ইনকাম</span></button>
+<button onclick="setInputTab('expense')" id="itExpense" class="glass py-4 rounded-2xl font-bold text-[13px] text-zinc-400">💸<br><span id="tExpense">খরচ</span></button>
+<button onclick="setInputTab('baki')" id="itBaki" class="glass py-4 rounded-2xl font-bold text-[13px] text-zinc-400">📤<br><span id="tBaki">বাকি</span></button>
+<button onclick="setInputTab('dhar')" id="itDhar" class="glass py-4 rounded-2xl font-bold text-[13px] text-zinc-400">📥<br><span id="tDhar">ধার</span></button>
+</div>
+
+<div class="glass rounded-[24px] p-5 mt-4">
+<h2 id="formHead" class="font-black text-[16px] mb-4 text-yellow-400">💰 আজকের ইনকাম</h2>
+
+<div id="incomeBox" class="space-y-3">
+<input id="inFrom" placeholder="কোথা থেকে ইনকাম? নাম আগে" class="inputDark w-full rounded-xl p-3.5">
+<input id="inAmount" type="number" placeholder="টাকার পরিমাণ" class="inputDark w-full rounded-xl p-3.5 font-black text-yellow-300">
+<textarea id="inDetails" placeholder="বিস্তারিত..." class="inputDark w-full rounded-xl p-3.5 h-[70px]"></textarea>
+</div>
+
+<div id="expenseBox" class="hidden space-y-3">
+<input id="exAmount" type="number" placeholder="টাকার পরিমাণ" class="inputDark w-full rounded-xl p-3.5 font-black">
+<textarea id="exDetails" placeholder="বিবরণ - কি খরচ?" class="inputDark w-full rounded-xl p-3.5 h-[70px]"></textarea>
+</div>
+
+<div id="bakiBox" class="hidden space-y-3">
+<!-- নাম আগে, তারপর অ্যামাউন্ট, তারপর বিস্তারিত -->
+<input id="bakiName" placeholder="নাম - কাকে দিয়েছেন?" class="inputDark w-full rounded-xl p-3.5">
+<input id="bakiAmount" type="number" placeholder="টাকার পরিমাণ" class="inputDark w-full rounded-xl p-3.5 font-black">
+<input id="bakiMobile" type="tel" placeholder="মোবাইল (ঐচ্ছিক)" class="inputDark w-full rounded-xl p-3.5">
+<textarea id="bakiDetails" placeholder="বিস্তারিত..." class="inputDark w-full rounded-xl p-3.5 h-[70px]"></textarea>
+</div>
+
+<div id="dharBox" class="hidden space-y-3">
+<input id="dharName" placeholder="নাম - যার কাছ থেকে এনেছেন" class="inputDark w-full rounded-xl p-3.5">
+<input id="dharAmount" type="number" placeholder="টাকার পরিমাণ" class="inputDark w-full rounded-xl p-3.5 font-black">
+<input id="dharMobile" type="tel" placeholder="মোবাইল (ঐচ্ছিক)" class="inputDark w-full rounded-xl p-3.5">
+<textarea id="dharDetails" placeholder="বিস্তারিত..." class="inputDark w-full rounded-xl p-3.5 h-[70px]"></textarea>
+</div>
+
+<button onclick="saveEntry()" id="saveBtn" class="w-full mt-5 bg-yellow-400 text-black font-black py-4 rounded-xl text-[16px]">💾 সেভ করুন</button>
+</div>
+
+<!-- FILTER -->
+<div class="flex gap-2 mt-6 bg-zinc-900 p-1.5 rounded-full border border-zinc-800">
+<button onclick="setTab('daily')" id="tabDaily" class="flex-1 bg-white text-black py-2.5 rounded-full font-black text-[12px]">দৈনিক</button>
+<button onclick="setTab('weekly')" id="tabWeekly" class="flex-1 text-zinc-500 py-2.5 rounded-full font-bold text-[12px]">সাপ্তাহিক</button>
+<button onclick="setTab('monthly')" id="tabMonthly" class="flex-1 text-zinc-500 py-2.5 rounded-full font-bold text-[12px]">মাসিক</button>
+</div>
+
+<div id="list" class="mt-4 space-y-2.5"></div>
+
+<!-- POSTER -->
+<div id="posterWrap" class="hidden mt-6">
+<div class="flex justify-between items-center mb-2 gap-2">
+<h3 class="font-black text-yellow-400 text-[14px]">📄 POSTER</h3>
+<div class="flex gap-2">
+<button onclick="openPosterEdit()" class="bg-zinc-800 border border-zinc-700 px-3 py-1.5 rounded-full text-[11px] font-bold">✏️ Edit Header</button>
+<button onclick="clearPoster()" class="bg-red-600 px-3 py-1.5 rounded-full text-[11px] font-bold">🗑️ Clear</button>
+<button onclick="document.getElementById('posterWrap').classList.add('hidden')" class="bg-zinc-800 px-3 py-1.5 rounded-full text-[11px]">✕</button>
+</div>
+</div>
+
+<div id="poster" class="bg-white text-black p-5 rounded-2xl border-[3px] border-black relative overflow-hidden max-w-[400px] mx-auto">
+<div class="wm">JUBAYER-A.S</div>
+<div id="pHeader" class="text-center border-b-2 border-black pb-2">
+<h2 id="pShop" class="font-black text-[18px]"></h2>
+<p id="pShopInfo" class="text-[10px] font-bold text-zinc-700"></p>
+<p id="pTitle" class="font-bold text-[12px] mt-1">আমার দৈনন্দিন হিসাব</p>
+</div>
+<div class="flex justify-between text-[10px] mt-2 font-mono"><span id="pDate"></span><span class="font-black">JUBAYER-A.S</span></div>
+<div class="grid grid-cols-2 gap-3 mt-3 text-[11px]"><div><p class="font-black border-b border-black">টাকার হিসাব</p><div id="pMoney" class="mt-1 space-y-1 font-bold"></div></div><div><p class="font-black border-b border-black">নাম / বিবরণ + Date</p><div id="pDesc" class="mt-1 space-y-1"></div></div></div>
+<div class="bg-zinc-100 rounded-lg p-2.5 mt-3 text-[10px] grid grid-cols-2 gap-1 font-bold" id="pTotals"></div>
+<div class="mt-5 flex justify-between items-end"><div><p class="text-[9px]">NET BALANCE</p><p class="font-black text-[18px]" id="pTotal">0 TK</p></div><div class="text-center"><div class="w-[120px] h-[1px] bg-black"></div><p class="text-[11px] mt-1">স্বাক্ষর</p></div></div>
+</div>
+<div class="flex gap-2 mt-3 max-w-[400px] mx-auto"><button onclick="downloadPoster()" class="flex-1 bg-white text-black py-3 rounded-xl font-black text-[13px]">⬇️ Download</button><button onclick="sharePoster()" class="flex-1 bg-yellow-400 text-black py-3 rounded-xl font-black text-[13px]">📤 Share</button></div>
+</div>
+
+<!-- Poster Edit Modal -->
+<div id="posterEditModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+<div class="bg-zinc-900 border border-zinc-700 rounded-2xl p-5 w-full max-w-[360px]">
+<h3 class="font-black text-yellow-400 mb-3">✏️ পোস্টার হেডার এডিট</h3>
+<input id="editShopName" placeholder="দোকান / মালিকানা নাম" class="inputDark w-full rounded-xl p-3 mb-2">
+<input id="editShopNumber" placeholder="নাম্বার (ঐচ্ছিক)" class="inputDark w-full rounded-xl p-3 mb-2">
+<input id="editShopAddress" placeholder="ঠিকানা (ঐচ্ছিক)" class="inputDark w-full rounded-xl p-3 mb-3">
+<p class="text-[10px] text-zinc-500 mb-3">লিখলেও সেভ হবে, না লিখলেও সেভ হবে - পোস্টারে দেখাবে</p>
+<div class="flex gap-2"><button onclick="savePosterHeader()" class="flex-1 bg-yellow-400 text-black font-black py-2.5 rounded-xl">Save</button><button onclick="document.getElementById('posterEditModal').classList.add('hidden')" class="flex-1 bg-zinc-800 py-2.5 rounded-xl">Cancel</button></div>
+</div>
+</div>
+</div>
+
+<!-- FOOTER - ONLY NAME -->
+<div class="fixed bottom-0 left-0 w-full bg-black border-t border-zinc-800 text-center py-3 z-20"><p class="text-[12px] font-bold">App নির্মাতা: <span class="text-yellow-400 font-black">JUBAYER-A.S</span></p></div>
+
+<canvas id="canvas" class="hidden"></canvas>
+<script>
+let entries=JSON.parse(localStorage.getItem('hisab_black_v5')||'[]');
+let posterEntries=JSON.parse(localStorage.getItem('poster_entries_v5')||'[]');
+let shop=localStorage.getItem('shopName_black_v5')||'আমার দোকান';
+let shopInfo=JSON.parse(localStorage.getItem('shopInfo_v5')||'{"number":"","address":""}');
+document.getElementById('shopName').value=shop;
+let lang='bn', tab='daily', inputTab='income', editId=null;
+let L={bn:{income:'আজকের ইনকাম',expense:'কত খরচ',baki:'বাকি দিয়েছি',dhar:'ধার এনেছি',save:'💾 সেভ করুন',tInc:'ইনকাম',tExp:'খরচ',tBaki:'বাকি',tDhar:'ধার',daily:'দৈনিক',weekly:'সাপ্তাহিক',monthly:'মাসিক'},en:{income:"Income",expense:"Expense",baki:"Lent",dhar:"Borrowed",save:"💾 Save",tInc:'Income',tExp:'Expense',tBaki:'Lent',tDhar:'Debt',daily:'Daily',weekly:'Weekly',monthly:'Monthly'}};
+
+function setInputTab(t){inputTab=t; ['income','expense','baki','dhar'].forEach(x=>{document.getElementById(x+'Box').classList.toggle('hidden',x!==t); let btn=document.getElementById('it'+x.charAt(0).toUpperCase()+x.slice(1)); btn.className=x===t?'tabActive py-4 rounded-2xl font-black text-[13px] border-2':'glass py-4 rounded-2xl font-bold text-[13px] text-zinc-400';}); document.getElementById('formHead').innerText='💰 '+L[lang][t];}
+function setLang(l){lang=l; bnBtn.className=l=='bn'?'px-4 py-1.5 rounded-full bg-yellow-400 text-black font-black text-[12px]':'px-4 py-1.5 rounded-full text-zinc-500 font-bold text-[12px]'; enBtn.className=l=='en'?'px-4 py-1.5 rounded-full bg-yellow-400 text-black font-black text-[12px]':'px-4 py-1.5 rounded-full text-zinc-500 font-bold text-[12px]'; appTitle.innerHTML=lang=='bn'?'আমার দৈনন্দিন <span class="text-yellow-400">হিসাব</span>':'My Daily <span class="text-yellow-400">Accounts</span>'; tIncome.innerText=L[l].tInc; tExpense.innerText=L[l].tExp; tBaki.innerText=L[l].tBaki; tDhar.innerText=L[l].tDhar; tabDaily.innerText=L[l].daily; tabWeekly.innerText=L[l].weekly; tabMonthly.innerText=L[l].monthly; saveBtn.innerText=L[l].save; formHead.innerText='💰 '+L[l][inputTab]; render();}
+function setTab(t){tab=t; ['daily','weekly','monthly'].forEach(x=>{let el=document.getElementById('tab'+x.charAt(0).toUpperCase()+x.slice(1)); el.className=t==x?'flex-1 bg-white text-black py-2.5 rounded-full font-black text-[12px]':'flex-1 text-zinc-500 py-2.5 rounded-full font-bold text-[12px]'}); render();}
+function updateDate(){let n=new Date(); let en=n.toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'}); let iso=n.toISOString().slice(0,10); autoDate.innerText='📅 '+toEN(en); return {iso,en};}
+function toEN(n){return String(n).replace(/[\u09E6-\u09EF]/g,d=>String.fromCharCode(d.charCodeAt(0)-0x09E6+48));}
+function saveEntry(){
+ let {iso,en}=updateDate(); let e={id:editId||Date.now(), date:iso, enDate:en, type:inputTab};
+ if(inputTab=='income'){e.from=inFrom.value; e.amount=parseFloat(inAmount.value)||0; e.details=inDetails.value; if(!e.amount||!e.from) return alert('নাম ও টাকা লিখুন');}
+ if(inputTab=='expense'){e.amount=parseFloat(exAmount.value)||0; e.details=exDetails.value; if(!e.amount) return alert('টাকা লিখুন'); e.from='খরচ';}
+ if(inputTab=='baki'){e.name=bakiName.value; e.amount=parseFloat(bakiAmount.value)||0; e.mobile=bakiMobile.value; e.details=bakiDetails.value; if(!e.amount||!e.name) return alert('নাম ও টাকা লিখুন'); e.from=e.name;}
+ if(inputTab=='dhar'){e.name=dharName.value; e.amount=parseFloat(dharAmount.value)||0; e.mobile=dharMobile.value; e.details=dharDetails.value; if(!e.amount||!e.name) return alert('নাম ও টাকা লিখুন'); e.from=e.name;}
+ if(editId) entries=entries.map(x=>x.id==editId?e:x); else entries.unshift(e); // নতুন উপরে, পুরাতন নিচে
+ localStorage.setItem('hisab_black_v5',JSON.stringify(entries));
+ ['inFrom','inAmount','inDetails','exAmount','exDetails','bakiName','bakiAmount','bakiMobile','bakiDetails','dharName','dharAmount','dharMobile','dharDetails'].forEach(id=>{let el=document.getElementById(id); if(el) el.value='';});
+ editId=null; render(); localStorage.setItem('shopName_black_v5',shopName.value);
+}
+function render(){
+ let {iso,en}=updateDate(); let list=document.getElementById('list'); list.innerHTML=''; let now=new Date(); let filtered=[...entries];
+ if(tab=='daily'){let today=now.toISOString().slice(0,10); filtered=entries.filter(e=>e.date==today);} if(tab=='weekly'){let w=new Date(); w.setDate(now.getDate()-7); filtered=entries.filter(e=>new Date(e.date)>=w);} if(tab=='monthly'){let m=now.getMonth(), y=now.getFullYear(); filtered=entries.filter(e=>{let d=new Date(e.date); return d.getMonth()==m && d.getFullYear()==y});}
+ let tot={income:0,expense:0,baki:0,dhar:0}; filtered.forEach(e=>tot[e.type]+=e.amount);
+ if(filtered.length){let s=document.createElement('div'); s.className='glass rounded-xl p-3 text-[12px] grid grid-cols-2 gap-1'; s.innerHTML=`<span class="text-green-400">💰 ${toEN(tot.income)} TK</span><span class="text-red-400">💸 ${toEN(tot.expense)} TK</span><span class="text-orange-300">📤 ${toEN(tot.baki)} TK</span><span class="text-blue-300">📥 ${toEN(tot.dhar)} TK</span><span class="col-span-2 text-center text-yellow-400 font-black mt-1 border-t border-zinc-800 pt-1">Net: ${toEN(tot.income-tot.expense)} TK</span>`; list.appendChild(s);}
+ filtered.forEach(en=>{
+  let div=document.createElement('div'); div.className='glass rounded-xl p-3.5 flex justify-between items-start gap-2';
+  div.innerHTML=`<div class="flex-1"><p class="font-black text-[14px]">${en.from} <span class="${en.type=='income'?'text-green-400':'text-yellow-300'}">${toEN(en.amount)} TK</span></p><p class="text-[11px] text-zinc-400 mt-1">${toEN(en.enDate)} • ${en.mobile||''} ${en.details||''}</p></div><div class="flex gap-1.5"><button onclick="editEntry(${en.id})" class="w-9 h-9 rounded-full bg-zinc-800 border border-zinc-700 text-[14px]">✏️</button><button onclick="deleteEntry(${en.id})" class="w-9 h-9 rounded-full bg-red-900/50 border border-red-800 text-[14px]">🗑️</button><button onclick="addToPoster(${en.id})" class="w-9 h-9 rounded-full bg-yellow-400 text-black font-black text-[14px]">📄</button></div>`;
+  list.appendChild(div);
+ });
+ if(posterEntries.length) renderPoster();
+}
+function editEntry(id){let en=entries.find(x=>x.id==id); setInputTab(en.type); if(en.type=='income'){inFrom.value=en.from; inAmount.value=en.amount; inDetails.value=en.details;} if(en.type=='expense'){exAmount.value=en.amount; exDetails.value=en.details;} if(en.type=='baki'){bakiName.value=en.name||en.from; bakiAmount.value=en.amount; bakiMobile.value=en.mobile; bakiDetails.value=en.details;} if(en.type=='dhar'){dharName.value=en.name||en.from; dharAmount.value=en.amount; dharMobile.value=en.mobile; dharDetails.value=en.details;} editId=id; window.scrollTo(0,0);}
+function deleteEntry(id){if(!confirm('Delete?')) return; entries=entries.filter(x=>x.id!=id); posterEntries=posterEntries.filter(x=>x.id!=id); localStorage.setItem('hisab_black_v5',JSON.stringify(entries)); localStorage.setItem('poster_entries_v5',JSON.stringify(posterEntries)); render();}
+
+function addToPoster(id){
+ let en=entries.find(x=>x.id==id); if(!en) return;
+ if(!posterEntries.find(x=>x.id==id)) posterEntries.unshift(en); // ধারাবাহিক - আগে ক্লিক উপরে
+ else { posterEntries=posterEntries.filter(x=>x.id!=id); posterEntries.unshift(en); }
+ localStorage.setItem('poster_entries_v5',JSON.stringify(posterEntries));
+ document.getElementById('posterWrap').classList.remove('hidden'); renderPoster();
+}
+function renderPoster(){
+ if(!posterEntries.length){document.getElementById('posterWrap').classList.add('hidden'); return;}
+ document.getElementById('posterWrap').classList.remove('hidden');
+ pShop.innerText=shopName.value||'আমার দোকান';
+ let infoText=''; if(shopInfo.number) infoText+=toEN(shopInfo.number)+' '; if(shopInfo.address) infoText+=' | '+shopInfo.address;
+ pShopInfo.innerText=infoText;
+ pTitle.innerText=lang=='bn'?'আমার দৈনন্দিন হিসাব':'My Daily Accounts';
+ pDate.innerText=toEN(posterEntries[0].enDate)+' - '+toEN(new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}));
+ let m=pMoney, d=pDesc, totBox=pTotals; m.innerHTML=''; d.innerHTML=''; let t={income:0,expense:0,baki:0,dhar:0};
+ posterEntries.forEach(en=>{t[en.type]+=en.amount; m.innerHTML+=`<div>${en.type=='income'?'+':'-'} ${toEN(en.amount)} TK</div>`; d.innerHTML+=`<div>${(en.from||'').slice(0,16)} • ${toEN(en.enDate)} • ${toEN(en.date)}</div>`;});
+ totBox.innerHTML=`<span>Total Income: ${toEN(t.income)} TK</span><span>Total Expense: ${toEN(t.expense)} TK</span><span>Total Baki: ${toEN(t.baki)} TK</span><span>Total Dhar: ${toEN(t.dhar)} TK</span>`;
+ pTotal.innerText=toEN(t.income-t.expense)+' TK';
+}
+function clearPoster(){posterEntries=[]; localStorage.setItem('poster_entries_v5','[]'); document.getElementById('posterWrap').classList.add('hidden');}
+function openPosterEdit(){document.getElementById('posterEditModal').classList.remove('hidden'); editShopName.value=shopName.value; editShopNumber.value=shopInfo.number||''; editShopAddress.value=shopInfo.address||'';}
+function savePosterHeader(){shopName.value=editShopName.value||shopName.value; shopInfo.number=editShopNumber.value; shopInfo.address=editShopAddress.value; localStorage.setItem('shopName_black_v5',shopName.value); localStorage.setItem('shopInfo_v5',JSON.stringify(shopInfo)); document.getElementById('posterEditModal').classList.add('hidden'); renderPoster();}
+
+function exportCanvas(){return new Promise(res=>{let c=document.getElementById('canvas'); let ctx=c.getContext('2d'); c.width=800; c.height=1080; ctx.fillStyle='#fff'; ctx.fillRect(0,0,800,1080); ctx.fillStyle='rgba(33,150,243,0.12)'; ctx.font='900 86px sans-serif'; ctx.save(); ctx.translate(400,540); ctx.rotate(-0.45); ctx.fillText('JUBAYER-A.S',-280,0); ctx.restore(); ctx.fillStyle='#000'; ctx.font='900 22px Hind Siliguri'; ctx.textAlign='center'; ctx.fillText(pShop.innerText,400,40); ctx.font='10px Hind Siliguri'; ctx.fillText(pShopInfo.innerText,400,58); ctx.font='700 14px Hind Siliguri'; ctx.fillText(pTitle.innerText,400,80); ctx.fillRect(30,90,740,3); ctx.font='11px monospace'; ctx.textAlign='left'; ctx.fillText(pDate.innerText,30,116); ctx.textAlign='right'; ctx.fillText('JUBAYER-A.S',770,116); ctx.textAlign='left'; ctx.font='900 14px Hind Siliguri'; ctx.fillText('টাকার হিসাব',30,150); ctx.fillText('নাম / বিবরণ + Date',400,150); ctx.fillRect(30,158,740,1); ctx.font='12px Hind Siliguri'; let y=185; let ms=pMoney.innerText.split('\n'), ds=pDesc.innerText.split('\n'); for(let i=0;i<ms.length;i++){if(!ms[i]) continue; ctx.fillText(toEN(ms[i]),30,y); ctx.fillText(ds[i]||'',400,y); y+=26; if(y>800) break;} ctx.font='11px Hind Siliguri'; ctx.fillText(pTotals.innerText,30,840); ctx.font='900 20px monospace'; ctx.fillText('Total: '+pTotal.innerText,30,960); ctx.font='12px Hind Siliguri'; ctx.textAlign='center'; ctx.fillText('___________________',660,940); ctx.fillText('স্বাক্ষর',660,960); res(c.toDataURL('image/png'));});}
+function downloadPoster(){exportCanvas().then(url=>{let a=document.createElement('a'); a.href=url; a.download='hisab-'+Date.now()+'.png'; a.click();});}
+async function sharePoster(){let url=await exportCanvas(); let blob=await (await fetch(url)).blob(); let file=new File([blob],'hisab.png',{type:'image/png'}); if(navigator.canShare && navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Hisab'});} else downloadPoster();}
+
+setInputTab('income'); setTab('daily'); setLang('bn'); render();
+shopName.addEventListener('input',e=>localStorage.setItem('shopName_black_v5',e.target.value));
+</script>
+</body>
+</html>

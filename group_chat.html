@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Group Chat - JUBAYER</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.scaledrone.com/scaledrone.min.js"></script>
+<style>
+*{font-family:'Hind Siliguri',sans-serif}
+body{background:#050505;color:#fff}
+.glass{background:#111;border:1px solid #232323}
+.inputDark{background:#141414;border:1.5px solid #2a2a2a;color:#fff}
+.msg-me{border-left:3px solid #facc15}
+</style>
+</head>
+<body class="pb-[90px]">
+
+<div class="sticky top-0 z-30 bg-black/95 backdrop-blur border-b border-zinc-800 px-3 py-3 flex justify-between items-center">
+<a href="index.html" class="w-11 h-11 rounded-full bg-white text-black flex items-center justify-center font-black text-[20px]">⌂</a>
+<div class="text-center"><h2 class="font-black text-[14px]">💬 লাইভ গ্রুপ চ্যাট</h2><p id="status" class="text-[9px] text-zinc-500">Connecting...</p></div>
+<div class="flex gap-1.5">
+<button id="soundBtn" onclick="toggleSound()" class="w-11 h-11 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center text-[18px]">🔊</button>
+<button onclick="openAdminLogin()" class="w-11 h-11 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center">👑</button>
+</div>
+</div>
+
+<div class="max-w-[600px] mx-auto p-3">
+<div id="onlineUsers" class="text-[10px] text-zinc-400 mb-2">🟢 0 জন অনলাইন</div>
+
+<!-- CHAT OFF BANNER -->
+<div id="offBanner" class="hidden bg-red-600 border border-red-400 rounded-[14px] p-3 mb-3 text-center">
+<p class="font-black text-[13px]">🔒 চ্যাট এখন বন্ধ আছে</p>
+<p id="offMessage" class="text-[11px] mt-1 text-white/90"></p>
+</div>
+
+<div id="chatBox" class="space-y-2 h-[63vh] overflow-y-auto bg-zinc-950 border border-zinc-800 rounded-[18px] p-3"></div>
+
+<div id="inputArea" class="glass rounded-[18px] p-2.5 mt-3 flex gap-2 items-center">
+<input id="userName" placeholder="নাম" class="inputDark w-[28%] rounded-xl p-3 text-[12px]">
+<input id="msgInput" placeholder="মেসেজ লিখুন..." class="inputDark flex-1 rounded-xl p-3 text-[13px]" onkeypress="if(event.key==='Enter') sendMsg()">
+<button onclick="sendMsg()" class="bg-yellow-400 text-black font-black px-5 h-[46px] rounded-xl">➤</button>
+</div>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div id="adminLogin" class="hidden fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+<div class="bg-zinc-900 border border-zinc-700 rounded-[20px] p-5 w-full max-w-[320px]">
+<h3 class="font-black text-yellow-400 text-center mb-4">👑 এডমিন লগইন</h3>
+<input id="adminCode" type="password" placeholder="Secret Code দিন" class="inputDark w-full rounded-xl p-3 mb-3 text-center">
+<button onclick="checkAdmin()" class="w-full bg-yellow-400 text-black font-black py-3 rounded-xl">Login</button>
+<button onclick="adminLogin.classList.add('hidden')" class="w-full mt-2 bg-zinc-800 py-2.5 rounded-xl text-[12px]">Cancel</button>
+</div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel" class="hidden fixed inset-0 bg-black z-50 p-3 overflow-y-auto">
+<div class="max-w-[600px] mx-auto">
+<div class="flex justify-between items-center py-2">
+<h3 class="font-black text-red-400 text-[16px]">⚙️ এডমিন কন্ট্রোল প্যানেল</h3>
+<button onclick="adminPanel.classList.add('hidden')" class="bg-zinc-800 px-4 py-2 rounded-full text-[12px]">✕ বন্ধ</button>
+</div>
+
+<!-- CHAT ON/OFF CONTROL -->
+<div class="glass rounded-[16px] p-4 mt-4 border-yellow-500/30">
+<h4 class="font-black text-[13px] mb-3">🔒 চ্যাট বন্ধ/চালু কন্ট্রোল</h4>
+<div class="flex gap-2">
+<button id="chatOnBtn" onclick="setChatStatus(true)" class="flex-1 bg-green-600 py-3 rounded-xl font-black text-[12px]">✅ চালু করুন</button>
+<button id="chatOffBtn" onclick="openOffModal()" class="flex-1 bg-red-600 py-3 rounded-xl font-black text-[12px]">🔒 বন্ধ করুন</button>
+</div>
+<p id="currentStatus" class="text-[10px] text-zinc-400 mt-2 text-center">Status: চালু আছে</p>
+</div>
+
+<!-- OFF MESSAGE MODAL INSIDE PANEL -->
+<div id="offModal" class="hidden mt-3 bg-zinc-900 border border-red-800 rounded-xl p-3">
+<input id="offText" placeholder="যেমন: এখন বন্ধ আছে, রাত ৯ টায় চালু হবে" class="inputDark w-full rounded-xl p-3 text-[12px] mb-2">
+<button onclick="confirmOff()" class="w-full bg-red-600 py-2.5 rounded-xl font-black text-[12px]">বন্ধ করুন + মেসেজ পাঠান</button>
+</div>
+
+<div class="grid grid-cols-2 gap-2 mt-4">
+<button onclick="clearAllChat()" class="bg-red-600 py-4 rounded-xl font-black text-[12px]">🗑️ সব চ্যাট মুছুন</button>
+<button onclick="clearBanList()" class="bg-zinc-800 border border-zinc-700 py-4 rounded-xl font-black text-[12px]">🔓 সবাইকে Unban</button>
+</div>
+
+<h4 class="font-black mt-6 mb-2 text-[13px]">👥 ইউজার লিস্ট - Kick করুন</h4>
+<div id="userListAdmin" class="space-y-2"></div>
+<h4 class="font-black mt-6 mb-2 text-[13px]">💬 মেসেজ ডিলিট</h4>
+<div id="msgListAdmin" class="space-y-2 pb-10"></div>
+</div>
+</div>
+
+<audio id="msgSound" preload="auto"><source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_05532e3eab.mp3?filename=notification-sound-7062.mp3" type="audio/mpeg"></audio>
+
+<script>
+const CHANNEL_ID = "yqubvfXQHfF6UxbA";
+const _sec = "MDg1Mg==";
+let drone, room;
+let isSoundOn = localStorage.getItem('sound_on')!=='false';
+let bannedNames = JSON.parse(localStorage.getItem('banned_names')||'[]');
+let isChatLocked = false;
+let lockMessage = "";
+
+updateSoundUI();
+function toggleSound(){ isSoundOn=!isSoundOn; localStorage.setItem('sound_on', isSoundOn); updateSoundUI(); if(isSoundOn) document.getElementById('msgSound').play().catch(()=>{}); }
+function updateSoundUI(){ document.getElementById('soundBtn').innerText=isSoundOn?'🔊':'🔇'; }
+function requestNotify(){ if("Notification" in window && Notification.permission!=="granted"){ Notification.requestPermission(); } }
+function showNotification(name, text){ if(!("Notification" in window)) return; if(Notification.permission!=="granted") return; if(document.hasFocus()) return; new Notification(name+" মেসেজ দিয়েছে", {body:text}); }
+function playSound(){ if(!isSoundOn) return; let a=document.getElementById('msgSound'); a.currentTime=0; a.play().catch(()=>{}); if(navigator.vibrate) navigator.vibrate(80); }
+
+function init(){
+ drone = new ScaleDrone(CHANNEL_ID, {data:{name: (localStorage.getItem('chat_name')||'User')}});
+ drone.on('open', err=>{
+  if(err){ status.innerText="Error"; return;}
+  status.innerText="✅ Live Connected";
+  room = drone.subscribe('observable-jubayer-room');
+  room.on('members', m=>{ updateMembers(m); });
+  room.on('member_join', ()=>{ room.getMembers(); });
+  room.on('member_leave', ()=>{ room.getMembers(); });
+  room.on('data', (data)=>{ handleData(data); });
+ });
+}
+
+function updateMembers(members){
+ onlineUsers.innerText=`🟢 ${members.length} জন অনলাইন`;
+ let adminUList=document.getElementById('userListAdmin');
+ adminUList.innerHTML="";
+ members.forEach(m=>{
+  let isBanned = bannedNames.includes(m.clientData.name);
+  adminUList.innerHTML+=`<div class="flex justify-between items-center glass p-2.5 rounded-xl"><span class="text-[12px]">${m.clientData.name} ${isBanned?'(Banned)':''}</span><button onclick="kickUser('${m.clientData.name}')" class="bg-red-600 px-3 py-1.5 rounded-full text-[10px] font-black">${isBanned?'Banned':'Kick'}</button></div>`;
+ });
+}
+
+function handleData(data){
+ if(data.type==='clear'){ chatBox.innerHTML=""; msgListAdmin.innerHTML=""; return; }
+ if(data.type==='ban'){ if(!bannedNames.includes(data.target)) bannedNames.push(data.target); localStorage.setItem('banned_names',JSON.stringify(bannedNames)); if((localStorage.getItem('chat_name')||'')===data.target){ alert('আপনাকে Kick করেছে!'); msgInput.disabled=true; } return; }
+ if(data.type==='unban_all'){ bannedNames=[]; localStorage.setItem('banned_names','[]'); return; }
+ if(data.type==='delete_one'){ let el=document.getElementById(data.id); if(el) el.remove(); let el2=document.getElementById('admin_'+data.id); if(el2) el2.remove(); return; }
+ if(data.type==='lock'){ isChatLocked=data.locked; lockMessage=data.msg||""; updateLockUI(); return; }
+ if(data.type==='chat'){ if(bannedNames.includes(data.name)) return; if(isChatLocked) return; addMsgToUI(data); if(data.name!== (localStorage.getItem('chat_name')||'')){ playSound(); showNotification(data.name, data.text); } }
+}
+
+function updateLockUI(){
+ let banner=document.getElementById('offBanner');
+ let inputArea=document.getElementById('inputArea');
+ let statusText=document.getElementById('currentStatus');
+ if(isChatLocked){
+  banner.classList.remove('hidden');
+  document.getElementById('offMessage').innerText=lockMessage||"এডমিন চ্যাট বন্ধ রেখেছে";
+  inputArea.classList.add('opacity-30','pointer-events-none');
+  msgInput.placeholder="চ্যাট বন্ধ আছে...";
+  statusText.innerText="Status: 🔒 বন্ধ আছে - "+lockMessage;
+  statusText.className="text-[10px] text-red-400 mt-2 text-center";
+ }else{
+  banner.classList.add('hidden');
+  inputArea.classList.remove('opacity-30','pointer-events-none');
+  msgInput.placeholder="মেসেজ লিখুন...";
+  statusText.innerText="Status: ✅ চালু আছে";
+  statusText.className="text-[10px] text-green-400 mt-2 text-center";
+ }
+}
+
+function addMsgToUI(data){
+ let id = 'msg_'+Date.now()+'_'+Math.random().toString(36).substr(2,5);
+ let isMe = data.name === (localStorage.getItem('chat_name')||'');
+ let div=document.createElement('div');
+ div.id=id;
+ div.className='glass rounded-xl p-2.5 '+(isMe?'msg-me':'');
+ div.innerHTML=`<div class="flex justify-between"><b class="text-[11px] text-yellow-400">${data.name}</b><span class="text-[8px] text-zinc-500">${new Date(data.time).toLocaleTimeString()}</span></div><p class="text-[13px] mt-1 break-words">${escapeHtml(data.text)}</p>`;
+ chatBox.appendChild(div);
+ chatBox.scrollTop=chatBox.scrollHeight;
+ let adminDiv=document.createElement('div');
+ adminDiv.id='admin_'+id;
+ adminDiv.className='flex justify-between items-center glass p-2 rounded-xl';
+ adminDiv.innerHTML=`<span class="text-[11px] w-[70%] truncate">${data.name}: ${data.text}</span><button onclick="deleteOne('${id}')" class="bg-red-600 px-3 py-1 rounded-full text-[10px]">Delete</button>`;
+ msgListAdmin.appendChild(adminDiv);
+}
+
+function sendMsg(){
+ requestNotify();
+ if(isChatLocked){ alert('চ্যাট এখন বন্ধ আছে ভাই! '+lockMessage); return; }
+ let name=userName.value.trim()||'Guest'; let text=msgInput.value.trim(); if(!text) return;
+ if(bannedNames.includes(name)||bannedNames.includes(localStorage.getItem('chat_name'))){ alert('আপনি Banned!'); return; }
+ localStorage.setItem('chat_name',name);
+ drone.publish({room:'observable-jubayer-room', message:{type:'chat', name, text, time:Date.now()}});
+ msgInput.value='';
+}
+
+function escapeHtml(t){ let d=document.createElement('div'); d.innerText=t; return d.innerHTML; }
+function openAdminLogin(){ adminLogin.classList.remove('hidden'); }
+function checkAdmin(){ let c=adminCode.value.trim(); if(c===atob(_sec)){ adminLogin.classList.add('hidden'); adminPanel.classList.remove('hidden'); adminCode.value=''; } else alert('ভুল কোড!'); }
+function clearAllChat(){ if(confirm('সব মুছবে?')) drone.publish({room:'observable-jubayer-room', message:{type:'clear'}}); }
+function kickUser(n){ if(confirm(n+' কে Kick?')) drone.publish({room:'observable-jubayer-room', message:{type:'ban', target:n}}); }
+function clearBanList(){ drone.publish({room:'observable-jubayer-room', message:{type:'unban_all'}}); bannedNames=[]; localStorage.setItem('banned_names','[]'); alert('Unban Done'); }
+function deleteOne(id){ drone.publish({room:'observable-jubayer-room', message:{type:'delete_one', id}}); }
+
+function openOffModal(){ document.getElementById('offModal').classList.remove('hidden'); }
+function confirmOff(){
+ let msg=document.getElementById('offText').value.trim()||"এখন বন্ধ আছে";
+ drone.publish({room:'observable-jubayer-room', message:{type:'lock', locked:true, msg:msg}});
+ document.getElementById('offModal').classList.add('hidden');
+ document.getElementById('offText').value="";
+}
+function setChatStatus(on){
+ if(on){ drone.publish({room:'observable-jubayer-room', message:{type:'lock', locked:false, msg:""}}); }
+}
+
+userName.value=localStorage.getItem('chat_name')||'';
+init();
+</script>
+</body>
+</html>

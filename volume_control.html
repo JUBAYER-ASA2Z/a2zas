@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Volume Control - Floating Button</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;font-family:'Hind Siliguri',sans-serif}
+body{margin:0;background:#FFEB00;color:#000;min-height:100vh}
+.top{background:#000;padding:12px;border-bottom:4px solid #FFEB00;display:flex;justify-content:space-between;align-items:center}
+.home{background:#FFEB00;color:#000;padding:8px 18px;border-radius:22px;text-decoration:none;font-weight:900}
+.title{color:#FFEB00;font-weight:900}
+.wrap{max-width:600px;margin:auto;padding:16px}
+.card{background:#000;color:#fff;border:3px solid #fff;border-radius:20px;padding:18px;margin-bottom:14px;text-align:center}
+.vol-display{font-size:70px;font-weight:900;color:#FFEB00;line-height:1}
+.bar{width:100%;height:22px;background:#222;border-radius:12px;margin:14px 0;border:2px solid #fff;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,#00e676,#FFEB00);width:50%;transition:0.2s}
+.controls{display:flex;gap:12px;justify-content:center;margin:16px 0}
+.btn{width:70px;height:70px;border-radius:50%;border:3px solid #fff;font-size:32px;font-weight:900;background:#111;color:#fff}
+.btn:active{background:#FFEB00;color:#000}
+.btn-big{background:#00e676;color:#000;width:90px;height:90px;font-size:40px}
+.perm{background:#111;border:2px dashed #FFEB00;padding:14px;border-radius:14px;margin:14px 0;color:#fff}
+.perm button{background:#FFEB00;color:#000;border:none;padding:12px 20px;border-radius:12px;font-weight:900;width:100%;margin-top:10px}
+.switch{display:flex;justify-content:space-between;align-items:center;background:#111;padding:12px;border-radius:12px;border:2px solid #333;margin-top:12px}
+.switch input{width:50px;height:28px}
+
+/* Floating Button */
+#floatBtn{
+ position:fixed;bottom:90px;right:20px;z-index:99999;
+ width:62px;height:62px;background:#000;border:3px solid #FFEB00;border-radius:50%;
+ display:flex;align-items:center;justify-content:center;
+ font-size:28px;color:#FFEB00;box-shadow:0 6px 20px rgba(0,0,0,0.5);
+ touch-action:none;user-select:none;
+}
+#floatPanel{
+ position:fixed;bottom:165px;right:20px;z-index:99999;
+ background:#000;border:3px solid #FFEB00;border-radius:18px;
+ padding:12px;width:170px;display:none;
+}
+#floatPanel.f-row{display:flex;justify-content:space-between;gap:8px}
+#floatPanel button{flex:1;padding:12px;border-radius:12px;border:2px solid #fff;background:#111;color:#fff;font-weight:900;font-size:18px}
+.footer{text-align:center;padding:16px;font-weight:700;border-top:3px solid #000;margin-top:20px}
+</style>
+</head>
+<body>
+
+<div class="top">
+<a href="index.html" class="home">HOME</a>
+<div class="title">🔊 VOLUME CONTROL</div>
+<div style="color:#fff;font-weight:900" id="charge">100%</div>
+</div>
+
+<div class="wrap">
+<div class="card">
+<div style="color:#aaa;font-weight:700">CURRENT VOLUME</div>
+<div class="vol-display" id="volText">50%</div>
+<div class="bar"><div class="fill" id="volFill"></div></div>
+<div class="controls">
+<button class="btn" onclick="changeVol(-10)">-</button>
+<button class="btn btn-big" id="muteBtn" onclick="toggleMute()">🔊</button>
+<button class="btn" onclick="changeVol(10)">+</button>
+</div>
+<input type="range" id="slider" min="0" max="100" value="50" oninput="setVol(this.value)" style="width:100%;accent-color:#FFEB00">
+
+<div class="perm" id="permBox">
+<b style="color:#FFEB00">⚠️ পারমিশন প্রয়োজন</b><br>
+ফ্লোটিং বাটন ফোনের স্ক্রিনের উপর দেখাতে হলে পারমিশন দিতে হবে।<br>
+1. নিচের বাটনে ক্লিক করুন<br>
+2. Allow Display over other apps / অন্য অ্যাপের উপরে দেখান - ON করুন<br>
+3. তারপর Back এসে Floating Button চালু করুন
+<button onclick="requestPermission()">📱 পারমিশন দিন - Allow Overlay</button>
+</div>
+
+<div class="switch">
+<span>🔘 Floating Button স্ক্রিনে দেখান</span>
+<input type="checkbox" id="floatToggle" onchange="toggleFloat(this.checked)">
+</div>
+
+<div class="switch">
+<span>📳 ভাইব্রেট সহ ভলিউম</span>
+<input type="checkbox" id="vibToggle" checked>
+</div>
+</div>
+
+<div class="card" style="font-size:14px;text-align:left">
+<b style="color:#FFEB00">কিভাবে কাজ করবে?</b><br>
+• Floating Button টি ড্র্যাগ করে যেকোনো জায়গায় নিতে পারবেন<br>
+• বাটনে ক্লিক করলে ভলিউম প্যানেল আসবে<br>
+• + / - দিয়ে সরাসরি ফোনের ভলিউম কন্ট্রোল হবে<br>
+• এটা PWA / WebView App এ 100% ফোনের ভলিউমের সাথে কানেক্ট হবে<br>
+• ব্রাউজারে টেস্টে মিডিয়া ভলিউম কন্ট্রোল হবে
+</div>
+</div>
+
+<!-- Floating Elements -->
+<div id="floatBtn" style="display:none">🔊</div>
+<div id="floatPanel">
+<div style="color:#FFEB00;font-weight:900;text-align:center;margin-bottom:8px">VOLUME</div>
+<div class="f-row">
+<button onclick="changeVol(-10)">-</button>
+<button onclick="changeVol(10)">+</button>
+</div>
+<div style="text-align:center;margin-top:8px;color:#fff;font-weight:900" id="floatVol">50%</div>
+</div>
+
+<div class="footer">Developed By<br><b>Qari MD Jubayer Ahmed Siyam</b></div>
+
+<script>
+let vol=50, muted=false, audioCtx;
+let floatBtn=document.getElementById('floatBtn');
+let floatPanel=document.getElementById('floatPanel');
+
+function setVol(v){
+  vol=Math.max(0,Math.min(100,parseInt(v)));
+  document.getElementById('volText').innerText=vol+'%';
+  document.getElementById('floatVol').innerText=vol+'%';
+  document.getElementById('volFill').style.width=vol+'%';
+  document.getElementById('slider').value=vol;
+  // Real Web Audio volume
+  if(window.AudioContext){
+    if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  }
+  if('vibrate' in navigator && document.getElementById('vibToggle').checked && vol%20==0) navigator.vibrate(30);
+  // For Android WebView - system volume
+  if(window.Android && window.Android.setVolume){ window.Android.setVolume(vol); }
+}
+
+function changeVol(d){ setVol(vol+d); }
+function toggleMute(){
+  muted=!muted;
+  document.getElementById('muteBtn').innerText= muted?'🔇':'🔊';
+  setVol(muted?0:50);
+}
+
+function requestPermission(){
+  alert("এখন ফোন সেটিংস খুলবে। 'Display over other apps' বা 'অন্য অ্যাপের উপরে দেখান' Allow করুন।");
+  // For WebView app
+  if(window.Android && window.Android.requestOverlayPermission){
+    window.Android.requestOverlayPermission();
+  }else{
+    // Browser fallback - show how to enable
+    document.getElementById('permBox').innerHTML="<b style='color:#00e676'>✅ ব্রাউজারে ফ্লোটিং পারমিশন সরাসরি হয় না, এটা App বানালে কাজ করবে। আপাতত এই পেজের ভিতরেই Floating Button চালু হলো।</b>";
+    document.getElementById('floatToggle').checked=true;
+    toggleFloat(true);
+  }
+}
+
+function toggleFloat(on){
+  floatBtn.style.display= on?'flex':'none';
+  if(!on) floatPanel.style.display='none';
+}
+
+// Draggable Floating Button
+let isDrag=false, startX, startY, initX, initY;
+floatBtn.addEventListener('touchstart',e=>{
+  isDrag=false;
+  let t=e.touches[0];
+  startX=t.clientX; startY=t.clientY;
+  let rect=floatBtn.getBoundingClientRect();
+  initX=rect.left; initY=rect.top;
+});
+floatBtn.addEventListener('touchmove',e=>{
+  let t=e.touches[0];
+  let dx=t.clientX-startX, dy=t.clientY-startY;
+  if(Math.abs(dx)>5||Math.abs(dy)>5) isDrag=true;
+  floatBtn.style.left= (initX+dx)+'px';
+  floatBtn.style.top= (initY+dy)+'px';
+  floatBtn.style.right='auto'; floatBtn.style.bottom='auto';
+});
+floatBtn.addEventListener('touchend',e=>{
+  if(!isDrag){
+    floatPanel.style.display= floatPanel.style.display=='none'?'block':'none';
+    if('vibrate' in navigator) navigator.vibrate(20);
+  }
+});
+floatBtn.addEventListener('click',e=>{
+  if(!isDrag){
+    floatPanel.style.display= floatPanel.style.display=='none'?'block':'none';
+  }
+});
+
+if(navigator.getBattery){ navigator.getBattery().then(b=>{ document.getElementById('charge').innerText=Math.round(b.level*100)+'%'; });}
+setVol(50);
+</script>
+</body>
+</html>

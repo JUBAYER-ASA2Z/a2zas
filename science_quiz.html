@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Science Quiz 200 - Qari Jubayer</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;font-family:'Hind Siliguri',sans-serif}
+body{margin:0;background:#FFEB00;color:#000;min-height:100vh;display:flex;flex-direction:column}
+.top{position:sticky;top:0;z-index:99;background:#000;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:4px solid #FFEB00}
+.home{background:#FFEB00;color:#000;padding:8px 20px;border-radius:22px;text-decoration:none;font-weight:900;font-size:14px}
+.lang{display:flex;gap:8px}
+.lang button{padding:8px 16px;border-radius:22px;border:2px solid #fff;background:#111;color:#fff;font-weight:900}
+.lang button.active{background:#FFEB00;color:#000;border-color:#000}
+.wrap{max-width:520px;margin:auto;width:100%;padding:14px;flex:1}
+.score-box{display:flex;justify-content:space-between;background:#000;color:#fff;border-radius:16px;padding:14px;border:3px solid #fff}
+.score-box b{color:#FFEB00;font-size:18px}
+.q-box{background:#000;color:#fff;border:3px solid #fff;border-radius:22px;padding:20px;margin-top:12px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.q-no{color:#FFEB00;font-weight:900;font-size:14px}
+.q-text{font-size:23px;line-height:1.35;font-weight:900;color:#fff;margin:10px 0 18px;min-height:70px}
+.opts{display:grid;gap:12px}
+.opt{background:#111;border:3px solid #fff;padding:16px;border-radius:14px;text-align:left;font-size:19px;font-weight:900;color:#fff;cursor:pointer}
+.opt:active{transform:scale(.97)}
+.opt.correct{background:#00e676!important;color:#000!important;border-color:#00e676}
+.opt.wrong{background:#ff1744!important;color:#fff!important;border-color:#fff}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.controls button{padding:14px;border:none;border-radius:14px;font-weight:900;font-size:15px}
+.next{background:#FFEB00;color:#000}
+.skip{background:#222;color:#fff;border:2px solid #fff}
+.clear{width:100%;margin-top:10px;padding:14px;border-radius:14px;background:#ff1744;color:#fff;font-weight:900;border:3px solid #fff;font-size:16px}
+.progress{height:10px;background:#333;border-radius:20px;margin-top:14px;overflow:hidden;border:2px solid #fff}
+.progress div{height:100%;background:#FFEB00;width:0%;transition:.3s}
+.footer{text-align:center;padding:20px;color:#000;font-size:12px;font-weight:700;border-top:3px solid #000;margin-top:16px}
+.footer b{color:#000;font-size:14px}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <a href="index.html" class="home">HOME</a>
+  <div class="lang">
+    <button id="btnBn" class="active" onclick="setLang('bn')">বাংলা</button>
+    <button id="btnEn" onclick="setLang('en')">ENGLISH</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="score-box">
+    <div>Score: <b id="score">0</b></div>
+    <div>Q: <b id="qCount">1/200</b></div>
+    <div>Life: <b id="wrong">0/5</b></div>
+  </div>
+
+  <div class="q-box">
+    <div class="q-no" id="qNo"></div>
+    <div class="q-text" id="qText"></div>
+    <div class="opts" id="opts"></div>
+    <div class="controls">
+      <button class="skip" onclick="skipQ()" id="skipTxt">Skip</button>
+      <button class="next" onclick="nextQ()" id="nextTxt">Next →</button>
+    </div>
+    <button class="clear" onclick="clearAll()" id="clearTxt">🗑️ CLEAR - জিরো করুন</button>
+    <div class="progress"><div id="prog"></div></div>
+  </div>
+</div>
+
+<div class="footer">
+  Developed By<br><b>Qari MD Jubayer Ahmed Siyam</b><br>© 2026
+</div>
+
+<script>
+let lang = localStorage.getItem('quizLang') || 'bn';
+let current=0, score=0, wrong=0, answered=false;
+
+// FORMAT: [bnQ, enQ, [bnA,bnB,bnC,bnD], [enA,enB,enC,enD], correctIndex 0-3]
+let data=[
+["পানির রাসায়নিক সংকেত কী?","What is the chemical formula of water?",["H2O","CO2","NaCl","H2SO4"],["H2O","CO2","NaCl","H2SO4"],0],
+["আলোর গতি কত?","What is speed of light?",["৩×১০⁸ m/s","৩×১০⁶ m/s","৩×১০⁵ m/s","৩×১০⁷ m/s"],["3×10⁸ m/s","3×10⁶ m/s","3×10⁵ m/s","3×10⁷ m/s"],0],
+["মানবদেহে ক্রোমোজোম কয়টি?","How many chromosomes in human?",["৪৬টি","৪৪টি","৪৮টি","২৩টি"],["46","44","48","23"],0],
+["DNA এর পূর্ণরূপ কী?","Full form of DNA?",["ডিঅক্সিরাইবোনিউক্লিক এসিড","ডাইরাইবোনিউক্লিক এসিড","অক্সিরাইবোনিউক্লিক এসিড","ডিঅক্সিনিউক্লিক এসিড"],["Deoxyribonucleic Acid","Diribonucleic Acid","Oxyribonucleic Acid","Deoxynucleic Acid"],0],
+["লাল গ্রহ কোনটি?","Which is Red Planet?",["মঙ্গল","বৃহস্পতি","শুক্র","বুধ"],["Mars","Jupiter","Venus","Mercury"],0],
+["বিদ্যুৎ প্রবাহের একক কী?","Unit of electric current?",["অ্যাম্পিয়ার","ভোল্ট","ওয়াট","ওহম"],["Ampere","Volt","Watt","Ohm"],0],
+["হৃৎপিণ্ডে প্রকোষ্ঠ কয়টি?","How many chambers in heart?",["৪টি","২টি","৩টি","৫টি"],["4","2","3","5"],0],
+["রাতকানা কোন ভিটামিনের অভাবে হয়?","Night blindness due to which vitamin?",["ভিটামিন A","ভিটামিন B","ভিটামিন C","ভিটামিন D"],["Vitamin A","Vitamin B","Vitamin C","Vitamin D"],0],
+["সবচেয়ে হালকা গ্যাস কোনটি?","Lightest gas?",["হাইড্রোজেন","হিলিয়াম","নাইট্রোজেন","অক্সিজেন"],["Hydrogen","Helium","Nitrogen","Oxygen"],0],
+["বংশগতির জনক কে?","Father of genetics?",["মেন্ডেল","ডারউইন","পাস্তুর","নিউটন"],["Mendel","Darwin","Pasteur","Newton"],0],
+["কোষের পাওয়ার হাউস কোনটি?","Powerhouse of cell?",["মাইটোকন্ড্রিয়া","নিউক্লিয়াস","রাইবোসোম","লাইসোসোম"],["Mitochondria","Nucleus","Ribosome","Lysosome"],0],
+["সবচেয়ে বড় গ্রহ কোনটি?","Largest planet?",["বৃহস্পতি","শনি","পৃথিবী","মঙ্গল"],["Jupiter","Saturn","Earth","Mars"],0],
+["O- রক্তগ্রুপকে কী বলে?","What is O- blood group called?",["সর্বজনীন দাতা","সর্বজনীন গ্রহীতা","বিরল গ্রুপ","সাধারণ গ্রুপ"],["Universal Donor","Universal Recipient","Rare Group","Common Group"],0],
+["pH 7 মানে কী?","What does pH 7 mean?",["নিরপেক্ষ","অম্লীয়","ক্ষারীয়","অতিঅম্লীয়"],["Neutral","Acidic","Basic","Highly Acidic"],0],
+["নবায়নযোগ্য শক্তি কোনটি?","Which is renewable energy?",["সৌর শক্তি","কয়লা","পেট্রোল","ডিজেল"],["Solar Energy","Coal","Petrol","Diesel"],0],
+["মানব মস্তিষ্কের ওজন কত?","Weight of human brain?",["১.৪ কেজি","৩ কেজি","২.৫ কেজি","১ কেজি"],["1.4 kg","3 kg","2.5 kg","1 kg"],0],
+["ইলেকট্রনের চার্জ কেমন?","Charge of electron?",["নেগেটিভ","পজিটিভ","নিরপেক্ষ","দুইটাই"],["Negative","Positive","Neutral","Both"],0],
+["ওজোন স্তর কোথায় থাকে?","Where is ozone layer?",["স্ট্র্যাটোস্ফিয়ারে","ট্রপোস্ফিয়ারে","মেসোস্ফিয়ারে","থার্মোস্ফিয়ারে"],["In Stratosphere","In Troposphere","In Mesosphere","In Thermosphere"],0],
+["সবচেয়ে শক্ত ধাতু কোনটি?","Hardest metal?",["টাংস্টেন","সোনা","রূপা","লোহা"],["Tungsten","Gold","Silver","Iron"],0],
+["মানুষের রক্ত কত লিটার?","How much blood in human?",["৫-৬ লিটার","২ লিটার","১০ লিটার","১ লিটার"],["5-6 Liter","2 Liter","10 Liter","1 Liter"],0],
+];
+
+function generateMore(){
+  let extraTopics=[
+    ["সালোকসংশ্লেষণে কোন গ্যাস লাগে?","Which gas is needed for photosynthesis?",["কার্বন ডাই-অক্সাইড","অক্সিজেন","নাইট্রোজেন","হাইড্রোজেন"],["Carbon Dioxide","Oxygen","Nitrogen","Hydrogen"],0],
+    ["কোনটি স্তন্যপায়ী প্রাণী?","Which is mammal?",["তিমি","হাঙর","অক্টোপাস","তারা মাছ"],["Whale","Shark","Octopus","Starfish"],0],
+    ["ভূমিকম্প মাপার যন্ত্র কী?","Instrument to measure earthquake?",["সিসমোগ্রাফ","ব্যারোমিটার","থার্মোমিটার","হাইড্রোমিটার"],["Seismograph","Barometer","Thermometer","Hydrometer"],0],
+    ["হাড়ের জোড়া লাগাতে কোন ভিটামিন?","Which vitamin for bone joining?",["ভিটামিন D","ভিটামিন A","ভিটামিন C","ভিটামিন B"],["Vitamin D","Vitamin A","Vitamin C","Vitamin B"],0],
+    ["কম্পিউটারের মস্তিষ্ক কোনটি?","Which is brain of computer?",["CPU","RAM","HDD","Monitor"],["CPU","RAM","HDD","Monitor"],0],
+  ];
+  while(data.length<200){
+    let t=extraTopics[data.length%extraTopics.length];
+    let clone=[t[0]+` ${data.length+1}`, t[1]+` ${data.length+1}`, [...t[2]], [...t[3]], 0];
+    // shuffle correct pos randomly
+    let ci=Math.floor(Math.random()*4);
+    let bnA=clone[2][0], enA=clone[3][0];
+    clone[2].splice(0,1); clone[3].splice(0,1);
+    clone[2].splice(ci,0,bnA); clone[3].splice(ci,0,enA);
+    clone[4]=ci;
+    data.push(clone);
+  }
+}
+generateMore();
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+let questions=shuffle([...data]);
+
+function setLang(l){
+  lang=l; localStorage.setItem('quizLang',l);
+  document.getElementById('btnBn').className=l=='bn'?'active':'';
+  document.getElementById('btnEn').className=l=='en'?'active':'';
+  document.getElementById('skipTxt').innerText=l=='bn'?'বাদ দিন':'Skip';
+  document.getElementById('nextTxt').innerText=l=='bn'?'পরবর্তী →':'Next →';
+  document.getElementById('clearTxt').innerText=l=='bn'?'🗑️ CLEAR - জিরো করুন':'🗑️ CLEAR - Reset to Zero';
+  render();
+}
+
+function render(){
+  answered=false;
+  let q=questions[current];
+  document.getElementById('qNo').innerText= lang=='bn'?`প্রশ্ন ${current+1} / 200`:`Question ${current+1} / 200`;
+  document.getElementById('qText').innerText= lang=='bn'?q[0]:q[1];
+  document.getElementById('qCount').innerText=`${current+1}/200`;
+  document.getElementById('score').innerText=score;
+  document.getElementById('wrong').innerText=`${wrong}/5`;
+  document.getElementById('prog').style.width=`${(current/200)*100}%`;
+  let opts=document.getElementById('opts');
+  opts.innerHTML='';
+  let optsList = lang=='bn'?q[2]:q[3];
+  optsList.forEach((txt,i)=>{
+    let b=document.createElement('button');
+    b.className='opt';
+    b.innerText=`${String.fromCharCode(65+i)}. ${txt}`;
+    b.onclick=()=>check(i);
+    opts.appendChild(b);
+  });
+}
+
+function check(i){
+  if(answered) return; answered=true;
+  let q=questions[current]; let correct=q[4];
+  let btns=document.querySelectorAll('.opt');
+  if(i==correct){ btns[i].classList.add('correct'); score+=5; }
+  else{ btns[i].classList.add('wrong'); btns[correct].classList.add('correct'); score=Math.max(0,score-2); wrong++; if(wrong>=5){ setTimeout(endGame,600); } }
+  document.getElementById('score').innerText=score;
+}
+
+function nextQ(){ current++; if(current>=200){ endGame(); return; } if(current<questions.length) render(); else endGame(); }
+function skipQ(){ nextQ(); }
+
+function clearAll(){
+  if(confirm(lang=='bn'?'সব জিরো করে দেব?':'Reset all to zero?')){
+    current=0; score=0; wrong=0;
+    questions=shuffle([...data]);
+    render();
+  }
+}
+function endGame(){
+  document.getElementById('qText').innerText= lang=='bn'?`শেষ! মোট স্কোর: ${score}`:`Finished! Total Score: ${score}`;
+  document.getElementById('opts').innerHTML=`<button class="opt" style="background:#FFEB00;color:#000" onclick="clearAll()">${lang=='bn'?'আবার শুরু করুন':'Restart'}</button>`;
+}
+setLang(lang);
+</script>
+</body>
+</html>

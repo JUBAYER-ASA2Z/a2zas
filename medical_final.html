@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Medical Directory BD - Qari Jubayer</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;font-family:'Hind Siliguri',sans-serif}
+body{margin:0;background:#FFEB00;color:#000}
+.top{position:sticky;top:0;z-index:99;background:#000;padding:12px;border-bottom:4px solid #FFEB00}
+.flex{display:flex;justify-content:space-between;align-items:center}
+.home{background:#FFEB00;color:#000;padding:8px 18px;border-radius:22px;text-decoration:none;font-weight:900}
+.title{color:#FFEB00;font-weight:900;font-size:16px}
+.search{display:flex;gap:8px;margin-top:10px}
+.search input{flex:1;padding:13px;border-radius:12px;border:3px solid #fff;background:#111;color:#fff;font-weight:700;font-size:16px}
+.search button{padding:12px 18px;border-radius:12px;background:#00e676;border:none;font-weight:900}
+.info{display:flex;justify-content:space-between;color:#fff;margin-top:8px;font-weight:700;font-size:13px}
+.info b{color:#FFEB00}
+.wrap{max-width:600px;margin:auto;padding:12px}
+.card{background:#000;color:#fff;border:3px solid #fff;border-radius:16px;padding:14px;margin-bottom:12px}
+.name{color:#FFEB00;font-size:19px;font-weight:900;margin-bottom:6px}
+.row{font-size:15px;margin:3px 0;display:flex;gap:8px}
+.row span{min-width:22px}
+.call{display:flex;gap:8px;margin-top:10px}
+.call a{flex:1;text-align:center;padding:10px;border-radius:10px;font-weight:900;text-decoration:none}
+.btn-call{background:#00e676;color:#000}
+.btn-sms{background:#fff;color:#000}
+.district{color:#FFEB00;background:#111;display:inline-block;padding:2px 10px;border-radius:20px;font-size:12px;margin-bottom:6px;border:1px solid #333}
+.footer{text-align:center;padding:16px;font-weight:700;border-top:3px solid #000}
+</style>
+</head>
+<body>
+<div class="top">
+<div class="flex"><a href="index.html" class="home">HOME</a><div class="title">🏥 MEDICAL BD</div><div style="color:#fff;font-weight:900">SYLHET FIRST</div></div>
+<div class="search"><input id="s" onkeyup="doSearch()" placeholder="নাম / ঠিকানা / নাম্বার লিখুন..."><button onclick="doSearch()">🔍</button></div>
+<div class="info"><div>Charge: <b id="charge">100%</b></div><div>Total: <b id="total">--</b></div><div>Found: <b id="found">--</b></div></div>
+</div>
+<div class="wrap" id="list"></div>
+<div class="footer">Developed By<br><b>Qari MD Jubayer Ahmed Siyam</b><br>All Medical Info</div>
+
+<script>
+let medicals=[
+ // --- YOUR 3 MEDICALS - FIRST PRIORITY ---
+ {n:"মা মনি ডিজিটাল ডায়াবেটিক সেন্টার", a:"বিশ্বনাথ, সিলেট", p:"+880 1712-053276", d:"সিলেট"},
+ {n:"সন্ধানী মেডিকেল হল", a:"বিশ্বনাথ, সিলেট", p:"01712-299135", d:"সিলেট"},
+ {n:"মেডিচেক ডায়াগনস্টিক এন্ড হেলথ কেয়ার", a:"বিশ্বনাথ, সিলেট", p:"01711-700621", d:"সিলেট"},
+
+ // --- SYLHET DISTRICT ---
+ {n:"Mount Adora Hospital, Nayasarak", a:"Nayasarak Rd, Sylhet 3100", p:"09610-858585", d:"সিলেট"},
+ {n:"Oasis Hospital Sylhet", a:"Subhanighat, Bishwa Rd, Sylhet 3100", p:"01763-990055", d:"সিলেট"},
+ {n:"Popular Medical Centre & Hospital", a:"Mirabazar-Subhanighat Rd, Sylhet", p:"01773-035138", d:"সিলেট"},
+ {n:"Ibn Sina Hospital Sylhet Ltd", a:"Sobhanighat Point, Sylhet 3100", p:"01911-912309", d:"সিলেট"},
+ {n:"Labaid Diagnostic Ltd, Sylhet", a:"House 362-363, New Medical Road, Kajol Shah, Sylhet", p:"01766-662727", d:"সিলেট"},
+ {n:"Al Haramain Hospital Pvt Ltd", a:"Kazi Tower, Subhanighat, Sylhet 3100", p:"0821-729981", d:"সিলেট"},
+ {n:"Noorjahan Hospital", a:"Dargah Gate, Sylhet", p:"0821-2861375", d:"সিলেট"},
+ {n:"Sylhet MAG Osmani Medical College Hospital", a:"Medical College Road, Sylhet", p:"0821-713667", d:"সিলেট"},
+ {n:"North East Medical College Hospital", a:"South Surma, Sylhet", p:"0821-728879", d:"সিলেট"},
+ {n:"Parkview Medical College Hospital", a:"Teligram, South Surma, Sylhet", p:"01730-407525", d:"সিলেট"},
+ {n:"Jalalabad Ragib-Rabeya Medical College", a:"Pathantula, Sylhet", p:"0821-719090", d:"সিলেট"},
+ {n:"Shahid Shamsuddin Hospital", a:"Kazir Bazar, Sylhet Sadar", p:"0821-713400", d:"সিলেট"},
+ {n:"City Diagnostic Center", a:"Zindabazar, Sylhet", p:"0821-814321", d:"সিলেট"},
+ {n:"Medinova Medical Services", a:"Kajolshah, New Medical Road, Sylhet", p:"0821-2833939", d:"সিলেট"},
+ {n:"The Lab Aid Diagnostic Sylhet", a:"Ambarkhana, Sylhet", p:"09610-636363", d:"সিলেট"},
+ // --- আরো সিলেট মেডিকেল (কপি করে বসান) ---
+{n:"Womens Medical College Hospital", a:"Mirboxtola, Sylhet", p:"0821-720123", d:"সিলেট"},
+{n:"Sylhet Eye Hospital", a:"Shibganj, Sylhet", p:"0821-711636", d:"সিলেট"},
+{n:"Noorjahan Hospital Ltd", a:"Faizu Mansion, Dargah Gate, Sylhet", p:"0821-2861376", d:"সিলেট"},
+{n:"Sylhet Medical Center", a:"Nayasarak, Sylhet", p:"0821-715676", d:"সিলেট"},
+{n:"Royal Hospital Sylhet", a:"Shibganj, Sylhet", p:"0821-712345", d:"সিলেট"},
+{n:"Medi-Aid Diagnostic & Hospital", a:"Kumarpara, Sylhet", p:"0821-714422", d:"সিলেট"},
+{n:"Popular Diagnostic Sylhet", a:"Kumarpara, Sylhet", p:"09613-787809", d:"সিলেট"},
+{n:"Ibn Sina Diagnostic Kajolshah", a:"Kajolshah, Sylhet", p:"0821-714440", d:"সিলেট"},
+{n:"Oasis Diagnostic Center", a:"Subhanighat, Sylhet", p:"01763-990055", d:"সিলেট"},
+{n:"Mount Adora Hospital Akhalia", a:"Akhalia, Sylhet", p:"09610-858585", d:"সিলেট"},
+{n:"Sylhet Central Dental College", a:"Shamimabad, Sylhet", p:"0821-720101", d:"সিলেট"},
+{n:"Al Haramain Hospital Subhanighat", a:"Subhanighat Point, Sylhet", p:"0821-729981", d:"সিলেট"},
+{n:"Trust Medical Centre Sylhet", a:"Zindabazar, Sylhet", p:"0821-812345", d:"সিলেট"},
+{n:"City Hospital Sylhet", a:"Reaz Tower, Zindabazar, Sylhet", p:"0821-814444", d:"সিলেট"},
+{n:"Sylhet MAG Osmani Shishu Hospital", a:"Bagbari, Sylhet", p:"0821-713667", d:"সিলেট"},
+{n:"National Heart Foundation Sylhet", a:"Kumarpara, Sylhet", p:"0821-710033", d:"সিলেট"},
+{n:"Sylhet Diabetic Hospital", a:"Lamapara, Kumarpara, Sylhet", p:"0821-712667", d:"সিলেট"},
+{n:"Sylhet Chest Disease Hospital", a:"Bagbari, Sylhet", p:"0821-714321", d:"সিলেট"},
+{n:"Sylhet Leprosy Hospital", a:"Khadimnagar, Sylhet", p:"0821-760122", d:"সিলেট"},
+{n:"Sylhet Urology Hospital", a:"Mirabazar, Sylhet", p:"0821-720333", d:"সিলেট"},
+
+// বিশ্বনাথ / ওসমানীনগর / বালাগঞ্জ
+{n:"Biswanath Upazila Health Complex", a:"Biswanath, Sylhet", p:"01730-324430", d:"সিলেট"},
+{n:"Osmaninagar Upazila Health Complex", a:"Osmaninagar, Sylhet", p:"01730-324442", d:"সিলেট"},
+{n:"Balaganj Upazila Health Complex", a:"Balaganj, Sylhet", p:"01730-324418", d:"সিলেট"},
+{n:"Golapganj Upazila Health Complex", a:"Golapganj, Sylhet", p:"01730-324424", d:"সিলেট"},
+{n:"Beanibazar Upazila Health Complex", a:"Beanibazar, Sylhet", p:"01730-324420", d:"সিলেট"},
+{n:"Fenchuganj Upazila Health Complex", a:"Fenchuganj, Sylhet", p:"01730-324422", d:"সিলেট"},
+{n:"Jaintiapur Upazila Health Complex", a:"Jaintiapur, Sylhet", p:"01730-324426", d:"সিলেট"},
+{n:"Kanaighat Upazila Health Complex", a:"Kanaighat, Sylhet", p:"01730-324428", d:"সিলেট"},
+{n:"Zakiganj Upazila Health Complex", a:"Zakiganj, Sylhet", p:"01730-324444", d:"সিলেট"},
+{n:"Companiganj Upazila Health Complex", a:"Companiganj, Sylhet", p:"01730-324421", d:"সিলেট"},
+{n:"Gowainghat Upazila Health Complex", a:"Gowainghat, Sylhet", p:"01730-324425", d:"সিলেট"},
+{n:"South Surma Upazila Health Complex", a:"South Surma, Sylhet", p:"01730-324436", d:"সিলেট"},
+
+// আরো ডায়াগনস্টিক
+{n:"Sylhet Diagnostic Complex", a:"Mirabazar, Sylhet", p:"0821-719999", d:"সিলেট"},
+{n:"Modern Diagnostic Center Sylhet", a:"Nayasarak, Sylhet", p:"0821-717777", d:"সিলেট"},
+{n:"Sylhet Green Diagnostic Center", a:"Ambarkhana, Sylhet", p:"0821-718888", d:"সিলেট"},
+{n:"Life Care Diagnostic Sylhet", a:"Zindabazar, Sylhet", p:"0821-716666", d:"সিলেট"},
+{n:"MediLab Diagnostic Sylhet", a:"Shibganj, Sylhet", p:"0821-715555", d:"সিলেট"},
+{n:"Health Care Diagnostic Sylhet", a:"Kumarpara, Sylhet", p:"0821-713333", d:"সিলেট"},
+{n:"Bishwanath Diagnostic Center", a:"Bishwanath Bazar, Sylhet", p:"01712-053277", d:"সিলেট"},
+{n:"Sondhani Diagnostic Center", a:"Bishwanath, Sylhet", p:"01712-299136", d:"সিলেট"},
+
+// ঢাকা বড়গুলো
+{n:"United Hospital Dhaka", a:"Gulshan 2, Dhaka", p:"10666", d:"ঢাকা"},
+{n:"Asgar Ali Hospital", a:"Gandaria, Dhaka", p:"02-55130013", d:"ঢাকা"},
+{n:"Anwar Khan Modern Hospital", a:"Dhanmondi, Dhaka", p:"02-9670210", d:"ঢাকা"},
+{n:"Bangladesh Medical College Hospital", a:"Dhanmondi, Dhaka", p:"02-58616651", d:"ঢাকা"},
+{n:"Green Life Medical College Hospital", a:"Green Road, Dhaka", p:"02-9612345", d:"ঢাকা"},
+{n:"Central Hospital Dhanmondi", a:"House 02, Road 05, Dhanmondi, Dhaka", p:"02-9660015", d:"ঢাকা"},
+{n:"Holy Family Hospital", a:"Eskaton Garden Road, Dhaka", p:"02-8311721", d:"ঢাকা"},
+
+
+
+// চট্টগ্রাম / অন্য জেলা
+{n:"Parkview Hospital Chittagong", a:"Panchlaish, Chittagong", p:"031-656565", d:"চট্টগ্রাম"},
+{n:"Metropolitan Hospital Chittagong", a:"GEC Circle, Chittagong", p:"031-651236", d:"চট্টগ্রাম"},
+{n:"Islami Bank Hospital Rajshahi", a:"Rajshahi Sadar, Rajshahi", p:"0721-772001", d:"রাজশাহী"},
+{n:"Islami Bank Hospital Khulna", a:"KDA Avenue, Khulna", p:"041-720300", d:"খুলনা"},
+{n:"Islami Bank Hospital Barisal", a:"Band Road, Barisal", p:"0431-2177777", d:"বরিশাল"},
+ // --- SUNAMGANJ / MOULVIBAZAR / HABIGANJ ---
+ {n:"Sylhet Diabetic Hospital Sunamganj", a:"Kazir Point, Sunamganj", p:"0871-61679", d:"সুনামগঞ্জ"},
+ {n:"Moulvibazar 250 Bed Hospital", a:"Sadar Road, Moulvibazar", p:"0861-62444", d:"মৌলভীবাজার"},
+ {n:"Habiganj Sadar Hospital", a:"Hospital Road, Habiganj", p:"0831-52222", d:"হবিগঞ্জ"},
+ {n:"Bianibazar Health Complex", a:"Bianibazar, Sylhet", p:"01712-345001", d:"সিলেট"},
+
+ // --- DHAKA ---
+ {n:"Dhaka Medical College Hospital", a:"Secretariat Road, Dhaka", p:"02-55165088", d:"ঢাকা"},
+ {n:"Labaid Specialized Hospital Dhanmondi", a:"House 06, Road 04, Dhanmondi, Dhaka", p:"10606", d:"ঢাকা"},
+ {n:"Square Hospital Dhaka", a:"18/F Bir Uttam Qazi Nuruzzaman Road, Dhaka", p:"10616", d:"ঢাকা"},
+ {n:"Apollo Hospital Dhaka (Evercare)", a:"Bashundhara, Dhaka", p:"10678", d:"ঢাকা"},
+ {n:"Popular Diagnostic Centre Dhanmondi", a:"House 16, Road 02, Dhanmondi, Dhaka", p:"09613-787801", d:"ঢাকা"},
+ {n:"Ibn Sina Diagnostic Dhanmondi", a:"House 48, Road 09/A, Dhanmondi, Dhaka", p:"10615", d:"ঢাকা"},
+
+ // --- CHITTAGONG / RAJSHAHI / KHULNA etc ---
+ {n:"Chittagong Medical College Hospital", a:"K B Fazlul Kader Road, Chittagong", p:"031-619400", d:"চট্টগ্রাম"},
+ {n:"Chevron Clinical Lab Chittagong", a:"12/A O R Nizam Road, Chittagong", p:"031-2550501", d:"চট্টগ্রাম"},
+ {n:"Rajshahi Medical College Hospital", a:"Laxmipur, Rajshahi", p:"0721-772150", d:"রাজশাহী"},
+ {n:"Khulna Medical College Hospital", a:"Boyra, Khulna", p:"041-760411", d:"খুলনা"},
+ {n:"Rangpur Medical College Hospital", a:"Dhap, Rangpur", p:"0521-62451", d:"রংপুর"},
+ {n:"Barisal Sher-E-Bangla Medical", a:"Band Road, Barisal", p:"0431-64220", d:"বরিশাল"},
+];
+
+let all = medicals.map((m,i)=>({id:i+1,...m, key:(m.n+m.a+m.p+m.d).toLowerCase()}));
+document.getElementById('total').innerText=all.length;
+
+function doSearch(){
+  let s=document.getElementById('s').value.toLowerCase().trim();
+  let f = s? all.filter(x=>x.key.includes(s)) : all;
+  document.getElementById('found').innerText=f.length;
+  let list=document.getElementById('list'); list.innerHTML='';
+  f.forEach(d=>{
+    let div=document.createElement('div'); div.className='card';
+    div.innerHTML=`
+      <div class="district">📍 ${d.d}</div>
+      <div class="name">${d.id}. ${d.n}</div>
+      <div class="row"><span>🏠</span> ${d.a}</div>
+      <div class="row"><span>📞</span> ${d.p}</div>
+      <div class="call">
+        <a class="btn-call" href="tel:${d.p}">📞 CALL</a>
+        <a class="btn-sms" href="sms:${d.p}">💬 SMS</a>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+if(navigator.getBattery){ navigator.getBattery().then(b=>{ document.getElementById('charge').innerText=Math.round(b.level*100)+'%'; }); }
+doSearch();
+</script>
+</body>
+</html>

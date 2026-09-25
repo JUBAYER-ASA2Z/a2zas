@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Smart Calculator - JUBAYER-A.S</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;font-family:'Inter',sans-serif}
+body{margin:0;background:#000;color:#fff;min-height:100vh;display:flex;flex-direction:column}
+.top{padding:12px;display:flex;justify-content:space-between;align-items:center;background:#111;position:sticky;top:0;z-index:10}
+.home{padding:12px 22px;background:#fff;color:#000;border-radius:30px;font-weight:900;font-size:18px;text-decoration:none}
+.display{padding:14px 20px;background:#000;text-align:right;min-height:150px}
+#expLine{color:#888;font-size:26px;min-height:30px}
+#liveResult{color:#555;font-size:24px;min-height:28px}
+#result{color:#fff;font-size:60px;font-weight:900;transition:.25s cubic-bezier(.34,1.56,.64,1)}
+#result.pop{transform:scale(1.22);transform-origin:right}
+.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;padding:14px;background:#000}
+.btn{border:none;border-radius:18px;font-size:30px;font-weight:700;height:76px;background:#1c1c1e;color:#fff}
+.btn:active{transform:scale(.93)}
+.btn.op{background:#ff9f0a}
+.btn.clear{background:#ff3b30;font-size:18px;font-weight:900}
+.btn.next{background:#1756a3;color:#fff;font-size:18px;font-weight:900;grid-column:span 2}
+.btn.total{background:#00c853;color:#000;font-size:18px;font-weight:900;grid-column:span 2}
+.btn.eq{background:#ff9f0a;font-size:38px}
+.btn.zero{grid-column:span 2}
+.sheet{background:#0f0f0f;border-top:2px solid #222;padding:10px;max-height:260px;overflow:auto}
+.sheet h3{margin:6px 0 8px;font-size:16px;color:#aaa;display:flex;justify-content:space-between}
+.s-row{background:#1c1c1e;padding:10px 12px;border-radius:12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center}
+.s-total{background:#fff;color:#000;padding:12px 14px;border-radius:14px;margin-top:10px;font-weight:900;display:flex;justify-content:space-between;font-size:18px}
+</style>
+</head>
+<body>
+
+<div class="top">
+<a href="index.html" class="home">🏠 HOME</a>
+<button onclick="clearAll()" style="padding:10px 16px;border-radius:20px;border:none;background:#ff3b30;color:#fff;font-weight:900">CLEAR</button>
+</div>
+
+<div class="display">
+<div id="expLine"></div>
+<div id="liveResult"></div>
+<div id="result">0</div>
+</div>
+
+<div class="keys">
+<button class="btn" onclick="press('7')">7</button>
+<button class="btn" onclick="press('8')">8</button>
+<button class="btn" onclick="press('9')">9</button>
+<button class="btn op" onclick="press('÷')">÷</button>
+
+<button class="btn" onclick="press('4')">4</button>
+<button class="btn" onclick="press('5')">5</button>
+<button class="btn" onclick="press('6')">6</button>
+<button class="btn op" onclick="press('×')">×</button>
+
+<button class="btn" onclick="press('1')">1</button>
+<button class="btn" onclick="press('2')">2</button>
+<button class="btn" onclick="press('3')">3</button>
+<button class="btn op" onclick="press('-')">−</button>
+
+<button class="btn zero" onclick="press('0')">0</button>
+<button class="btn" onclick="press('.')">.</button>
+<button class="btn op" onclick="press('+')">+</button>
+<button class="btn eq" onclick="calculate()">=</button>
+
+<button class="btn clear" onclick="back()">⌫ REMOVE</button>
+<button class="btn next" onclick="nextCalc()">NEXT ➕</button>
+</div>
+
+<!-- নিচের শিট - পুরানো হিসাবগুলো -->
+<div class="sheet" id="sheet">
+<h3><span>📋 হিসাবের তালিকা (<span id="count">0</span> টা)</span> <span style="color:#ff3b30;cursor:pointer" onclick="clearSheet()">সব মুছুন</span></h3>
+<div id="list"></div>
+<div id="totalBox" style="display:none" class="s-total"><span>TOTAL =</span><span id="totalVal">0</span></div>
+<button onclick="showTotal()" id="totalBtn" style="width:100%;margin-top:10px;padding:14px;border:none;border-radius:14px;background:#00c853;color:#000;font-weight:900;font-size:18px">💰 সম্পূর্ণ হিসাব দেখুন (TOTAL)</button>
+<button onclick="shareAll()" style="width:100%;margin-top:8px;padding:12px;border:none;border-radius:12px;background:#222;color:#fff;font-weight:700">🔗 সব হিসাব শেয়ার করুন</button>
+</div>
+
+<script>
+let exp='', expShow='';
+const expLine=document.getElementById('expLine'), liveResult=document.getElementById('liveResult'), resultEl=document.getElementById('result');
+let calculations = JSON.parse(localStorage.smartCalc||'[]'); // [{calc:'2+2', res:4}]
+
+function press(v){
+  let internal=v; if(v==='×') internal='*'; if(v==='÷') internal='/'; if(v==='−') internal='-';
+  let last=exp.slice(-1);
+  if(['+','-','*','/'].includes(internal) && ['+','-','*','/'].includes(last)){
+    exp=exp.slice(0,-1)+internal; expShow=expShow.slice(0,-1)+v;
+  } else { exp+=internal; expShow+=v; }
+  updateDisplay();
+}
+function updateDisplay(){
+  expLine.innerText=expShow||'';
+  if(!exp){ resultEl.innerText='0'; liveResult.innerText=''; return; }
+  let last=exp.slice(-1);
+  if(!['+','-','*','/','.'].includes(last)){
+    try{ let r=eval(exp); if(isFinite(r)){ liveResult.innerText='= '+r; resultEl.innerText=r; } }catch(e){}
+  }
+}
+function back(){ exp=exp.slice(0,-1); expShow=expShow.slice(0,-1); if(!exp){ clearAll(); return; } updateDisplay(); }
+function clearAll(){ exp=''; expShow=''; expLine.innerText=''; liveResult.innerText=''; resultEl.innerText='0'; }
+function calculate(){
+  try{
+    if(!exp) return;
+    let res=eval(exp); if(!isFinite(res)) throw '';
+    expLine.innerText=expShow+' ='; liveResult.innerText='';
+    resultEl.classList.remove('pop'); void resultEl.offsetWidth; resultEl.innerText=res; resultEl.classList.add('pop');
+    setTimeout(()=>resultEl.classList.remove('pop'),300);
+    exp=String(res); expShow=String(res);
+  }catch(e){ resultEl.innerText='Error'; }
+}
+
+// === ইউনিক ফিচার ===
+function nextCalc(){
+  try{
+    if(!expShow) return alert('আগে হিসাব করুন');
+    let res = eval(exp);
+    if(!isFinite(res)) return alert('ভুল হিসাব');
+
+    calculations.push({calc: expShow, res: res, time: new Date().toLocaleTimeString()});
+    localStorage.smartCalc = JSON.stringify(calculations);
+
+    // নতুন হিসাবের জন্য খালি করো
+    exp=''; expShow=''; expLine.innerText=''; liveResult.innerText=''; resultEl.innerText='0';
+    renderList();
+  }catch(e){ alert('হিসাব সঠিক নয়'); }
+}
+
+function renderList(){
+  document.getElementById('count').innerText = calculations.length;
+  let listEl = document.getElementById('list');
+  if(!calculations.length){
+    listEl.innerHTML='<div style="color:#666;padding:10px;text-align:center">এখনো কোন হিসাব নেই। NEXT চাপলে এখানে জমা হবে।</div>';
+    document.getElementById('totalBox').style.display='none';
+    return;
+  }
+  listEl.innerHTML = calculations.map((c,i)=>`
+    <div class="s-row">
+      <div><small style="color:#888">#${i+1} ${c.time}</small><br><b>${c.calc} = ${c.res}</b></div>
+      <button onclick="removeOne(${i})" style="background:#ff3b30;color:#fff;border:none;padding:6px 10px;border-radius:8px">X</button>
+    </div>
+  `).join('');
+}
+
+function showTotal(){
+  if(!calculations.length) return alert('কোন হিসাব নেই');
+  let total = calculations.reduce((s,c)=> s + Number(c.res), 0);
+  document.getElementById('totalVal').innerText = total;
+  document.getElementById('totalBox').style.display='flex';
+  document.getElementById('totalBox').scrollIntoView({behavior:'smooth'});
+}
+
+function removeOne(i){ calculations.splice(i,1); localStorage.smartCalc=JSON.stringify(calculations); renderList(); document.getElementById('totalBox').style.display='none'; }
+function clearSheet(){ if(confirm('সব হিসাব মুছে ফেলবেন?')){ calculations=[]; localStorage.smartCalc='[]'; renderList(); } }
+function shareAll(){
+  if(!calculations.length) return alert('কিছু নেই');
+  let total = calculations.reduce((s,c)=> s + Number(c.res), 0);
+  let text = calculations.map((c,i)=> `${i+1}. ${c.calc} = ${c.res}`).join('\n') + `\n\nTOTAL = ${total}`;
+  if(navigator.share) navigator.share({text:text}); else alert(text);
+}
+renderList();
+</script>
+</body>
+</html>

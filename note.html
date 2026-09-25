@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>নোটবুক PRO - JUBAYER</title>
+<link href="https://fonts.googleapis.com/css2?family=Galada&family=Hind+Siliguri:wght@400;700&family=Anek+Bangla:wght@400&family=Tiro+Bangla&family=Atma&family=Baloo+Da+2&family=Mina&family=Noto+Serif+Bengali&family=Dancing+Script:wght@600&family=Caveat:wght@600&family=Patrick+Hand&family=Kalam&family=Indie+Flower&family=Shadows+Into+Light&family=Satisfy&family=Pacifico&family=Courgette&family=Kaushan+Script&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*{font-family:'Hind Siliguri',sans-serif}
+.poster-base{position:relative; min-height:580px; border-radius:22px; padding:20px 20px 20px 62px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,0.5)}
+.poster-base::before{content:''; position:absolute; left:52px; top:0; bottom:0; width:2px; background:#ff5a5a70;}
+.line-paper{background-image:repeating-linear-gradient(transparent, transparent 31px, rgba(0,0,0,0.13) 32px);}
+.flower{position:absolute; opacity:0.15; font-size:38px; pointer-events:none; filter: saturate(2);}
+.p1{background:#fff9db}.p2{background:#ffe3ec}.p3{background:#e0f7fa}.p4{background:#e8f5e9}.p5{background:#f3e5f5}
+.p6{background:#fff3e0}.p7{background:#fce4ec}.p8{background:linear-gradient(135deg,#fff9c4,#ffccbc)}.p9{background:#e1f5fe}.p10{background:#f1f8e9}
+.p11{background:#fffde7; border:3px dashed #ffb300}.p12{background:#ede7f6}.p13{background:#ffebee}.p14{background:#e0f2f1}.p15{background:linear-gradient(135deg,#fce4ec,#e1f5fe)}
+.b1{font-family:'Hind Siliguri'}.b2{font-family:'Galada'}.b3{font-family:'Anek Bangla'}.b4{font-family:'Tiro Bangla'}.b5{font-family:'Atma'}
+.b6{font-family:'Baloo Da 2'}.b7{font-family:'Mina'}.b8{font-family:'Noto Serif Bengali'}.b9{font-family:'Galada'}.b10{font-family:'Atma'}
+.e1{font-family:'Dancing Script'}.e2{font-family:'Caveat'}.e3{font-family:'Patrick Hand'}.e4{font-family:'Kalam'}.e5{font-family:'Indie Flower'}
+.e6{font-family:'Shadows Into Light'}.e7{font-family:'Satisfy'}.e8{font-family:'Pacifico'}.e9{font-family:'Courgette'}.e10{font-family:'Kaushan Script'}
+</style>
+</head>
+<body class="bg-black p-3 pb-28">
+<div class="max-w-[650px] mx-auto">
+<div class="flex justify-between items-center py-3">
+<a href="index.html" class="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center font-black">⌂</a>
+<h2 class="text-white font-black text-[15px]">📔 কবিতার ডায়েরি PRO</h2>
+<div class="w-10"></div>
+</div>
+
+<textarea id="inputText" placeholder="এখানে বাংলা / English কবিতা লিখুন..." class="w-full h-[115px] bg-[#141414] border border-zinc-700 rounded-[14px] p-3 text-white text-[14px]"></textarea>
+
+<p class="text-[11px] text-zinc-400 mt-5 mb-2">🎨 ১৫ টা কালারফুল পোস্টার (যেকোনো একটা ক্লিক করুন):</p>
+<div id="posterList" class="grid grid-cols-5 gap-2"></div>
+
+<p class="text-[11px] text-zinc-400 mt-5 mb-2">✍️ বাংলা ১০টা হাতের লেখা ফন্ট:</p>
+<div class="grid grid-cols-2 gap-2">
+<button onclick="setFont('b1')" class="bg-zinc-900 border-2 border-yellow-400 rounded-xl p-3 text-left b1 text-white text-[14px]">১. হিন্দ শিলিগুড়ি</button>
+<button onclick="setFont('b2')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left b2 text-white text-[15px]">২. গালাদা ✍️</button>
+<button onclick="setFont('b3')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left b3 text-white text-[14px]">৩. আনেক বাংলা</button>
+<button onclick="setFont('b4')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left b4 text-white text-[14px]">৪. তিরো বাংলা</button>
+<button onclick="setFont('b5')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left b5 text-white text-[14px]">৫. আত্মা</button>
+<button onclick="setFont('b6')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left b6 text-white text-[14px]">৬. বালু দা ২</button>
+<button onclick="setFont('b7')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left b7 text-white text-[14px]">৭. মিনা হাতের লেখা</button>
+<button onclick="setFont('b8')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left b8 text-white text-[14px]">৮. নোটো সেরিফ</button>
+<button onclick="setFont('b9')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left b9 text-white text-[14px]">৯. চারু লেখা</button>
+<button onclick="setFont('b10')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left b10 text-white text-[14px]">১০. লিপিশ্রী</button>
+</div>
+
+<p class="text-[11px] text-zinc-400 mt-5 mb-2">🔤 English 10 Handwriting Fonts:</p>
+<div class="grid grid-cols-2 gap-2">
+<button onclick="setFont('e1')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left e1 text-white">1. Dancing Script</button>
+<button onclick="setFont('e2')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left e2 text-white">2. Caveat</button>
+<button onclick="setFont('e3')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left e3 text-white">3. Patrick Hand</button>
+<button onclick="setFont('e4')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left e4 text-white">4. Kalam</button>
+<button onclick="setFont('e5')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left e5 text-white">5. Indie Flower</button>
+<button onclick="setFont('e6')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left e6 text-white">6. Shadows</button>
+<button onclick="setFont('e7')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left e7 text-white">7. Satisfy</button>
+<button onclick="setFont('e8')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left e8 text-white">8. Pacifico</button>
+<button onclick="setFont('e9')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left e9 text-white">9. Courgette</button>
+<button onclick="setFont('e10')" class="bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-left e10 text-white">10. Kaushan</button>
+</div>
+
+<div id="poster" class="poster-base p1 line-paper mt-6">
+<span class="flower" style="top:12%; left:25%">🌸</span>
+<span class="flower" style="top:45%; right:12%">🌼</span>
+<span class="flower" style="bottom:18%; left:35%">🌺</span>
+<span class="flower" style="top:72%; left:65%">🌷</span>
+<span class="flower" style="top:30%; left:70%">🌹</span>
+<div id="posterText" class="b1 text-[21px] leading-[32px] text-zinc-800 whitespace-pre-wrap relative z-10">এখানে আপনার কবিতা সুন্দর ভাবে লাইনে লাইনে বসবে...</div>
+<div class="absolute bottom-3 right-5 text-[10px] text-zinc-500 z-10">🌸 JUBAYER DIARY 🌸</div>
+</div>
+
+<div class="grid grid-cols-2 gap-3 mt-5">
+<button onclick="downloadPoster()" class="bg-yellow-400 text-black font-black py-4 rounded-[14px] text-[13px]">📸 Save Image</button>
+<button onclick="sharePoster()" class="bg-[#25D366] text-white font-black py-4 rounded-[14px] text-[13px]">📤 Share FB / WhatsApp</button>
+</div>
+
+</div>
+
+<script>
+let posters=[];
+for(let i=1;i<=15;i++) posters.push('p'+i);
+let list=document.getElementById('posterList');
+posters.forEach((p,i)=>{
+ let d=document.createElement('div');
+ d.className=`${p} h-[60px] rounded-xl border-2 cursor-pointer flex items-center justify-center text-[12px] font-black ${i==0?'border-yellow-400':'border-zinc-700'}`;
+ d.innerText=i+1;
+ d.onclick=()=>setPoster(p,d);
+ list.appendChild(d);
+});
+function setPoster(p,el){
+ document.getElementById('poster').className=`poster-base ${p} line-paper mt-6`;
+ document.querySelectorAll('#posterList div').forEach(x=>{x.classList.remove('border-yellow-400'); x.classList.add('border-zinc-700')});
+ el.classList.remove('border-zinc-700'); el.classList.add('border-yellow-400');
+}
+function setFont(f){
+ document.getElementById('posterText').className=f+' text-[21px] leading-[32px] text-zinc-800 whitespace-pre-wrap relative z-10';
+}
+function update(){
+ let t=document.getElementById('inputText').value||'এখানে আপনার কবিতা সুন্দর ভাবে লাইনে লাইনে বসবে...';
+ document.getElementById('posterText').innerText=t;
+}
+document.getElementById('inputText').addEventListener('input', update);
+
+function downloadPoster(){
+ html2canvas(document.getElementById('poster'),{scale:3, useCORS:true}).then(c=>{
+  let a=document.createElement('a'); a.download='kobita-'+Date.now()+'.png'; a.href=c.toDataURL("image/png"); a.click();
+ });
+}
+async function sharePoster(){
+ const posterEl = document.getElementById('poster');
+ const canvas = await html2canvas(posterEl,{scale:3, useCORS:true});
+ canvas.toBlob(async (blob)=>{
+  const file = new File([blob], "kobita-poster.png", {type:"image/png"});
+  if(navigator.canShare && navigator.canShare({files:[file]})){
+   try{ await navigator.share({files:[file], title:'আমার কবিতা', text:'আমার কবিতার ডায়েরি থেকে 🌸'}); }
+   catch(e){ }
+  }else{
+   // Fallback - Download + Open Share
+   downloadPoster();
+   setTimeout(()=>{
+    let text = encodeURIComponent("আমার কবিতার পোস্টার 🌸\n");
+    window.open("https://wa.me/?text="+text, "_blank");
+   },800);
+  }
+ },"image/png");
+}
+</script>
+</body>
+</html>

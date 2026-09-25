@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Viral Fixed Final - Buttons Fixed</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;font-family:'Hind Siliguri',sans-serif;margin:0}
+body{background:#000;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding-top:4px}
+.gameWrap{width:100vw;max-width:400px;height:94vh;background:#0e0e0e;border:3px solid #FFEB00;border-radius:16px;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.top{background:#FFEB00;color:#000;padding:6px 10px;display:flex;justify-content:space-between;font-weight:900;font-size:11px}
+.home{background:#000;color:#FFEB00;padding:4px 10px;border-radius:20px;text-decoration:none}
+.levelBar{background:#111;display:flex;justify-content:space-between;align-items:center;padding:5px 8px;border-bottom:2px solid #333}
+.levelBar button{padding:6px 12px;border-radius:10px;border:2px solid #fff;font-weight:900;font-size:10px}
+.lv1{background:#00e676}.lv2{background:#ff3d00;color:#fff}.active{outline:3px solid #FFEB00}
+canvas{flex:1;width:100%;background:#0e0e0e;display:block;min-height:300px}
+.controls{height:68px;background:#000;border-top:4px solid #FFEB00;display:flex;gap:6px;padding:6px;flex-shrink:0}
+.controls button{flex:1;border-radius:14px;border:3px solid #fff;font-weight:900;font-size:14px;touch-action:manipulation}
+.l{background:#222;color:#fff}.shoot{background:#00e676;color:#000;font-size:16px;border-color:#fff}.r{background:#FFEB00;color:#000}
+#over{position:absolute;inset:0;background:rgba(0,0,0,0.92);display:none;align-items:center;justify-content:center;z-index:99}
+.box{background:#FFEB00;color:#000;padding:18px;border-radius:16px;text-align:center;border:4px solid #fff;min-width:250px}
+.box button{background:#000;color:#FFEB00;padding:10px;border-radius:10px;border:none;font-weight:900;width:100%;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="gameWrap">
+<div class="top">
+<a href="index.html" class="home">HOME</a>
+<div>Score:<b id="sc">0</b> | বল:<b id="bc">0</b> | M:<b id="mc">1</b></div>
+<div id="spTxt" style="background:#000;color:#FFEB00;padding:2px 8px;border-radius:10px">1.1x</div>
+</div>
+<div class="levelBar">
+<div style="display:flex;gap:4px">
+<button class="lv1 active" id="b1" onclick="setLevel(1)">LV1 EASY</button>
+<button class="lv2" id="b2" onclick="setLevel(2)">LV2 HARD</button>
+</div>
+<div style="display:flex;align-items:center;gap:4px;color:#fff;font-size:10px">Speed<input type="range" id="sp" min="0.6" max="2.2" step="0.1" value="1.1" style="width:70px;accent-color:#FFEB00"></div>
+</div>
+<canvas id="c"></canvas>
+<div class="controls">
+<button class="l" id="lBtn">◀ LEFT</button>
+<button class="shoot" id="shootBtn">SHOOT 🚀<br><span style="font-size:10px">DROP</span></button>
+<button class="r" id="rBtn">RIGHT ▶</button>
+</div>
+<div id="over"><div class="box"><h2 id="ot">GAME OVER</h2><p>Score <b id="fSc">0</b></p><button onclick="resetGame()">RETRY 🔄</button></div></div>
+</div>
+<script>
+let canvas=document.getElementById('c'), ctx=canvas.getContext('2d');
+let W,H; function resize(){ let w=document.querySelector('.gameWrap'); W=canvas.width=w.clientWidth; H=canvas.height= w.clientHeight - 110; } resize(); addEventListener('resize',resize);
+let bucket={x:0,y:0,w:88,h:10,speed:10}, walls=[], balls=[], mains=[], particles=[], score=0, level=1, speedMul=1.1, gameOver=false; let gravity=0.42;
+function initWalls(lv){
+ walls=[]; walls.push({x:0,y:0,w:6,h:H,type:'border'}); walls.push({x:W-6,y:0,w:6,h:H,type:'border'}); walls.push({x:0,y:0,w:W,h:6,type:'border'});
+ if(lv==1){ for(let i=1;i<=5;i++){ let y=10+(H*0.68/6)*i, gx=30+Math.random()*(W-100), gw=58; walls.push({x:6,y:y,w:gx-6,h:5}); walls.push({x:gx+gw,y:y,w:W-6-(gx+gw),h:5}); } }
+ else { for(let i=1;i<=9;i++){ let y=10+(H*0.68/10)*i, gx=20+Math.random()*(W-80), gw=32; walls.push({x:6,y:y,w:gx-6,h:5}); walls.push({x:gx+gw,y:y,w:W-6-(gx+gw),h:5}); if(i%2==0) walls.push({x:20+Math.random()*(W-40),y:y-12,w:5,h:30}); } walls.push({x:W*0.33,y:10,w:5,h:H*0.4}); walls.push({x:W*0.66,y:H*0.28,w:5,h:H*0.4}); }
+}
+function createBalls(lv){
+ balls=[]; let count=lv==1?1800:3200; let cols=Math.floor((W-20)/7.2);
+ for(let i=0;i<count;i++){ let col=i%cols,row=Math.floor(i/cols), x=10+col*6.8, y=14+row*6.8; if(y>H*0.66) break; let r=Math.random(); if(r<0.07) balls.push({x,y,r:5.5,active:true,color:'#2196F3',type:'blue'}); else if(r<0.15) balls.push({x,y,r:4.2,active:true,color:'#ff1744',type:'red'}); else balls.push({x,y,r:3,active:true,color:'#FFEB00',type:'yellow'}); }
+}
+class MainBall{
+ constructor(x,y,vx,vy){ this.x=x||W/2; this.y=y||H-50; this.r=5.8; this.vx=vx||0; this.vy=vy||0; this.launched=false; this.stuck=0; }
+ launch(){ if(this.launched) return; this.launched=true; this.vy=-14.5*speedMul; this.vx=(Math.random()-0.5)*4*speedMul; }
+ update(){
+  if(!this.launched){ this.x=bucket.x+bucket.w/2; this.y=bucket.y-9; return false; }
+  this.vy+=gravity*speedMul; this.x+=this.vx; this.y+=this.vy;
+  if(this.x<8+this.r){ this.x=8+this.r; this.vx*=-0.85; } if(this.x>W-8-this.r){ this.x=W-8-this.r; this.vx*=-0.85; }
+  if(this.y<8+this.r){ this.y=8+this.r; this.vy*=-0.7; }
+  for(let w of walls){ if(w.type=='border') continue; if(this.x+this.r>w.x && this.x-this.r<w.x+w.w && this.y+this.r>w.y && this.y-this.r<w.y+w.h){ if(this.vy<0){ this.vy=Math.abs(this.vy)*0.3+2; this.y=w.y+w.h+this.r+1; }else{ this.vy=-Math.abs(this.vy)*0.78-3.5*speedMul; this.y=w.y-this.r-1; } this.vx*=0.9; this.stuck=0; } }
+  for(let b of balls){ if(!b.active) continue; let d=Math.hypot(this.x-b.x,this.y-b.y); if(d<this.r+b.r+1){ if(b.type=='yellow'){ b.active=false; b.vy=2; score+=1; }else if(b.type=='blue'){ b.active=false; score+=15; for(let k=0;k<7;k++){ let nb=new MainBall(b.x,b.y,(Math.random()-0.5)*6,-4-Math.random()*6); nb.launched=true; mains.push(nb); } }else{ b.active=false; score+=8; } this.vy=-Math.abs(this.vy)*0.5-2; } }
+  if(this.y+this.r>bucket.y && this.x>bucket.x && this.x<bucket.x+bucket.w && this.vy>0){ this.vy=-16*speedMul; this.vx+=(this.x-(bucket.x+bucket.w/2))/18; }
+  this.stuck++; if(this.stuck>25 && Math.abs(this.vy)<0.8){ this.vy=3; this.stuck=0; }
+  if(this.y>H+40) return true; return false;
+ }
+ draw(){ ctx.beginPath(); ctx.fillStyle='#FFEB00'; ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='#000'; ctx.lineWidth=2; ctx.stroke(); }
+}
+function loop(){
+ if(gameOver) return; ctx.clearRect(0,0,W,H);
+ ctx.fillStyle='#fff'; for(let w of walls){ ctx.fillStyle=w.type=='border'?'#FFEB00':'#fff'; ctx.fillRect(w.x,w.y,w.w,w.h); }
+ for(let b of balls){ if(!b.active){ b.vy+=0.28*speedMul; b.y+=b.vy; } if(b.y<H+5){ ctx.beginPath(); ctx.fillStyle=b.active?b.color:'#333'; ctx.arc(b.x,b.y,b.r,0,Math.PI*2); ctx.fill(); } }
+ bucket.y=H-28; if(touchL) bucket.x-=bucket.speed*speedMul; if(touchR) bucket.x+=bucket.speed*speedMul; bucket.x=Math.max(6,Math.min(W-bucket.w-6,bucket.x));
+ ctx.fillStyle='#FFEB00'; ctx.fillRect(bucket.x, bucket.y, bucket.w, bucket.h);
+ for(let i=mains.length-1;i>=0;i--){ if(mains[i].update()) mains.splice(i,1); else mains[i].draw(); }
+ document.getElementById('sc').innerText=score; document.getElementById('bc').innerText=balls.filter(b=>b.active).length; document.getElementById('mc').innerText=mains.length;
+ if(balls.filter(b=>b.active).length==0){ endGame(true); return; } if(mains.length==0){ endGame(false); return; } requestAnimationFrame(loop);
+}
+function endGame(win){ gameOver=true; document.getElementById('ot').innerText= win?'ALL CLEAR!':'GAME OVER'; document.getElementById('fSc').innerText=score; document.getElementById('over').style.display='flex'; }
+function resetGame(){ initWalls(level); createBalls(level); mains=[new MainBall()]; score=0; bucket.x=W/2-44; gameOver=false; document.getElementById('over').style.display='none'; loop(); }
+function setLevel(lv){ level=lv; document.getElementById('b1').classList.toggle('active',lv==1); document.getElementById('b2').classList.toggle('active',lv==2); resetGame(); }
+let touchL=false, touchR=false;
+document.getElementById('lBtn').addEventListener('touchstart',e=>{touchL=true; e.preventDefault()}); document.getElementById('lBtn').addEventListener('touchend',()=>touchL=false);
+document.getElementById('rBtn').addEventListener('touchstart',e=>{touchR=true; e.preventDefault()}); document.getElementById('rBtn').addEventListener('touchend',()=>touchR=false);
+document.getElementById('shootBtn').addEventListener('touchstart',e=>{ e.preventDefault(); if(mains[0]) mains[0].launch(); });
+document.getElementById('shootBtn').addEventListener('click',()=>{ if(mains[0]) mains[0].launch(); });
+document.getElementById('sp').addEventListener('input',e=>{ speedMul=parseFloat(e.target.value); document.getElementById('spTxt').innerText=speedMul+'x'; });
+resetGame();
+</script>
+</body>
+</html>

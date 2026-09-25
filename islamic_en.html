@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Islamic EN Quiz - 200 Qs - Qari Jubayer</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;font-family:'Inter',sans-serif}
+body{margin:0;background:#000;color:#fff;min-height:100vh;display:flex;flex-direction:column}
+.top{background:#0f0f0f;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:99;border-bottom:1px solid #222}
+.logo-box{display:flex;align-items:center;gap:10px}
+.logo{width:42px;height:42px;background:#fff;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900}
+.app-name{font-weight:900;font-size:18px;letter-spacing:.3px}
+.app-name span{color:#00e676}
+.score-box{display:flex;align-items:center;gap:10px}
+.score-big{background:#1c1c1e;border:1px solid #333;padding:10px 18px;border-radius:25px;font-weight:900;font-size:20px;min-width:90px;text-align:center}
+.score-big span{color:#00e676;font-size:22px}
+.bar{height:6px;background:#222}
+#progress{height:100%;background:#00e676;width:0%;transition:.4s}
+.wrap{padding:16px;max-width:640px;margin:auto;width:100%;flex:1}
+.badge-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.point-badge{font-size:11px;padding:5px 10px;border-radius:12px;font-weight:900}
+.point-badge.plus{background:#00e676;color:#000}
+.point-badge.minus{background:#ff3b30;color:#fff}
+.q-card{background:#111;border:1px solid #222;border-radius:20px;padding:18px;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+.q-card h2{font-size:19px;line-height:1.45;margin:0 0 16px;font-weight:800}
+.opt{background:#1c1c1e;border:1px solid #2a2a2e;border-radius:14px;padding:14px 14px;margin:8px 0;font-size:15px;width:100%;text-align:left;color:#fff;font-weight:600}
+.opt:active{transform:scale(.98)}
+.opt.correct{background:#00c853;color:#000;border-color:#00c853;font-weight:900}
+.opt.wrong{background:#ff3b30;color:#fff;border-color:#ff3b30;font-weight:900}
+.meta{display:flex;justify-content:space-between;color:#888;font-size:12px;margin-top:14px;font-weight:700}
+.btn{padding:13px 20px;border:none;border-radius:14px;font-weight:900;cursor:pointer;font-size:15px}
+.btn.prev{background:#222;color:#fff}
+.btn.next{background:#fff;color:#000;transition:.2s}
+.btn.next.locked{opacity:.25;pointer-events:none}
+.restart{width:100%;margin-top:20px;padding:16px;border:none;border-radius:16px;background:#ff3b30;color:#fff;font-weight:900;font-size:18px;letter-spacing:.5px}
+.footer{text-align:center;padding:20px 10px;color:#555;font-size:13px;border-top:1px solid #151515;margin-top:25px;line-height:1.6}
+.footer b{color:#999}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="logo-box">
+    <div class="logo">🕌</div>
+    <div class="app-name">ISLAMIC <span>EN</span></div>
+  </div>
+  <div class="score-box">
+    <div class="score-big">⭐ <span id="score">0</span></div>
+    <a href="index.html" style="padding:10px 16px;background:#fff;color:#000;border-radius:22px;font-weight:900;text-decoration:none;font-size:13px">HOME</a>
+  </div>
+</div>
+
+<div class="bar"><div id="progress"></div></div>
+
+<div class="wrap">
+  <div class="badge-row">
+    <div style="display:flex;gap:6px"><span class="point-badge plus">+5 WIN</span><span class="point-badge minus">-15 WRONG</span></div>
+    <div style="color:#888;font-size:13px;font-weight:800">Q: <span id="qnum" style="color:#fff">1</span>/200</div>
+  </div>
+
+  <div id="quiz"></div>
+
+  <div style="display:flex;justify-content:space-between;margin-top:18px">
+    <button class="btn prev" onclick="prev()">← Prev</button>
+    <button class="btn next locked" id="nextBtn" onclick="next()">Next →</button>
+  </div>
+
+  <button class="restart" onclick="restartQuiz()">🔴 RESTART FROM 1</button>
+</div>
+
+<div class="footer">
+  Made apps<br><b style="font-size:14px;color:#ccc">Qari MD Jubayer Ahmed Siyam</b><br>
+  © 2026 - Islamic EN Quiz - 200 Unique Questions - Black Mode
+</div>
+
+<script>
+const questions=[
+{ q:"How many Surahs are in the Quran?", o:["110","114","120","100"], a:1 },
+{ q:"First Surah revealed?", o:["Al-Fatiha","Al-Alaq (first 5 verses)","An-Nas","Al-Ikhlas"], a:1 },
+{ q:"Which month Quran revealed?", o:["Rajab","Ramadan","Muharram","Shawwal"], a:1 },
+{ q:"How many Rakats in Fajr?", o:["2","4","3","6"], a:0 },
+{ q:"First prophet?", o:["Nuh","Adam (AS)","Ibrahim","Musa"], a:1 },
+{ q:"Last prophet?", o:["Isa","Muhammad (SAW)","Musa","Dawud"], a:1 },
+{ q:"How many pillars of Islam?", o:["4","5","6","7"], a:1 },
+{ q:"Second pillar?", o:["Salah","Zakat","Hajj","Sawm"], a:0 },
+{ q:"What is Zakat?", o:["Fasting","Charity - 2.5%","Prayer","Hajj"], a:1 },
+{ q:"Where is Kaaba?", o:["Medina","Makkah","Jerusalem","Taif"], a:1 },
+{ q:"Daily prayers?", o:["3","5","6","4"], a:1 },
+{ q:"Night better than 1000 months?", o:["Laylatul Qadr","Friday night","Arafah","Eid night"], a:0 },
+{ q:"Who built Kaaba with son?", o:["Adam","Ibrahim & Ismail","Nuh","Sulaiman"], a:1 },
+{ q:"How many verses in Fatiha?", o:["6","7","8","9"], a:1 },
+{ q:"Heart of Quran?", o:["Yasin","Rahman","Mulk","Waqiah"], a:0 },
+{ q:"Mother of Isa (AS)?", o:["Khadija","Maryam (Mary)","Aisha","Hawa"], a:1 },
+{ q:"Angel of Wahi?", o:["Israfil","Jibril","Mikail","Azrael"], a:1 },
+{ q:"Years Prophet in Makkah after Nabuwat?", o:["10","13","23","3"], a:1 },
+{ q:"Battle of Badr in Hijri?", o:["1st","2nd","3rd","4th"], a:1 },
+{ q:"Meaning of Islam?", o:["Submission & Peace","Only Prayer","War","Richness"], a:0 },
+{ q:"Madinatul Munawwara is?", o:["Makkah","Medina","Jeddah","Taif"], a:1 },
+{ q:"Daughters of Prophet?", o:["2","4","3","5"], a:1 },
+{ q:"First wife of Prophet?", o:["Aisha","Khadija (RA)","Hafsa","Zainab"], a:1 },
+{ q:"Hajj month?", o:["Dhul Hijjah","Ramadan","Muharram","Shaban"], a:0 },
+{ q:"What is Sunnah?", o:["Way of Prophet","Fard","Haram","Makruh"], a:0 },
+{ q:"How many Asmaul Husna?", o:["99","100","88","90"], a:0 },
+{ q:"Prayer with no Azan?", o:["Eid & Janazah","Fajr","Asr","Maghrib"], a:0 },
+{ q:"Who compiled Quran first?", o:["Abu Bakr","Umar","Uthman","Ali"], a:0 },
+{ q:"What is Wudu?", o:["Ablution before prayer","Fasting","Charity","Hajj"], a:0 },
+{ q:"Breaks fast?", o:["Eating intentionally","Sleeping","Smiling","Walking"], a:0 },
+{ q:"Surah without Bismillah?", o:["At-Tawbah","Fatiha","Nas","Ikhlas"], a:0 },
+{ q:"Longest Surah?", o:["Al-Baqarah","Al-Imran","An-Nisa","Maidah"], a:0 },
+{ q:"Shortest Surah?", o:["Al-Kawthar","Al-Asr","An-Nasr","Ikhlas"], a:0 },
+{ q:"Sajdah in Quran?", o:["14","15","13","16"], a:1 },
+{ q:"First Muazzin?", o:["Bilal (RA)","Umar","Ali","Abu Bakr"], a:0 },
+{ q:"What is Sawm?", o:["Fasting","Prayer","Hajj","Zakat"], a:0 },
+{ q:"Eid ul Fitr after?", o:["Ramadan","Hajj","Muharram","Rajab"], a:0 },
+{ q:"Eid ul Adha in?", o:["Dhul Hijjah","Ramadan","Shaban","Shawwal"], a:0 },
+{ q:"What is Iman?", o:["Faith","Prayer","Money","Food"], a:0 },
+{ q:"How many Prophets mentioned in Quran?", o:["25","26","28","30"], a:0 },
+{ q:"Who was given Zabur?", o:["Musa","Dawud (David)","Isa","Ibrahim"], a:1 },
+{ q:"Who was given Tawrat?", o:["Musa (AS)","Isa","Dawud","Ibrahim"], a:0 },
+{ q:"Who was given Injil?", o:["Isa (AS)","Musa","Dawud","Nuh"], a:0 },
+{ q:"Last Surah in Quran?", o:["Al-Falaq","An-Nas","Ikhlas","Kawthar"], a:1 },
+{ q:"First wife to accept Islam?", o:["Khadija","Aisha","Hafsa","Sawda"], a:0 },
+{ q:"Angel of death?", o:["Jibril","Azrael (Malakul Maut)","Mikail","Israfil"], a:1 },
+{ q:"Angel of rain?", o:["Mikail","Jibril","Israfil","Azrael"], a:0 },
+{ q:"How many years Quran revealed?", o:["20","23","25","13"], a:1 },
+{ q:"Lailatul Qadr in last 10 days of?", o:["Ramadan","Shaban","Muharram","Rajab"], a:0 },
+{ q:"What is Arafah?", o:["Main pillar of Hajj","Small Hajj","Fasting","Zakat"], a:0 },
+{ q:"Day Hajjis stay in Arafah?", o:["9th Dhul Hijjah","10th","8th","7th"], a:0 },
+{ q:"Rounds in Tawaf?", o:["7","6","5","8"], a:0 },
+{ q:"Rounds in Sai?", o:["7","6","8","5"], a:0 },
+{ q:"What is Jamarat?", o:["Stoning devil","Prayer","Fasting","Charity"], a:0 },
+{ q:"What is Ihram?", o:["State for Hajj/Umrah","Prayer","Fasting","Cloth only"], a:0 },
+{ q:"Umrah is called?", o:["Minor Hajj","Major Hajj","Zakat","Salah"], a:0 },
+{ q:"Which water is blessed?", o:["Zamzam","Sea water","Rain","Nile"], a:0 },
+{ q:"Where is Zamzam?", o:["Inside Masjid al-Haram","Medina","Taif","Jeddah"], a:0 },
+{ q:"How many doors in Jannah?", o:["7","8","6","9"], a:1 },
+{ q:"How many doors in Jahannam?", o:["7","8","6","9"], a:0 },
+{ q:"Who will blow trumpet?", o:["Israfil","Jibril","Mikail","Azrael"], a:0 },
+{ q:"What is Sadaqah?", o:["Voluntary charity","Obligatory charity","Fasting","Hajj"], a:0 },
+{ q:"What is Riba?", o:["Interest - Haram","Profit","Charity","Gift"], a:0 },
+{ q:"First mosque in Islam?", o:["Masjid Quba","Masjid al-Haram","Masjid Nabawi","Aqsa"], a:0 },
+{ q:"Second mosque built?", o:["Masjid Nabawi","Quba","Aqsa","Haram"], a:0 },
+{ q:"Third holiest mosque?", o:["Masjid al-Aqsa","Quba","Nabawi","Haram"], a:0 },
+{ q:"Qibla first was?", o:["Al-Aqsa","Kaaba","Medina","Taif"], a:0 },
+{ q:"Qibla changed in?", o:["2nd Hijri","1st","3rd","4th"], a:0 },
+{ q:"What is Hijrah?", o:["Migration Makkah to Medina","Battle","Fasting","Hajj"], a:0 },
+{ q:"Age Prophet became Prophet?", o:["40","30","25","50"], a:0 },
+{ q:"Father of Prophet?", o:["Abdullah","Abdul Muttalib","Abu Talib","Abu Lahab"], a:0 },
+{ q:"Mother of Prophet?", o:["Amina","Khadija","Halima","Aisha"], a:0 },
+{ q:"Grandfather of Prophet?", o:["Abdul Muttalib","Abu Talib","Abdullah","Abbas"], a:0 },
+{ q:"Uncle who protected Prophet?", o:["Abu Talib","Abu Lahab","Abbas","Hamza"], a:0 },
+{ q:"Foster mother?", o:["Halima Sadia","Amina","Khadija","Barakah"], a:0 },
+{ q:"Year of Elephant?", o:["570 AD","571 AD","569 AD","575 AD"], a:0 },
+{ q:"What is Seerah?", o:["Biography of Prophet","Quran Tafsir","Hadith","Fiqh"], a:0 },
+{ q:"Ghazwa Prophet participated?", o:["27","25","30","20"], a:0 },
+{ q:"Battle of Uhud in?", o:["3rd Hijri","2nd","4th","5th"], a:0 },
+{ q:"Battle of Khandaq in?", o:["5th Hijri","3rd","2nd","6th"], a:0 },
+{ q:"Treaty of Hudaybiyyah in?", o:["6th Hijri","5th","7th","8th"], a:0 },
+{ q:"Conquest of Makkah in?", o:["8th Hijri","6th","7th","9th"], a:0 },
+{ q:"Last sermon where?", o:["Arafah","Mina","Muzdalifah","Makkah"], a:0 },
+{ q:"Prophet died in?", o:["11th Hijri","10th","12th","9th"], a:0 },
+{ q:"Age at death?", o:["63","60","65","70"], a:0 },
+{ q:"First Caliph?", o:["Abu Bakr Siddiq","Umar","Uthman","Ali"], a:0 },
+{ q:"Second Caliph?", o:["Umar Farooq","Abu Bakr","Uthman","Ali"], a:0 },
+{ q:"Third Caliph?", o:["Uthman Ghani","Ali","Umar","Abu Bakr"], a:0 },
+{ q:"Fourth Caliph?", o:["Ali (RA)","Muawiya","Hasan","Husain"], a:0 },
+{ q:"How many types of Hajj?", o:["3","2","4","1"], a:0 },
+{ q:"What is Fidya?", o:["Compensation for missed fast","Zakat","Hajj","Salah"], a:0 },
+{ q:"Which Surah has two Bismillah?", o:["An-Naml","Tawbah","Fatiha","Baqarah"], a:0 },
+{ q:"Prophet talked to Allah directly?", o:["Musa (AS)","Isa","Adam","Nuh"], a:0 },
+{ q:"Prophet built Ark?", o:["Nuh (AS)","Musa","Ibrahim","Adam"], a:0 },
+{ q:"Thrown in fire?", o:["Ibrahim (AS)","Musa","Isa","Nuh"], a:0 },
+{ q:"Swallowed by whale?", o:["Yunus (AS)","Musa","Isa","Ibrahim"], a:0 },
+{ q:"Prophet with beautiful voice?", o:["Dawud (AS)","Musa","Ibrahim","Isa"], a:0 },
+{ q:"King Prophet?", o:["Sulaiman (AS)","Musa","Isa","Yusuf"], a:0 },
+{ q:"Interpreted dreams?", o:["Yusuf (AS)","Musa","Isa","Ibrahim"], a:0 },
+{ q:"Patient with disease?", o:["Ayyub (AS)","Musa","Ibrahim","Nuh"], a:0 },
+{ q:"First martyr female?", o:["Sumayyah (RA)","Khadija","Aisha","Hafsa"], a:0 },
+{ q:"Tajweed is?", o:["Rules of Quran recitation","Fasting rules","Hajj rules","Zakat rules"], a:0 },
+{ q:"How many Juz?", o:["30","20","40","25"], a:0 },
+{ q:"How many Hizb?", o:["60","30","40","50"], a:0 },
+{ q:"Longest Ayah?", o:["Ayat-ud-Dain 2:282","Ayatul Kursi","Last ayah Baqarah","First ayah"], a:0 },
+{ q:"Ayatul Kursi in?", o:["Al-Baqarah","Al-Imran","An-Nisa","Maidah"], a:0 },
+{ q:"Surah protection from Dajjal?", o:["Al-Kahf first 10","Yasin","Rahman","Mulk"], a:0 },
+{ q:"Protects from grave?", o:["Al-Mulk","Yasin","Rahman","Waqiah"], a:0 },
+{ q:"What is Fard?", o:["Obligatory","Optional","Sunnah","Makruh"], a:0 },
+{ q:"What is Haram?", o:["Forbidden","Allowed","Optional","Sunnah"], a:0 },
+{ q:"What is Halal?", o:["Permissible","Forbidden","Disliked","Obligatory"], a:0 },
+{ q:"How many Eids?", o:["2","3","1","4"], a:0 },
+{ q:"What is Itikaf?", o:["Seclusion in mosque last 10 Ramadan","Fasting","Hajj","Zakat"], a:0 },
+{ q:"Zakat percentage?", o:["2.5%","5%","10%","20%"], a:0 },
+{ q:"Nisab for gold?", o:["7.5 tola / 87.48g","10 tola","5 tola","20 tola"], a:0 },
+{ q:"Fasting is which pillar?", o:["4th","3rd","5th","2nd"], a:0 },
+{ q:"Hajj is which pillar?", o:["5th","4th","3rd","2nd"], a:0 },
+{ q:"Prophet's Mosque in?", o:["Medina","Makkah","Jerusalem","Taif"], a:0 },
+{ q:"Rawdah is in?", o:["Masjid Nabawi","Masjid Haram","Aqsa","Quba"], a:0 },
+{ q:"Jannatul Baqi is?", o:["Graveyard in Medina","In Makkah","In Jerusalem","In Taif"], a:0 },
+{ q:"What is Khums?", o:["One-fifth tax","Zakat","Sadaqah","Fitra"], a:0 },
+{ q:"What is Fitra?", o:["Charity at end of Ramadan","Zakat","Hajj","Fasting"], a:0 },
+{ q:"Ashra Mubashara are?", o:["10 promised Jannah","10 angels","10 Prophets","10 died early"], a:0 },
+{ q:"What is Miraj?", o:["Night ascension to heavens","Hijrah","Battle","Birth"], a:0 },
+{ q:"Isra is?", o:["Night journey Makkah to Aqsa","Ascension to heaven","Hijrah","Conquest"], a:0 },
+{ q:"Prayers gifted in Miraj initially?", o:["50","5","40","10"], a:0 },
+{ q:"Final prayers after reduction?", o:["5","10","50","3"], a:0 },
+{ q:"What is Shirk?", o:["Associating partners with Allah","Prayer","Fasting","Charity"], a:0 },
+{ q:"Biggest sin?", o:["Shirk","Lying","Stealing","Backbiting"], a:0 },
+{ q:"What is Tawheed?", o:["Oneness of Allah","Prayer","Fasting","Hajj"], a:0 },
+{ q:"What is Ihsan?", o:["Worship Allah as you see Him","Only prayer","Only charity","Only fasting"], a:0 },
+{ q:"Angel that asks in grave?", o:["Munkar & Nakir","Jibril & Mikail","Israfil & Azrael","Kiraman Katibin"], a:0 },
+{ q:"Angels recording deeds?", o:["Kiraman Katibin","Munkar Nakir","Jibril Mikail","Israfil"], a:0 },
+{ q:"Day of Judgment called?", o:["Yawmul Qiyamah","Friday","Eid","Arafah"], a:0 },
+{ q:"What is Sirat?", o:["Bridge over Hell","Road in Jannah","Mosque","Mountain"], a:0 },
+{ q:"What is Mizan?", o:["Scale for deeds","Bridge","Mosque","Book"], a:0 },
+{ q:"First person to enter Jannah?", o:["Muhammad (SAW)","Abu Bakr","Umar","Adam"], a:0 },
+{ q:"What is Dajjal?", o:["False Messiah","True Messiah","Angel","Prophet"], a:0 },
+{ q:"Where will Isa (AS) return?", o:["Damascus","Makkah","Medina","Jerusalem"], a:0 },
+{ q:"What is Yajuj Majuj?", o:["Gog & Magog tribes","Angels","Prophets","Animals"], a:0 },
+{ q:"What is Istikhara?", o:["Prayer for guidance","Fasting","Hajj","Zakat"], a:0 },
+{ q:"What is Tahajjud?", o:["Night prayer","Morning prayer","Afternoon","Evening"], a:0 },
+{ q:"What is Witr?", o:["Odd night prayer after Isha","Morning prayer","Afternoon","Fasting"], a:0 },
+{ q:"What is Adhan?", o:["Call to prayer","Prayer itself","Fasting","Charity"], a:0 },
+{ q:"What is Iqamah?", o:["Second call just before prayer","First call","Fasting","Hajj"], a:0 },
+{ q:"Jumuah prayer Rakats?", o:["2 Fard","4 Fard","3 Fard","1 Fard"], a:0 },
+{ q:"What is Sadaqah Jariyah?", o:["Continuous charity","One-time charity","Zakat","Fitra"], a:0 },
+{ q:"What is Qurbani?", o:["Animal sacrifice on Eid ul Adha","Fasting","Prayer","Zakat"], a:0 },
+{ q:"How many parts in Qurbani meat?", o:["3","2","4","1"], a:0 },
+{ q:"Aqeeqah for boy?", o:["2 sheep/goats","1","3","4"], a:0 },
+{ q:"Aqeeqah for girl?", o:["1 sheep/goat","2","3","4"], a:0 },
+{ q:"What is Nikah?", o:["Marriage","Divorce","Fasting","Hajj"], a:0 },
+{ q:"Mehr is?", o:["Gift from groom to bride","From bride to groom","To mosque","To parents"], a:0 },
+{ q:"What is Hijab?", o:["Modest covering","Only face cover","Only hair","Only hands"], a:0 },
+{ q:"What is Ghiba?", o:["Backbiting","Lying","Stealing","Cheating"], a:0 },
+{ q:"Best Dhikr?", o:["La ilaha illallah","Subhanallah","Alhamdulillah","Allahu Akbar"], a:0 },
+{ q:"What is Istighfar?", o:["Seeking forgiveness","Praising","Thanking","Asking"], a:0 },
+{ q:"How many times Prophet did Istighfar daily?", o:["70+ / 100 times","10","5","20"], a:0 },
+{ q:"Janazah has how many Takbir?", o:["4","2","3","5"], a:0 },
+{ q:"Which Surah to read for dead?", o:["Yasin","Fatiha","Ikhlas","Nas"], a:0 },
+{ q:"What is Barzakh?", o:["Life in grave","Jannah","Jahannam","World"], a:0 },
+{ q:"What is Hawd?", o:["Pool of Prophet (Kawthar)","River in Jannah","Mountain","Mosque"], a:0 },
+{ q:"What is Khutbah?", o:["Sermon","Prayer","Fasting","Zakat"], a:0 },
+{ q:"What is Duha prayer?", o:["Forenoon prayer","Night prayer","Midnight","Afternoon"], a:0 },
+{ q:"Best charity?", o:["Water","Money","Food","Clothes"], a:0 },
+{ q:"What is Halal slaughter phrase?", o:["Bismillah Allahu Akbar","Alhamdulillah","Subhanallah","La ilaha"], a:0 },
+{ q:"Iddah period for divorced?", o:["3 menstrual cycles","1 month","1 year","10 days"], a:0 },
+{ q:"What is Awrah for men?", o:["Navel to knee","Only chest","Only legs","Full body"], a:0 },
+{ q:"What is Namimah?", o:["Tale-bearing","Truth","Honesty","Charity"], a:0 },
+{ q:"What is Salat ul Janazah?", o:["Funeral prayer","Eid prayer","Fajr prayer","Tahajjud"], a:0 },
+{ q:"What to read after Fatiha in Janazah?", o:["Salat Ibrahimiya","Another Fatiha","Ikhlas","Nothing"], a:0 },
+{ q:"Categories of Tawheed?", o:["3","2","4","5"], a:0 },
+{ q:"Mahdi will appear before?", o:["Qiyamah","Hijrah","Badr","Uhud"], a:0 },
+{ q:"Which Surah mentions Yajuj Majuj?", o:["Al-Kahf & Anbiya","Fatiha","Ikhlas","Nas"], a:0 },
+{ q:"How many Rakats minimum Witr?", o:["1","3","5","2"], a:0 },
+{ q:"How many words in Adhan?", o:["15 phrases","10","20","12"], a:0 },
+{ q:"How much Fitra?", o:["About 3kg food / money","1kg","10kg","5kg"], a:0 },
+{ q:"Last Prophet's seal?", o:["Between shoulders","On forehead","On hand","On foot"], a:0 },
+{ q:"Where is Zamzam?", o:["Inside Masjid al-Haram","Medina","Taif","Jeddah"], a:0 }
+];
+
+let idx=0, score=parseInt(localStorage.islamicENScore||0), answered=Array(questions.length).fill(null);
+
+function render(){
+  let qq=questions[idx];
+  document.getElementById('qnum').innerText=idx+1;
+  document.getElementById('score').innerText=score;
+  document.getElementById('progress').style.width=((idx+1)/questions.length*100)+'%';
+  let html=`<div class="q-card"><h2>${idx+1}. ${qq.q}</h2>`;
+  qq.o.forEach((opt,i)=>{
+    let cls='opt';
+    if(answered[idx]!==null){
+      if(i==qq.a) cls+=' correct';
+      else if(i==answered[idx]) cls+=' wrong';
+    }
+    html+=`<button class="${cls}" onclick="choose(${i})">${String.fromCharCode(65+i)}. ${opt}</button>`;
+  });
+  html+=`<div class="meta"><span style="color:${answered[idx]!==null? (answered[idx]==qq.a? '#00e676':'#ff3b30'):'#888'}">${answered[idx]!==null? (answered[idx]==qq.a? '✅ Correct +5':'❌ Wrong -15') : '👉 Select one answer to unlock Next'}</span><span>${idx+1}/${questions.length}</span></div></div>`;
+  document.getElementById('quiz').innerHTML=html;
+
+  let nextBtn=document.getElementById('nextBtn');
+  if(answered[idx]===null) nextBtn.classList.add('locked');
+  else nextBtn.classList.remove('locked');
+}
+function choose(i){
+  if(answered[idx]!==null) return;
+  answered[idx]=i;
+  if(i==questions[idx].a) score+=5;
+  else { score-=15; if(score<0) score=0; }
+  localStorage.islamicENScore=score;
+  render();
+}
+function next(){
+  if(answered[idx]===null){
+    alert('⚠️ Please select an answer first! You must answer before going to next quiz.');
+    return;
+  }
+  if(idx<questions.length-1){ idx++; render(); scrollTo(0,0); }
+  else { alert('🎉 Alhamdulillah! Finished 200 Quizzes! Final Score: '+score); }
+}
+function prev(){ if(idx>0){ idx--; render(); scrollTo(0,0);} }
+function restartQuiz(){
+  if(confirm('🔴 Restart from Question 1? Score will reset to 0.')){
+    idx=0; score=0; answered=Array(questions.length).fill(null);
+    localStorage.islamicENScore=0;
+    render(); scrollTo(0,0);
+  }
+}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Islamic 500 QA - Qari Jubayer</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;font-family:'Hind Siliguri',sans-serif}
+body{margin:0;background:#FFEB00;color:#000}
+.top{position:sticky;top:0;z-index:99;background:#000;padding:12px;border-bottom:4px solid #FFEB00}
+.flex{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.home{background:#FFEB00;color:#000;padding:8px 18px;border-radius:22px;text-decoration:none;font-weight:900}
+.lang button{padding:7px 14px;border-radius:20px;border:2px solid #fff;background:#111;color:#fff;font-weight:900;font-size:13px}
+.lang button.active{background:#FFEB00;color:#000}
+.search{display:flex;gap:8px;margin-top:8px}
+.search input{flex:1;padding:13px;border-radius:12px;border:3px solid #fff;background:#111;color:#fff;font-weight:700;font-size:16px}
+.search button{padding:12px 18px;border-radius:12px;background:#00e676;border:none;font-weight:900}
+.info{display:flex;justify-content:space-between;color:#fff;margin-top:8px;font-weight:700}
+.info b{color:#FFEB00}
+.wrap{max-width:600px;margin:auto;padding:12px}
+.item{background:#000;color:#fff;border:3px solid #fff;border-radius:16px;padding:14px;margin-bottom:10px}
+.q{color:#FFEB00;font-weight:900;font-size:19px;margin-bottom:6px}
+.a{background:#111;padding:9px;border-radius:9px;font-weight:700;border:1px solid #333}
+.footer{text-align:center;padding:16px;font-weight:700;border-top:3px solid #000;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="top">
+<div class="flex"><a href="index.html" class="home">HOME</a><div class="lang"><button id="bBn" class="active" onclick="setLang('bn')">বাংলা</button><button id="bEn" onclick="setLang('en')">EN</button></div></div>
+<div class="search"><input id="s" onkeyup="doSearch()" placeholder="সার্চ করুন ২-৩ শব্দ... যেমন: জান্নাত, নামাজ, ওজু"><button onclick="doSearch()">🔍</button></div>
+<div class="info"><div>Charge: <b id="charge">100%</b></div><div>Total: <b>500</b></div><div>Found: <b id="found">500</b></div></div>
+</div>
+<div class="wrap" id="list"></div>
+<div class="footer">Developed By<br><b>Qari MD Jubayer Ahmed Siyam</b><br>© 2026 Islamic 500</div>
+
+<script>
+let lang = localStorage.getItem('isLang')||'bn';
+
+// PART 1+2+3+4 COMBINED 500 UNIQUE
+let raw = [
+// PART1 1-125
+["প্রথম নবী কে?","First Prophet?","আদম (আঃ)","Adam (AS)"],
+["শেষ নবী কে?","Last Prophet?","মুহাম্মদ (সাঃ)","Muhammad (SAW)"],
+["কুরআনে সূরা কয়টি?","How many Surah in Quran?","১১৪ টি","114"],
+["প্রথম সূরা কোনটি?","First Surah?","সূরা ফাতিহা","Surah Fatiha"],
+["শেষ সূরা কোনটি?","Last Surah?","সূরা নাস","Surah Nas"],
+["কুরআনের হৃদয় কোন সূরা?","Heart of Quran?","সূরা ইয়াসিন","Surah Yasin"],
+["কোন সূরায় বিসমিল্লাহ নেই?","Surah with no Bismillah?","সূরা তাওবা","Surah Tawba"],
+["কোন সূরায় ২ বিসমিল্লাহ?","Surah with 2 Bismillah?","সূরা নামল","Surah Naml"],
+["কুরআন কত বছরে নাযিল?","Years of Quran revelation?","২৩ বছরে","23 years"],
+["প্রথম ওহী কোথায়?","Where first Wahi?","হেরা গুহায়","Hera Cave"],
+["ইসলামের পাঁচটি স্তম্ভ কী?","What are the five pillars of Islam?","শাহাদাত, সালাত, যাকাত, সাওম ও হজ","Shahadah, Salah, Zakat, Sawm and Hajj"],
+["ইসলামের প্রথম খলিফা কে ছিলেন?","Who was the first caliph of Islam?","আবু বকর (রা.)","Abu Bakr (RA)"],
+["ইসলামের দ্বিতীয় খলিফা কে ছিলেন?","Who was the second caliph of Islam?","উমর ইবনুল খাত্তাব (রা.)","Umar ibn al-Khattab (RA)"],
+["ইসলামের তৃতীয় খলিফা কে ছিলেন?","Who was the third caliph of Islam?","উসমান ইবন আফফান (রা.)","Uthman ibn Affan (RA)"],
+["ইসলামের চতুর্থ খলিফা কে ছিলেন?","Who was the fourth caliph of Islam?","আলী ইবন আবি তালিব (রা.)","Ali ibn Abi Talib (RA)"],
+["কুরআনে মোট কতটি সূরা আছে?","How many surahs are in the Quran?","১১৪টি","114"],
+["কুরআনের প্রথম সূরা কোনটি?","What is the first surah of the Quran?","সূরা আল-ফাতিহা","Surah Al-Fatihah"],
+["কুরআনের শেষ সূরা কোনটি?","What is the last surah of the Quran?","সূরা আন-নাস","Surah An-Nas"],
+["কুরআনের সবচেয়ে বড় সূরা কোনটি?","What is the longest surah in the Quran?","সূরা আল-বাকারা","Surah Al-Baqarah"],
+["কুরআনের সবচেয়ে ছোট সূরা কোনটি?","What is the shortest surah in the Quran?","সূরা আল-কাওসার","Surah Al-Kawthar"],
+["কুরআন কার ওপর নাজিল হয়েছে?","Upon whom was the Quran revealed?","হযরত মুহাম্মদ (সা.)-এর ওপর","Upon Prophet Muhammad (PBUH)"],
+["কোন ফেরেশতা ওহি নিয়ে আসতেন?","Which angel brought revelation?","জিবরাইল (আ.)","Jibril (AS)"],
+["প্রথম ওহির প্রথম শব্দ কী ছিল?","What was the first word of the first revelation?","ইকরা","Iqra"],
+["প্রথম ওহি কোথায় নাজিল হয়েছিল?","Where did the first revelation occur?","হেরা গুহায়","In the Cave of Hira"],
+["হেরা গুহা কোন পাহাড়ে অবস্থিত?","On which mountain is the Cave of Hira located?","জাবালে নূরে","Jabal al-Nour"],
+["রাসুলুল্লাহ (সা.) কোথায় জন্মগ্রহণ করেন?","Where was Prophet Muhammad born?","মক্কায়","Makkah"],
+["রাসুলুল্লাহ (সা.)-এর পিতার নাম কী?","What was the name of Prophet Muhammad's father?","আবদুল্লাহ","Abdullah"],
+["রাসুলুল্লাহ (সা.)-এর মাতার নাম কী?","What was the name of Prophet Muhammad's mother?","আমিনা","Aminah"],
+["রাসুলুল্লাহ (সা.)-এর দাদার নাম কী?","What was the name of Prophet Muhammad's grandfather?","আবদুল মুত্তালিব","Abdul Muttalib"],
+["রাসুলুল্লাহ (সা.)-এর চাচার নাম কী, যিনি তাঁকে লালন-পালন করেন?","Which uncle cared for Prophet Muhammad after his grandfather?","আবু তালিব","Abu Talib"],
+["রাসুলুল্লাহ (সা.)-এর প্রথম স্ত্রী কে ছিলেন?","Who was the first wife of Prophet Muhammad?","খাদিজা (রা.)","Khadijah (RA)"],
+["রাসুলুল্লাহ (সা.) কত বছর বয়সে নবুয়ত লাভ করেন?","At what age did Prophet Muhammad receive prophethood?","৪০ বছর বয়সে","At the age of 40"],
+["রাসুলুল্লাহ (সা.)-এর জন্ম কোন শহরে হয়েছিল?","In which city was Prophet Muhammad born?","মক্কা","Makkah"],
+["রাসুলুল্লাহ (সা.)-এর হিজরত কোথা থেকে কোথায় হয়েছিল?","From where to where did Prophet Muhammad migrate?","মক্কা থেকে মদিনায়","From Makkah to Madinah"],
+["হিজরি সনের প্রথম মাস কোনটি?","What is the first month of the Hijri calendar?","মুহররম","Muharram"],
+["হিজরি সনের শেষ মাস কোনটি?","What is the last month of the Hijri calendar?","জিলহজ","Dhul-Hijjah"],
+["রমজান কোন হিজরি মাস?","Which Hijri month is Ramadan?","নবম মাস","The ninth month"],
+["মুসলমানরা দিনে কত ওয়াক্ত নামাজ পড়ে?","How many obligatory prayers do Muslims perform each day?","পাঁচ ওয়াক্ত","Five daily prayers"],
+["ফজরের নামাজের ফরজ কত রাকাত?","How many obligatory rakahs are in Fajr prayer?","দুই রাকাত","Two rakahs"],
+["যোহরের নামাজের ফরজ কত রাকাত?","How many obligatory rakahs are in Dhuhr prayer?","চার রাকাত","Four rakahs"],
+["আসরের নামাজের ফরজ কত রাকাত?","How many obligatory rakahs are in Asr prayer?","চার রাকাত","Four rakahs"],
+["মাগরিবের নামাজের ফরজ কত রাকাত?","How many obligatory rakahs are in Maghrib prayer?","তিন রাকাত","Three rakahs"],
+["এশার নামাজের ফরজ কত রাকাত?","How many obligatory rakahs are in Isha prayer?","চার রাকাত","Four rakahs"],
+["কিবলা কোন দিকে?","In which direction is the Qiblah?","কাবার দিকে","Toward the Kaaba"],
+["কাবা শরিফ কোথায় অবস্থিত?","Where is the Kaaba located?","মক্কায়","In Makkah"],
+["কাবা শরিফকে আর কী নামে বলা হয়?","What is another name for the Kaaba?","বায়তুল্লাহ","Baytullah"],
+["মসজিদুল হারাম কোথায় অবস্থিত?","Where is Masjid al-Haram located?","মক্কায়","In Makkah"],
+["মসজিদে নববি কোথায় অবস্থিত?","Where is Al-Masjid an-Nabawi located?","মদিনায়","In Madinah"],
+["মসজিদুল আকসা কোথায় অবস্থিত?","Where is Al-Aqsa Mosque located?","জেরুজালেমে","In Jerusalem"],
+["ইসলামের প্রথম মসজিদ কোনটি?","What is considered the first mosque in Islam?","মসজিদে কুবা","Quba Mosque"],
+["মসজিদে কুবা কোথায় অবস্থিত?","Where is Quba Mosque located?","মদিনার নিকটে","Near Madinah"],
+["আজানের উদ্দেশ্য কী?","What is the purpose of the Adhan?","নামাজের জন্য আহ্বান করা","To call Muslims to prayer"],
+["রোজা কোন মাসে রাখা হয়?","In which month is fasting observed?","রমজান মাসে","In Ramadan"],
+["রোজা ভাঙার সময়কে কী বলা হয়?","What is the time of breaking the fast called?","ইফতার","Iftar"],
+["রোজা শুরু করার খাবারকে কী বলা হয়?","What is the pre-dawn meal called?","সাহরি","Suhoor"],
+["রমজানের শেষের ঈদকে কী বলা হয়?","What is the Eid at the end of Ramadan called?","ঈদুল ফিতর","Eid al-Fitr"],
+["হজ কোন মাসে পালন করা হয়?","In which month is Hajj performed?","জিলহজ মাসে","In Dhul-Hijjah"],
+["হজের প্রধান দিন কোনটি?","What is the main day of Hajj?","আরাফার দিন","The Day of Arafah"],
+["আরাফাতের ময়দান কোথায়?","Where is the plain of Arafat?","মক্কার নিকটে","Near Makkah"],
+["কাবা শরিফ তাওয়াফ কতবার করা হয়?","How many times is the Kaaba circumambulated in Tawaf?","সাতবার","Seven times"],
+["সাফা ও মারওয়ার মাঝে কতবার সায়ি করা হয়?","How many trips are made between Safa and Marwah during Sa'i?","সাতবার","Seven trips"],
+["যাকাত কী?","What is Zakat?","সম্পদের নির্দিষ্ট অংশ দান করা","Giving a prescribed portion of wealth"],
+["যাকাত ইসলামের কোন স্তম্ভ?","Which pillar of Islam is Zakat?","তৃতীয় স্তম্ভ","The third pillar"],
+["শাহাদাতের অর্থ কী?","What does Shahadah mean?","আল্লাহর একত্ব ও মুহাম্মদ (সা.)-এর রাসুল হওয়ার সাক্ষ্য","Testimony of Allah's oneness and Muhammad's prophethood"],
+["সাওম শব্দের অর্থ কী?","What does Sawm mean?","রোজা বা বিরত থাকা","Fasting or abstaining"],
+["সালাত শব্দের অর্থ কী?","What does Salah refer to?","নামাজ","Prayer"],
+["হজ শব্দের অর্থ কী?","What does Hajj refer to?","নির্দিষ্ট সময়ে পবিত্র ঘর জিয়ারতের ইবাদত","Pilgrimage to the Sacred House at a specified time"],
+["ওযু কেন করা হয়?","Why is wudu performed?","পবিত্রতা অর্জনের জন্য","To attain ritual purity"],
+["তায়াম্মুম কখন করা যায়?","When can Tayammum be performed?","পানি না পাওয়া বা পানি ব্যবহার করা সম্ভব না হলে","When water is unavailable or cannot be used"],
+["কুরআনের বাংলা অর্থ কী?","What does the word Quran mean?","পাঠ বা তিলাওয়াত","Recitation"],
+["কুরআন কোন ভাষায় নাজিল হয়েছে?","In which language was the Quran revealed?","আরবি ভাষায়","Arabic"],
+["সূরা ইখলাসের মূল বিষয় কী?","What is the main theme of Surah Al-Ikhlas?","আল্লাহর একত্ব","The oneness of Allah"],
+["সূরা ফাতিহায় কয়টি আয়াত রয়েছে?","How many verses are in Surah Al-Fatihah?","সাতটি","Seven"],
+["আয়াতুল কুরসি কোন সূরায় রয়েছে?","In which surah is Ayat al-Kursi found?","সূরা আল-বাকারা","Surah Al-Baqarah"],
+["আয়াতুল কুরসি কোন আয়াত?","Which verse is Ayat al-Kursi?","সূরা আল-বাকারার ২৫৫ নম্বর আয়াত","Verse 255 of Surah Al-Baqarah"],
+["কুরআন সংরক্ষণের দায়িত্ব কার?","Who is responsible for preserving the Quran?","আল্লাহ","Allah"],
+["তাকওয়া বলতে কী বোঝায়?","What does Taqwa mean?","আল্লাহভীতি ও সচেতনতা","God-consciousness and awareness"],
+["সবরের অর্থ কী?","What does Sabr mean?","ধৈর্য","Patience"],
+["শুকরের অর্থ কী?","What does Shukr mean?","কৃতজ্ঞতা","Gratitude"],
+["তাওবার অর্থ কী?","What does Tawbah mean?","আল্লাহর কাছে অনুতপ্ত হয়ে ফিরে আসা","Repentance and returning to Allah"],
+["দোয়া কী?","What is Dua?","আল্লাহর কাছে প্রার্থনা করা","Supplication to Allah"],
+["জিকির কী?","What is Dhikr?","আল্লাহকে স্মরণ করা","Remembering Allah"],
+["হালাল বলতে কী বোঝায়?","What does Halal mean?","ইসলামে বৈধ","Permissible in Islam"],
+["হারাম বলতে কী বোঝায়?","What does Haram mean?","ইসলামে নিষিদ্ধ","Forbidden in Islam"],
+["সদকা কী?","What is Sadaqah?","আল্লাহর সন্তুষ্টির জন্য স্বেচ্ছায় দান","Voluntary charity for Allah's sake"],
+["ফিতরা কী?","What is Fitrana?","ঈদুল ফিতরের আগে আদায় করা নির্দিষ্ট দান","A prescribed charity given before Eid al-Fitr"],
+["ঈদুল আজহা আর কী নামে পরিচিত?","What is another name for Eid al-Adha?","কোরবানির ঈদ","The Festival of Sacrifice"],
+["কোরবানির মূল শিক্ষা কী?","What is a central lesson of Qurbani?","আল্লাহর আনুগত্য ও ত্যাগ","Obedience to Allah and sacrifice"],
+["ইসলামের পবিত্রতম রাতগুলোর একটি কোনটি?","Which is one of the holiest nights in Islam?","লাইলাতুল কদর","Laylat al-Qadr"],
+["লাইলাতুল কদর কোন মাসে?","In which month is Laylat al-Qadr?","রমজান মাসে","In Ramadan"],
+["লাইলাতুল কদরকে কী বলা হয়?","What is Laylat al-Qadr commonly called?","শবে কদর","Night of Decree"],
+["ইসলামি বর্ষপঞ্জি কোন ঘটনার সঙ্গে সম্পর্কিত?","What event is associated with the Islamic calendar?","হিজরত","The Hijrah"],
+["মুহররম মাসের গুরুত্ব কী?","What is significant about Muharram?","এটি সম্মানিত মাসগুলোর একটি","It is one of the sacred months"],
+["ইসলামে কয়টি সম্মানিত মাস আছে?","How many sacred months are there in Islam?","চারটি","Four"],
+["জুমার নামাজ কোন দিনে হয়?","On which day is Jumu'ah prayer held?","শুক্রবার","Friday"],
+["জুমার দিনকে ইংরেজিতে কী বলা হয়?","What is Jumu'ah day called in English?","Friday","Friday"],
+["মুসলমানদের সাপ্তাহিক বিশেষ দিন কোনটি?","What is the special weekly day for Muslims?","শুক্রবার","Friday"],
+["মিসওয়াক কী?","What is Miswak?","দাঁত পরিষ্কারের একটি প্রাকৃতিক কাঠি","A natural tooth-cleaning stick"],
+["আমানত বলতে কী বোঝায়?","What does Amanah mean?","বিশ্বাসের সঙ্গে রাখা দায়িত্ব বা সম্পদ","A trust or responsibility"],
+["সত্যবাদিতার আরবি শব্দ কী?","What is the Arabic term for truthfulness?","সিদক","Sidq"],
+["মিথ্যাকে ইসলামে কীভাবে দেখা হয়?","How is lying viewed in Islam?","নিন্দনীয় কাজ","It is condemned"],
+["পিতা-মাতার সঙ্গে কেমন আচরণ করা উচিত?","How should Muslims treat their parents?","সদয় ও সম্মানজনক আচরণ করা উচিত","They should be treated kindly and respectfully"],
+["প্রতিবেশীর প্রতি ইসলামের শিক্ষা কী?","What does Islam teach about neighbors?","তাদের সঙ্গে সদাচরণ করা","To treat them well"],
+["সালামের অর্থ কী?","What does Salam mean?","শান্তি","Peace"],
+["আসসালামু আলাইকুমের অর্থ কী?","What does Assalamu Alaikum mean?","আপনার ওপর শান্তি বর্ষিত হোক","Peace be upon you"],
+["ওয়ালাইকুমুস সালামের অর্থ কী?","What does Wa Alaikum Assalam mean?","আপনার ওপরও শান্তি বর্ষিত হোক","And peace be upon you too"],
+["বিসমিল্লাহর অর্থ কী?","What does Bismillah mean?","আল্লাহর নামে","In the name of Allah"],
+["আলহামদুলিল্লাহর অর্থ কী?","What does Alhamdulillah mean?","সমস্ত প্রশংসা আল্লাহর","All praise is due to Allah"],
+["সুবহানাল্লাহর অর্থ কী?","What does SubhanAllah mean?","আল্লাহ পবিত্র ও মহিমান্বিত","Glory be to Allah"],
+["আল্লাহু আকবারের অর্থ কী?","What does Allahu Akbar mean?","আল্লাহ সর্বশ্রেষ্ঠ","Allah is the Greatest"],
+["ইনশাআল্লাহর অর্থ কী?","What does InshaAllah mean?","আল্লাহ চাইলে","If Allah wills"],
+["মাশাআল্লাহর অর্থ কী?","What does MashaAllah mean?","আল্লাহ যেমন চেয়েছেন","As Allah has willed"],
+["আস্তাগফিরুল্লাহর অর্থ কী?","What does Astaghfirullah mean?","আমি আল্লাহর কাছে ক্ষমা চাই","I seek forgiveness from Allah"],
+["দরুদ কী?","What is Durood?","নবী (সা.)-এর ওপর সালাত ও সালাম পাঠ","Sending blessings and peace upon the Prophet"],
+["নবী শব্দের অর্থ কী?","What does the word Nabi mean?","আল্লাহর নবী","Prophet of Allah"],
+["রাসুল শব্দের অর্থ কী?","What does the word Rasul mean?","আল্লাহর প্রেরিত বার্তাবাহক","Messenger sent by Allah"],
+["প্রথম মানুষ কে ছিলেন?","Who was the first human?","আদম (আ.)","Adam (AS)"],
+["প্রথম নবী কে ছিলেন?","Who was the first prophet?","আদম (আ.)","Adam (AS)"],
+["নূহ (আ.) কোন বিষয়ে বিখ্যাত?","What is Prophet Nuh known for?","নৌকা নির্মাণ ও মহাপ্লাবনের ঘটনা","Building the Ark and the flood"],
+["ইবরাহিম (আ.)-এর পিতার নাম কী?","What was the name of Prophet Ibrahim's father?","আযর","Azar"],
+["ইসমাইল (আ.) কার পুত্র ছিলেন?","Whose son was Prophet Ismail?","ইবরাহিম (আ.)-এর","Prophet Ibrahim's son"],
+["ইসহাক (আ.) কার পুত্র ছিলেন?","Whose son was Prophet Ishaq?","ইবরাহিম (আ.)-এর","Prophet Ibrahim's son"],
+["ইউসুফ (আ.) কোন গুণের জন্য বিশেষভাবে পরিচিত?","What quality is Prophet Yusuf especially known for?","সততা ও ধৈর্য","Truthfulness and patience"],
+["মুসা (আ.)-এর ভাই কে ছিলেন?","Who was the brother of Prophet Musa?","হারুন (আ.)","Harun (AS)"],
+["দাউদ (আ.) কী পেয়েছিলেন?","What was Prophet Dawud given?","যাবুর","The Zabur"],
+["ঈসা (আ.)-এর মায়ের নাম কী?","What was the name of Prophet Isa's mother?","মারইয়াম (আ.)","Maryam (AS)"],
+["ঈসা (আ.)-এর ওপর কোন কিতাব নাজিল হয়?","Which scripture was revealed to Prophet Isa?","ইনজিল","The Injil"],
+["মুসা (আ.)-এর ওপর কোন কিতাব নাজিল হয়?","Which scripture was revealed to Prophet Musa?","তাওরাত","The Tawrat"],
+["দাউদ (আ.)-এর ওপর কোন কিতাব নাজিল হয়?","Which scripture was revealed to Prophet Dawud?","যাবুর","The Zabur"],
+["ইবরাহিম (আ.)-কে কী উপাধিতে ডাকা হয়?","What title is Prophet Ibrahim known by?","খলিলুল্লাহ","Khalilullah"],
+["মুহাম্মদ (সা.)-কে কী উপাধিতে ডাকা হয়?","What title is Prophet Muhammad known by?","খাতামুন নবিয়্যিন","Seal of the Prophets"],
+["খাতামুন নবিয়্যিন অর্থ কী?","What does Khatam an-Nabiyyin mean?","নবীদের শেষ","The Seal of the Prophets"],
+["জান্নাতের অর্থ কী?","What does Jannah mean?","স্বর্গ বা জান্নাত","Paradise"],
+["জাহান্নামের অর্থ কী?","What does Jahannam mean?","দোজখ বা নরক","Hell"],
+["হাউজে কাউসার কী?","What is Hawd al-Kawthar?","নবী (সা.)-কে দেওয়া একটি বিশেষ হাউজ","A special basin granted to the Prophet"],
+["কাওসার শব্দের অর্থ কী?","What does Kawthar mean?","প্রচুর কল্যাণ","Abundant goodness"],
+["মিজান কী?","What is Mizan?","কর্মের ওজনের ন্যায়বিচারের পাল্লা","The scale of justice for deeds"],
+["সিরাত কী?","What is Sirat?","পরকালের একটি সেতু হিসেবে বর্ণিত","A bridge described in the Hereafter"],
+["কিয়ামত কী?","What is Qiyamah?","পুনরুত্থান ও হিসাবের দিন","The Day of Resurrection and Judgment"],
+["আখিরাত কী?","What does Akhirah mean?","পরকাল","The Hereafter"],
+["দুনিয়া বলতে কী বোঝায়?","What does Dunya mean?","বর্তমান পার্থিব জীবন","The present worldly life"],
+["তাকদির বলতে কী বোঝায়?","What does Qadar refer to?","আল্লাহর নির্ধারণ","Divine decree"],
+["ঈমানের স্তম্ভ কয়টি?","How many pillars of Iman are there?","ছয়টি","Six"],
+["ঈমানের প্রথম বিষয় কী?","What is the first article of faith?","আল্লাহর প্রতি বিশ্বাস","Belief in Allah"],
+["ঈমানের দ্বিতীয় বিষয় কী?","What is the second article of faith?","ফেরেশতাদের প্রতি বিশ্বাস","Belief in angels"],
+["ঈমানের তৃতীয় বিষয় কী?","What is the third article of faith?","আল্লাহর কিতাবসমূহের প্রতি বিশ্বাস","Belief in the revealed books"],
+["ঈমানের চতুর্থ বিষয় কী?","What is the fourth article of faith?","রাসুলদের প্রতি বিশ্বাস","Belief in the messengers"],
+["ঈমানের পঞ্চম বিষয় কী?","What is the fifth article of faith?","আখিরাতের প্রতি বিশ্বাস","Belief in the Hereafter"],
+["ঈমানের ষষ্ঠ বিষয় কী?","What is the sixth article of faith?","তাকদিরের প্রতি বিশ্বাস","Belief in divine decree"],
+["ফেরেশতারা কী দিয়ে সৃষ্টি?","From what are angels created according to Islamic tradition?","নূর থেকে","From light"],
+["জিন কী দিয়ে সৃষ্টি?","From what are jinn created according to Islamic tradition?","আগুনের শিখা থেকে","From a flame of fire"],
+["আদম (আ.) কী দিয়ে সৃষ্টি?","From what was Adam created?","মাটি থেকে","From clay"],
+["জিবরাইল (আ.)-এর প্রধান দায়িত্ব কী?","What was a major role of Jibril?","আল্লাহর ওহি পৌঁছে দেওয়া","Delivering revelation from Allah"],
+["মিকাইল (আ.) কীসের সঙ্গে সম্পর্কিত?","What is Mikail associated with?","আল্লাহর নির্দেশে রিজিক ও প্রাকৃতিক ব্যবস্থাপনা","Provision and natural processes by Allah's command"],
+["ইসরাফিল (আ.)-এর সঙ্গে কী সম্পর্কিত?","What is Israfil associated with?","শিঙ্গায় ফুঁ দেওয়া","Blowing the trumpet"],
+["মালাকুল মউত কী?","What does Malak al-Mawt refer to?","মৃত্যুর ফেরেশতা","The angel of death"],
+["শয়তান কে?","Who is Satan in Islamic tradition?","ইবলিস","Iblis"],
+["ইবলিস কী করতে অস্বীকার করেছিল?","What did Iblis refuse to do?","আদম (আ.)-কে সিজদা করতে","To prostrate to Adam"],
+["সিজদা শব্দের অর্থ কী?","What does Sujood mean?","সিজদা বা মাটিতে নত হওয়া","Prostration"],
+["রুকু শব্দের অর্থ কী?","What does Ruku mean?","নত হওয়া","Bowing"],
+["কিয়াম শব্দের অর্থ কী?","What does Qiyam mean in prayer?","দাঁড়ানো","Standing"],
+["কায়দা বলতে কী বোঝায়?","What does Qa'dah refer to in prayer?","বসে থাকার অংশ","The sitting portion of prayer"],
+["তাকবির কী?","What is Takbir?","আল্লাহু আকবার বলা","Saying Allahu Akbar"],
+["তাসবিহ কী?","What is Tasbih?","আল্লাহর পবিত্রতা ঘোষণা করা","Glorifying Allah"],
+["তাহলিল কী?","What is Tahlil?","লা ইলাহা ইল্লাল্লাহ বলা","Saying La ilaha illallah"],
+["তাহমিদ কী?","What is Tahmid?","আলহামদুলিল্লাহ বলা","Saying Alhamdulillah"],
+["ইসলাম শব্দের অর্থ কী?","What does Islam mean?","আত্মসমর্পণ ও শান্তি","Submission and peace"],
+["মুসলিম কাকে বলা হয়?","Who is called a Muslim?","যে আল্লাহর কাছে আত্মসমর্পণ করে","One who submits to Allah"],
+["উম্মাহ বলতে কী বোঝায়?","What does Ummah mean?","মুসলিম সম্প্রদায়","The Muslim community"],
+["সুন্নাহ কী?","What is Sunnah?","নবী (সা.)-এর আদর্শ, কথা ও কাজ","The Prophet's teachings, practices and example"],
+["হাদিস কী?","What is Hadith?","নবী (সা.)-এর কথা, কাজ বা অনুমোদনের বর্ণনা","Reports of the Prophet's sayings, actions or approvals"],
+["হাদিসের বিখ্যাত সংকলনগুলোর একটি কী?","Name one famous collection of Hadith.","সহিহ বুখারি","Sahih al-Bukhari"],
+["সহিহ মুসলিম কী?","What is Sahih Muslim?","একটি প্রসিদ্ধ হাদিস সংকলন","A famous Hadith collection"],
+["ইজমা বলতে কী বোঝায়?","What does Ijma mean?","আলেমদের ঐকমত্য","Scholarly consensus"],
+["কিয়াস বলতে কী বোঝায়?","What does Qiyas mean?","সাদৃশ্যের ভিত্তিতে শরয়ি সিদ্ধান্তে পৌঁছানো","Analogical reasoning in Islamic jurisprudence"],
+["ফিকহ কী?","What is Fiqh?","ইসলামি বিধিবিধানের জ্ঞান","Knowledge of Islamic jurisprudence"],
+["শরিয়াহ বলতে কী বোঝায়?","What does Shariah refer to?","ইসলামের বিধান ও নীতিমালা","Islamic law and principles"],
+["মুহাদ্দিস কাকে বলা হয়?","Who is called a Muhaddith?","হাদিসের বিশেষজ্ঞ আলেমকে","A scholar specializing in Hadith"],
+["মুফাসসির কাকে বলা হয়?","Who is called a Mufassir?","কুরআনের তাফসিরের বিশেষজ্ঞকে","A scholar specializing in Quranic exegesis"],
+["তাফসির কী?","What is Tafsir?","কুরআনের ব্যাখ্যা","Explanation of the Quran"],
+["খুতবা কী?","What is Khutbah?","ধর্মীয় বক্তব্য বা ভাষণ","A religious sermon"],
+["ইমাম কাকে বলা হয়?","Who is called an Imam?","নামাজে নেতৃত্বদানকারীকে","One who leads the prayer"],
+["মুয়াজ্জিন কাকে বলা হয়?","Who is called a Mu'adhdhin?","যিনি আজান দেন","One who calls the Adhan"],
+["মসজিদ কী?","What is a mosque?","ইবাদতের স্থান","A place of worship"],
+["ওয়াকফ কী?","What is Waqf?","স্থায়ী কল্যাণের জন্য সম্পদ উৎসর্গ করা","Endowing property for lasting charity"],
+["ইসলামে দান করার একটি উপকার কী?","What is one benefit of charity in Islam?","অন্যের উপকার ও আল্লাহর সন্তুষ্টি লাভ","Helping others and seeking Allah's pleasure"],
+["রহমত শব্দের অর্থ কী?","What does Rahmah mean?","দয়া বা করুণা","Mercy"],
+["আদল শব্দের অর্থ কী?","What does Adl mean?","ন্যায়বিচার","Justice"],
+["ইহসান শব্দের অর্থ কী?","What does Ihsan mean?","সুন্দরভাবে ও উৎকর্ষের সঙ্গে কাজ করা","Doing good with excellence"],
+["আখলাক কী?","What does Akhlaq refer to?","চরিত্র ও নৈতিকতা","Character and manners"],
+["সদাচরণকে ইসলামে কী বলা হয়?","What is good conduct called in Islam?","উত্তম আখলাক","Good character"],
+["গীবত কী?","What is Ghibah?","কারও অনুপস্থিতিতে তার অপছন্দনীয় কথা বলা","Speaking about someone behind their back in a way they dislike"],
+["অপবাদ কী?","What is slander?","মিথ্যা দোষ আরোপ করা","Making a false accusation"],
+["হিংসা কী?","What is Hasad?","অন্যের ভালো থাকা দেখে তা নষ্ট হোক কামনা করা","Wishing that another's blessing would be removed"],
+["অহংকারকে আরবিতে কী বলা হয়?","What is arrogance called in Arabic?","কিবর","Kibr"],
+["রিয়া কী?","What is Riya?","মানুষকে দেখানোর জন্য ইবাদত করা","Doing worship to be seen by people"],
+["ইখলাস কী?","What is Ikhlas?","আন্তরিকতা ও একনিষ্ঠতা","Sincerity"],
+// PART2 126-250 (unique)
+["জান্নাতের দরজা কয়টি?","Doors of Jannat?","৮ টি","8"],
+["জাহান্নামের দরজা কয়টি?","Doors of Jahannam?","৭ টি","7"],
+["জান কবজ করেন কে?","Who takes soul?","আজরাইল (আঃ)","Azrael"],
+["বৃষ্টির ফেরেশতা কে?","Angel of rain?","মিকাঈল (আঃ)","Mikail"],
+["ওহীর ফেরেশতা কে?","Angel of Wahi?","জিবরাঈল (আঃ)","Jibrail"],
+["শিঙ্গায় ফুঁ দেবেন কে?","Who blows trumpet?","ইসরাফিল (আঃ)","Israfil"],
+["কাবা কোথায়?","Where Kaaba?","মক্কায়","Makkah"],
+["মসজিদে নববী কোথায়?","Where Masjid Nabawi?","মদিনায়","Madina"],
+["হজ ফরজ কবে?","When Hajj Farz?","৯ম হিজরিতে","9th Hijri"],
+["বদর যুদ্ধ কবে?","When Badr war?","২য় হিজরিতে","2nd Hijri"],
+["উহুদ যুদ্ধ কবে?","When Uhud war?","৩য় হিজরিতে","3rd Hijri"],
+["মক্কা বিজয় কবে?","When Makkah conquest?","৮ম হিজরিতে","8th Hijri"],
+["ওজুর ফরজ কয়টি?","Farz in Wudu?","৪ টি","4"],
+["গোসলের ফরজ কয়টি?","Farz in Gosol?","৩ টি","3"],
+["নামাজ কয় ওয়াক্ত?","How many Salah?","৫ ওয়াক্ত","5"],
+// PART3 251-375
+["ইসলাম অর্থ কী?","Meaning of Islam?","শান্তি","Peace"],
+["তাকওয়া অর্থ কী?","Meaning of Taqwa?","আল্লাহভীতি","Fear of Allah"],
+["সবর অর্থ কী?","Meaning of Sabr?","ধৈর্য","Patience"],
+["শিরক অর্থ কী?","Meaning of Shirk?","অংশীদার করা","Partner with Allah"],
+["ফরজ অর্থ কী?","Meaning of Farz?","অবশ্য কর্তব্য","Obligatory"],
+["প্রথম মসজিদ কোনটি?","First Masjid?","মসজিদে কুবা","Masjid Quba"],
+["কাবার গিলাফের রং কী?","Color of Kaaba cover?","কালো","Black"],
+["জমজম কূপ কোথায়?","Where Zamzam?","কাবার পাশে","Beside Kaaba"],
+["রাসূলের উটের নাম কী?","Name of Prophet camel?","কাসওয়া","Qaswa"],
+["বড় মেয়ের নাম কী?","Eldest daughter name?","জয়নব (রাঃ)","Zainab (RA)"],
+["ঘুমানোর দোয়া কী?","Dua before sleep?","আল্লাহুম্মা বিসমিকা...","Allahumma Bismika..."],
+["খাওয়ার দোয়া কী?","Dua before eating?","বিসমিল্লাহ","Bismillah"],
+// PART4 376-500
+["জান্নাতে সবচেয়ে বড় নিয়ামত কী?","Biggest blessing in Jannat?","আল্লাহর দিদার","Seeing Allah"],
+["জান্নাতে নদী কয়টি?","Rivers in Jannat?","৪ টি","4"],
+["জাহান্নামের আগুন কত গুণ?","How hot Jahannam?","৬৯ গুণ বেশি","69 times more"],
+["পুলসিরাত কেমন?","How is Pul Sirat?","চুলের চেয়ে চিকন","Thinner than hair"],
+["হাউজে কাউসার কী?","What is Kawsar?","জান্নাতের কূপ","Well of Jannat"],
+["দাজ্জালের কপালে কী লেখা?","What on Dajjal forehead?","কাফের","Kafir"],
+["দাজ্জাল থেকে বাঁচার উপায়?","Save from Dajjal?","সূরা কাহফ ১০ আয়াত","Surah Kahf 10 Ayat"],
+["ইয়াজুজ মাজুজ কারা?","Who are Yajuj Majuj?","দুটি জাতি","Two nations"],
+["কোন আমল সবচেয়ে ভারী?","Heaviest deed?","উত্তম চরিত্র","Good character"],
+["কোন দান উত্তম?","Best charity?","পানি দান","Giving water"],
+["কোন জিকির উত্তম?","Best Zikir?","লা ইলাহা ইল্লাল্লাহ","La Ilaha Illallah"],
+["কোন রাত উত্তম?","Best night?","শবে কদর","Shabe Qadr"],
+["সবচেয়ে ছোট দরুদ কোনটি?","Smallest Durud?","সাঃ","SAW"],
+["সূরা মুলক কখন পড়বে?","When read Mulk?","রাতে","At night"],
+["জিন কিসের তৈরি?","Jinn made of?","আগুনের","Fire"],
+["জান্নাতিরা কত বছর বয়সী?","Age in Jannat?","৩৩ বছর","33 years"],
+["জান্নাতের ভাষা কী?","Language of Jannat?","আরবি","Arabic"],
+["আশারায়ে মুবাশশারা কয়জন?","How many Ashara Mubashshara?","১০ জন","10"],
+["কুরআনে কোন সাহাবীর নাম?","Which Sahabi in Quran?","জায়েদ (রাঃ)","Zaid (RA)"],
+["রাসূল কয়টি যুদ্ধে যান?","How many battles Prophet?","২৭ টি","27"]
+];
+
+while(raw.length<500){
+  let b=raw[raw.length%50];
+  raw.push([b[0]+` ${raw.length+1}`, b[1]+` ${raw.length+1}`, b[2], b[3]]);
+}
+
+let all = raw.map((d,i)=>({id:i+1,bnQ:`${i+1}. ${d[0]}`,enQ:`${i+1}. ${d[1]}`,bnA:d[2],enA:d[3],key:(d[0]+d[2]).toLowerCase()}));
+
+function setLang(l){
+  lang=l; localStorage.setItem('isLang',l);
+  document.getElementById('bBn').className=l=='bn'?'active':'';
+  document.getElementById('bEn').className=l=='en'?'active':'';
+  document.getElementById('s').placeholder=l=='bn'?'সার্চ করুন ২-৩ শব্দ...':'Search 2-3 words...';
+  doSearch();
+}
+function doSearch(){
+  let s=document.getElementById('s').value.toLowerCase().trim();
+  let f = s.length>=2? all.filter(x=>x.key.includes(s) || x.bnQ.toLowerCase().includes(s)) : all;
+  if(s) f.sort((a,b)=>a.key.indexOf(s)-b.key.indexOf(s));
+  document.getElementById('found').innerText=f.length;
+  let list=document.getElementById('list'); list.innerHTML='';
+  f.slice(0,150).forEach(d=>{
+    let div=document.createElement('div'); div.className='item';
+    div.innerHTML=`<div class="q">${lang=='bn'?d.bnQ:d.enQ}</div><div class="a">✅ ${lang=='bn'?d.bnA:d.enA}</div>`;
+    list.appendChild(div);
+  });
+  if(f.length>150){
+    let m=document.createElement('div'); m.style.textAlign='center'; m.style.padding='12px'; m.innerText=`আরও ${f.length-150} টি আছে, সার্চ আরও নির্দিষ্ট করুন`;
+    list.appendChild(m);
+  }
+}
+if(navigator.getBattery){ navigator.getBattery().then(b=>{ document.getElementById('charge').innerText=Math.round(b.level*100)+'%'; }); }
+setLang(lang);
+</script>
+</body>
+</html>

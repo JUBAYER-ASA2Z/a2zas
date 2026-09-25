@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>জরুরি নাম্বার - JUBAYER</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>*{font-family:'Hind Siliguri'} body{background:#050505}</style>
+</head>
+<body class="p-3 pb-28">
+<div class="max-w-[650px] mx-auto">
+<!-- Top Bar -->
+<div class="flex justify-between items-center py-3">
+<div class="flex gap-2">
+<a href="index.html" class="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center font-black text-[20px]">⌂</a>
+<a href="index.html" class="w-12 h-12 rounded-full bg-[#1a1a1a] border border-zinc-700 text-white flex items-center justify-center font-black text-[18px]">✕</a>
+</div>
+<h2 class="text-white font-black text-[15px]">📞 জরুরি নাম্বার</h2>
+<div class="w-10"></div>
+</div>
+
+<!-- Search -->
+<div class="relative mt-3 mb-5">
+<span class="absolute left-4 top-3.5 text-zinc-400">🔍</span>
+<input id="search" oninput="doSearch()" placeholder="নাম লিখে সার্চ করুন - বাংলা / English..." class="w-full bg-[#111] border border-zinc-800 rounded-[14px] pl-11 pr-4 py-3.5 text-white text-[13px] outline-none focus:border-yellow-400">
+</div>
+
+<!-- Tabs -->
+<div class="grid grid-cols-2 gap-3 mb-5">
+<button id="btn1" onclick="showTab('emergency')" class="bg-yellow-400 text-black font-black py-3 rounded-[12px] text-[13px]">🚨 জরুরি সেবা / Emergency</button>
+<button id="btn2" onclick="showTab('bank')" class="bg-[#111] border border-zinc-800 text-white font-bold py-3 rounded-[12px] text-[13px]">🏦 ব্যাংক নাম্বার / Bank</button>
+</div>
+
+<div id="list" class="space-y-3"></div>
+
+<div class="mt-10 text-center border-t border-zinc-800 pt-6">
+<p class="text-zinc-500 text-[11px]">Developed with ❤️</p>
+<p class="text-white font-black text-[13px] mt-1">Developer Qari MD Jubayer Ahmed Siyam</p>
+</div>
+</div>
+
+<script>
+const emergency=[
+{nameBn:"জাতীয় জরুরি সেবা", nameEn:"National Emergency Service", num:"999"},
+{nameBn:"সরকারি তথ্য ও সেবা", nameEn:"Govt Info & Service", num:"333"},
+{nameBn:"নারী নির্যাতন প্রতিরোধ", nameEn:"Women Helpline", num:"109"},
+{nameBn:"শিশু সহায়তা হটলাইন", nameEn:"Child Helpline", num:"1098"},
+{nameBn:"দুদক হটলাইন", nameEn:"Anti-Corruption Commission", num:"106"},
+{nameBn:"ফায়ার সার্ভিস", nameEn:"Fire Service", num:"102"},
+{nameBn:"পুলিশ হেল্পলাইন", nameEn:"Police Helpline", num:"100"},
+{nameBn:"স্বাস্থ্য বাতায়ন", nameEn:"Health Helpline", num:"16263"},
+{nameBn:"কৃষি কল সেন্টার", nameEn:"Agriculture Helpline", num:"16123"},
+{nameBn:"দুর্যোগ ব্যবস্থাপনা", nameEn:"Disaster Management", num:"1090"},
+{nameBn:"বিটিআরসি অভিযোগ", nameEn:"BTRC Complain", num:"100"},
+{nameBn:"জাতীয় পরিচয়পত্র", nameEn:"NID Helpline", num:"105"},
+{nameBn:"আইনগত সহায়তা", nameEn:"Legal Aid", num:"16430"},
+{nameBn:"জরুরি এম্বুলেন্স", nameEn:"Ambulance Service", num:"16263"},
+{nameBn:"বাংলাদেশ ব্যাংক অভিযোগ", nameEn:"Bangladesh Bank", num:"16236"},
+];
+
+const banks=[
+{nameBn:"উপায়", nameEn:"Upay", num:"16268"},
+{nameBn:"বিকাশ", nameEn:"bKash", num:"16247"},
+{nameBn:"নগদ", nameEn:"Nagad", num:"16167"},
+{nameBn:"রকেট", nameEn:"Rocket", num:"16216"},
+{nameBn:"সোনালী ব্যাংক", nameEn:"Sonali Bank", num:"16639"},
+{nameBn:"জনতা ব্যাংক", nameEn:"Janata Bank", num:"16705"},
+{nameBn:"অগ্রণী ব্যাংক", nameEn:"Agrani Bank", num:"16707"},
+{nameBn:"রূপালী ব্যাংক", nameEn:"Rupali Bank", num:"16420"},
+{nameBn:"বাংলাদেশ কৃষি ব্যাংক", nameEn:"Bangladesh Krishi Bank", num:"16402"},
+{nameBn:"ইসলামী ব্যাংক", nameEn:"Islami Bank Bangladesh", num:"16259"},
+{nameBn:"ডাচ বাংলা ব্যাংক", nameEn:"Dutch-Bangla Bank", num:"16216"},
+{nameBn:"ব্র্যাক ব্যাংক", nameEn:"BRAC Bank", num:"16221"},
+{nameBn:"ইস্টার্ন ব্যাংক", nameEn:"Eastern Bank (EBL)", num:"16230"},
+{nameBn:"সিটি ব্যাংক", nameEn:"City Bank", num:"16234"},
+{nameBn:"প্রাইম ব্যাংক", nameEn:"Prime Bank", num:"16218"},
+{nameBn:"ব্যাংক এশিয়া", nameEn:"Bank Asia", num:"16205"},
+{nameBn:"এনসিসি ব্যাংক", nameEn:"NCC Bank", num:"16570"},
+{nameBn:"মার্কেন্টাইল ব্যাংক", nameEn:"Mercantile Bank", num:"16242"},
+{nameBn:"যমুনা ব্যাংক", nameEn:"Jamuna Bank", num:"16717"},
+{nameBn:"উত্তরা ব্যাংক", nameEn:"Uttara Bank", num:"16655"},
+{nameBn:"পূবালী ব্যাংক", nameEn:"Pubali Bank", num:"16253"},
+{nameBn:"আল-আরাফাহ ইসলামী ব্যাংক", nameEn:"Al-Arafah Islami Bank", num:"16210"},
+{nameBn:"শাহজালাল ইসলামী ব্যাংক", nameEn:"Shahjalal Islami Bank", num:"16707"},
+{nameBn:"সোশ্যাল ইসলামী ব্যাংক", nameEn:"SIBL", num:"16467"},
+{nameBn:"ফার্স্ট সিকিউরিটি ইসলামী ব্যাংক", nameEn:"First Security Islami Bank", num:"16262"},
+{nameBn:"আইএফআইসি ব্যাংক", nameEn:"IFIC Bank", num:"16255"},
+{nameBn:"ন্যাশনাল ব্যাংক", nameEn:"National Bank", num:"16217"},
+{nameBn:"ওয়ান ব্যাংক", nameEn:"One Bank", num:"16269"},
+{nameBn:"ট্রাস্ট ব্যাংক", nameEn:"Trust Bank", num:"16201"},
+{nameBn:"মিউচুয়াল ট্রাস্ট ব্যাংক", nameEn:"Mutual Trust Bank (MTB)", num:"16219"},
+{nameBn:"প্রিমিয়ার ব্যাংক", nameEn:"Premier Bank", num:"16279"},
+{nameBn:"সাউথইস্ট ব্যাংক", nameEn:"Southeast Bank", num:"16206"},
+{nameBn:"ঢাকা ব্যাংক", nameEn:"Dhaka Bank", num:"16474"},
+{nameBn:"এবি ব্যাংক", nameEn:"AB Bank", num:"16207"},
+{nameBn:"ইউনাইটেড কমার্শিয়াল ব্যাংক", nameEn:"UCB", num:"16419"},
+{nameBn:"স্ট্যান্ডার্ড চার্টার্ড ব্যাংক", nameEn:"Standard Chartered", num:"16233"},
+{nameBn:"এইচএসবিসি ব্যাংক", nameEn:"HSBC Bangladesh", num:"16240"},
+{nameBn:"সিটি ব্যাংক এনএ", nameEn:"Citi Bank NA", num:"09613000333"},
+{nameBn:"কমার্শিয়াল ব্যাংক অব সিলন", nameEn:"Commercial Bank of Ceylon", num:"16649"},
+{nameBn:"হাবিব ব্যাংক", nameEn:"Habib Bank", num:"02-9550412"},
+{nameBn:"স্টেট ব্যাংক অব ইন্ডিয়া", nameEn:"State Bank of India", num:"02-9563992"},
+{nameBn:"উরি ব্যাংক", nameEn:"Woori Bank", num:"02-8813270"},
+{nameBn:"ন্যাশনাল ব্যাংক অব পাকিস্তান", nameEn:"National Bank of Pakistan", num:"02-9556246"},
+{nameBn:"মধুমতি ব্যাংক", nameEn:"Modhumoti Bank", num:"16248"},
+{nameBn:"মেঘনা ব্যাংক", nameEn:"Meghna Bank", num:"16711"},
+{nameBn:"এনআরবি ব্যাংক", nameEn:"NRB Bank", num:"16430"},
+{nameBn:"এনআরবি কমার্শিয়াল ব্যাংক", nameEn:"NRBC Bank", num:"16485"},
+{nameBn:"সাউথ বাংলা এগ্রিকালচার ব্যাংক", nameEn:"South Bangla Bank", num:"16641"},
+{nameBn:"ইউনিয়ন ব্যাংক", nameEn:"Union Bank", num:"16285"},
+{nameBn:"গ্লোবাল ইসলামী ব্যাংক", nameEn:"Global Islami Bank", num:"16442"},
+{nameBn:"বেঙ্গল কমার্শিয়াল ব্যাংক", nameEn:"Bengal Commercial Bank", num:"16731"},
+{nameBn:"পদ্মা ব্যাংক", nameEn:"Padma Bank", num:"16652"},
+{nameBn:"আইসিবি ইসলামিক ব্যাংক", nameEn:"ICB Islamic Bank", num:"16458"},
+{nameBn:"রাজশাহী কৃষি উন্নয়ন ব্যাংক", nameEn:"Rajshahi Krishi Bank", num:"0721-772435"},
+{nameBn:"বাংলাদেশ ডেভেলপমেন্ট ব্যাংক", nameEn:"BDBL", num:"02-9580360"},
+];
+
+let current='emergency';
+function render(data){
+ document.getElementById('list').innerHTML = data.map(i=>`
+  <div class="bg-[#111] border border-zinc-800 rounded-[16px] p-4 flex justify-between items-center">
+   <div class="flex-1">
+    <p class="text-white font-bold text-[13px]">${i.nameBn}</p>
+    <p class="text-zinc-400 text-[11px]">${i.nameEn}</p>
+   </div>
+   <div class="flex items-center gap-2">
+    <a href="tel:${i.num}" class="bg-white text-black font-black px-4 py-2 rounded-full text-[13px]">${i.num}</a>
+    <a href="tel:${i.num}" class="w-9 h-9 bg-green-500 rounded-full flex items-center justify-center">📞</a>
+   </div>
+  </div>`).join('');
+}
+function showTab(t){
+ current=t;
+ document.getElementById('btn1').className = t=='emergency'? 'bg-yellow-400 text-black font-black py-3 rounded-[12px] text-[13px]' : 'bg-[#111] border border-zinc-800 text-white font-bold py-3 rounded-[12px] text-[13px]';
+ document.getElementById('btn2').className = t=='bank'? 'bg-yellow-400 text-black font-black py-3 rounded-[12px] text-[13px]' : 'bg-[#111] border border-zinc-800 text-white font-bold py-3 rounded-[12px] text-[13px]';
+ render(t=='emergency'? emergency : banks);
+}
+function doSearch(){
+ let q=document.getElementById('search').value.toLowerCase();
+ let all = current=='emergency'? emergency : banks;
+ let f = all.filter(i=> i.nameBn.toLowerCase().includes(q) || i.nameEn.toLowerCase().includes(q) || i.num.includes(q));
+ render(f);
+}
+render(emergency);
+</script>
+</body>
+</html>
