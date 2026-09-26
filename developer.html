@@ -27,7 +27,7 @@
 <input id="adTitle" placeholder="Title" class="w-full bg-gray-700 p-2 rounded mb-2">
 <input id="adLink" placeholder="Link https://" class="w-full bg-gray-700 p-2 rounded mb-2">
 <input id="adImage" type="file" accept="image/*" class="w-full bg-gray-700 p-2 rounded mb-2">
-<p id="adStatus" class="text-xs mb-2 text-gray-400">যেকোনো সাইজ দেওয়া যাবে</p>
+<p id="adStatus" class="text-xs mb-2 text-gray-400">ছবি অটো ছোট হবে 15KB - 500 আসবে না</p>
 <button onclick="addAd()" class="w-full bg-purple-600 p-2 rounded">Add Ad - সবাই দেখবে</button>
 <div id="adsList" class="mt-3 space-y-2"></div>
 </div>
@@ -36,14 +36,13 @@
 <div class="bg-gray-800 p-4 rounded-xl mb-4">
 <h2 class="font-bold mb-2">Home Notice + Color</h2>
 <input id="noticeText" placeholder="নোটিশ লিখুন" class="w-full bg-gray-700 p-2 rounded mb-2">
-<input id="noticeColor" type="color" value="#fef9c3" class="w-full h-10 rounded mb-2">
+<input id="noticeColor" type="color" value="#2563eb" class="w-full h-10 rounded mb-2">
 <button onclick="addNotice()" class="w-full bg-yellow-600 p-2 rounded">Add Notice</button>
 <div id="noticeList" class="mt-3 space-y-1"></div>
 </div>
-
 <!-- ACCOUNTS -->
 <div class="bg-gray-800 p-4 rounded-xl mb-4">
-<h2 class="font-bold mb-2">All Accounts</h2>
+<h2 class="font-bold mb-2">All Accounts (Serial)</h2>
 <button onclick="loadAccounts()" class="bg-blue-600 px-3 py-1 rounded text-sm mb-3">Replace / Refresh</button>
 <div id="accountsList" class="space-y-2"></div>
 </div>
@@ -59,11 +58,12 @@
 <div id="personalList" class="mt-3"></div>
 </div>
 
-<button onclick="location.href='menu.html'" class="w-full bg-gray-700 p-3 rounded mt-6">← Menu তে ফিরুন</button>
+<button onclick="location.href='index.html'" class="w-full bg-gray-700 p-3 rounded mt-2">← Home</button>
+<button onclick="location.href='menu.html'" class="w-full bg-gray-800 p-3 rounded mt-2">← Menu তে ফিরুন</button>
 </div>
 
 <script>
-const API="https://script.google.com/macros/s/AKfycbzbnWdoV_5z8XHokG41lIZgE6lQvt2qZRDeQeHnp6LaojGj_l_gHp0mQwGsv7bPtHGc/exec";
+const API="https://script.google.com/macros/s/AKfycbyt07t35S4oRxDY4Ai-wYXlaejv70wQ1-N6Rotz_4-WKZoM9QqGSC0Q8JArx7C6xvw0/exec";
 if(localStorage.getItem('isDev')!=='1'){ location.href='menu.html'; }
 let adData="";
 
@@ -71,20 +71,20 @@ document.getElementById('adImage').addEventListener('change',e=>{
  let f=e.target.files[0]; if(!f) return;
  let r=new FileReader(); r.onload=ev=>{
   let img=new Image(); img.onload=()=>{
-   let c=document.createElement('canvas'); let max=600; let w=img.width, h=img.height;
+   let c=document.createElement('canvas');
+   let max=350; let w=img.width, h=img.height;
    if(w>max||h>max){ if(w>h){h*=max/w;w=max;}else{w*=max/h;h=max;} }
    c.width=w; c.height=h; c.getContext('2d').drawImage(img,0,0,w,h);
-   adData=c.toDataURL('image/jpeg',0.6);
-   document.getElementById('adStatus').innerText="Ready "+Math.round(adData.length*0.75/1024)+"KB ✅";
+   adData=c.toDataURL('image/jpeg',0.35);
+   document.getElementById('adStatus').innerText="Ready "+Math.round(adData.length*0.75/1024)+"KB Safe ✅ - 500 আসবে না";
   }; img.src=ev.target.result;
  }; r.readAsDataURL(f);
 });
 
-function post(a,d){ let fd=new FormData(); fd.append('action',a); for(let k in d) fd.append(k,d[k]); return fetch(API,{method:'POST',body:fd}).then(r=>r.json()); }
-function get(a){ return fetch(API+"?action="+a).then(r=>r.json()); }
+function post(a,d){ let fd=new FormData(); fd.append('action',a); for(let k in d) fd.append(k,d[k]); return fetch(API,{method:'POST',body:fd}).then(r=>r.json()).catch(()=>({error:"Network"})); }
+function get(a){ return fetch(API+"?action="+a).then(r=>r.json()).catch(()=>[]); }
 
 function loadVisits(){
- // Visit count
  let v=JSON.parse(localStorage.getItem('visitData')||'{}');
  let today=new Date().toDateString();
  if(v.date!==today){ v={date:today, today:1, total:(v.total||0)+1}; } else { v.today++; v.total++; }
@@ -92,58 +92,64 @@ function loadVisits(){
  document.getElementById('todayVisit').innerText=v.today;
  document.getElementById('totalVisit').innerText=v.total;
  document.getElementById('liveVisit').innerText=Math.floor(Math.random()*3+1);
- // Server total
  get('getVisits').then(d=>{ if(d.total) document.getElementById('totalVisit').innerText=d.total+" (Server)"; });
- post('addVisit',{}).then(()=>{});
+ post('addVisit',{deviceId:'dev'}).then(()=>{});
 }
 function addAd(){
- if(!adData){ alert("ছবি দিন"); return; }
- post('addAd',{title:adTitle.value, link:adLink.value, image:adData}).then(r=>{ alert("Ad Added ✅"); loadAds(); adData=""; });
+ if(!adData){ alert("ছবি সিলেক্ট করুন"); return; }
+ if(!adTitle.value){ alert("Title দিন"); return; }
+ document.getElementById('adStatus').innerText="Uploading...";
+ post('addAd',{title:adTitle.value, link:adLink.value, image:adData}).then(r=>{
+  if(r.error){ alert("Error: "+r.error); return; }
+  alert("Ad Added ✅ Live হবে 15 sec পর"); loadAds(); adData=""; adTitle.value=""; adLink.value="";
+  document.getElementById('adStatus').innerText="Done ✅";
+ });
 }
 function loadAds(){
  get('getAds').then(list=>{
   let h=""; list.forEach(a=>{
-   h+=`<div class="bg-gray-700 p-2 rounded flex gap-2 items-center"><img src="${a.image}" class="w-12 h-12 object-cover rounded"><div class="flex-1"><p class="text-sm">${a.title}</p><a href="${a.link}" class="text-xs text-blue-300">${a.link}</a></div><button onclick="delAd('${a.id}')" class="bg-red-600 px-2 py-1 rounded text-xs">Delete</button></div>`;
-  }); document.getElementById('adsList').innerHTML=h;
+   h+=`<div class="bg-gray-700 p-2 rounded flex gap-2 items-center"><img src="${a.image}" class="w-12 h-12 object-cover rounded"><div class="flex-1"><p class="text-sm">${a.title}</p><a href="${a.link}" class="text-xs text-blue-300 truncate">${a.link}</a></div><button onclick="delAd('${a.id}')" class="bg-red-600 px-2 py-1 rounded text-xs">Delete</button></div>`;
+  }); document.getElementById('adsList').innerHTML=h||"<p class='text-xs text-gray-400'>কোন Ads নেই</p>";
  });
 }
-function delAd(id){ if(confirm("Delete?")) post('deleteAd',{id:id}).then(()=>loadAds()); }
+function delAd(id){ if(confirm("Delete এই Ad?")) post('deleteAd',{id:id}).then(()=>loadAds()); }
 
 function addNotice(){
+ if(!noticeText.value) return;
  let color=document.getElementById('noticeColor').value;
- post('addNotice',{text:noticeText.value, color:color}).then(()=>{ loadNotice(); });
+ post('addNotice',{text:noticeText.value, color:color}).then(()=>{ noticeText.value=""; loadNotice(); alert("Notice Added ✅"); });
 }
 function loadNotice(){
  get('getNotice').then(list=>{
   let h=""; list.forEach(n=>{
-   h+=`<div class="flex justify-between bg-gray-700 p-2 rounded text-sm"><span style="color:${n.color||'#fff'}">${n.text}</span><button onclick="delNotice('${n.id}')" class="bg-red-600 px-2 rounded text-xs">X</button></div>`;
+   h+=`<div class="flex justify-between bg-gray-700 p-2 rounded text-sm items-center"><span style="color:${n.color||'#fff'}">${n.text}</span><button onclick="delNotice('${n.id}')" class="bg-red-600 px-2 rounded text-xs ml-2">X</button></div>`;
   }); document.getElementById('noticeList').innerHTML=h;
  });
 }
-function delNotice(id){ post('deleteNotice',{id:id}).then(()=>loadNotice()); }
+function delNotice(id){ if(confirm("Delete?")) post('deleteNotice',{id:id}).then(()=>loadNotice()); }
 
 function loadAccounts(){
  get('getUsers').then(list=>{
   let h=""; list.forEach((u,i)=>{
-   h+=`<div class="bg-gray-700 p-2 rounded flex justify-between items-center"><span class="text-sm">${i+1}. ${u.email} - ${u.name} - Pass: ${u.pass||'***'}</span><div class="flex gap-1"><button onclick="sendTo('${u.email}')" class="bg-blue-600 px-2 py-1 rounded text-xs"><i class="fa-solid fa-paper-plane"></i></button><button onclick="delUser('${u.email}')" class="bg-red-600 px-2 py-1 rounded text-xs"><i class="fa-solid fa-trash"></i></button></div></div>`;
-  }); document.getElementById('accountsList').innerHTML=h;
+   h+=`<div class="bg-gray-700 p-2 rounded flex justify-between items-center"><span class="text-[12px]">${i+1}. ${u.email} | ${u.name} | Pass: ${u.pass}</span><div class="flex gap-1"><button onclick="sendTo('${u.email}')" class="bg-blue-600 px-2 py-1 rounded text-xs"><i class="fa-solid fa-paper-plane"></i></button><button onclick="delUser('${u.email}')" class="bg-red-600 px-2 py-1 rounded text-xs"><i class="fa-solid fa-trash"></i></button></div></div>`;
+  }); document.getElementById('accountsList').innerHTML=h||"<p class='text-xs'>No Users</p>";
  });
 }
 function delUser(email){ if(confirm("Delete "+email+"?")) post('deleteUser',{email:email}).then(()=>loadAccounts()); }
 function sendTo(email){ document.getElementById('personalEmail').value=email; window.scrollTo(0,document.body.scrollHeight); }
-
-function sendGlobalNotice(){ post('addNotice',{text:globalNoticeText.value}).then(()=>{ alert("Global Sent ✅"); }); }
+function sendGlobalNotice(){ if(!globalNoticeText.value) return; post('addNotice',{text:globalNoticeText.value, color:"#2563eb"}).then(()=>{ alert("Global Notice Sent ✅"); globalNoticeText.value=""; loadNotice(); }); }
 function sendPersonal(){
- post('addPersonalNotice',{email:personalEmail.value, text:personalText.value}).then(()=>{ alert("Personal Sent to "+personalEmail.value); loadPersonal(); });
+ if(!personalEmail.value ||!personalText.value){ alert("Email ও Notice লিখুন"); return; }
+ post('addPersonalNotice',{email:personalEmail.value, text:personalText.value}).then(()=>{ alert("Personal Sent to "+personalEmail.value+" ✅"); personalText.value=""; loadPersonal(); });
 }
 function loadPersonal(){
  get('getAllPersonalNotices').then(list=>{
   let h=""; list.forEach(n=>{
-   h+=`<div class="bg-gray-700 p-2 rounded text-xs flex justify-between"><span>${n.email}: ${n.text}</span><button onclick="delPNotice('${n.id}')" class="bg-red-600 px-1 rounded">X</button></div>`;
+   h+=`<div class="bg-gray-700 p-2 rounded text-xs flex justify-between items-center"><span>${n.email}: ${n.text}</span><button onclick="delPNotice('${n.id}')" class="bg-red-600 px-2 rounded ml-2">X</button></div>`;
   }); document.getElementById('personalList').innerHTML=h;
  });
 }
-function delPNotice(id){ post('deletePersonalNotice',{id:id}).then(()=>loadPersonal()); }
+function delPNotice(id){ if(confirm("Delete?")) post('deletePersonalNotice',{id:id}).then(()=>loadPersonal()); }
 
 loadVisits(); loadAds(); loadNotice(); loadAccounts(); loadPersonal();
 </script>
