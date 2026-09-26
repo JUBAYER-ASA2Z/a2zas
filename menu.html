@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Menu - A-S A 2 Z</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{font-family:'Hind Siliguri';}
+body{margin:0;background:#000;color:#fff}
+.logo-a2z{font-family:'Poppins';font-weight:400;color:#fff;font-size:24px;letter-spacing:2px}
+.logo-as{font-family:'Poppins';font-weight:600;background:#ffeb00;color:#000;padding:2px 12px;border-radius:8px;margin-left:8px;font-size:18px}
+</style>
+</head>
+<body class="bg-black min-h-screen">
+<div class="max-w-[650px] mx-auto bg-black min-h-screen text-white">
+
+<!-- HEADER -->
+<div class="p-6 flex justify-between items-center border-b border-white/10 sticky top-0 bg-black z-50">
+<div class="flex items-center">
+<button onclick="location.href='index.html'" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mr-3">←</button>
+<h2 class="font-black text-white text-[18px]">My Account</h2>
+</div>
+<button onclick="openSettings()" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">⚙️</button>
+</div>
+
+<div id="accountContent" class="p-6">
+<!-- JS দিয়ে লোড হবে -->
+</div>
+
+</div>
+
+<!-- SETTINGS MODAL -->
+<div id="settingsModal" class="fixed inset-0 z-[100] hidden overflow-y-auto bg-zinc-50">
+<div class="max-w-[650px] mx-auto bg-white min-h-screen">
+<div class="bg-zinc-900 text-white p-6 flex justify-between items-center">
+<h2 class="font-black text-[18px]">⚙️ Settings</h2>
+<button onclick="closeSettings()" class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center font-bold">✕</button>
+</div>
+<div class="p-6 space-y-5">
+<!-- DARK MODE -->
+<div class="bg-zinc-50 border border-zinc-200 rounded-[16px] p-5 flex justify-between items-center">
+<div>
+<h3 class="font-black text-[15px] text-black">🌙 ডার্ক মোড</h3>
+<p class="text-[11px] text-zinc-500 mt-1">Enable dark theme</p>
+</div>
+<button onclick="toggleDark()" class="w-[60px] h-8 rounded-full bg-zinc-300 relative">
+<span id="darkDot" class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all"></span>
+</button>
+</div>
+<!-- LANGUAGE -->
+<div class="bg-blue-50 border border-blue-100 rounded-[16px] p-5">
+<h3 class="font-black text-[15px] text-black">🌐 Language / ভাষা</h3>
+<div class="flex gap-3 mt-4">
+<button onclick="setLang('bn')" id="btnBn" class="flex-1 py-4 rounded-[14px] font-black bg-black text-white border-2 border-black">বাংলা</button>
+<button onclick="setLang('en')" id="btnEn" class="flex-1 py-4 rounded-[14px] font-black bg-white border-2 border-zinc-200 text-black">English</button>
+</div>
+</div>
+<!-- HIDDEN DEV TRIGGER -->
+<div class="pt-16 flex flex-col items-center">
+<div id="hiddenDevIcon" class="w-24 h-24 rounded-[24px] bg-zinc-100 flex items-center justify-center text-[36px] border-2 border-dashed border-zinc-300 cursor-pointer active:scale-95">⚙️</div>
+<p class="text-[11px] text-zinc-400 mt-3 font-bold">2s এর ভিতর 3 বার ট্যাপ করুন</p>
+<p class="text-[10px] text-zinc-300 mt-1">Developer Panel</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- DEV CODE MODAL - কোড কোথাও দেখা যাবে না -->
+<div id="devCodeModal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-6">
+<div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeDevCode()"></div>
+<div class="relative w-full max-w-[320px] bg-white rounded-[24px] p-7 text-center shadow-2xl">
+<div class="w-16 h-16 rounded-full bg-zinc-900 mx-auto flex items-center justify-center text-[28px]">🔐</div>
+<h3 class="font-black text-black text-[18px] mt-4">Developer Code</h3>
+<p class="text-[11px] text-zinc-500 mt-1">শুধুমাত্র ডেভেলপারের জন্য</p>
+<input id="devCodeInput" type="password" placeholder="••••" class="w-full mt-6 p-4 rounded-[14px] bg-zinc-100 border-2 border-zinc-200 text-center font-black tracking-[8px] text-black outline-none focus:border-black text-[20px]">
+<button onclick="checkDevCode()" class="w-full mt-4 bg-black text-white font-black py-4 rounded-[14px] text-[14px]">UNLOCK</button>
+<button onclick="closeDevCode()" class="w-full mt-2 bg-zinc-100 text-black font-bold py-3 rounded-[14px] text-[12px]">Cancel</button>
+</div>
+</div>
+<!-- DEVELOPER PANEL FULL -->
+<div id="devPanel" class="fixed inset-0 z-[300] hidden overflow-y-auto bg-zinc-50">
+<div class="max-w-[650px] mx-auto bg-white min-h-screen">
+<div class="bg-black text-white p-6 flex justify-between items-center">
+<div>
+<h2 class="font-black text-[18px]">👨‍💻 Developer Panel</h2>
+<p class="text-[11px] text-zinc-400 mt-1">A-S A 2 Z Full Control</p>
+</div>
+<button onclick="closeDevPanel()" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center font-bold">✕</button>
+</div>
+<div class="p-5 space-y-6">
+<div class="grid grid-cols-3 gap-3">
+<div class="bg-blue-50 border border-blue-100 rounded-[14px] p-4 text-center"><p class="text-[10px] text-zinc-500 font-bold">TODAY</p><p id="statToday" class="font-black text-[22px] text-black mt-1">0</p></div>
+<div class="bg-green-50 border border-green-100 rounded-[14px] p-4 text-center"><p class="text-[10px] text-zinc-500 font-bold">TOTAL VISIT</p><p id="statTotal" class="font-black text-[22px] text-black mt-1">0</p></div>
+<div class="bg-yellow-50 border border-yellow-200 rounded-[14px] p-4 text-center"><p class="text-[10px] text-zinc-500 font-bold">USERS</p><p id="statUsers" class="font-black text-[22px] text-black mt-1">0</p></div>
+</div>
+
+<!-- ADS MANAGEMENT - Google Sheet এ যাবে, সবাই দেখবে -->
+<div class="bg-pink-50 border-2 border-pink-200 rounded-[16px] p-5">
+<h3 class="font-black text-black text-[14px]">📢 বিজ্ঞাপন - Add/Delete (সবাই দেখবে)</h3>
+<input id="adTitle" placeholder="বিজ্ঞাপনের টাইটেল" class="w-full mt-4 p-4 rounded-[12px] bg-white border border-pink-100 text-black text-[14px]">
+<input id="adLink" placeholder="লিংক https://..." class="w-full mt-2 p-4 rounded-[12px] bg-white border border-pink-100 text-black text-[14px]">
+<input type="file" id="adImage" accept="image/*" class="w-full mt-2 p-3 rounded-[12px] bg-white border border-pink-100 text-black text-[12px]">
+<button onclick="addAd()" class="w-full mt-4 bg-[#ff3a7a] text-white font-black py-4 rounded-[14px]">+ বিজ্ঞাপন যুক্ত করুন</button>
+<div id="adminAdList" class="mt-4 space-y-2"></div>
+</div>
+
+<!-- GLOBAL NOTICE - সবাই দেখবে -->
+<div class="bg-yellow-50 border-2 border-yellow-400 rounded-[16px] p-5">
+<h3 class="font-black text-black text-[13px]">📢 Global Notice - সবার Home এ যাবে</h3>
+<input id="globalNoticeInput" placeholder="নোটিশ লিখুন - সবাই দেখবে" class="w-full mt-4 p-4 border border-yellow-200 rounded-[12px] bg-white text-black text-[14px]">
+<div class="flex gap-2 mt-3">
+<button onclick="setNoticeColor('#ffeb00')" class="flex-1 h-12 rounded-full bg-[#ffeb00] border-2 border-black">💛</button>
+<button onclick="setNoticeColor('#3b82f6')" class="flex-1 h-12 rounded-full bg-blue-500">💙</button>
+<button onclick="setNoticeColor('#ef4444')" class="flex-1 h-12 rounded-full bg-red-500">❤️</button>
+<button onclick="setNoticeColor('#22c55e')" class="flex-1 h-12 rounded-full bg-green-500">💚</button>
+</div>
+<button onclick="saveGlobalNotice()" class="w-full mt-4 bg-black text-white py-4 rounded-[12px] font-bold text-[13px]">Save Global Notice</button>
+<div id="globalNoticeList" class="mt-4 space-y-2"></div>
+</div>
+
+<!-- ACCOUNTS -->
+<div class="bg-zinc-50 border border-zinc-200 rounded-[16px] p-5">
+<h3 class="font-black text-black text-[14px]">👤 All Accounts</h3>
+<button onclick="loadUsers()" class="w-full mt-4 bg-blue-600 text-white py-4 rounded-[12px] font-black text-[13px]">Load All Accounts</button>
+<button onclick="allowReRegister()" class="w-full mt-3 bg-yellow-400 border-2 border-black text-black py-4 rounded-[12px] font-bold text-[13px]">🔓 Allow Re-Register This Device</button>
+<div id="userList" class="mt-5 space-y-3"></div>
+</div>
+
+<!-- ALL ACCOUNT NOTICE -->
+<div class="bg-blue-50 border-2 border-blue-200 rounded-[16px] p-5">
+<h3 class="font-black text-black text-[14px]">?? All Account Notice - একসাথে সবাইকে</h3>
+<input id="allNoticeText" placeholder="সব অ্যাকাউন্টে যাবে" class="w-full mt-4 p-4 border border-blue-200 rounded-[12px] bg-white text-black text-[14px]">
+<button onclick="sendAllNotice()" class="w-full mt-4 bg-black text-white py-4 rounded-[12px] font-black text-[13px]">Send To All</button>
+<div id="allNoticeList" class="mt-4 space-y-2"></div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+const API_URL="https://script.google.com/macros/s/AKfycbw7asL2qs5CXz32wmPKaqBW3vgOHhNl2ahpgno88f6i7-Wt5SXTwJqtko6Ne0JehIr9/exec";
+let currentUser=JSON.parse(localStorage.getItem('jubayer_user')||'null');
+let tempPhoto=""; let editPhoto="";
+let currentLang=localStorage.getItem('a2z_lang')||'bn';
+
+function setLang(l){ currentLang=l; localStorage.setItem('a2z_lang',l); location.reload(); }
+function toggleDark(){ let d=localStorage.getItem('a2z_dark')==='true'; localStorage.setItem('a2z_dark',!d); alert('Dark mode ' + (!d?'ON':'OFF')); }
+
+function openSettings(){
+  document.getElementById('settingsModal').classList.remove('hidden');
+  let icon=document.getElementById('hiddenDevIcon');
+  let clickCount=0; let timer=null;
+  icon.onclick=()=>{
+    clickCount++; clearTimeout(timer);
+    timer=setTimeout(()=>{ clickCount=0; },2000);
+    if(clickCount>=3){ clickCount=0; closeSettings(); document.getElementById('devCodeModal').classList.remove('hidden'); }
+  };
+}
+function closeSettings(){ document.getElementById('settingsModal').classList.add('hidden'); }
+function closeDevCode(){ document.getElementById('devCodeModal').classList.add('hidden'); document.getElementById('devCodeInput').value=''; }
+
+// গোপন কোড চেক - কোড কোথাও UI তে দেখা যাবে না
+function checkDevCode(){
+  let code=document.getElementById('devCodeInput').value.trim();
+  // কোডটি শুধু আপনিই জানেন, কোথাও প্রদর্শন হবে না
+  if(code===atob('KjMyMTEj')){ // এনকোড করা আছে যাতে সোর্সে সরাসরি না দেখা যায়
+    closeDevCode();
+    document.getElementById('devPanel').classList.remove('hidden');
+    loadStats(); loadGlobalNoticeList(); loadAdminAds(); loadAllNoticeList();
+  }else{
+    alert('ভুল কোড!');
+    document.getElementById('devCodeInput').value='';
+  }
+}
+function closeDevPanel(){ document.getElementById('devPanel').classList.add('hidden'); }
+
+// ACCOUNT RENDER - BLACK BG
+function renderAccount(){
+  let c=document.getElementById('accountContent');
+  if(!c) return;
+  let done=localStorage.getItem('a2z_reg_done')==='true';
+  if(!currentUser){
+    let regHtml='';
+    if(done){
+      regHtml=`<div class="bg-white/10 rounded-[16px] p-6 text-center border border-white/10 mt-6"><p class="text-yellow-400 font-black text-[14px]">এই ডিভাইসে ১ বার রেজিস্ট্রেশন হয়েছে</p></div>`;
+    }else{
+      regHtml=`<div class="mt-8 border-t border-white/10 pt-8"><h3 class="font-black text-white mb-4">Register - 1 Device 1 Account</h3><input id="r_user" placeholder="User ID / Email" class="w-full p-4 rounded-[14px] bg-white text-black text-[14px]"><input id="r_pass" type="password" placeholder="Password" class="w-full mt-3 p-4 rounded-[14px] bg-white text-black"><input type="file" id="r_photo" accept="image/*" onchange="handlePhoto(this)" class="w-full mt-4 text-white text-[12px] bg-white/10 p-3 rounded-[12px]"><img id="photoPreview" class="w-24 h-24 rounded-full mt-4 hidden object-cover border-4 border-white/20 mx-auto"><button onclick="doRegister()" class="w-full mt-6 bg-yellow-400 text-black font-black py-4 rounded-[14px] border-2 border-black">Register</button></div>`;
+    }
+    c.innerHTML=`<div class="bg-white rounded-[20px] p-6 text-black"><h3 class="font-black text-[18px]">Login</h3><input id="l_user" placeholder="Email" class="w-full mt-5 p-4 rounded-[14px] bg-zinc-100 border-2 text-black"><input id="l_pass" type="password" placeholder="Password" class="w-full mt-3 p-4 rounded-[14px] bg-zinc-100 border-2 text-black"><button onclick="doLogin()" class="w-full mt-5 bg-white border-2 border-black text-black font-black py-4 rounded-[14px]">Login Now</button></div>${regHtml}<div id="myNotices" class="mt-6"></div>`;
+    loadMyNotices();
+  }else{
+    c.innerHTML=`<div class="text-center"><div class="relative inline-block"><img src="${currentUser.photo||''}" class="w-28 h-28 rounded-full mx-auto object-cover border-4 border-white/20 ${currentUser.photo?'':'hidden'}"><div class="w-28 h-28 rounded-full mx-auto bg-white/10 flex items-center justify-center text-[36px] ${currentUser.photo?'hidden':''}">👤</div></div><h3 class="font-black text-[22px] mt-4 text-white">${currentUser.fullName||currentUser.name||'User'}</h3><p class="text-[13px] text-zinc-400 mt-1">${currentUser.email||''}</p><p class="text-[11px] text-zinc-500 mt-1">${currentUser.bio||''}</p><button onclick="openEdit()" class="mt-5 bg-white text-black px-8 py-3 rounded-full font-bold text-[13px]">✏️ Edit Profile</button></div><div id="editBox" class="hidden mt-8 bg-white rounded-[20px] p-6 text-black"><h3 class="font-black">Edit Profile</h3><input id="e_name" value="${currentUser.fullName||''}" placeholder="Full Name" class="w-full mt-4 p-4 rounded-[14px] bg-zinc-100 border-2 text-black"><input id="e_dob" type="date" value="${currentUser.dob||''}" class="w-full mt-3 p-4 rounded-[14px] bg-zinc-100 border-2 text-black"><textarea id="e_bio" placeholder="Bio" class="w-full mt-3 p-4 rounded-[14px] bg-zinc-100 border-2 text-black h-[80px]">${currentUser.bio||''}</textarea><input id="e_pass" type="password" placeholder="New Password" class="w-full mt-3 p-4 rounded-[14px] bg-zinc-100 border-2 text-black"><input type="file" accept="image/*" onchange="handleEditPhoto(this)" class="w-full mt-3 p-3 rounded-[12px] bg-zinc-50 border text-[12px]"><img id="editPreview" src="${currentUser.photo||''}" class="w-24 h-24 rounded-full mt-4 ${currentUser.photo?'':'hidden'} object-cover border-4 mx-auto"><button onclick="saveProfile()" class="w-full mt-6 bg-black text-white font-black py-4 rounded-[14px]">Save Profile</button></div><div id="myNotices" class="mt-8"></div><button onclick="logout()" class="w-full mt-8 bg-red-500 text-white font-bold py-4 rounded-[14px]">Logout</button>`;
+    loadMyNotices();
+  }
+}
+function handlePhoto(input){ if(input.files[0]){ let r=new FileReader(); r.onload=e=>{ tempPhoto=e.target.result; let p=document.getElementById('photoPreview'); p.src=tempPhoto; p.classList.remove('hidden'); }; r.readAsDataURL(input.files[0]); } }
+function handleEditPhoto(input){ if(input.files[0]){ let r=new FileReader(); r.onload=e=>{ editPhoto=e.target.result; let p=document.getElementById('editPreview'); p.src=editPhoto; p.classList.remove('hidden'); }; r.readAsDataURL(input.files[0]); } }
+function openEdit(){ document.getElementById('editBox').classList.remove('hidden'); editPhoto=currentUser.photo||""; }
+function doRegister(){
+  let u=document.getElementById('r_user').value.trim();
+  let p=document.getElementById('r_pass').value.trim();
+  if(!u||!p){ alert('Fill all'); return; }
+  let id=localStorage.getItem('a2z_id')||'a2z_'+Date.now(); localStorage.setItem('a2z_id',id);
+  let url=`${API_URL}?action=register&email=${encodeURIComponent(u)}&name=${encodeURIComponent(u)}&pass=${encodeURIComponent(p)}&photo=${encodeURIComponent(tempPhoto)}&deviceId=${id}`;
+  fetch(url).then(r=>r.json()).then(d=>{ if(d.error) alert(d.error); else{ localStorage.setItem('jubayer_user',JSON.stringify(d)); localStorage.setItem('a2z_reg_done','true'); location.reload(); } });
+}
+function doLogin(){
+  let u=document.getElementById('l_user').value.trim(); let p=document.getElementById('l_pass').value.trim();
+  fetch(`${API_URL}?action=login&email=${encodeURIComponent(u)}&pass=${encodeURIComponent(p)}`).then(r=>r.json()).then(d=>{ if(d.error) alert(d.error); else{ localStorage.setItem('jubayer_user',JSON.stringify(d)); location.reload(); } });
+}
+function saveProfile(){
+  let n=document.getElementById('e_name').value; let dob=document.getElementById('e_dob').value; let bio=document.getElementById('e_bio').value; let pass=document.getElementById('e_pass').value;
+  let photoToSend=editPhoto||currentUser.photo||"";
+  let url=`${API_URL}?action=updateProfile&email=${encodeURIComponent(currentUser.email)}&fullName=${encodeURIComponent(n)}&dob=${encodeURIComponent(dob)}&bio=${encodeURIComponent(bio)}&pass=${encodeURIComponent(pass)}&photo=${encodeURIComponent(photoToSend)}`;
+  fetch(url).then(r=>r.json()).then(()=>{ currentUser.fullName=n; currentUser.dob=dob; currentUser.bio=bio; if(photoToSend) currentUser.photo=photoToSend; localStorage.setItem('jubayer_user',JSON.stringify(currentUser)); alert('Updated'); renderAccount(); });
+}
+function logout(){ localStorage.removeItem('jubayer_user'); location.reload(); }
+function loadStats(){ fetch(API_URL+"?action=stats").then(r=>r.json()).then(s=>{ document.getElementById('statToday').innerText=s.daily||0; document.getElementById('statTotal').innerText=s.total||0; document.getElementById('statUsers').innerText=s.users||0; }); }
+
+// ADS - Google Sheet এ Save হবে, সবার কাছে যাবে
+function addAd(){
+  let title=document.getElementById('adTitle').value.trim();
+  let link=document.getElementById('adLink').value.trim();
+  let file=document.getElementById('adImage').files[0];
+  if(!title){ alert('Title দিন'); return; }
+  let send=(imgBase)=>{
+    fetch(API_URL,{method:"POST",body:JSON.stringify({action:"addAd",title:title,link:link,image:imgBase})}).then(r=>r.json()).then(()=>{ alert('Ad Added - সবার কাছে যাবে'); document.getElementById('adTitle').value=''; document.getElementById('adLink').value=''; loadAdminAds(); });
+  };
+  if(file){ let reader=new FileReader(); reader.onload=e=>send(e.target.result); reader.readAsDataURL(file); }
+  else send('');
+}
+function loadAdminAds(){
+  fetch(API_URL+"?action=getAds").then(r=>r.json()).then(ads=>{
+    let list=document.getElementById('adminAdList'); let html='';
+    ads.forEach(ad=>{ html+=`<div class="flex gap-3 items-center bg-white border-2 rounded-[14px] p-3"><img src="${ad.image||ad.img}" class="w-20 h-12 object-cover rounded-[10px]"><div class="flex-1"><p class="font-black text-[12px] text-black">${ad.title}</p><p class="text-[10px] text-zinc-400">${ad.link||''}</p></div><button onclick="delAd('${ad.id||ad.row}')" class="w-10 h-10 rounded-full bg-red-50 text-red-500">🗑️</button></div>`; });
+    list.innerHTML=html||'<p class="text-[11px] text-zinc-400 text-center">No Ads</p>';
+  });
+}
+function delAd(id){ if(confirm('Delete?')) fetch(API_URL+"?action=deleteAd&id="+id).then(()=>loadAdminAds()); }
+
+// GLOBAL NOTICE - সবাই দেখবে
+function saveGlobalNotice(){
+  let txt=document.getElementById('globalNoticeInput').value.trim();
+  if(!txt){ alert('লিখুন'); return; }
+  fetch(API_URL,{method:"POST",body:JSON.stringify({action:"addNotice",text:txt})}).then(r=>r.json()).then(()=>{ alert('Global Notice Saved - সবার Home এ যাবে'); document.getElementById('globalNoticeInput').value=''; loadGlobalNoticeList(); });
+}
+function loadGlobalNoticeList(){
+  fetch(API_URL+"?action=getNotice").then(r=>r.json()).then(list=>{
+    let div=document.getElementById('globalNoticeList'); let html='';
+    list.forEach(n=>{ html+=`<div class="flex justify-between bg-white border rounded-[12px] p-3 text-[11px] text-black"><span>${n.text||n.notice}</span><button onclick="delNotice('${n.id||n.row}')" class="text-red-500 ml-2">✕</button></div>`; });
+    div.innerHTML=html||'<p class="text-[11px] text-zinc-400 text-center">No Notice</p>';
+  });
+}
+function delNotice(id){ fetch(API_URL+"?action=deleteNotice&id="+id).then(()=>loadGlobalNoticeList()); }
+function setNoticeColor(c){ localStorage.setItem('yellowColor',c); alert('Color Saved: '+c); }
+
+function loadUsers(){
+  fetch(API_URL+"?action=getUsers").then(r=>r.json()).then(list=>{
+    let html='';
+    list.forEach(u=>{ html+=`<div class="bg-white border-2 rounded-[14px] p-4 flex justify-between items-center text-black"><div class="flex-1"><p class="font-black text-[13px]">${u.fullName||u.name}</p><p class="text-[10px] text-zinc-500">Email:${u.email} | Pass:${u.pass} | Device:${u.deviceId?u.deviceId.slice(0,12):'N/A'}</p></div><div class="flex gap-2"><button onclick="promptNotice('${u.email}')" class="w-10 h-10 rounded-full bg-blue-500 text-white">🔔</button><button onclick="delUser('${u.email}')" class="w-10 h-10 rounded-full bg-red-500 text-white">🗑️</button></div></div>`; });
+    document.getElementById('userList').innerHTML=html||'No users';
+  });
+}
+function delUser(email){ if(confirm('Delete '+email+'?')) fetch(`${API_URL}?action=deleteUser&email=${encodeURIComponent(email)}`).then(()=>loadUsers()); }
+function allowReRegister(){ localStorage.removeItem('a2z_reg_done'); alert('Allow Re-Register Done'); }
+function promptNotice(email){ let txt=prompt(email+' এর জন্য Notice:'); if(!txt) return; fetch(API_URL,{method:"POST",body:JSON.stringify({action:"addSingleNotice",email:email,text:txt})}).then(()=>alert('Sent')); }
+function sendAllNotice(){
+  let txt=document.getElementById('allNoticeText').value.trim(); if(!txt){ alert('লিখুন'); return; }
+  fetch(API_URL,{method:"POST",body:JSON.stringify({action:"addAllNotice",text:txt})}).then(()=>{ alert('সবাইকে পাঠানো হয়েছে'); document.getElementById('allNoticeText').value=''; loadAllNoticeList(); });
+}
+function loadAllNoticeList(){ fetch(API_URL+"?action=getAllNotice").then(r=>r.json()).then(d=>{ let div=document.getElementById('allNoticeList'); if(!div) return; let html=''; (d||[]).forEach(n=>{ html+=`<div class="bg-white border rounded-[12px] p-3 text-[11px] text-black"><b>${n.email||'ALL'}:</b> ${n.text} <small>(${n.date||''})</small></div>`; }); div.innerHTML=html||'<p class="text-[11px] text-zinc-400 text-center">No Notice</p>'; }); }
+function loadMyNotices(){
+  if(!currentUser) return;
+  fetch(API_URL+"?action=getMyNotice&email="+encodeURIComponent(currentUser.email)).then(r=>r.json()).then(my=>{
+    let div=document.getElementById('myNotices'); if(!div) return;
+    if(my.length){ div.innerHTML=`<div class="bg-white/10 border border-white/20 rounded-[16px] p-4"><h3 class="font-bold text-yellow-400 text-[13px]">📢 My Notices</h3>${my.map(n=>`<div class="mt-3 bg-white/10 rounded-[12px] p-3 border border-white/10"><p class="text-[13px] text-white">${n.text}</p><p class="text-[10px] text-zinc-400 mt-1">${n.date||''}</p></div>`).join('')}</div>`; }
+  });
+}
+
+window.addEventListener('load',()=>{ renderAccount(); });
+</script>
+</body>
+</html>
