@@ -16,8 +16,8 @@
 
 <div class="bg-white p-4 flex items-center gap-3 rounded-xl shadow">
 <img id="topPhoto" src="https://via.placeholder.com/100" class="w-14 h-14 rounded-full object-cover border">
-<div><h2 id="topName" class="font-bold">Guest</h2><p id="topId" class="text-xs text-gray-500">Login করুন</p></div>
-<i id="secretIcon" class="fa-solid fa-shield-halved text-gray-300 p-3 ml-auto"></i>
+<div class="flex-1"><h2 id="topName" class="font-bold">Guest</h2><p id="topId" class="text-xs text-gray-500">Login করুন</p></div>
+<i id="secretIcon" class="fa-solid fa-shield-halved text-gray-300 p-3"></i>
 </div>
 
 <div class="mt-5 space-y-2">
@@ -25,6 +25,7 @@
 <button onclick="location.href='index.html'" class="w-full bg-zinc-900 text-white p-4 rounded-xl mt-6 font-bold">← Home</button>
 </div>
 
+<!-- ACCOUNT MODAL -->
 <div id="accountModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
 <div class="bg-white w-full max-w-sm rounded-xl p-5 max-h-[90vh] overflow-y-auto">
 <div id="loginView">
@@ -40,15 +41,16 @@
 <div id="profileView" class="hidden">
 <h2 class="font-bold text-center mb-3">আমার প্রোফাইল</h2>
 <div class="text-center"><img id="profilePhoto" src="https://via.placeholder.com/150" class="w-24 h-24 rounded-full mx-auto object-cover border">
-<label class="text-[11px] mt-2 block bg-zinc-100 p-2 rounded-full cursor-pointer">📷 ছবি (ফোনে থাকবে)<input type="file" id="photoInput" accept="image/*" class="hidden"></label></div>
+<label class="text-[11px] mt-2 block bg-zinc-100 p-2 rounded-full cursor-pointer">📷 ছবি (শুধু ফোনে)<input type="file" id="photoInput" accept="image/*" class="hidden"></label></div>
 <input id="editName" placeholder="নাম" class="w-full border p-2 rounded mt-3 mb-2">
 
+<!-- MANUAL REFRESH INSIDE ACCOUNT -->
 <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 mt-3">
 <div class="flex justify-between items-center mb-2">
-<p class="font-bold text-[13px]">📩 আমার নোটিশ</p>
-<button onclick="loadMyNoticesManual()" class="bg-blue-600 text-white px-3 py-1 rounded-full text-[11px] font-bold"><i class="fa-solid fa-rotate mr-1"></i> Replace / Refresh</button>
+<p class="font-bold text-[13px]">📩 লাইভ নোটিশ</p>
+<button onclick="loadMyNoticesManual()" class="bg-blue-600 text-white px-3 py-1 rounded-full text-[11px] font-bold"><i class="fa-solid fa-rotate mr-1"></i> Refresh</button>
 </div>
-<div id="myNotices"><p class="text-[11px] text-gray-400">Refresh বাটনে ক্লিক করুন</p></div>
+<div id="myNotices"><p class="text-[11px] text-gray-400">Refresh এ ক্লিক করুন</p></div>
 </div>
 
 <button onclick="saveProfileLocal()" class="w-full bg-blue-600 text-white p-2 rounded mt-3">Save</button>
@@ -60,15 +62,17 @@
 
 </div>
 <script>
-const API="https://script.google.com/macros/s/AKfycbzbnWdoV_5z8XHokG41lIZgE6lQvt2qZRDeQeHnp6LaojGj_l_gHp0mQwGsv7bPtHGc/exec";
+// আপনার আগের URL টাই থাকলো
+const API="https://script.google.com/macros/s/AKfycbyt07t35S4oRxDY4Ai-wYXlaejv70wQ1-N6Rotz_4-WKZoM9QqGSC0Q8JArx7C6xvw0/exec";
+
 let c=0,t=null;
-secretIcon.addEventListener('click',()=>{ c++; if(t) clearTimeout(t); t=setTimeout(()=>c=0,2000); if(c>=3){ c=0; if(prompt("Code:")==="321123"){ localStorage.setItem('isDev','1'); location.href='developer.html'; } } });
+document.getElementById('secretIcon').addEventListener('click',()=>{ c++; if(t) clearTimeout(t); t=setTimeout(()=>c=0,2000); if(c>=3){ c=0; if(prompt("Code:")==="321123"){ localStorage.setItem('isDev','1'); location.href='developer.html'; } } });
 
 function loadLocalProfile(){
  let p=JSON.parse(localStorage.getItem('localProfile')||'{}');
  if(p.photo){ topPhoto.src=p.photo; profilePhoto.src=p.photo; }
  let u=JSON.parse(localStorage.getItem('user')||'null');
- if(u){ topName.innerText=u.name||p.name||u.email; topId.innerText=u.email; if(editName) editName.value=u.name||p.name; }
+ if(u){ topName.innerText=u.name||p.name||u.email; topId.innerText=u.email; editName.value=u.name||p.name||""; }
  else if(p.name){ topName.innerText=p.name; }
 }
 photoInput.addEventListener('change',e=>{
@@ -83,25 +87,27 @@ photoInput.addEventListener('change',e=>{
  }; r.readAsDataURL(f);
 });
 function saveProfileLocal(){ let lp=JSON.parse(localStorage.getItem('localProfile')||'{}'); lp.name=editName.value; localStorage.setItem('localProfile',JSON.stringify(lp)); loadLocalProfile(); alert("Saved ✅"); }
-function openAccount(){ accountModal.classList.remove('hidden'); let u=JSON.parse(localStorage.getItem('user')||'null'); if(u){ loginView.classList.add('hidden'); profileView.classList.remove('hidden'); } else { loginView.classList.remove('hidden'); profileView.classList.add('hidden'); } }
+function openAccount(){ accountModal.classList.remove('hidden'); let u=JSON.parse(localStorage.getItem('user')||'null'); if(u){ loginView.classList.add('hidden'); profileView.classList.remove('hidden'); loadLocalProfile(); } else { loginView.classList.remove('hidden'); profileView.classList.add('hidden'); } }
 function closeAll(){ accountModal.classList.add('hidden'); }
 function apiPost(a,d){ let fd=new FormData(); fd.append('action',a); for(let k in d) fd.append(k,d[k]); return fetch(API,{method:'POST',body:fd}).then(r=>r.json()); }
-function doRegister(){ apiPost('register',{email:regEmail.value,name:regName.value,pass:regPass.value}).then(r=>{ if(r.error){ authMsg.innerText=r.error; return; } localStorage.setItem('user',JSON.stringify({email:r.email||regEmail.value,name:regName.value})); authMsg.innerText="Success ✅"; setTimeout(()=>{ closeAll(); loadLocalProfile(); },600); }); }
+function doRegister(){ if(!regEmail.value||!regPass.value){ authMsg.innerText="ID দিন"; return; } apiPost('register',{email:regEmail.value,name:regName.value,pass:regPass.value}).then(r=>{ if(r.error){ authMsg.innerText=r.error; return; } localStorage.setItem('user',JSON.stringify({email:r.email||regEmail.value,name:regName.value})); authMsg.innerText="Success ✅"; setTimeout(()=>closeAll(),600); }); }
 function doLogin(){ apiPost('login',{email:regEmail.value,pass:regPass.value}).then(r=>{ if(r.error){ authMsg.innerText=r.error; return; } localStorage.setItem('user',JSON.stringify({email:r.email,name:r.name})); closeAll(); loadLocalProfile(); }); }
 function logout(){ localStorage.removeItem('user'); location.reload(); }
 
+// কোন অটো লোড নাই - শুধু বাটনে ক্লিক করলে লোড হবে
 function loadMyNoticesManual(){
  let u=JSON.parse(localStorage.getItem('user')||'null'); if(!u){ myNotices.innerHTML="Login করুন"; return; }
  myNotices.innerHTML="<p class='text-xs text-blue-500'><i class='fa-solid fa-spinner fa-spin'></i> লোড হচ্ছে...</p>";
  fetch(API+"?action=getPersonalNotices&email="+encodeURIComponent(u.email))
 .then(r=>r.json())
 .then(list=>{
-  if(!list || list.length==0){ myNotices.innerHTML="<p class='text-xs text-gray-400'>কোন নোটিশ নেই</p>"; return; }
-  let h=""; list.forEach(n=>{ h+=`<div class="bg-white border p-2 rounded text-xs mt-1 shadow-sm">${n.text}</div>`; });
-  myNotices.innerHTML=h;
- }).catch(()=>{ myNotices.innerHTML="<p class='text-xs text-red-400'>লোড হয়নি, আবার Refresh দিন</p>"; });
+   if(!list || list.length==0){ myNotices.innerHTML="<p class='text-xs text-gray-400'>কোন নোটিশ নেই</p>"; return; }
+   let h=""; list.forEach(n=>{ h+=`<div class="bg-white border p-2 rounded text-xs mt-1 shadow-sm">${n.text}</div>`; });
+   myNotices.innerHTML=h;
+ }).catch(()=>{ myNotices.innerHTML="<p class='text-xs text-red-400'>Error! আবার Refresh দিন</p>"; });
 }
 loadLocalProfile();
+// নোট: এখানে আর কোন auto loadAds / loadNotice কল নেই
 </script>
 </body>
 </html>
