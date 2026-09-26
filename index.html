@@ -39,7 +39,6 @@ body{margin:0;background:#fff;overscroll-behavior:none;transition:0.3s}
 
 <!-- ADS FROM GOOGLE SHEET - সবার কাছে যাবে -->
 <div id="adSection" class="px-4 mt-4 hidden"><div class="flex justify-between items-center mb-2"><p class="font-black text-[13px] text-black">✨ বিজ্ঞাপন</p><p class="text-[10px] text-zinc-400">Slide →</p></div><div id="adSlider" class="flex gap-3 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-2"></div></div>
-
 <div class="px-4 mt-6" style="background:radial-gradient(circle at 50% 0%, rgba(255,100,150,0.12) 0%, transparent 50%), white;">
 <div class="grid grid-cols-4 gap-3">
 <div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./general_quiz.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#fef08a] flex items-center justify-center text-[20px]">😊</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]">সাধারণ কুইজ</p></div>
@@ -61,36 +60,38 @@ body{margin:0;background:#fff;overscroll-behavior:none;transition:0.3s}
 <div class="mt-10 text-center pb-6"><p class="text-zinc-400 text-[11px] tracking-widest uppercase">Developer</p><p class="font-black text-[14px] mt-1 text-black">Qari MD Jubayer Ahmed Siyam</p><p class="text-[11px] text-zinc-400 mt-1">A-S A 2 Z V2.0 • 2026</p></div>
 </div>
 
-<!-- YELLOW NOTICE BAR - GOOGLE SHEET থেকে সবার কাছে -->
-<div id="yellowBar" class="fixed bottom-0 left-0 right-0 z-[90] border-t-2 border-black py-[14px] px-2 flex items-center" style="background:#ffeb00">
-<div class="bg-black text-yellow-400 text-[9px] font-black px-3 py-1 rounded-full">NOTICE</div>
-<div class="flex-1 overflow-hidden ml-3"><p id="yellowText" class="marquee font-bold text-[13px] text-black">লোড হচ্ছে...</p></div>
+<!-- BLUE NOTICE BAR - GOOGLE SHEET থেকে LIVE -->
+<div id="yellowBar" class="fixed bottom-0 left-0 right-0 z-[90] border-t-2 border-black py-[14px] px-2 flex items-center" style="background:#2563eb">
+<div class="bg-black text-white text-[9px] font-black px-3 py-1 rounded-full">NOTICE</div>
+<div class="flex-1 overflow-hidden ml-3"><p id="yellowText" class="marquee font-bold text-[13px] text-white">লোড হচ্ছে...</p></div>
 </div>
 
 <script>
-const API_URL="https://script.google.com/macros/s/AKfycbxSAJZs1Ql9X5140-RljWLhtR_cCfxKuyofIj6lRALBWxigOgyAdeaniz2Drzid4gbs/exec";
-let currentUser=JSON.parse(localStorage.getItem('jubayer_user')||'null');
+// নতুন লিংক - Live Server
+const API_URL="https://script.google.com/macros/s/AKfycbyt07t35S4oRxDY4Ai-wYXlaejv70wQ1-N6Rotz_4-WKZoM9QqGSC0Q8JArx7C6xvw0/exec";
+let currentUser=JSON.parse(localStorage.getItem('jubayer_user')||localStorage.getItem('user')||'null');
 
 function loadHomeData(){
-  // Visit Count
   let deviceId=localStorage.getItem('a2z_id');
   if(!deviceId){ deviceId='a2z_'+Date.now(); localStorage.setItem('a2z_id',deviceId); }
-  fetch(`${API_URL}?action=visit&deviceId=${deviceId}&page=index`).catch(()=>{});
+  fetch(`${API_URL}?action=addVisit&deviceId=${deviceId}&page=index`).catch(()=>{});
 
-  // GLOBAL NOTICE - LIVE
+  // LIVE NOTICE
   fetch(API_URL+"?action=getNotice").then(r=>r.json()).then(data=>{
     if(data && data.length>0){
-      let last = data[data.length-1];
+      let last = data[data.length-1] || data[0];
       document.getElementById('yellowText').innerText = last.text || last.notice || "নোটিশ";
-      if(last.color) document.getElementById('yellowBar').style.background = last.color;
-    }else{
-      document.getElementById('yellowText').innerText = "খুব শীঘ্রই ইসলামিক কুইজ ইভেন্ট শুরু হতে যাচ্ছে এখানে অনেক স্পেশাল পুরস্কার থাকবে আমাদের সাথে থাকুন";
+      if(last.color && last.color!="#fef9c3") {
+        document.getElementById('yellowBar').style.background = last.color;
+      }
+    } else {
+      document.getElementById('yellowText').innerText = "খুব শীঘ্রই ইসলামিক কুইজ ইভেন্ট শুরু হতে যাচ্ছে এখানে অনেক স্পেশাল পুরস্কার থাকবে";
     }
   }).catch(()=>{
     document.getElementById('yellowText').innerText = "খুব শীঘ্রই ইসলামিক কুইজ ইভেন্ট শুরু হতে যাচ্ছে";
   });
 
-  // GLOBAL ADS - LIVE
+  // LIVE ADS
   fetch(API_URL+"?action=getAds").then(r=>r.json()).then(ads=>{
     let slider=document.getElementById('adSlider');
     let section=document.getElementById('adSection');
@@ -116,9 +117,15 @@ window.addEventListener('load',()=>{
     let icon=document.getElementById('profileIcon');
     if(pic){ pic.src=currentUser.photo; pic.classList.remove('hidden'); if(icon) icon.classList.add('hidden'); }
   }
+  let lp=JSON.parse(localStorage.getItem('localProfile')||'{}');
+  if(lp.photo){
+    let pic=document.getElementById('profilePic');
+    let icon=document.getElementById('profileIcon');
+    if(pic){ pic.src=lp.photo; pic.classList.remove('hidden'); if(icon) icon.classList.add('hidden'); }
+  }
   loadHomeData();
   setInterval(loadHomeData, 15000);
 });
 </script>
 </body>
-                                                                                                                                                                                         </html>
+</html>
