@@ -1,130 +1,92 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Menu - A-S A 2 Z</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>body{font-family: system-ui;}</style>
-</head>
-<body class="bg-[#fff5f7] min-h-screen">
-<div class="max-w-md mx-auto p-3">
-
-<div class="flex items-center justify-between mt-2 mb-4">
-<div class="flex items-center gap-3">
-<button onclick="location.href='index.html?v=100'" class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center"><i class="fa-solid fa-arrow-left"></i></button>
-<h1 id="txtMenuTitle" class="font-black text-[18px]">মেনু</h1>
-</div>
-<button id="secretIcon" class="w-7 h-7 rounded-full bg-transparent flex items-center justify-center opacity-10"><i class="fa-solid fa-circle text-[8px]"></i></button>
+<!doctype html><html lang="bn"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Menu</title>
+<style>
+body{font-family:system-ui;background:#fff5f7;margin:0}
+.box{max-width:380px;margin:auto;padding:15px}
+.card{background:#fff;padding:15px;border-radius:16px;box-shadow:0 2px 8px #0001;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.btn{width:100%;padding:12px;border-radius:12px;border:0;font-weight:700}
+.dot{width:24px;height:24px;opacity:.15}
+</style>
+<div class="box">
+<div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0">
+<button onclick="location.href='index.html'" style="width:40px;height:40px;border-radius:50%;border:0;background:#fff;box-shadow:0 2px 6px #0001">←</button>
+<b>মেনু</b>
+<button id="secret" class="dot">●</button>
 </div>
 
-<div class="bg-white p-4 flex items-center gap-3 rounded-2xl shadow">
-<img id="topPhoto" src="https://via.placeholder.com/100" class="w-14 h-14 rounded-full object-cover border">
-<div class="flex-1"><h2 id="topName" class="font-bold">Guest</h2><p id="topId" class="text-xs text-gray-500">Login করুন</p><p id="topTitle" class="text-[11px] text-pink-600 font-bold"></p></div>
+<div class="card"><div><b id="uName">Guest</b><br><small id="uEmail">Login করুন</small></div><img id="uPhoto" src="https://via.placeholder.com/100" style="width:48px;height:48px;border-radius:50%;object-fit:cover"></div>
+
+<button class="card" onclick="openAcc()" style="width:100%">👤 একাউন্ট <span>›</span></button>
+
+<div id="modal" style="display:none;position:fixed;inset:0;background:#0006;align-items:center;justify-content:center;padding:15px">
+<div class="card" style="display:block;width:100%;max-width:360px">
+
+<div id="loginBox">
+<h3 style="text-align:center">একাউন্ট</h3>
+<input id="e" placeholder="User ID" style="width:100%;padding:10px;border-radius:10px;border:1px solid #ddd;margin:6px 0">
+<input id="p" type="password" placeholder="Password" style="width:100%;padding:10px;border-radius:10px;border:1px solid #ddd;margin:6px 0">
+<button class="btn" style="background:#111;color:#fff" onclick="login()">লগইন</button>
+<p id="msg" style="font-size:12px;color:red;text-align:center"></p>
+<button class="btn" onclick="closeM()" style="background:#eee;margin-top:8px">বন্ধ</button>
 </div>
 
-<div class="mt-5 space-y-3">
-<button onclick="openAccount()" class="w-full bg-white p-4 rounded-2xl shadow flex justify-between border"><span><i class="fa-solid fa-user mr-2 text-pink-500"></i> <span id="txtAccount">একাউন্ট</span></span><i class="fa-solid fa-chevron-right text-zinc-400"></i></button>
-<button onclick="openSettings()" class="w-full bg-white p-4 rounded-2xl shadow flex justify-between border"><span><i class="fa-solid fa-gear mr-2 text-blue-500"></i> <span id="txtSettings">সেটিং</span></span><i class="fa-solid fa-chevron-right text-zinc-400"></i></button>
-<button onclick="location.href='index.html?v=100'" class="w-full bg-zinc-900 text-white p-4 rounded-2xl mt-6 font-bold"><span id="txtHome">← Home এ ফিরুন</span></button>
+<div id="profileBox" style="display:none">
+<div style="text-align:center"><img id="pPhoto" src="https://via.placeholder.com/100" style="width:80px;height:80px;border-radius:50%"><br><br>
+<label style="background:#eee;padding:6px 14px;border-radius:20px;font-size:12px">Replace<input type="file" id="file" hidden accept="image/*"></label>
+</div>
+<div style="margin-top:12px;background:#eef6ff;padding:10px;border-radius:12px">
+<b style="font-size:13px">📩 লাইভ নোটিশ <button onclick="getNotice()" style="float:right;background:#2563eb;color:#fff;border:0;border-radius:20px;padding:3px 10px;font-size:11px">Refresh</button></b>
+<div id="notices" style="font-size:12px;margin-top:8px;color:#666">Refresh চাপুন</div>
+</div>
+<button class="btn" style="background:#eee;margin-top:12px" onclick="logout()">Logout</button>
+<button class="btn" onclick="closeM()" style="background:#fff;border:1px solid #ddd;margin-top:8px">বন্ধ</button>
 </div>
 
-<div id="accountModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-<div class="bg-white w-full max-w-sm rounded-2xl p-5 max-h-[90vh] overflow-y-auto">
-<div id="loginView">
-<h2 class="font-bold text-center mb-3">একাউন্ট</h2>
-<input id="regEmail" placeholder="User ID" class="w-full border p-3 rounded-xl mb-2">
-<input id="regPass" type="password" placeholder="Password" class="w-full border p-3 rounded-xl mb-2">
-<input id="regName" placeholder="আপনার নাম" class="w-full border p-3 rounded-xl mb-3">
-<button onclick="doRegister()" class="w-full bg-blue-600 text-white p-3 rounded-xl mb-2 font-bold">রেজিস্ট্রেশন</button>
-<button onclick="doLogin()" class="w-full bg-zinc-900 text-white p-3 rounded-xl font-bold">লগইন</button>
-<p id="authMsg" class="text-xs text-center mt-2 text-red-500"></p>
-<button onclick="closeAll()" class="w-full mt-3 text-xs text-gray-500">বন্ধ করুন</button>
-</div>
-<div id="profileView" class="hidden">
-<h2 class="font-bold text-center mb-3">আমার প্রোফাইল</h2>
-<div class="text-center"><img id="profilePhoto" src="https://via.placeholder.com/150" class="w-24 h-24 rounded-full mx-auto object-cover border-4 border-pink-100"><br><label class="text-[11px] mt-2 inline-block bg-zinc-100 px-4 py-2 rounded-full cursor-pointer">📷 ছবি পরিবর্তন<input type="file" id="photoInput" accept="image/*" class="hidden"></label></div>
-<input id="editName" placeholder="নাম" class="w-full border p-3 rounded-xl mt-3 mb-2">
-<input id="editTitle" placeholder="পদবী" class="w-full border p-3 rounded-xl mb-2">
-<textarea id="editBio" placeholder="বিবরণ" class="w-full border p-3 rounded-xl mb-3 h-20"></textarea>
-<div class="bg-blue-50 border border-blue-200 rounded-xl p-3">
-<div class="flex justify-between items-center mb-2">
-<p id="txtLiveNotice" class="font-bold text-[13px]">📩 লাইভ নোটিশ</p>
-<button onclick="loadMyNoticesManual()" class="bg-blue-600 text-white px-3 py-1 rounded-full text-[11px] font-bold"><i class="fa-solid fa-rotate mr-1"></i> <span id="txtRefresh">Refresh</span></button>
-</div>
-<div id="myNotices"><p class="text-[11px] text-gray-400">Refresh এ ক্লিক করলে নোটিশ আসবে</p></div>
-</div>
-<button onclick="saveProfileLocal()" class="w-full bg-blue-600 text-white p-3 rounded-xl mt-3 font-bold">Save</button>
-<button onclick="logout()" class="w-full mt-2 bg-red-50 text-red-600 p-3 rounded-xl font-bold text-sm">Logout</button>
-<button onclick="closeAll()" class="w-full mt-3 text-xs">বন্ধ</button>
 </div>
 </div>
 </div>
 
-<div id="settingsModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-<div class="bg-white w-full max-w-sm rounded-2xl p-5">
-<h2 id="txtSettingsTitle" class="font-bold text-lg mb-4">সেটিং</h2>
-<div class="space-y-4">
-<label class="flex justify-between"><span>Language / ভাষা</span><select id="langSelect" onchange="changeLang(this.value)" class="border p-2 rounded-xl text-sm"><option value="bn">বাংলা</option><option value="en">English</option></select></label>
-</div>
-<button onclick="closeAll()" class="w-full bg-zinc-900 text-white p-3 rounded-xl mt-5 font-bold">বন্ধ</button>
-</div>
-</div>
-
-</div>
 <script>
 const API="https://script.google.com/macros/s/AKfycbyqDzoEhS5OcXQQOo7LTJS5Xw6TD5VciSnLjs1CKp9HXrj7WYJUjejLuwMARyQZvbaT/exec";
-let c=0,t=null;
-document.getElementById('secretIcon').addEventListener('click',()=>{c++; if(t) clearTimeout(t); t=setTimeout(()=>c=0,2000); if(c>=3){c=0; if(prompt("Code:")==="321123"){localStorage.setItem('isDev','1'); location.href='developer.html';}}});
+let c=0;
+secret.onclick=()=>{c++; setTimeout(()=>c=0,2000); if(c>=3){c=0; if(prompt("Code:")=="321123"){localStorage.isDev=1; location.href='developer.html'}}}
 
-function loadLocalProfile(){
- let p=JSON.parse(localStorage.getItem('localProfile')||'{}');
- if(p.photo){topPhoto.src=p.photo; profilePhoto.src=p.photo;}
- if(p.name) topName.innerText=p.name;
- if(p.title) topTitle.innerText=p.title;
+function openAcc(){
+ modal.style.display='flex';
  let u=JSON.parse(localStorage.getItem('user')||'null');
- if(u){topName.innerText=u.name||p.name||u.email; topId.innerText=u.email; editName.value=u.name||p.name||"";}
+ if(u){ loginBox.style.display='none'; profileBox.style.display='block'; uName.innerText=u.name||u.email; uEmail.innerText=u.email; let lp=JSON.parse(localStorage.getItem('localProfile')||'{}'); if(lp.photo){uPhoto.src=lp.photo; pPhoto.src=lp.photo;} }
+ else{ loginBox.style.display='block'; profileBox.style.display='none'; }
 }
-photoInput.addEventListener('change',e=>{
- let f=e.target.files[0]; if(!f) return;
- let r=new FileReader(); r.onload=ev=>{
-  let img=new Image(); img.onload=()=>{
-   let ca=document.createElement('canvas'); ca.width=300; ca.height=300; ca.getContext('2d').drawImage(img,0,0,300,300);
-   let d=ca.toDataURL('image/jpeg',0.7); topPhoto.src=d; profilePhoto.src=d;
-   let lp=JSON.parse(localStorage.getItem('localProfile')||'{}'); lp.photo=d; localStorage.setItem('localProfile',JSON.stringify(lp));
-  }; img.src=ev.target.result;
- }; r.readAsDataURL(f);
-});
-function saveProfileLocal(){let lp=JSON.parse(localStorage.getItem('localProfile')||'{}'); lp.name=editName.value; lp.title=editTitle.value; lp.bio=editBio.value; localStorage.setItem('localProfile',JSON.stringify(lp)); loadLocalProfile(); alert("Saved ✅");}
-function openAccount(){accountModal.classList.remove('hidden'); let u=JSON.parse(localStorage.getItem('user')||'null'); if(u){loginView.classList.add('hidden'); profileView.classList.remove('hidden'); loadLocalProfile();}else{loginView.classList.remove('hidden'); profileView.classList.add('hidden');}}
-function openSettings(){settingsModal.classList.remove('hidden');}
-function closeAll(){accountModal.classList.add('hidden'); settingsModal.classList.add('hidden');}
-function apiPost(a,d){let fd=new FormData(); fd.append('action',a); for(let k in d) fd.append(k,d[k]); return fetch(API,{method:'POST',body:fd}).then(r=>r.text()).then(t=>{try{return JSON.parse(t);}catch{return {error:"Server busy"}}})}
-function doRegister(){if(!regEmail.value||!regPass.value){authMsg.innerText="ID Pass দিন"; return;} apiPost('register',{email:regEmail.value,name:regName.value,pass:regPass.value}).then(r=>{if(r.error){authMsg.innerText=r.error; return;} localStorage.setItem('user',JSON.stringify({email:r.email||regEmail.value,name:regName.value})); authMsg.innerText="Success ✅"; setTimeout(()=>{closeAll(); loadLocalProfile();},600);});}
-function doLogin(){apiPost('login',{email:regEmail.value,pass:regPass.value}).then(r=>{if(r.error){authMsg.innerText=r.error; return;} localStorage.setItem('user',JSON.stringify({email:r.email,name:r.name})); closeAll(); loadLocalProfile();});}
-function logout(){localStorage.removeItem('user'); location.reload();}
+function closeM(){ modal.style.display='none'; }
 
-function loadMyNoticesManual(){
- let u=JSON.parse(localStorage.getItem('user')||'null'); if(!u){myNotices.innerHTML="Login করুন"; return;}
- myNotices.innerHTML="<p class='text-xs text-blue-500'>লোড হচ্ছে...</p>";
+function login(){
+ if(!e.value||!p.value){msg.innerText="ID Pass দিন"; return;}
+ let fd=new FormData(); fd.append('action','login'); fd.append('email',e.value); fd.append('pass',p.value);
+ fetch(API,{method:'POST',body:fd}).then(r=>r.text()).then(t=>{
+  try{let j=JSON.parse(t); if(j.error){msg.innerText=j.error; return;} localStorage.setItem('user',JSON.stringify({email:j.email,name:j.name})); closeM(); location.reload();}
+  catch{msg.innerText="Server busy";}
+ });
+}
+
+function getNotice(){
+ let u=JSON.parse(localStorage.getItem('user')||'null'); if(!u) return;
+ notices.innerText="লোড হচ্ছে...";
  fetch(API+"?action=getPersonalNotices&email="+encodeURIComponent(u.email)+"&t="+Date.now())
 .then(r=>r.text()).then(t=>{
-  try{
-   let list=JSON.parse(t);
-   if(!list||list.length==0){myNotices.innerHTML="<p class='text-xs text-gray-400'>কোন নোটিশ নেই</p>"; return;}
-   let h=""; list.forEach(n=>{h+=`<div class="bg-white border p-3 rounded-xl text-[12px] mt-2">${n.text}</div>`;});
-   myNotices.innerHTML=h;
-  }catch(e){ myNotices.innerHTML="<p class='text-xs text-red-500'>সার্ভার ব্যস্ত, আবার Refresh দিন</p>"; }
- }).catch(()=>{myNotices.innerHTML="<p class='text-xs text-red-400'>নেটওয়ার্ক Error</p>";});
+  try{let list=JSON.parse(t); if(!list.length){notices.innerText="কোন নোটিশ নেই"; return;} notices.innerHTML=list.map(n=>`<div style="background:#fff;border:1px solid #ddd;padding:8px;border-radius:10px;margin-top:6px">${n.text}</div>`).join('');}
+  catch{notices.innerText="আবার Refresh দিন";}
+ });
 }
 
-function changeLang(l){localStorage.setItem('lang',l); applyLang(l);}
-function applyLang(l){
- if(l=="en"){txtMenuTitle.innerText="Menu"; txtAccount.innerText="Account"; txtSettings.innerText="Settings"; txtHome.innerText="← Back to Home"; txtLiveNotice.innerText="📩 Live Notice"; txtRefresh.innerText="Refresh"; txtSettingsTitle.innerText="Settings";}
- else{txtMenuTitle.innerText="মেনু"; txtAccount.innerText="একাউন্ট"; txtSettings.innerText="সেটিং"; txtHome.innerText="← Home এ ফিরুন"; txtLiveNotice.innerText="📩 লাইভ নোটিশ"; txtRefresh.innerText="Refresh"; txtSettingsTitle.innerText="সেটিং";}
+file.onchange=(ev)=>{
+ let f=ev.target.files[0]; if(!f) return;
+ let r=new FileReader(); r.onload=e=>{
+  let img=new Image(); img.onload=()=>{
+   let c=document.createElement('canvas'); c.width=300; c.height=300; c.getContext('2d').drawImage(img,0,0,300,300);
+   let d=c.toDataURL('image/jpeg',0.7); uPhoto.src=d; pPhoto.src=d; let lp=JSON.parse(localStorage.getItem('localProfile')||'{}'); lp.photo=d; localStorage.setItem('localProfile',JSON.stringify(lp));
+  }; img.src=e.target.result;
+ }; r.readAsDataURL(f);
 }
-let savedLang=localStorage.getItem('lang')||'bn'; langSelect.value=savedLang; applyLang(savedLang);
-loadLocalProfile();
+function logout(){localStorage.removeItem('user'); location.reload();}
+let lp=JSON.parse(localStorage.getItem('localProfile')||'{}'); if(lp.photo) uPhoto.src=lp.photo;
 </script>
-</body>
-</html>
