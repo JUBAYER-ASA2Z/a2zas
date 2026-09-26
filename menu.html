@@ -36,7 +36,7 @@
 
 <!-- ACCOUNT MODAL -->
 <div id="accountModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-<div class="card bg-white w-full max-w-sm rounded-xl p-5">
+<div class="card bg-white w-full max-w-sm rounded-xl p-5 max-h-[90vh] overflow-y-auto">
 <div id="loginView">
 <h2 class="font-bold text-lg mb-3">একাউন্ট</h2>
 <input id="regEmail" placeholder="User ID / Email" class="w-full border p-2 rounded mb-2">
@@ -44,14 +44,14 @@
 <input id="regName" placeholder="আপনার নাম" class="w-full border p-2 rounded mb-3">
 <button onclick="doRegister()" class="w-full bg-blue-600 text-white p-2 rounded mb-2">রেজিস্ট্রেশন</button>
 <button onclick="doLogin()" class="w-full bg-green-600 text-white p-2 rounded">লগইন</button>
-<p id="authMsg" class="text-xs text-center mt-2"></p>
+<p id="authMsg" class="text-xs text-center mt-2 text-red-500"></p>
 <button onclick="closeAll()" class="w-full mt-3 text-xs">বন্ধ করুন</button>
 </div>
 <div id="profileView" class="hidden">
 <h2 class="font-bold text-lg mb-3">আমার প্রোফাইল</h2>
 <div class="text-center">
 <img id="profilePhoto" src="https://via.placeholder.com/150" class="w-24 h-24 rounded-full mx-auto object-cover border">
-<input type="file" id="photoInput" accept="image/*" class="text-xs mt-2">
+<label class="text-[11px] mt-2 block bg-zinc-100 p-2 rounded-full cursor-pointer">📷 ছবি (শুধু ফোনে থাকবে)<input type="file" id="photoInput" accept="image/*" class="hidden"></label>
 </div>
 <input id="editName" placeholder="নাম" class="w-full border p-2 rounded mt-3 mb-2">
 <input id="editTitle" placeholder="পদবী (যেমন: Student)" class="w-full border p-2 rounded mb-2">
@@ -77,7 +77,7 @@
 </div>
 
 <script>
-const API="https://script.google.com/macros/s/AKfycbzbnWdoV_5z8XHokG41lIZgE6lQvt2qZRDeQeHnp6LaojGj_l_gHp0mQwGsv7bPtHGc/exec";
+const API="https://script.google.com/macros/s/AKfycbyt07t35S4oRxDY4Ai-wYXlaejv70wQ1-N6Rotz_4-WKZoM9QqGSC0Q8JArx7C6xvw0/exec";
 let clickCount=0, clickTimer=null;
 
 document.getElementById('secretIcon').addEventListener('click',()=>{
@@ -92,8 +92,8 @@ function loadLocalProfile(){
  if(p.name){ document.getElementById('topName').innerText=p.name; document.getElementById('editName').value=p.name; }
  if(p.title) document.getElementById('editTitle').value=p.title;
  if(p.bio) document.getElementById('editBio').value=p.bio;
- let u=JSON.parse(localStorage.getItem('user')||'null');
- if(u){ document.getElementById('topName').innerText=u.name||p.name; document.getElementById('topId').innerText=u.email; openProfile(); }
+ let u=JSON.parse(localStorage.getItem('user')||localStorage.getItem('jubayer_user')||'null');
+ if(u){ document.getElementById('topName').innerText=u.name||p.name||u.email; document.getElementById('topId').innerText=u.email; }
 }
 document.getElementById('photoInput').addEventListener('change',e=>{
  let f=e.target.files[0]; if(!f) return;
@@ -103,6 +103,7 @@ document.getElementById('photoInput').addEventListener('change',e=>{
    let d=c.toDataURL('image/jpeg',0.6);
    document.getElementById('profilePhoto').src=d; document.getElementById('topPhoto').src=d;
    let lp=JSON.parse(localStorage.getItem('localProfile')||'{}'); lp.photo=d; localStorage.setItem('localProfile',JSON.stringify(lp));
+   let cur=JSON.parse(localStorage.getItem('user')||'{}'); cur.photo=d; localStorage.setItem('user',JSON.stringify(cur)); localStorage.setItem('jubayer_user',JSON.stringify(cur));
   }; img.src=ev.target.result;
  }; r.readAsDataURL(f);
 });
@@ -117,35 +118,37 @@ function openAccount(){
  if(u){ document.getElementById('accountModal').classList.remove('hidden'); document.getElementById('loginView').classList.add('hidden'); document.getElementById('profileView').classList.remove('hidden'); loadLocalProfile(); loadMyNotices(); }
  else{ document.getElementById('accountModal').classList.remove('hidden'); document.getElementById('loginView').classList.remove('hidden'); document.getElementById('profileView').classList.add('hidden'); }
 }
-function openProfile(){}
 function closeAll(){ document.getElementById('accountModal').classList.add('hidden'); document.getElementById('settingsModal').classList.add('hidden'); }
 function openSettings(){ document.getElementById('settingsModal').classList.remove('hidden'); }
-function openRefer(){ alert("Refer: "+(JSON.parse(localStorage.getItem('user')||'{}').email||"Login করুন")); }
+function openRefer(){ alert("Refer ID: "+(JSON.parse(localStorage.getItem('user')||'{}').email||"Login করুন")); }
 
 function apiPost(a,d){ let fd=new FormData(); fd.append('action',a); for(let k in d) fd.append(k,d[k]); return fetch(API,{method:'POST',body:fd}).then(r=>r.json()); }
 
 function doRegister(){
+ if(!regEmail.value ||!regPass.value){ authMsg.innerText="ID ও Pass দিন"; return; }
  apiPost('register',{email:regEmail.value, name:regName.value, pass:regPass.value}).then(r=>{
   if(r.error){ authMsg.innerText=r.error; return; }
   localStorage.setItem('user',JSON.stringify({email:r.email||regEmail.value, name:regName.value}));
-  authMsg.innerText="Success ✅"; setTimeout(()=>{ closeAll(); loadLocalProfile(); location.reload(); },800);
+  localStorage.setItem('jubayer_user',JSON.stringify({email:r.email||regEmail.value, name:regName.value}));
+  authMsg.innerText="Success ✅ অটো লগইন হচ্ছে..."; setTimeout(()=>{ closeAll(); loadLocalProfile(); openAccount(); },800);
  });
 }
 function doLogin(){
  apiPost('login',{email:regEmail.value, pass:regPass.value}).then(r=>{
   if(r.error){ authMsg.innerText=r.error; return; }
   localStorage.setItem('user',JSON.stringify({email:r.email, name:r.name}));
+  localStorage.setItem('jubayer_user',JSON.stringify({email:r.email, name:r.name}));
   closeAll(); loadLocalProfile(); location.reload();
  });
 }
-function logout(){ localStorage.removeItem('user'); location.reload(); }
+function logout(){ localStorage.removeItem('user'); localStorage.removeItem('jubayer_user'); location.reload(); }
 function toggleDark(v){ document.body.classList.toggle('dark',v); localStorage.setItem('dark',v); }
 function changeLang(v){ localStorage.setItem('lang',v); alert("Language: "+v); }
 function loadAds(){ fetch(API+"?action=getAds").then(r=>r.json()).then(l=>{ let h=""; l.forEach(a=>{ h+=`<div class="card bg-white rounded-xl shadow overflow-hidden"><img src="${a.image}" class="w-full h-40 object-cover"><div class="p-2 flex justify-between"><span>${a.title}</span><a href="${a.link}" target="_blank" class="text-blue-600 text-sm">Visit</a></div></div>`; }); document.getElementById('adsBox').innerHTML=h; }); }
-function loadNotices(){ fetch(API+"?action=getNotice").then(r=>r.json()).then(l=>{ let h=""; l.forEach(n=>{ h+=`<div class="bg-yellow-100 text-yellow-800 p-2 rounded text-sm mb-1">${n.text}</div>`; }); document.getElementById('noticeBox').innerHTML=h; }); }
-function loadMyNotices(){ let u=JSON.parse(localStorage.getItem('user')||'null'); if(!u) return; fetch(API+"?action=getPersonalNotices&email="+u.email).then(r=>r.json()).then(l=>{ let h="<h3 class='font-bold text-sm'>আমার নোটিশ</h3>"; l.forEach(n=>{ h+=`<div class="bg-blue-50 p-2 rounded text-xs mt-1">${n.text}</div>`; }); document.getElementById('myNotices').innerHTML=h; }); }
+function loadNotices(){ fetch(API+"?action=getNotice").then(r=>r.json()).then(l=>{ let h=""; l.forEach(n=>{ h+=`<div class="bg-yellow-100 text-yellow-800 p-2 rounded text-sm mb-1" style="background:${n.color||'#fef9c3'}">${n.text}</div>`; }); document.getElementById('noticeBox').innerHTML=h; }); }
+function loadMyNotices(){ let u=JSON.parse(localStorage.getItem('user')||'null'); if(!u) return; fetch(API+"?action=getPersonalNotices&email="+u.email).then(r=>r.json()).then(l=>{ let h="<h3 class='font-bold text-sm mb-2'>📩 আমার নোটিশ (Developer)</h3>"; l.forEach(n=>{ h+=`<div class="bg-blue-50 border border-blue-200 p-2 rounded text-xs mt-1">${n.text}</div>`; }); document.getElementById('myNotices').innerHTML=h; }); }
 
-loadLocalProfile(); loadAds(); loadNotices();
+loadLocalProfile(); loadAds(); loadNotices(); loadMyNotices();
 if(localStorage.getItem('dark')==='true'){ document.body.classList.add('dark'); document.getElementById('darkSel').checked=true; }
 </script>
 </body>
