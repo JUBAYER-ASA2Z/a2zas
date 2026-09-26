@@ -68,28 +68,20 @@ body{margin:0;background:#fff;overscroll-behavior:none;transition:0.3s}
 </div>
 
 <script>
-const API_URL="https://script.google.com/macros/s/AKfycbw7asL2qs5CXz32wmPKaqBW3vgOHhNl2ahpgno88f6i7-Wt5SXTwJqtko6Ne0JehIr9/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbxSAJZs1Ql9X5140-RljWLhtR_cCfxKuyofIj6lRALBWxigOgyAdeaniz2Drzid4gbs/exec";
 let currentUser=JSON.parse(localStorage.getItem('jubayer_user')||'null');
 
-window.addEventListener('load',()=>{
-  // Profile Photo
-  if(currentUser && currentUser.photo){
-    let pic=document.getElementById('profilePic');
-    let icon=document.getElementById('profileIcon');
-    if(pic){ pic.src=currentUser.photo; pic.classList.remove('hidden'); if(icon) icon.classList.add('hidden'); }
-  }
-  // Device + Visit
+function loadHomeData(){
+  // Visit Count
   let deviceId=localStorage.getItem('a2z_id');
   if(!deviceId){ deviceId='a2z_'+Date.now(); localStorage.setItem('a2z_id',deviceId); }
   fetch(`${API_URL}?action=visit&deviceId=${deviceId}&page=index`).catch(()=>{});
 
-  // ===== GLOBAL NOTICE FROM SHEET - সঙ্গে সঙ্গে =====
+  // GLOBAL NOTICE - LIVE
   fetch(API_URL+"?action=getNotice").then(r=>r.json()).then(data=>{
     if(data && data.length>0){
-      // শেষের নোটিশটা Yellow Bar এ দেখাবে
       let last = data[data.length-1];
       document.getElementById('yellowText').innerText = last.text || last.notice || "নোটিশ";
-      // কালার থাকলে
       if(last.color) document.getElementById('yellowBar').style.background = last.color;
     }else{
       document.getElementById('yellowText').innerText = "খুব শীঘ্রই ইসলামিক কুইজ ইভেন্ট শুরু হতে যাচ্ছে এখানে অনেক স্পেশাল পুরস্কার থাকবে আমাদের সাথে থাকুন";
@@ -98,7 +90,7 @@ window.addEventListener('load',()=>{
     document.getElementById('yellowText').innerText = "খুব শীঘ্রই ইসলামিক কুইজ ইভেন্ট শুরু হতে যাচ্ছে";
   });
 
-  // ===== GLOBAL ADS FROM SHEET - সঙ্গে সঙ্গে =====
+  // GLOBAL ADS - LIVE
   fetch(API_URL+"?action=getAds").then(r=>r.json()).then(ads=>{
     let slider=document.getElementById('adSlider');
     let section=document.getElementById('adSection');
@@ -106,15 +98,27 @@ window.addEventListener('load',()=>{
       section.classList.remove('hidden');
       let html='';
       ads.forEach(ad=>{
-        let img = ad.image || ad.img;
+        let img = ad.image || ad.img || "https://via.placeholder.com/400";
         let title = ad.title || "";
         let link = ad.link || "";
         html+=`<div onclick="if('${link}') window.open('${link}','_blank')" class="min-w-[85%] snap-center rounded-[18px] overflow-hidden relative h-[160px] shadow-[0_6px_20px_rgba(0,0,0,0.1)] cursor-pointer active:scale-95"><img src="${img}" class="w-full h-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div><div class="absolute bottom-0 left-0 right-0 p-4"><p class="text-white font-black text-[14px]">${title}</p></div></div>`;
       });
       slider.innerHTML=html;
+    } else {
+      document.getElementById('adSection').classList.add('hidden');
     }
   });
+}
+
+window.addEventListener('load',()=>{
+  if(currentUser && currentUser.photo){
+    let pic=document.getElementById('profilePic');
+    let icon=document.getElementById('profileIcon');
+    if(pic){ pic.src=currentUser.photo; pic.classList.remove('hidden'); if(icon) icon.classList.add('hidden'); }
+  }
+  loadHomeData();
+  setInterval(loadHomeData, 15000);
 });
 </script>
 </body>
-</html>
+                                                                                                                                                                                         </html>
