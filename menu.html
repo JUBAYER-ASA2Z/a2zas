@@ -1,434 +1,92 @@
 <!DOCTYPE html>
 <html lang="bn">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Account - Jubayer Tools</title>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700;900&display=swap" rel="stylesheet">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jubayer Tools</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script> tailwind.config = { theme: { extend: { fontFamily: { hind: ['Hind Siliguri','sans-serif'] } } } } </script>
-<style>*{font-family:'Hind Siliguri',sans-serif; -webkit-tap-highlight-color: transparent;}.hide-scroll::-webkit-scrollbar{display:none;}.hide-scroll{-ms-overflow-style:none; scrollbar-width:none;}</style>
+<style>body{font-family:sans-serif}</style>
 </head>
-<body class="bg-[#0a0a0a] min-h-screen">
-
-<div class="max-w-[650px] mx-auto bg-black min-h-screen text-white relative">
-
-<!-- HEADER -->
-<div class="p-5 flex justify-between items-center border-b border-white/10 sticky top-0 bg-black/95 backdrop-blur z-40">
-  <div class="flex items-center gap-3">
-    <button onclick="document.getElementById('drawer').classList.remove('hidden')" class="w-11 h-11 rounded-full bg-white/[0.08] border border-white/10 flex flex-col items-center justify-center gap-[4px]">
-      <span class="w-5 h-[2px] bg-white rounded-full"></span>
-      <span class="w-5 h-[2px] bg-white rounded-full"></span>
-      <span class="w-5 h-[2px] bg-white rounded-full"></span>
-    </button>
-    <div>
-      <h2 class="font-black text-[18px] leading-none tracking-tight">My Account</h2>
-      <p class="text-[11px] text-white/50 font-semibold mt-1">Jubayer Tools</p>
-    </div>
-  </div>
-  <button onclick="openSettings()" class="w-11 h-11 rounded-full bg-white/[0.08] border border-white/10 flex items-center justify-center text-[18px]">⚙️</button>
+<body class="bg-gray-100">
+<div class="max-w-md mx-auto p-4">
+<h1 class="text-xl font-bold text-center mb-4">Jubayer Tools</h1>
+<div id="adsBox" class="space-y-3 mb-4"></div>
+<div id="authBox" class="bg-white p-4 rounded shadow">
+<input id="email" placeholder="Email" class="w-full border p-2 mb-2 rounded">
+<input id="pass" type="password" placeholder="Password" class="w-full border p-2 mb-2 rounded">
+<input id="name" placeholder="Your Name" class="w-full border p-2 mb-2 rounded">
+<button onclick="register()" class="w-full bg-blue-600 text-white p-2 rounded mb-2">Register</button>
+<button onclick="login()" class="w-full bg-green-600 text-white p-2 rounded">Login</button>
+<p id="msg" class="text-sm mt-2 text-center"></p>
 </div>
-
-<!-- DRAWER -->
-<div id="drawer" class="fixed inset-0 z-[90] hidden">
-  <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="document.getElementById('drawer').classList.add('hidden')"></div>
-  <div class="relative w-[300px] bg-[#121212] h-full p-6 border-r border-white/10 flex flex-col">
-    <h3 class="font-black text-[20px] mb-8">Menu</h3>
-    <div class="space-y-3">
-      <button onclick="location.href='index.html'" class="w-full text-left p-4 rounded-[14px] bg-white text-black font-black flex items-center gap-3">🏠 <span>Home</span></button>
-      <button onclick="location.href='group-chat.html'" class="w-full text-left p-4 rounded-[14px] bg-white/10 hover:bg-white/15 font-bold flex items-center gap-3">💬 <span>আড্ডা পোলাপান</span></button>
-      <button onclick="location.href='support.html'" class="w-full text-left p-4 rounded-[14px] bg-white/10 hover:bg-white/15 font-bold flex items-center gap-3">🛟 <span>Support</span></button>
-    </div>
-    <p class="mt-auto text-[11px] text-white/30 font-bold text-center">v2.0 • Final</p>
-  </div>
+<div id="adminBox" class="hidden bg-white p-4 rounded shadow mt-4">
+<h2 class="font-bold mb-2">Add Ads (Admin)</h2>
+<input id="adTitle" placeholder="Title" class="w-full border p-2 mb-2 rounded">
+<input id="adLink" placeholder="Link https://" class="w-full border p-2 mb-2 rounded">
+<input id="adImage" type="file" accept="image/*" class="w-full border p-2 mb-2 rounded">
+<p id="compStatus" class="text-xs text-gray-500 mb-2"></p>
+<button onclick="addAd()" class="w-full bg-purple-600 text-white p-2 rounded">Add Ad to Server</button>
+<div id="adminAds" class="mt-4"></div>
 </div>
-
-<!-- ACCOUNT CONTENT -->
-<div id="accountContent" class="p-6"></div>
-<div id="myNoticeBox" class="px-6 pb-10"></div>
-
-<!-- SETTINGS MODAL -->
-<div id="settingsModal" class="fixed inset-0 z-[100] hidden bg-white text-black overflow-y-auto">
-  <div class="max-w-[650px] mx-auto min-h-screen bg-white">
-    <div class="bg-black text-white p-6 flex justify-between items-center sticky top-0 z-10">
-      <h2 class="font-black text-[18px]">Settings</h2>
-      <button onclick="document.getElementById('settingsModal').classList.add('hidden')" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">✕</button>
-    </div>
-    <div class="p-8 text-center">
-      <div id="hiddenDevIcon" class="w-28 h-28 rounded-[32px] bg-zinc-100 border-2 border-zinc-200 flex items-center justify-center text-[42px] mx-auto cursor-pointer active:scale-95 transition">⚙️</div>
-      <p class="mt-6 font-bold text-zinc-800">App Settings</p>
-      <p class="text-[12px] text-zinc-500 mt-2">Version 2.0 • Jubayer</p>
-      <button onclick="localStorage.clear(); alert('Cache Cleared'); location.reload()" class="mt-10 w-full bg-zinc-100 py-4 rounded-[14px] font-bold">Clear Cache</button>
-    </div>
-  </div>
 </div>
-
-<!-- DEV CODE MODAL -->
-<div id="devCodeModal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-6">
-  <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="document.getElementById('devCodeModal').classList.add('hidden')"></div>
-  <div class="relative w-full max-w-[340px] bg-white rounded-[28px] p-8 text-center shadow-2xl">
-    <div class="w-14 h-14 rounded-full bg-black text-white flex items-center justify-center mx-auto text-[22px]">🔒</div>
-    <h3 class="font-black text-black mt-4 text-[18px]">Developer Access</h3>
-    <input id="devCodeInput" type="password" placeholder="•••••" class="w-full mt-6 p-4 rounded-[14px] bg-zinc-100 text-center font-black tracking-[10px] text-black text-[22px] outline-none border-2 border-transparent focus:border-black">
-    <button onclick="checkDevCode()" class="w-full mt-4 bg-black text-white font-black py-4 rounded-[14px] active:scale-[0.98]">UNLOCK PANEL</button>
-  </div>
-</div>
-
-<!-- DEVELOPER PANEL -->
-<div id="devPanel" class="fixed inset-0 z-[300] hidden overflow-y-auto bg-[#f5f5f7] hide-scroll">
-  <div class="max-w-[650px] mx-auto bg-[#f5f5f7] min-h-screen">
-    <div class="bg-black text-white p-6 flex justify-between items-center sticky top-0 z-20">
-      <div><h2 class="font-black text-[18px] leading-none">Developer Panel</h2><p class="text-[11px] text-white/60 font-semibold mt-1">Manage Everything</p></div>
-      <button onclick="document.getElementById('devPanel').classList.add('hidden')" class="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center">✕</button>
-    </div>
-    <div class="p-5 space-y-5 pb-20">
-
-      <!-- GLOBAL NOTICE -->
-      <div class="bg-white border border-yellow-200 rounded-[20px] p-5 shadow-sm">
-        <div class="flex items-center gap-2"><span class="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center">📢</span><h3 class="font-black text-black text-[14px]">Home Top Notice</h3></div>
-        <input id="globalNoticeInput" placeholder="নোটিশ লিখুন..." class="w-full mt-4 p-4 border border-zinc-200 rounded-[14px] bg-zinc-50 text-black outline-none focus:border-black text-[14px] font-semibold">
-        <button onclick="saveGlobalNotice()" class="w-full mt-3 bg-black text-white py-3.5 rounded-[14px] font-black text-[14px]">Save Notice</button>
-        <div id="globalNoticeList" class="mt-4 space-y-2"></div>
-      </div>
-
-      <!-- PERSONAL NOTICE -->
-      <div class="bg-white border border-blue-200 rounded-[20px] p-5 shadow-sm">
-        <h3 class="font-black text-black text-[14px] flex items-center gap-2"><span class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center">👤</span> Personal Notice</h3>
-        <input id="pNoticeEmails" placeholder="Email (comma দিয়ে একাধিক)" class="w-full mt-4 p-4 border border-zinc-200 rounded-[14px] bg-zinc-50 text-black outline-none text-[13px]">
-        <textarea id="pNoticeText" placeholder="মেসেজ লিখুন..." rows="3" class="w-full mt-3 p-4 border border-zinc-200 rounded-[14px] bg-zinc-50 text-black outline-none text-[13px]"></textarea>
-        <button onclick="sendPersonalNotice()" class="w-full mt-3 bg-blue-600 text-white py-3.5 rounded-[14px] font-black">Send To User</button>
-        <div id="personalNoticeList" class="mt-4 space-y-2 max-h-[200px] overflow-y-auto hide-scroll"></div>
-      </div>
-
-      <!-- ADS SECTION - MAIN -->
-      <div class="bg-white border-2 border-pink-200 rounded-[24px] p-5 shadow-sm">
-        <h3 class="font-black text-black text-[15px] flex items-center gap-2"><span class="w-8 h-8 rounded-full bg-[#ff3a7a] text-white flex items-center justify-center">🎯</span> Ads Manager</h3>
-        <p class="text-[11px] text-zinc-500 font-bold mt-1">যেকোনো সাইজের ছবি সাপোর্ট করবে</p>
-        <input id="adTitle" placeholder="Ad Title (ex: 50% Offer)" class="w-full mt-4 p-4 rounded-[14px] bg-zinc-50 border border-zinc-200 text-black outline-none font-bold text-[14px]">
-        <input id="adLink" placeholder="Link (https://...)" class="w-full mt-3 p-4 rounded-[14px] bg-zinc-50 border border-zinc-200 text-black outline-none text-[13px]">
-        <label class="block mt-3 w-full p-4 rounded-[14px] bg-zinc-900 text-white text-center font-black cursor-pointer">
-          <span id="adFileLabel">📸 ছবি সিলেক্ট করুন</span>
-          <input type="file" id="adImage" accept="image/*" class="hidden">
-        </label>
-        <img id="adPreview" class="w-full h-[160px] object-cover rounded-[14px] mt-3 hidden border">
-        <p id="adStatus" class="text-[11px] font-bold text-zinc-600 mt-2"></p>
-        <button id="addAdBtn" onclick="addAd()" class="w-full mt-4 bg-[#ff3a7a] text-white font-black py-4 rounded-[14px] text-[15px] shadow-lg shadow-pink-200 active:scale-[0.98]">+ ADD AD NOW</button>
-        <div id="adminAdList" class="mt-5 space-y-3"></div>
-      </div>
-
-      <!-- USERS -->
-      <div class="bg-white border rounded-[20px] p-5 shadow-sm">
-        <h3 class="font-black text-black text-[14px]">👥 All Users</h3>
-        <button onclick="loadUsers()" class="w-full mt-3 bg-black text-white py-3 rounded-[14px] font-black">Load Users</button>
-        <div id="userList" class="mt-4 space-y-3 max-h-[400px] overflow-y-auto hide-scroll"></div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-</div>
-
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbz9Mh-m0ui2uQCFDerK67tW3hC6DB0wY5FPcwhgI1j49YBNC1MQyxNso52dZc1jsnIe/exec";
-let currentUser = JSON.parse(localStorage.getItem('jubayer_user')||'null');
-let tempPhoto="", editPhoto="", adPhotoTemp="";
+const API="https://script.google.com/macros/s/AKfycbzbnWdoV_5z8XHokG41lIZgE6lQvt2qZRDeQeHnp6LaojGj_l_gHp0mQwGsv7bPtHGc/exec";
+let adImageData="";
 
-// 3 TAP TO DEV - NO TEXT SHOWN
-function openSettings(){
-  document.getElementById('settingsModal').classList.remove('hidden');
-  let icon=document.getElementById('hiddenDevIcon');
-  let count=0, timer=null;
-  icon.onclick=()=>{
-    count++; clearTimeout(timer);
-    timer=setTimeout(()=>count=0,1800);
-    icon.style.transform="scale(0.9)";
-    setTimeout(()=>icon.style.transform="scale(1)",100);
-    if(count>=3){
-      count=0;
-      document.getElementById('settingsModal').classList.add('hidden');
-      document.getElementById('devCodeModal').classList.remove('hidden');
-      document.getElementById('devCodeInput').value="";
-      document.getElementById('devCodeInput').focus();
-    }
-  };
-}
-function checkDevCode(){
-  let code=document.getElementById('devCodeInput').value.trim();
-  if(code===atob('KjMyMTEj')){
-    document.getElementById('devCodeModal').classList.add('hidden');
-    document.getElementById('devPanel').classList.remove('hidden');
-    loadGlobalNoticeList(); loadAdminAds(); loadAllPersonalNotices();
-  }else{ alert('Wrong Code!'); }
-}
-
-// ANY SIZE IMAGE -> 500px JPEG 0.6 QUALITY
-function compressAnySize(file, cb, statusEl){
-  if(!file) return;
-  if(statusEl) statusEl.innerText="Compressing...";
-  let reader=new FileReader();
-  reader.onload=e=>{
-    let img=new Image();
-    img.onload=()=>{
-      let canvas=document.createElement('canvas');
-      let maxW=600;
-      let w=img.width, h=img.height;
-      if(w>maxW || h>maxW){
-        if(w>h){ h*=maxW/w; w=maxW; } else { w*=maxW/h; h=maxW; }
-      }
-      canvas.width=w; canvas.height=h;
-      let ctx=canvas.getContext('2d');
-      ctx.drawImage(img,0,0,w,h);
-      let dataUrl=canvas.toDataURL('image/jpeg',0.6);
-      let kb=Math.round(dataUrl.length*0.75/1024);
-      if(statusEl) statusEl.innerText="Ready ✅ "+kb+"KB";
-      cb(dataUrl);
-    };
-    img.onerror=()=>{ if(statusEl) statusEl.innerText="Image error"; };
-    img.src=e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-function handlePhoto(input){
-  if(input.files && input.files[0]){
-    compressAnySize(input.files[0], res=>{
-      tempPhoto=res;
-      let p=document.getElementById('photoPreview');
-      p.src=res; p.classList.remove('hidden');
-      document.getElementById('regPhotoStatus').innerText="Ready ✅";
-    }, document.getElementById('regPhotoStatus'));
-  }
-}
-function handleEditPhoto(input){
-  if(input.files && input.files[0]){
-    compressAnySize(input.files[0], res=>{
-      editPhoto=res;
-      let p=document.getElementById('editPreview');
-      p.src=res; p.classList.remove('hidden');
-    }, document.getElementById('editPhotoStatus'));
-  }
-}
-
-document.getElementById('adImage').addEventListener('change', function(){
-  if(this.files[0]){
-    document.getElementById('adFileLabel').innerText="✅ "+this.files[0].name;
-    compressAnySize(this.files[0], res=>{
-      adPhotoTemp=res;
-      document.getElementById('adPreview').src=res;
-      document.getElementById('adPreview').classList.remove('hidden');
-    }, document.getElementById('adStatus'));
-  }
+document.getElementById('adImage').addEventListener('change',function(e){
+ let f=e.target.files[0]; if(!f) return;
+ compress(f, d=>{ adImageData=d; });
 });
-  // ACCOUNT RENDER
-function renderAccount(){
-  let box=document.getElementById('accountContent');
-  if(!currentUser){
-    box.innerHTML=`
-    <div class="space-y-6">
-      <div class="bg-white rounded-[24px] p-7 text-black shadow-xl">
-        <h3 class="font-black text-[18px]">Login</h3>
-        <p class="text-[12px] text-zinc-500 font-bold mt-1">আপনার একাউন্টে লগিন করুন</p>
-        <input id="l_user" placeholder="Email লিখুন" class="w-full mt-5 p-4 bg-zinc-100 border border-zinc-200 rounded-[14px] outline-none focus:border-black text-[14px] font-semibold text-black">
-        <input id="l_pass" type="password" placeholder="Password" class="w-full mt-3 p-4 bg-zinc-100 border border-zinc-200 rounded-[14px] outline-none focus:border-black text-[14px] font-semibold text-black">
-        <button onclick="doLogin()" id="loginBtn" class="w-full mt-5 bg-black text-white py-4 rounded-[14px] font-black text-[15px] active:scale-[0.98]">LOGIN</button>
-      </div>
-      <div class="bg-[#1a1a1a] border border-white/10 rounded-[24px] p-7 text-white">
-        <h3 class="font-black text-[18px] text-white">Create New Account</h3>
-        <input id="r_name" placeholder="Full Name" class="w-full mt-5 p-4 bg-white/10 border border-white/10 rounded-[14px] outline-none focus:border-white/30 text-white text-[14px]">
-        <input id="r_user" placeholder="Email" class="w-full mt-3 p-4 bg-white/10 border border-white/10 rounded-[14px] outline-none focus:border-white/30 text-white text-[14px]">
-        <input id="r_pass" type="password" placeholder="Password (6+ digit)" class="w-full mt-3 p-4 bg-white/10 border border-white/10 rounded-[14px] outline-none focus:border-white/30 text-white text-[14px]">
-        <label class="block mt-4 w-full p-4 rounded-[14px] bg-white text-black text-center font-black cursor-pointer">
-          <span id="regFileLabel">📸 প্রোফাইল ছবি (যেকোনো সাইজ)</span>
-          <input type="file" accept="image/*" onchange="handlePhoto(this)" class="hidden">
-        </label>
-        <p id="regPhotoStatus" class="text-[11px] font-bold text-white/50 mt-2"></p>
-        <img id="photoPreview" class="w-24 h-24 rounded-full object-cover mt-3 hidden border-4 border-white/20 mx-auto">
-        <button onclick="doRegister()" id="regBtn" class="w-full mt-5 bg-[#ffcc00] text-black py-4 rounded-[14px] font-black text-[15px] active:scale-[0.98]">CREATE ACCOUNT</button>
-      </div>
-    </div>`;
-  }else{
-    box.innerHTML=`
-    <div class="text-center py-4">
-      <div class="relative w-28 h-28 mx-auto">
-        <img src="${currentUser.photo||'https://via.placeholder.com/200'}" class="w-28 h-28 rounded-full object-cover border-4 border-white/10">
-        <div class="absolute bottom-0 right-0 w-8 h-8 bg-green-500 rounded-full border-4 border-black flex items-center justify-center text-[12px]">✓</div>
-      </div>
-      <h3 class="font-black text-[20px] mt-4 text-white">${currentUser.fullName||currentUser.name||'User'}</h3>
-      <p class="text-[13px] text-white/60 font-semibold mt-1">${currentUser.email}</p>
-      <div class="flex gap-3 justify-center mt-6">
-        <button onclick="openEdit()" class="bg-white text-black px-7 py-3 rounded-full font-black text-[13px]">✏️ Edit Profile</button>
-        <button onclick="doLogout()" class="bg-white/10 border border-white/10 text-white px-7 py-3 rounded-full font-bold text-[13px]">Logout</button>
-      </div>
-    </div>
 
-    <div id="editBox" class="hidden mt-8 bg-white rounded-[24px] p-6 text-black">
-      <h3 class="font-black text-[16px]">Edit Profile - যেকোনো সাইজের ছবি</h3>
-      <input id="e_name" value="${currentUser.fullName||''}" placeholder="Full Name" class="w-full mt-4 p-4 bg-zinc-100 rounded-[14px] border border-zinc-200 outline-none text-black font-semibold">
-      <input id="e_dob" value="${currentUser.dob||''}" type="date" class="w-full mt-3 p-4 bg-zinc-100 rounded-[14px] border border-zinc-200 outline-none text-black">
-      <textarea id="e_bio" placeholder="Bio..." class="w-full mt-3 p-4 bg-zinc-100 rounded-[14px] border border-zinc-200 outline-none text-black text-[14px]">${currentUser.bio||''}</textarea>
-      <input id="e_pass" value="" placeholder="New Password (খালি রাখলে আগেরটাই থাকবে)" type="password" class="w-full mt-3 p-4 bg-zinc-100 rounded-[14px] border border-zinc-200 outline-none text-black">
-      <label class="block mt-4 w-full p-4 rounded-[14px] bg-black text-white text-center font-black cursor-pointer">
-        <span>📸 নতুন ছবি সিলেক্ট (যেকোনো সাইজ)</span>
-        <input type="file" accept="image/*" onchange="handleEditPhoto(this)" class="hidden">
-      </label>
-      <p id="editPhotoStatus" class="text-[11px] font-bold text-zinc-500 mt-2"></p>
-      <img id="editPreview" src="${currentUser.photo||''}" class="w-24 h-24 rounded-full object-cover mt-3 border-4 border-zinc-100 ${currentUser.photo?'':'hidden'}">
-      <button onclick="saveProfile()" id="saveBtn" class="w-full mt-5 bg-black text-white py-4 rounded-[14px] font-black">SAVE CHANGES</button>
-      <button onclick="document.getElementById('editBox').classList.add('hidden')" class="w-full mt-3 bg-zinc-100 text-black py-3 rounded-[14px] font-bold">Cancel</button>
-    </div>
-    `;
-    loadMyNotices();
-  }
+function compress(file, cb){
+ let r=new FileReader();
+ r.onload=e=>{
+  let img=new Image();
+  img.onload=()=>{
+   let c=document.createElement('canvas'), maxW=350, w=img.width, h=img.height;
+   if(w>maxW||h>maxW){ if(w>h){h*=maxW/w;w=maxW;}else{w*=maxW/h;h=maxW;} }
+   c.width=w; c.height=h; c.getContext('2d').drawImage(img,0,0,w,h);
+   let d=c.toDataURL('image/jpeg',0.35);
+   let kb=Math.round(d.length*0.75/1024);
+   document.getElementById('compStatus').innerText="Ready "+kb+"KB Safe ✅";
+   cb(d);
+  }; img.src=e.target.result;
+ }; r.readAsDataURL(file);
 }
 
-function doLogin(){
-  let u=document.getElementById('l_user').value.trim();
-  let p=document.getElementById('l_pass').value.trim();
-  if(!u||!p){ alert('Email & Pass দিন'); return; }
-  let btn=document.getElementById('loginBtn'); btn.innerText='Loading...'; btn.disabled=true;
-  fetch(API_URL+"?action=login&email="+encodeURIComponent(u)+"&pass="+encodeURIComponent(p))
- .then(r=>r.json()).then(d=>{
-    if(d.error){ alert(d.error); } else { localStorage.setItem('jubayer_user',JSON.stringify(d)); location.reload(); }
-  }).catch(e=>alert('Server Error: '+e)).finally(()=>{ btn.innerText='LOGIN'; btn.disabled=false; });
+function api(action, data){
+ let fd=new FormData(); fd.append('action',action);
+ for(let k in data) fd.append(k,data[k]);
+ return fetch(API,{method:'POST',body:fd}).then(r=>r.json());
 }
 
-function doRegister(){
-  let name=document.getElementById('r_name').value.trim();
-  let email=document.getElementById('r_user').value.trim();
-  let pass=document.getElementById('r_pass').value.trim();
-  if(!name||!email||!pass){ alert('সব ঘর পূরণ করুন'); return; }
-  if(pass.length<4){ alert('Password 4+ দিন'); return; }
-  let btn=document.getElementById('regBtn'); btn.innerText='Creating...'; btn.disabled=true;
-  fetch(API_URL,{method:'POST', body: JSON.stringify({action:'register', email:email, name:name, pass:pass, photo:tempPhoto||'', deviceId: localStorage.getItem('deviceId')||''})})
- .then(r=>r.json()).then(d=>{
-    if(d.error){ alert(d.error); } else { localStorage.setItem('jubayer_user',JSON.stringify(d)); alert('Account Created ✅'); location.reload(); }
-  }).catch(e=>alert(e)).finally(()=>{ btn.innerText='CREATE ACCOUNT'; btn.disabled=false; });
+function register(){
+ api('register',{email:email.value,name:name.value,pass:pass.value}).then(r=>{
+  msg.innerText=r.error||"Registered ✅ Now Login"; if(!r.error) loadAds();
+ });
 }
-
-function openEdit(){ document.getElementById('editBox').classList.remove('hidden'); editPhoto=currentUser.photo||""; document.getElementById('editBox').scrollIntoView({behavior:'smooth'}); }
-
-function saveProfile(){
-  let name=document.getElementById('e_name').value.trim();
-  if(!name){ alert('Name দিন'); return; }
-  let btn=document.getElementById('saveBtn'); btn.innerText='Saving...'; btn.disabled=true;
-  let photoToSend = editPhoto || currentUser.photo || "";
-  fetch(API_URL,{method:'POST', body: JSON.stringify({
-    action:'updateProfile',
-    email: currentUser.email,
-    fullName: name,
-    dob: document.getElementById('e_dob').value,
-    bio: document.getElementById('e_bio').value,
-    pass: document.getElementById('e_pass').value,
-    photo: photoToSend
-  })}).then(r=>r.json()).then(()=>{
-    currentUser.fullName=name; currentUser.photo=photoToSend;
-    currentUser.dob=document.getElementById('e_dob').value;
-    currentUser.bio=document.getElementById('e_bio').value;
-    localStorage.setItem('jubayer_user',JSON.stringify(currentUser));
-    alert('Saved ✅'); location.reload();
-  }).catch(e=>alert(e)).finally(()=>{ btn.innerText='SAVE CHANGES'; btn.disabled=false; });
+function login(){
+ api('login',{email:email.value,pass:pass.value}).then(r=>{
+  if(r.error){msg.innerText=r.error; return;}
+  msg.innerText="Login Success ✅ "+r.name;
+  document.getElementById('adminBox').classList.remove('hidden');
+  loadAds();
+ });
 }
-
-function doLogout(){ if(confirm('Logout করবেন?')){ localStorage.removeItem('jubayer_user'); location.reload(); } }
-
-// MY NOTICE
-function loadMyNotices(){
-  if(!currentUser) return;
-  fetch(API_URL+"?action=getPersonalNotice&email="+encodeURIComponent(currentUser.email))
- .then(r=>r.json()).then(list=>{
-    let box=document.getElementById('myNoticeBox');
-    if(!list||list.length==0){ box.innerHTML=''; return; }
-    let h='<div class="bg-blue-600 rounded-[20px] p-5 text-white"><h3 class="font-black text-[14px]">📩 আপনার জন্য নোটিশ</h3><div class="mt-3 space-y-2">';
-    list.forEach(n=>{ h+=`<div class="bg-white text-black rounded-[12px] p-3 text-[13px] font-semibold">${n.text}</div>`; });
-    h+='</div></div>'; box.innerHTML=h;
-  });
-}
-
-// DEV FUNCTIONS
 function addAd(){
-  let title=document.getElementById('adTitle').value.trim();
-  let link=document.getElementById('adLink').value.trim();
-  if(!title){ alert('Title দিন'); return; }
-  let btn=document.getElementById('addAdBtn'); btn.innerText='UPLOADING...'; btn.disabled=true;
-  fetch(API_URL,{method:'POST', body: JSON.stringify({action:'addAd', title:title, link:link, image: adPhotoTemp||''})})
- .then(r=>r.json()).then(d=>{
-    if(d.error){ alert('Error: '+d.error); return; }
-    alert('Ad Added ✅');
-    document.getElementById('adTitle').value=''; document.getElementById('adLink').value='';
-    document.getElementById('adImage').value=''; adPhotoTemp='';
-    document.getElementById('adPreview').classList.add('hidden');
-    document.getElementById('adStatus').innerText=''; document.getElementById('adFileLabel').innerText='📸 ছবি সিলেক্ট করুন';
-    loadAdminAds();
-  }).catch(e=>alert('Server Error: '+e)).finally(()=>{ btn.innerText='+ ADD AD NOW'; btn.disabled=false; });
+ if(!adImageData){alert("ছবি সিলেক্ট করুন"); return;}
+ api('addAd',{title:adTitle.value,link:adLink.value,image:adImageData}).then(r=>{
+  alert(r.error||"Ad Added ✅"); adImageData=""; loadAds();
+ });
 }
-
-function loadAdminAds(){
-  fetch(API_URL+"?action=getAds").then(r=>r.json()).then(ads=>{
-    let html='';
-    (ads||[]).forEach(ad=>{
-      html+=`<div class="flex gap-3 items-center bg-zinc-50 border border-zinc-200 rounded-[16px] p-3">
-      <img src="${ad.image}" class="w-20 h-12 object-cover rounded-[10px] bg-white border">
-      <div class="flex-1 min-w-0"><p class="font-black text-[12px] text-black truncate">${ad.title}</p><p class="text-[10px] text-zinc-500 truncate">${ad.link||'No Link'}</p></div>
-      <button onclick="delAd('${ad.id}')" class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center">🗑️</button>
-      </div>`;
-    });
-    document.getElementById('adminAdList').innerHTML=html||'<p class="text-[12px] text-zinc-400 font-bold text-center py-4">No Ads Yet</p>';
-  }).catch(()=>{ document.getElementById('adminAdList').innerHTML='<p class="text-red-500 text-[11px] font-bold">Load Failed - Deploy New Version করুন</p>'; });
-}
-function delAd(id){ if(!confirm('Delete?')) return; fetch(API_URL+"?action=deleteAd&id="+id).then(()=>loadAdminAds()); }
-
-function saveGlobalNotice(){
-  let t=document.getElementById('globalNoticeInput').value.trim(); if(!t) return;
-  fetch(API_URL,{method:'POST', body: JSON.stringify({action:'addNotice', text:t})})
- .then(r=>r.json()).then(()=>{ document.getElementById('globalNoticeInput').value=''; loadGlobalNoticeList(); alert('Saved'); });
-}
-function loadGlobalNoticeList(){
-  fetch(API_URL+"?action=getNotice").then(r=>r.json()).then(list=>{
-    let h='';
-    (list||[]).forEach(n=>{ h+=`<div class="flex justify-between items-center bg-zinc-50 border rounded-[12px] p-3 text-[12px] text-black"><span class="flex-1 font-semibold">${n.text}</span><button onclick="deleteGlobalNotice('${n.id}')" class="ml-3 text-red-500 font-black">✕</button></div>`; });
-    document.getElementById('globalNoticeList').innerHTML=h||'<p class="text-[11px] text-zinc-400">No Notice</p>';
+function loadAds(){
+ fetch(API+"?action=getAds").then(r=>r.json()).then(list=>{
+  let h=""; list.forEach(a=>{
+   h+=`<div class="bg-white rounded shadow overflow-hidden"><img src="${a.image}" class="w-full h-40 object-cover"><div class="p-2 flex justify-between"><span>${a.title}</span><a href="${a.link}" target="_blank" class="text-blue-600">Visit</a></div></div>`;
   });
+  document.getElementById('adsBox').innerHTML=h;
+  document.getElementById('adminAds').innerHTML=h;
+ });
 }
-function deleteGlobalNotice(id){ fetch(API_URL+"?action=deleteNotice&id="+id).then(()=>loadGlobalNoticeList()); }
-
-function sendPersonalNotice(){
-  let emails=document.getElementById('pNoticeEmails').value.trim();
-  let text=document.getElementById('pNoticeText').value.trim();
-  if(!emails||!text){ alert('Email & Text দিন'); return; }
-  fetch(API_URL,{method:'POST', body: JSON.stringify({action:'addPersonalNotice', emails:emails, text:text})})
- .then(()=>{ alert('Sent ✅'); document.getElementById('pNoticeEmails').value=''; document.getElementById('pNoticeText').value=''; loadAllPersonalNotices(); });
-}
-function loadAllPersonalNotices(){
-  fetch(API_URL+"?action=getAllPersonalNotices").then(r=>r.json()).then(list=>{
-    let h='';
-    (list||[]).slice(0,20).forEach(n=>{ h+=`<div class="bg-zinc-50 border rounded-[12px] p-3 text-[11px]"><p class="font-black text-black">${n.email}</p><p class="text-zinc-700 mt-1">${n.text}</p><button onclick="deletePNotice('${n.id}')" class="text-red-500 font-bold mt-1">Delete</button></div>`; });
-    document.getElementById('personalNoticeList').innerHTML=h||'No Personal Notice';
-  });
-}
-function deletePNotice(id){ fetch(API_URL+"?action=deletePersonalNotice&id="+id).then(()=>loadAllPersonalNotices()); }
-
-function loadUsers(){
-  document.getElementById('userList').innerHTML='Loading...';
-  fetch(API_URL+"?action=getUsers").then(r=>r.json()).then(list=>{
-    let html='';
-    list.forEach(u=>{
-      html+=`<div class="bg-zinc-50 border border-zinc-200 rounded-[16px] p-3 flex gap-3 items-center">
-      <img src="${u.photo||'https://via.placeholder.com/100'}" class="w-10 h-10 rounded-full object-cover bg-white">
-      <div class="flex-1 min-w-0"><p class="font-black text-[12px] text-black truncate">${u.fullName||u.name||'No Name'}</p><p class="text-[10px] text-zinc-500 truncate">${u.email}</p></div>
-      <button onclick="if(confirm('Delete ${u.email}?')){fetch(API_URL+'?action=deleteUser&email='+encodeURIComponent('${u.email}')).then(()=>loadUsers())}" class="text-[10px] bg-red-500 text-white px-3 py-1.5 rounded-full font-bold">DEL</button>
-      </div>`;
-    });
-    document.getElementById('userList').innerHTML=html||'No Users';
-  }).catch(()=>{ document.getElementById('userList').innerHTML='<p class="text-red-500 text-[11px] font-bold">Error - Check Deploy</p>'; });
-}
-
-window.addEventListener('load', ()=>{
-  renderAccount();
-  // deviceId
-  if(!localStorage.getItem('deviceId')) localStorage.setItem('deviceId','dev_'+Date.now()+Math.random().toString(36).substr(2,6));
-  try{ fetch(API_URL+"?action=visit&deviceId="+localStorage.getItem('deviceId')+"&page=menu"); }catch(e){}
-});
+loadAds();
 </script>
 </body>
 </html>
