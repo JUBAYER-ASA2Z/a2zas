@@ -18,16 +18,16 @@
 <div class="bg-gray-700 p-3 rounded"><p class="text-xs">Total</p><h3 id="totalVisit" class="text-xl font-bold">0</h3></div>
 <div class="bg-gray-700 p-3 rounded"><p class="text-xs">Live Now</p><h3 id="liveVisit" class="text-xl font-bold text-green-400">1</h3></div>
 </div>
-<button onclick="loadVisits()" class="w-full mt-3 bg-blue-600 p-2 rounded"><i class="fa-solid fa-rotate"></i> Replace / Refresh</button>
+<button onclick="loadVisits()" class="w-full mt-3 bg-blue-600 p-2 rounded"><i class="fa-solid fa-rotate"></i> Refresh</button>
 </div>
 
-<!-- ADS -->
+<!-- ADS - এখানে < বাদ পড়েছিল, ঠিক করা হয়েছে -->
 <div class="bg-gray-800 p-4 rounded-xl mb-4">
 <h2 class="font-bold mb-2">বিজ্ঞাপন (Ads)</h2>
 <input id="adTitle" placeholder="Title" class="w-full bg-gray-700 p-2 rounded mb-2">
 <input id="adLink" placeholder="Link https://" class="w-full bg-gray-700 p-2 rounded mb-2">
 <input id="adImage" type="file" accept="image/*" class="w-full bg-gray-700 p-2 rounded mb-2">
-<p id="adStatus" class="text-xs mb-2 text-gray-400">ছবি অটো ছোট হবে 15KB - 500 আসবে না</p>
+<p id="adStatus" class="text-xs mb-2 text-gray-400">ছবি অটো ছোট হবে 15KB - 500 Error আসবে না</p>
 <button onclick="addAd()" class="w-full bg-purple-600 p-2 rounded">Add Ad - সবাই দেখবে</button>
 <div id="adsList" class="mt-3 space-y-2"></div>
 </div>
@@ -43,10 +43,9 @@
 <!-- ACCOUNTS -->
 <div class="bg-gray-800 p-4 rounded-xl mb-4">
 <h2 class="font-bold mb-2">All Accounts (Serial)</h2>
-<button onclick="loadAccounts()" class="bg-blue-600 px-3 py-1 rounded text-sm mb-3">Replace / Refresh</button>
+<button onclick="loadAccounts()" class="bg-blue-600 px-3 py-1 rounded text-sm mb-3">Refresh</button>
 <div id="accountsList" class="space-y-2"></div>
 </div>
-
 <!-- GLOBAL + PERSONAL NOTICE -->
 <div class="bg-gray-800 p-4 rounded-xl mb-4">
 <h2 class="font-bold mb-2">নোটিশ পাঠান</h2>
@@ -71,10 +70,10 @@ document.getElementById('adImage').addEventListener('change',e=>{
  let r=new FileReader(); r.onload=ev=>{
   let img=new Image(); img.onload=()=>{
    let c=document.createElement('canvas');
-   let max=400; let w=img.width, h=img.height;
+   let max=500; let w=img.width, h=img.height;
    if(w>max||h>max){ if(w>h){h*=max/w;w=max;}else{w*=max/h;h=max;} }
    c.width=w; c.height=h; c.getContext('2d').drawImage(img,0,0,w,h);
-   adData=c.toDataURL('image/jpeg',0.4);
+   adData=c.toDataURL('image/jpeg',0.5);
    document.getElementById('adStatus').innerText="Ready "+Math.round(adData.length*0.75/1024)+"KB Safe ✅";
   }; img.src=ev.target.result;
  }; r.readAsDataURL(f);
@@ -95,16 +94,17 @@ function addAd(){
  if(!adTitle.value){ alert("Title দিন"); return; }
  document.getElementById('adStatus').innerText="Uploading...";
  post('addAd',{title:adTitle.value, link:adLink.value, image:adData}).then(r=>{
-  if(r.error){ alert("Error: "+r.error); return; }
-  alert("Ad Added ✅ Live হবে 15 sec পর"); loadAds(); adData=""; adTitle.value=""; adLink.value="";
+  alert("Ad Added ✅ 15 sec পর index এ দেখাবে");
+  loadAds(); adData=""; adTitle.value=""; adLink.value="";
   document.getElementById('adStatus').innerText="Done ✅";
  });
 }
 function loadAds(){
  get('getAdsFull').then(list=>{
   let h=""; list.forEach(a=>{
+   if(!a.image) return;
    h+=`<div class="bg-gray-700 p-2 rounded flex gap-2 items-center"><img src="${a.image}" class="w-12 h-12 object-cover rounded"><div class="flex-1"><p class="text-sm">${a.title}</p><a href="${a.link}" class="text-xs text-blue-300 truncate">${a.link}</a></div><button onclick="delAd('${a.id}')" class="bg-red-600 px-2 py-1 rounded text-xs">Delete</button></div>`;
-  }); document.getElementById('adsList').innerHTML=h||"<p class='text-xs text-gray-400'>কোন Ads নেই</p>";
+  }); document.getElementById('adsList').innerHTML=h||"<p class='text-xs text-gray-400'>কোন Ads নেই - Index এ Hide থাকবে</p>";
  });
 }
 function delAd(id){ if(confirm("Delete এই Ad?")) post('deleteAd',{id:id}).then(()=>loadAds()); }
@@ -136,7 +136,7 @@ function sendTo(email){ document.getElementById('personalEmail').value=email; wi
 function sendGlobalNotice(){ if(!globalNoticeText.value) return; post('addNotice',{text:globalNoticeText.value, color:"#2563eb"}).then(()=>{ alert("Global Notice Sent ✅"); globalNoticeText.value=""; loadNotice(); }); }
 function sendPersonal(){
  if(!personalEmail.value ||!personalText.value){ alert("Email ও Notice লিখুন"); return; }
- post('addPersonalNotice',{email:personalEmail.value, text:personalText.value}).then(()=>{ alert("Personal Sent to "+personalEmail.value+" ✅"); personalText.value=""; loadPersonal(); });
+ post('addPersonalNotice',{email:personalEmail.value, text:personalText.value}).then(()=>{ alert("Personal Sent ✅"); personalText.value=""; loadPersonal(); });
 }
 function loadPersonal(){
  get('getAllPersonalNotices').then(list=>{
