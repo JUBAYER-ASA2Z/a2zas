@@ -1,92 +1,76 @@
-<!doctype html><html lang="bn"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Menu</title>
 <style>
-body{font-family:system-ui;background:#fff5f7;margin:0}
-.box{max-width:380px;margin:auto;padding:15px}
-.card{background:#fff;padding:15px;border-radius:16px;box-shadow:0 2px 8px #0001;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
-.btn{width:100%;padding:12px;border-radius:12px;border:0;font-weight:700}
-.dot{width:24px;height:24px;opacity:.15}
+*{box-sizing:border-box} body{margin:0;font-family:system-ui;background:#fff5f7}
+.wrap{max-width:400px;margin:auto;min-height:100vh;background:#fff5f7}
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#fff}
+.top-left{display:flex;gap:10px;align-items:center}
+.back{width:36px;height:36px;border-radius:50%;border:0;background:#f4f4f5}
+.lang{display:flex;gap:6px;align-items:center}
+.lang button{border:1px solid #ddd;background:#fff;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700}
+.lang button.active{background:#111;color:#fff;border-color:#111}
+.dot{width:18px;height:18px;border-radius:50%;border:0;background:transparent;opacity:.15;margin-left:4px}
+.list{padding:12px}
+.item{width:100%;background:#fff;border:1px solid #eee;display:flex;justify-content:space-between;align-items:center;padding:16px 14px;border-radius:14px;margin-bottom:10px;font-weight:600;font-size:15px}
+.item span{opacity:.4}
+.item.disabled{opacity:.4;pointer-events:none;background:#f3f3f3}
 </style>
-<div class="box">
-<div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0">
-<button onclick="location.href='index.html'" style="width:40px;height:40px;border-radius:50%;border:0;background:#fff;box-shadow:0 2px 6px #0001">←</button>
-<b>মেনু</b>
+</head>
+<body>
+<div class="wrap">
+
+<div class="top">
+<div class="top-left">
+<button class="back" onclick="location.href='index.html'">←</button>
+<b id="tMenu">মেনু</b>
+</div>
+<div class="lang">
+<button id="bBN" class="active" onclick="setLang('bn')">BN</button>
+<button id="bEN" onclick="setLang('en')">EN</button>
 <button id="secret" class="dot">●</button>
 </div>
-
-<div class="card"><div><b id="uName">Guest</b><br><small id="uEmail">Login করুন</small></div><img id="uPhoto" src="https://via.placeholder.com/100" style="width:48px;height:48px;border-radius:50%;object-fit:cover"></div>
-
-<button class="card" onclick="openAcc()" style="width:100%">👤 একাউন্ট <span>›</span></button>
-
-<div id="modal" style="display:none;position:fixed;inset:0;background:#0006;align-items:center;justify-content:center;padding:15px">
-<div class="card" style="display:block;width:100%;max-width:360px">
-
-<div id="loginBox">
-<h3 style="text-align:center">একাউন্ট</h3>
-<input id="e" placeholder="User ID" style="width:100%;padding:10px;border-radius:10px;border:1px solid #ddd;margin:6px 0">
-<input id="p" type="password" placeholder="Password" style="width:100%;padding:10px;border-radius:10px;border:1px solid #ddd;margin:6px 0">
-<button class="btn" style="background:#111;color:#fff" onclick="login()">লগইন</button>
-<p id="msg" style="font-size:12px;color:red;text-align:center"></p>
-<button class="btn" onclick="closeM()" style="background:#eee;margin-top:8px">বন্ধ</button>
 </div>
 
-<div id="profileBox" style="display:none">
-<div style="text-align:center"><img id="pPhoto" src="https://via.placeholder.com/100" style="width:80px;height:80px;border-radius:50%"><br><br>
-<label style="background:#eee;padding:6px 14px;border-radius:20px;font-size:12px">Replace<input type="file" id="file" hidden accept="image/*"></label>
-</div>
-<div style="margin-top:12px;background:#eef6ff;padding:10px;border-radius:12px">
-<b style="font-size:13px">📩 লাইভ নোটিশ <button onclick="getNotice()" style="float:right;background:#2563eb;color:#fff;border:0;border-radius:20px;padding:3px 10px;font-size:11px">Refresh</button></b>
-<div id="notices" style="font-size:12px;margin-top:8px;color:#666">Refresh চাপুন</div>
-</div>
-<button class="btn" style="background:#eee;margin-top:12px" onclick="logout()">Logout</button>
-<button class="btn" onclick="closeM()" style="background:#fff;border:1px solid #ddd;margin-top:8px">বন্ধ</button>
+<div class="list">
+<button class="item" onclick="location.href='account.html'"><span id="l1">👤 একাউন্ট</span><span>›</span></button>
+<button class="item" onclick="location.href='livechat.html'"><span id="l2">💬 লাইভ চ্যাট</span><span>›</span></button>
+<button class="item" onclick="location.href='support.html'"><span id="l3">🎧 সাপোর্ট</span><span>›</span></button>
+<button class="item disabled" onclick="return false"><span id="l4">⚙️ সেটিংস</span><span>🔒</span></button>
 </div>
 
-</div>
-</div>
 </div>
 
 <script>
-const API="https://script.google.com/macros/s/AKfycbyqDzoEhS5OcXQQOo7LTJS5Xw6TD5VciSnLjs1CKp9HXrj7WYJUjejLuwMARyQZvbaT/exec";
+// NO API - NO FETCH - NO GOOGLE
 let c=0;
-secret.onclick=()=>{c++; setTimeout(()=>c=0,2000); if(c>=3){c=0; if(prompt("Code:")=="321123"){localStorage.isDev=1; location.href='developer.html'}}}
+document.getElementById('secret').onclick=()=>{
+ c++; setTimeout(()=>c=0,2000);
+ if(c>=3){ c=0; let code=prompt("Code:"); if(code==="321123"){ localStorage.setItem('isDev','1'); location.href='developer.html'; } }
+};
 
-function openAcc(){
- modal.style.display='flex';
- let u=JSON.parse(localStorage.getItem('user')||'null');
- if(u){ loginBox.style.display='none'; profileBox.style.display='block'; uName.innerText=u.name||u.email; uEmail.innerText=u.email; let lp=JSON.parse(localStorage.getItem('localProfile')||'{}'); if(lp.photo){uPhoto.src=lp.photo; pPhoto.src=lp.photo;} }
- else{ loginBox.style.display='block'; profileBox.style.display='none'; }
+function setLang(l){
+ localStorage.setItem('lang',l);
+ document.getElementById('bBN').classList.toggle('active',l==='bn');
+ document.getElementById('bEN').classList.toggle('active',l==='en');
+ if(l==='en'){
+   tMenu.innerText='Menu';
+   l1.innerText='👤 Account';
+   l2.innerText='💬 Live Chat';
+   l3.innerText='🎧 Support';
+   l4.innerText='⚙️ Settings';
+ }else{
+   tMenu.innerText='মেনু';
+   l1.innerText='👤 একাউন্ট';
+   l2.innerText='💬 লাইভ চ্যাট';
+   l3.innerText='🎧 সাপোর্ট';
+   l4.innerText='⚙️ সেটিংস';
+ }
 }
-function closeM(){ modal.style.display='none'; }
-
-function login(){
- if(!e.value||!p.value){msg.innerText="ID Pass দিন"; return;}
- let fd=new FormData(); fd.append('action','login'); fd.append('email',e.value); fd.append('pass',p.value);
- fetch(API,{method:'POST',body:fd}).then(r=>r.text()).then(t=>{
-  try{let j=JSON.parse(t); if(j.error){msg.innerText=j.error; return;} localStorage.setItem('user',JSON.stringify({email:j.email,name:j.name})); closeM(); location.reload();}
-  catch{msg.innerText="Server busy";}
- });
-}
-
-function getNotice(){
- let u=JSON.parse(localStorage.getItem('user')||'null'); if(!u) return;
- notices.innerText="লোড হচ্ছে...";
- fetch(API+"?action=getPersonalNotices&email="+encodeURIComponent(u.email)+"&t="+Date.now())
-.then(r=>r.text()).then(t=>{
-  try{let list=JSON.parse(t); if(!list.length){notices.innerText="কোন নোটিশ নেই"; return;} notices.innerHTML=list.map(n=>`<div style="background:#fff;border:1px solid #ddd;padding:8px;border-radius:10px;margin-top:6px">${n.text}</div>`).join('');}
-  catch{notices.innerText="আবার Refresh দিন";}
- });
-}
-
-file.onchange=(ev)=>{
- let f=ev.target.files[0]; if(!f) return;
- let r=new FileReader(); r.onload=e=>{
-  let img=new Image(); img.onload=()=>{
-   let c=document.createElement('canvas'); c.width=300; c.height=300; c.getContext('2d').drawImage(img,0,0,300,300);
-   let d=c.toDataURL('image/jpeg',0.7); uPhoto.src=d; pPhoto.src=d; let lp=JSON.parse(localStorage.getItem('localProfile')||'{}'); lp.photo=d; localStorage.setItem('localProfile',JSON.stringify(lp));
-  }; img.src=e.target.result;
- }; r.readAsDataURL(f);
-}
-function logout(){localStorage.removeItem('user'); location.reload();}
-let lp=JSON.parse(localStorage.getItem('localProfile')||'{}'); if(lp.photo) uPhoto.src=lp.photo;
+let saved=localStorage.getItem('lang')||'bn'; setLang(saved);
 </script>
+</body>
+</html>
