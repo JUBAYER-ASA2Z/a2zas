@@ -67,13 +67,13 @@ body{margin:0;background:#fff;overscroll-behavior:none;transition:0.3s}
 </div>
 
 <script>
-// নতুন লিংক - Live Server
-const API_URL="https://script.google.com/macros/s/AKfycbyt07t35S4oRxDY4Ai-wYXlaejv70wQ1-N6Rotz_4-WKZoM9QqGSC0Q8JArx7C6xvw0/exec";
+// ফাইনাল লিংক - আপনার দেওয়া লিংক
+const API_URL="https://script.google.com/macros/s/AKfycbzzp1BocPfy59Y0FBNutnHdBq1nY4QfIWwsrIZy-s-ECXHn0hgpq_whU475M1KnqVCC/exec";
 let currentUser=JSON.parse(localStorage.getItem('jubayer_user')||localStorage.getItem('user')||'null');
 
 function loadHomeData(){
-  let deviceId=localStorage.getItem('a2z_id');
-  if(!deviceId){ deviceId='a2z_'+Date.now(); localStorage.setItem('a2z_id',deviceId); }
+  let deviceId=localStorage.getItem('a2z_id') || localStorage.getItem('a2z_deviceId');
+  if(!deviceId){ deviceId='a2z_'+Date.now(); localStorage.setItem('a2z_id',deviceId); localStorage.setItem('a2z_deviceId',deviceId); }
   fetch(`${API_URL}?action=addVisit&deviceId=${deviceId}&page=index`).catch(()=>{});
 
   // LIVE NOTICE
