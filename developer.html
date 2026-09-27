@@ -26,8 +26,14 @@
 <input id="adLink" placeholder="Link https://" class="w-full bg-gray-700 p-2 rounded mb-2">
 <input id="adImage" type="file" accept="image/*" class="w-full bg-gray-700 p-2 rounded mb-2">
 <p id="adStatus" class="text-xs mb-2 text-gray-400">ছবি অটো ছোট হবে</p>
-<button onclick="addAd()" class="w-full bg-purple-600 p-2 rounded font-bold">Add Ad - সবাই দেখবে</button>
-<div class="mt-4"><p class="text-xs text-gray-400 mb-2">নিচে সব Ads Live:</p><div id="adsList" class="grid grid-cols-1 gap-2 max-h-[400px] overflow-y-auto"></div></div>
+<button onclick="addAd()" class="w-full bg-purple-600 p-2 rounded font-bold">Add Ad</button>
+<div class="mt-3"><div id="adsList" class="grid gap-2 max-h-[400px] overflow-y-auto"></div></div>
+</div>
+
+<div class="bg-gray-800 p-4 rounded-xl mb-4">
+<h2 class="font-bold mb-2">Live Chat <span id="chatCount" class="text-xs bg-green-600 px-2 py-0.5 rounded-full">0</span></h2>
+<button onclick="loadChats()" class="bg-green-600 px-3 py-1 rounded text-sm mb-3">Refresh Chats</button>
+<div id="chatList" class="space-y-2 max-h-[400px] overflow-y-auto"></div>
 </div>
 
 <div class="bg-gray-800 p-4 rounded-xl mb-4">
@@ -70,13 +76,15 @@ document.getElementById('adImage').addEventListener('change',e=>{
    if(w>max||h>max){ if(w>h){h*=max/w;w=max;}else{w*=max/h;h=max;} }
    c.width=w; c.height=h; c.getContext('2d').drawImage(img,0,0,w,h);
    adData=c.toDataURL('image/jpeg',0.5);
-   document.getElementById('adStatus').innerText="Ready "+Math.round(adData.length*0.75/1024)+"KB ✅";
+   adStatus.innerText="Ready "+Math.round(adData.length*0.75/1024)+"KB ✅";
   }; img.src=ev.target.result;
  }; r.readAsDataURL(f);
 });
 function post(a,d){ let fd=new FormData(); fd.append('action',a); for(let k in d) fd.append(k,d[k]); return fetch(API,{method:'POST',body:fd}).then(r=>r.json()); }
-function get(a){ return fetch(API+"?action="+a).then(r=>r.json()).catch(()=>[]); }
+function get(a){ return fetch(API+"?action="+a+"&r="+Date.now()).then(r=>r.json()).catch(()=>[]); }
+
 function loadVisits(){ get('getVisits').then(d=>{ todayVisit.innerText=d.daily||0; totalVisit.innerText=d.total||0; liveVisit.innerText=Math.floor(Math.random()*3+1); }); }
+
 function addAd(){
  if(!adData){ alert("ছবি দিন"); return; }
  if(!adTitle.value){ alert("Title দিন"); return; }
@@ -84,25 +92,40 @@ function addAd(){
  post('addAd',{title:adTitle.value, link:adLink.value, image:adData}).then(()=>{ alert("Added ✅"); loadAds(); adData=""; adTitle.value=""; adLink.value=""; adStatus.innerText="Done ✅"; });
 }
 function loadAds(){
+ adsList.innerHTML="<p class='text-xs text-yellow-300'>Loading Ads...</p>";
  get('getAdsFull').then(list=>{
   adCount.innerText=list?list.length:0;
-  let h=""; if(!list||list.length==0){ adsList.innerHTML="<p class='text-xs text-gray-400 p-3 text-center border border-dashed border-gray-600 rounded'>কোন Ads নেই - Index এ Hide থাকবে</p>"; return; }
-  list.reverse().forEach(a=>{
-   h+=`<div class="bg-gray-700 p-2 rounded flex gap-3 items-center"><img src="${a.image}" class="w-14 h-14 object-cover rounded"><div class="flex-1 overflow-hidden"><p class="text-sm font-bold truncate">${a.title}</p><p class="text-[10px] text-blue-300 truncate">${a.link}</p></div><div class="flex flex-col gap-1"><button onclick="window.open('${a.link}','_blank')" class="bg-blue-600 px-2 py-1 rounded text-[10px]">View</button><button onclick="delAd('${a.id}')" class="bg-red-600 px-2 py-1 rounded text-[10px]">Del</button></div></div>`;
+  if(!list||list.length==0){ adsList.innerHTML="<p class='text-xs text-gray-400 p-3 text-center border border-dashed rounded'>কোন Ads নেই - Index Hide থাকবে</p>"; return; }
+  let h=""; list.reverse().forEach(a=>{
+   h+=`<div class="bg-gray-700 p-2 rounded flex gap-2 items-center border border-gray-600"><img src="${a.image}" class="w-12 h-12 object-cover rounded"><div class="flex-1 overflow-hidden"><p class="text-sm font-bold truncate">${a.title}</p><p class="text-[10px] text-blue-300 truncate">${a.link}</p></div><div class="flex flex-col gap-1"><a href="${a.link}" target="_blank" class="bg-blue-600 px-2 py-1 rounded text-[10px] text-center">View</a><button onclick="delAd('${a.id}')" class="bg-red-600 px-2 py-1 rounded text-[10px] font-bold">DELETE</button></div></div>`;
   }); adsList.innerHTML=h;
  });
 }
-function delAd(id){ if(confirm("Delete?")) post('deleteAd',{id:id}).then(()=>loadAds()); }
-function addNotice(){ if(!noticeText.value) return; post('addNotice',{text:noticeText.value, color:noticeColor.value}).then(()=>{ noticeText.value=""; loadNotice(); alert("Added"); }); }
+function delAd(id){ if(confirm("Delete Ad?")) post('deleteAd',{id:id}).then(()=>{ alert("Deleted ✅"); loadAds(); }); }
+
+function loadChats(){
+ chatList.innerHTML="<p class='text-xs text-yellow-300'>Loading Chats...</p>";
+ get('getChats').then(list=>{
+  chatCount.innerText=list?list.length:0;
+  if(!list||list.length==0){ chatList.innerHTML="<p class='text-xs text-gray-400 p-3 text-center border border-dashed rounded'>কোন Live Chat নেই</p>"; return; }
+  let h=""; list.reverse().forEach(c=>{
+   h+=`<div class="bg-gray-700 p-2 rounded flex justify-between gap-2"><div class="flex-1"><p class="text-xs font-bold">${c.name||c.email||'User'}</p><p class="text-sm">${c.message||''}</p><p class="text-[9px] text-gray-400">${c.time||''}</p></div><button onclick="delChat('${c.id}')" class="bg-red-600 px-3 py-1 rounded text-xs h-fit">DELETE</button></div>`;
+  }); chatList.innerHTML=h;
+ });
+}
+function delChat(id){ if(confirm("Delete Chat?")) post('deleteChat',{id:id}).then(()=>{ alert("Deleted ✅"); loadChats(); }); }
+
+function addNotice(){ if(!noticeText.value) return; post('addNotice',{text:noticeText.value, color:noticeColor.value}).then(()=>{ noticeText.value=""; loadNotice(); }); }
 function loadNotice(){ get('getNotice').then(list=>{ let h=""; list.forEach(n=>{ h+=`<div class="flex justify-between bg-gray-700 p-2 rounded text-sm"><span style="color:${n.color}">${n.text}</span><button onclick="delNotice('${n.id}')" class="bg-red-600 px-2 rounded text-xs">X</button></div>`; }); noticeList.innerHTML=h; }); }
 function delNotice(id){ if(confirm("Delete?")) post('deleteNotice',{id:id}).then(()=>loadNotice()); }
-function loadAccounts(){ get('getUsers').then(list=>{ let h=""; list.forEach((u,i)=>{ h+=`<div class="bg-gray-700 p-2 rounded flex justify-between text-[12px]"><span>${i+1}. ${u.email||u.userId}</span><button onclick="delUser('${u.email||u.userId}')" class="bg-red-600 px-2 py-1 rounded text-xs">Del</button></div>`; }); accountsList.innerHTML=h; }); }
+function loadAccounts(){ get('getUsers').then(list=>{ let h=""; list.forEach((u,i)=>{ h+=`<div class="bg-gray-700 p-2 rounded flex justify-between text-[12px]"><span>${i+1}. ${u.email}</span><button onclick="delUser('${u.email}')" class="bg-red-600 px-2 py-1 rounded text-xs">Del</button></div>`; }); accountsList.innerHTML=h; }); }
 function delUser(e){ if(confirm("Delete "+e+"?")) post('deleteUser',{email:e, userId:e}).then(()=>loadAccounts()); }
 function sendGlobalNotice(){ if(!globalNoticeText.value) return; post('addNotice',{text:globalNoticeText.value, color:"#2563eb"}).then(()=>{ alert("Sent"); globalNoticeText.value=""; loadNotice(); }); }
 function sendPersonal(){ if(!personalEmail.value||!personalText.value) return; post('addPersonalNotice',{email:personalEmail.value, text:personalText.value}).then(()=>{ alert("Sent"); personalText.value=""; loadPersonal(); }); }
 function loadPersonal(){ get('getAllPersonalNotices').then(list=>{ let h=""; list.forEach(n=>{ h+=`<div class="bg-gray-700 p-2 rounded text-xs flex justify-between"><span>${n.email}: ${n.text}</span><button onclick="delPNotice('${n.id}')" class="bg-red-600 px-2 rounded">X</button></div>`; }); personalList.innerHTML=h; }); }
 function delPNotice(id){ if(confirm("Delete?")) post('deletePersonalNotice',{id:id}).then(()=>loadPersonal()); }
-loadVisits(); loadAds(); loadNotice(); loadAccounts(); loadPersonal();
+
+loadVisits(); loadAds(); loadChats(); loadNotice(); loadAccounts(); loadPersonal();
 </script>
 </body>
 </html>
