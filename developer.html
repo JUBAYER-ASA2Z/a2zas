@@ -52,18 +52,17 @@
 <h2 class="font-bold mb-2">নোটিশ পাঠান</h2>
 <input id="globalNoticeText" placeholder="সব একাউন্টে যাবে" class="w-full bg-gray-700 p-2 rounded mb-2">
 <button onclick="sendGlobalNotice()" class="w-full bg-green-600 p-2 rounded mb-2">সবাইকে পাঠান (Global)</button>
-<input id="personalEmail" placeholder="যার Email এ পাঠাবেন" class="w-full bg-gray-700 p-2 rounded mb-2">
+<input id="personalEmail" placeholder="যার UserID / Email এ পাঠাবেন" class="w-full bg-gray-700 p-2 rounded mb-2">
 <input id="personalText" placeholder="Personal Notice" class="w-full bg-gray-700 p-2 rounded mb-2">
 <button onclick="sendPersonal()" class="w-full bg-orange-600 p-2 rounded">Personal পাঠান</button>
 <div id="personalList" class="mt-3"></div>
 </div>
-
 <button onclick="location.href='index.html'" class="w-full bg-gray-700 p-3 rounded mt-2">← Home</button>
 <button onclick="location.href='menu.html'" class="w-full bg-gray-800 p-3 rounded mt-2">← Menu তে ফিরুন</button>
 </div>
 
 <script>
-const API="https://script.google.com/macros/s/AKfycbyt07t35S4oRxDY4Ai-wYXlaejv70wQ1-N6Rotz_4-WKZoM9QqGSC0Q8JArx7C6xvw0/exec";
+const API="https://script.google.com/macros/s/AKfycbzzp1BocPfy59Y0FBNutnHdBq1nY4QfIWwsrIZy-s-ECXHn0hgpq_whU475M1KnqVCC/exec";
 if(localStorage.getItem('isDev')!=='1'){ location.href='menu.html'; }
 let adData="";
 
@@ -72,11 +71,11 @@ document.getElementById('adImage').addEventListener('change',e=>{
  let r=new FileReader(); r.onload=ev=>{
   let img=new Image(); img.onload=()=>{
    let c=document.createElement('canvas');
-   let max=350; let w=img.width, h=img.height;
+   let max=400; let w=img.width, h=img.height;
    if(w>max||h>max){ if(w>h){h*=max/w;w=max;}else{w*=max/h;h=max;} }
    c.width=w; c.height=h; c.getContext('2d').drawImage(img,0,0,w,h);
-   adData=c.toDataURL('image/jpeg',0.35);
-   document.getElementById('adStatus').innerText="Ready "+Math.round(adData.length*0.75/1024)+"KB Safe ✅ - 500 আসবে না";
+   adData=c.toDataURL('image/jpeg',0.4);
+   document.getElementById('adStatus').innerText="Ready "+Math.round(adData.length*0.75/1024)+"KB Safe ✅";
   }; img.src=ev.target.result;
  }; r.readAsDataURL(f);
 });
@@ -85,15 +84,11 @@ function post(a,d){ let fd=new FormData(); fd.append('action',a); for(let k in d
 function get(a){ return fetch(API+"?action="+a).then(r=>r.json()).catch(()=>[]); }
 
 function loadVisits(){
- let v=JSON.parse(localStorage.getItem('visitData')||'{}');
- let today=new Date().toDateString();
- if(v.date!==today){ v={date:today, today:1, total:(v.total||0)+1}; } else { v.today++; v.total++; }
- localStorage.setItem('visitData',JSON.stringify(v));
- document.getElementById('todayVisit').innerText=v.today;
- document.getElementById('totalVisit').innerText=v.total;
- document.getElementById('liveVisit').innerText=Math.floor(Math.random()*3+1);
- get('getVisits').then(d=>{ if(d.total) document.getElementById('totalVisit').innerText=d.total+" (Server)"; });
- post('addVisit',{deviceId:'dev'}).then(()=>{});
+ get('getVisits').then(d=>{
+  document.getElementById('todayVisit').innerText = d.daily || 0;
+  document.getElementById('totalVisit').innerText = d.total || 0;
+  document.getElementById('liveVisit').innerText = Math.floor(Math.random()*3+1);
+ });
 }
 function addAd(){
  if(!adData){ alert("ছবি সিলেক্ট করুন"); return; }
@@ -106,7 +101,7 @@ function addAd(){
  });
 }
 function loadAds(){
- get('getAds').then(list=>{
+ get('getAdsFull').then(list=>{
   let h=""; list.forEach(a=>{
    h+=`<div class="bg-gray-700 p-2 rounded flex gap-2 items-center"><img src="${a.image}" class="w-12 h-12 object-cover rounded"><div class="flex-1"><p class="text-sm">${a.title}</p><a href="${a.link}" class="text-xs text-blue-300 truncate">${a.link}</a></div><button onclick="delAd('${a.id}')" class="bg-red-600 px-2 py-1 rounded text-xs">Delete</button></div>`;
   }); document.getElementById('adsList').innerHTML=h||"<p class='text-xs text-gray-400'>কোন Ads নেই</p>";
@@ -131,11 +126,12 @@ function delNotice(id){ if(confirm("Delete?")) post('deleteNotice',{id:id}).then
 function loadAccounts(){
  get('getUsers').then(list=>{
   let h=""; list.forEach((u,i)=>{
-   h+=`<div class="bg-gray-700 p-2 rounded flex justify-between items-center"><span class="text-[12px]">${i+1}. ${u.email} | ${u.name} | Pass: ${u.pass}</span><div class="flex gap-1"><button onclick="sendTo('${u.email}')" class="bg-blue-600 px-2 py-1 rounded text-xs"><i class="fa-solid fa-paper-plane"></i></button><button onclick="delUser('${u.email}')" class="bg-red-600 px-2 py-1 rounded text-xs"><i class="fa-solid fa-trash"></i></button></div></div>`;
+   let email = u.email || u.userId;
+   h+=`<div class="bg-gray-700 p-2 rounded flex justify-between items-center"><span class="text-[12px]">${i+1}. ${email} | ${u.name} | Pass: ${u.pass}</span><div class="flex gap-1"><button onclick="sendTo('${email}')" class="bg-blue-600 px-2 py-1 rounded text-xs"><i class="fa-solid fa-paper-plane"></i></button><button onclick="delUser('${email}')" class="bg-red-600 px-2 py-1 rounded text-xs"><i class="fa-solid fa-trash"></i></button></div></div>`;
   }); document.getElementById('accountsList').innerHTML=h||"<p class='text-xs'>No Users</p>";
  });
 }
-function delUser(email){ if(confirm("Delete "+email+"?")) post('deleteUser',{email:email}).then(()=>loadAccounts()); }
+function delUser(email){ if(confirm("Delete "+email+"?")) post('deleteUser',{email:email, userId:email}).then(()=>loadAccounts()); }
 function sendTo(email){ document.getElementById('personalEmail').value=email; window.scrollTo(0,document.body.scrollHeight); }
 function sendGlobalNotice(){ if(!globalNoticeText.value) return; post('addNotice',{text:globalNoticeText.value, color:"#2563eb"}).then(()=>{ alert("Global Notice Sent ✅"); globalNoticeText.value=""; loadNotice(); }); }
 function sendPersonal(){
