@@ -9,20 +9,19 @@
 .wrap{max-width:400px;margin:auto;min-height:100vh;background:#fff5f7}
 .top{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#fff}
 .top-left{display:flex;gap:10px;align-items:center}
-.back{width:36px;height:36px;border-radius:50%;border:0;background:#f4f4f5}
+.back{width:36px;height:36px;border-radius:50%;border:0;background:#f4f4f5;cursor:pointer}
 .lang{display:flex;gap:6px;align-items:center}
-.lang button{border:1px solid #ddd;background:#fff;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700}
+.lang button{border:1px solid #ddd;background:#fff;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer}
 .lang button.active{background:#111;color:#fff;border-color:#111}
-.dot{width:18px;height:18px;border-radius:50%;border:0;background:transparent;opacity:.15;margin-left:4px}
+.dot{width:24px;height:24px;border-radius:50%;border:1px dashed #ccc;background:#fff;opacity:1;margin-left:4px;cursor:pointer;font-size:10px}
 .list{padding:12px}
-.item{width:100%;background:#fff;border:1px solid #eee;display:flex;justify-content:space-between;align-items:center;padding:16px 14px;border-radius:14px;margin-bottom:10px;font-weight:600;font-size:15px}
-.item span{opacity:.4}
+.item{width:100%;background:#fff;border:1px solid #eee;display:flex;justify-content:space-between;align-items:center;padding:16px 14px;border-radius:14px;margin-bottom:10px;font-weight:600;font-size:15px;cursor:pointer}
+.item span{opacity:.6}
 .item.disabled{opacity:.4;pointer-events:none;background:#f3f3f3}
 </style>
 </head>
 <body>
 <div class="wrap">
-
 <div class="top">
 <div class="top-left">
 <button class="back" onclick="location.href='index.html'">←</button>
@@ -31,25 +30,47 @@
 <div class="lang">
 <button id="bBN" class="active" onclick="setLang('bn')">BN</button>
 <button id="bEN" onclick="setLang('en')">EN</button>
-<button id="secret" class="dot">●</button>
+<button id="secret" class="dot" title="Developer">●</button>
 </div>
 </div>
-
 <div class="list">
 <button class="item" onclick="location.href='account.html'"><span id="l1">👤 একাউন্ট</span><span>›</span></button>
 <button class="item" onclick="location.href='livechat.html'"><span id="l2">💬 লাইভ চ্যাট</span><span>›</span></button>
 <button class="item" onclick="location.href='support.html'"><span id="l3">🎧 সাপোর্ট</span><span>›</span></button>
-<button class="item disabled" onclick="return false"><span id="l4">⚙️ সেটিংস</span><span>🔒</span></button>
+<button class="item disabled"><span id="l4">⚙️ সেটিংস</span><span>🔒</span></button>
 </div>
-
 </div>
 
 <script>
-// NO API - NO FETCH - NO GOOGLE
+// Developer Secret - ৩ বার ট্যাপ
 let c=0;
+let lastTap=0;
 document.getElementById('secret').onclick=()=>{
- c++; setTimeout(()=>c=0,2000);
- if(c>=3){ c=0; let code=prompt("Code:"); if(code==="321123"){ localStorage.setItem('isDev','1'); location.href='developer.html'; } }
+ let now=Date.now();
+ if(now-lastTap>2000) c=0;
+ c++; lastTap=now;
+ if(c>=3){ 
+  c=0; 
+  let code=prompt("Developer Code দিন:");
+  if(code==="321123" || code==="0626"){ 
+    localStorage.setItem('isDev','1'); 
+    alert("Developer ON ✅");
+    location.href='developer.html'; 
+  } else if(code){
+    alert("ভুল কোড!");
+  }
+ }
+};
+
+// ব্যাকআপ - মেনু লেখায় ৫ বার ট্যাপ করলেও হবে
+let menuTap=0;
+document.getElementById('tMenu').onclick=()=>{
+  menuTap++;
+  setTimeout(()=>menuTap=0,2000);
+  if(menuTap>=5){
+    menuTap=0;
+    document.getElementById('secret').click();
+  }
 };
 
 function setLang(l){
