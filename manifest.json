@@ -1,38 +1,23 @@
-name": "A-S A2Z",
+{
+  "name": "A-S A2Z",
   "short_name": "A-S A2Z",
-  "description": "A-S A2Z - Poster, Islamic Quiz, Medical, Calculator & Daily Hisab App",
-  "start_url": "/a2zas/index.html",
+  "start_url": "/a2zas/",
   "scope": "/a2zas/",
   "display": "standalone",
-  "display_override": ["standalone", "window-controls-overlay"],
-  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#ff3a7a",
-  "lang": "bn",
   "icons": [
     {
-      "src": "./icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "./icon-512.png",
+      "src": "https://jubayer-asa2z.github.io/a2zas/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "./icon-192.png",
+      "src": "https://jubayer-asa2z.github.io/a2zas/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "./icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ]
 }
