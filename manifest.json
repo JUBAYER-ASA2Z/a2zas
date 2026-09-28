@@ -2,7 +2,7 @@
   "id": "/a2zas/",
   "name": "A-S A2Z",
   "short_name": "A-S A2Z",
-  "description": "A-S A2Z - Poster, Islamic Quiz, Medical, Calculator & Daily Hisab App by Qari MD Jubayer Ahmed Siyam",
+  "description": "A-S A2Z - Poster, Islamic Quiz, Medical, Calculator & Daily Hisab App",
   "start_url": "/a2zas/index.html",
   "scope": "/a2zas/",
   "display": "standalone",
@@ -13,16 +13,28 @@
   "lang": "bn",
   "icons": [
     {
-      "src": "https://i.ibb.co/C5nTgSgF/logo.png",
+      "src": "./icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "https://i.ibb.co/C5nTgSgF/logo.png",
+      "src": "./icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
