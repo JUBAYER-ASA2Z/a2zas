@@ -1,9 +1,27 @@
 {
-  "name": "A-S A2Z",
+  "id": "/a2zas/",
+  "name": "A-S A2Z - JUBAYER",
   "short_name": "A2Z",
-  "start_url": "./index.html",
+  "description": "A-S A2Z Poster, Islamic Quiz, Medical, Calculator App by Qari MD Jubayer Ahmed Siyam",
+  "start_url": "/a2zas/index.html",
+  "scope": "/a2zas/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
-  "theme_color": "#2563eb",
-  "icons": [{"src": "https://i.ibb.co/C5nTgSgF/logo.png","sizes":"192x192","type":"image/png"}]
+  "theme_color": "#ff3a7a",
+  "lang": "bn",
+  "icons": [
+    {
+      "src": "https://i.ibb.co/C5nTgSgF/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://i.ibb.co/C5nTgSgF/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }
