@@ -1,0 +1,9 @@
+{
+  "name": "A-S A2Z",
+  "short_name": "A2Z",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [{"src": "https://i.ibb.co/C5nTgSgF/logo.png","sizes":"192x192","type":"image/png"}]
+}

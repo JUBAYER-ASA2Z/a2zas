@@ -1,0 +1,21 @@
+const CACHE = "a2z-final-v4";
+const FILES = ["./","./index.html","./group-chat.html","./manifest.json"];
+self.addEventListener("install", e=>{
+  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)));
+  self.skipWaiting();
+});
+self.addEventListener("fetch", e=>{
+  if(e.request.url.includes("script.google.com") || e.request.url.includes("scaledrone") || e.request.url.includes("googleapis")){
+    e.respondWith(fetch(e.request).then(r=>{
+      const cl=r.clone(); caches.open(CACHE).then(c=>c.put(e.request, cl)); return r;
+    }).catch(()=>caches.match(e.request)));
+    return;
+  }
+  e.respondWith(
+    fetch(e.request).then(res=>{
+      const clone=res.clone();
+      caches.open(CACHE).then(c=>c.put(e.request, clone));
+      return res;
+    }).catch(()=>caches.match(e.request))
+  );
+});
