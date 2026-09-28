@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "io.github.jubayer_asa2z.twa",
+    "sha256_cert_fingerprints": ["37:B7:43:A7:5E:6A:74:0B:42:BB:B1:D1:DC:1D:C8:F7:4B:20:22:DC:77:53:52:19:A1:89:E9:26:69:08:44:72"]
+  }
+}]
