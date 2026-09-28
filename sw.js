@@ -1,21 +1,34 @@
-const CACHE = "a2z-final-v4";
-const FILES = ["./","./index.html","./group-chat.html","./manifest.json"];
-self.addEventListener("install", e=>{
-  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)));
+const CACHE_NAME = "a-s-a2z-v8";
+const FILES_TO_CACHE = [
+  "/a2zas/",
+  "/a2zas/index.html",
+  "/a2zas/manifest.json"
+];
+
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(FILES_TO_CACHE))
+  );
   self.skipWaiting();
 });
-self.addEventListener("fetch", e=>{
-  if(e.request.url.includes("script.google.com") || e.request.url.includes("scaledrone") || e.request.url.includes("googleapis")){
-    e.respondWith(fetch(e.request).then(r=>{
-      const cl=r.clone(); caches.open(CACHE).then(c=>c.put(e.request, cl)); return r;
-    }).catch(()=>caches.match(e.request)));
-    return;
-  }
-  e.respondWith(
-    fetch(e.request).then(res=>{
-      const clone=res.clone();
-      caches.open(CACHE).then(c=>c.put(e.request, clone));
-      return res;
-    }).catch(()=>caches.match(e.request))
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : null)))
+    )
+  );
+  self.clients.claim();
+});
+
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    fetch(event.request)
+      .then((response) => {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        return response;
+      })
+      .catch(() => caches.match(event.request))
   );
 });
