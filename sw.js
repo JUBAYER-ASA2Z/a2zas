@@ -1,7 +1,8 @@
-const CACHE_NAME = "a-s-a2z-final-v10";
+const CACHE_NAME = "a-s-a2z-final-v11";
 const FILES_TO_CACHE = [
   "/a2zas/",
   "/a2zas/index.html",
+  "/a2zas/memo.html",
   "/a2zas/manifest.json",
   "/a2zas/icon-192.png",
   "/a2zas/icon-512.png"
@@ -10,7 +11,7 @@ const FILES_TO_CACHE = [
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log("Caching A-S A2Z");
+      console.log("Caching A-S A2Z v11");
       return cache.addAll(FILES_TO_CACHE);
     })
   );
@@ -33,7 +34,6 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  // Google Script এর জন্য Network First
   if (event.request.url.includes("script.google.com")) {
     event.respondWith(
       fetch(event.request)
@@ -45,7 +45,6 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // বাকি সব Cache First
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
