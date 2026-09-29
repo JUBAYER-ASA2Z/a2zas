@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memo - JUBAYER-A.S</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Hind Siliguri',sans-serif;background:#0a0a0a;color:#fff}
+.glass{background:rgba(24,24,27,.9);border:1px solid rgba(63,63,70,.6);backdrop-filter:blur(10px)}
+.inputDark{background:#18181b;border:1px solid #3f3f46;color:#fff;outline:none}
+.inputDark:focus{border-color:#facc15}
+</style>
+</head>
+<body class="pb-[70px]">
+
+<!-- HEADER -->
+<div class="sticky top-0 z-20 bg-black/90 backdrop-blur border-b border-zinc-800 p-4 flex justify-between items-center">
+  <div>
+    <input id="shopName" class="bg-transparent font-black text-[18px] text-yellow-400 outline-none w-[200px]" placeholder="আমার দোকান">
+    <div id="autoDate" class="text-[11px] text-zinc-400 mt-1">📅 Loading...</div>
+  </div>
+  <button onclick="openEdit()" class="bg-zinc-800 border border-zinc-700 px-3 py-2 rounded-xl text-[12px]">✏️ Edit</button>
+</div>
+
+<div class="max-w-[480px] mx-auto p-3 space-y-4">
+
+  <!-- ITEM ADD SECTION -->
+  <div class="glass rounded-2xl p-4">
+    <h2 class="font-black text-[14px] mb-3">➕ আইটেম যোগ করুন</h2>
+    <input id="itemName" placeholder="আইটেমের নাম" class="inputDark w-full rounded-xl p-3 mb-2 text-[14px]">
+
+    <!-- ওজন Dropdown - নতুন ডিজাইন -->
+    <div class="relative mb-2">
+      <div class="flex gap-2">
+        <input id="itemWeight" placeholder="ওজন সিলেক্ট করুন" class="inputDark w-full rounded-xl p-3 text-[14px]">
+        <button id="weightToggle" onclick="toggleWeights()" class="bg-zinc-800 border border-zinc-700 px-4 rounded-xl text-[12px] min-w-[50px]">▼</button>
+      </div>
+      <!-- এরো ক্লিক করলে এটা খুলবে -->
+      <div id="chips" class="hidden absolute top-[52px] left-0 w-full bg-zinc-900 border border-zinc-700 rounded-xl z-30 max-h-[250px] overflow-y-auto p-2 shadow-2xl"></div>
+    </div>
+
+    <div class="flex gap-2">
+      <input id="itemPrice" type="number" placeholder="দাম (টাকা)" class="inputDark flex-1 rounded-xl p-3 text-[14px]">
+      <button onclick="addItem()" class="bg-yellow-400 text-black font-black px-6 rounded-xl text-[13px]">Add</button>
+    </div>
+  </div>
+
+  <!-- TOTAL BOX -->
+  <div class="glass rounded-2xl p-4 grid grid-cols-3 gap-2 text-center">
+    <div><p class="text-[10px] text-zinc-400">আইটেম</p><p id="rowCount" class="font-black text-[14px]">0 টি</p></div>
+    <div><p class="text-[10px] text-zinc-400">মোট</p><p id="totalPrice" class="font-black text-[14px] text-yellow-400">0 TK</p></div>
+    <div><p class="text-[10px] text-zinc-400">বাকি</p><p id="showDue" class="font-black text-[14px] text-red-400">0 TK</p></div>
+    <div class="col-span-3 flex gap-2 mt-2">
+      <input id="paidAmount" type="number" oninput="calcDue()" placeholder="জমা টাকা" class="inputDark flex-1 rounded-xl p-2.5 text-[13px]">
+      <div class="text-[11px] bg-zinc-800 px-3 py-2 rounded-xl">জমা: <span id="showPaid">0 TK</span></div>
+    </div>
+  </div>
+
+  <div id="tempList" class="space-y-2"></div>
+  <button onclick="saveMemo()" class="w-full bg-yellow-400 text-black py-3.5 rounded-xl font-black text-[14px]">💾 মেমো সেভ করুন</button>
+
+  <div id="savedList" class="space-y-3 pt-4"></div>
+
+  <!-- Poster -->
+  <div id="posterWrap" class="hidden glass rounded-2xl p-4">
+    <div id="pShop" class="text-center font-black text-[18px]"></div>
+    <div id="pShopInfo" class="text-center text-[11px] text-zinc-400"></div>
+    <div id="pBusiness" class="text-center text-[11px] mt-1"></div>
+    <div class="flex justify-between text-[10px] font-mono mt-3 border-y border-zinc-700 py-2"><span id="pDate"></span><span id="pDate2"></span></div>
+    <div id="pItems" class="mt-2 text-[12px]"></div>
+    <div class="flex justify-between font-black text-[13px] mt-3 border-t border-zinc-700 pt-2"><span>মোট: <span id="pTotal"></span></span><span>জমা: <span id="pPaid"></span></span><span class="text-red-400">বাকি: <span id="pDue"></span></span></div>
+    <div class="flex gap-2 mt-4">
+      <button onclick="clearPoster()" class="flex-1 bg-zinc-800 py-3 rounded-xl text-[12px]">Close</button>
+      <button onclick="downloadPoster()" class="flex-1 bg-zinc-800 border border-zinc-700 py-3 rounded-xl text-[12px]">⬇️ Download</button>
+      <button onclick="sharePoster()" class="flex-1 bg-yellow-400 text-black py-3 rounded-xl font-black text-[13px]">📤 Share</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div id="editModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"><div class="bg-zinc-900 border border-zinc-700 rounded-2xl p-5 w-full max-w-[360px]"><h3 class="font-black text-yellow-400 mb-3">✏️ হেডার এডিট</h3><input id="eName" placeholder="দোকান নাম" class="inputDark w-full rounded-xl p-3 mb-2"><input id="eNum" placeholder="মোবাইল" class="inputDark w-full rounded-xl p-3 mb-2"><input id="eAddr" placeholder="লোকেশন" class="inputDark w-full rounded-xl p-3 mb-2"><textarea id="eBiz" placeholder="ব্যবসায়িক তথ্য" class="inputDark w-full rounded-xl p-3 h-[60px] mb-3"></textarea><div class="flex gap-2"><button onclick="saveHeader()" class="flex-1 bg-yellow-400 text-black font-black py-2.5 rounded-xl">Save</button><button onclick="editModal.classList.add('hidden')" class="flex-1 bg-zinc-800 py-2.5 rounded-xl">Cancel</button></div></div></div>
+
+<div class="fixed bottom-0 left-0 w-full bg-black border-t border-zinc-800 text-center py-3 z-20"><p class="text-[12px] font-bold">App নির্মাতা: <span class="text-yellow-400 font-black">JUBAYER-A.S</span></p></div>
+<canvas id="canvas" class="hidden"></canvas>
+
+<script>
+let tempItems=[], memos=JSON.parse(localStorage.getItem('memo_v6')||'[]'), shopInfo=JSON.parse(localStorage.getItem('memo_shop_v6')||'{"number":"","address":"","business":""}'), currentPoster=null;
+let weights=['100 গ্রাম','200 গ্রাম','500 গ্রাম','1000 গ্রাম','1 কেজি','2 কেজি','3 কেজি','4 কেজি','5 কেজি','10 কেজি','1 মন','100g','200g','500g','1kg','2kg','5kg'];
+function toEN(s){return String(s).replace(/[\u09E6-\u09EF]/g,d=>String.fromCharCode(d.charCodeAt(0)-0x09E6+48));}
+function updateDate(){let n=new Date(); let en=n.toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'}); autoDate.innerText='📅 '+toEN(en); return {iso:n.toISOString().slice(0,10),en};}
+let weightOpen=false;
+function toggleWeights(){
+  weightOpen=!weightOpen;
+  let c=document.getElementById('chips'), btn=document.getElementById('weightToggle');
+  if(weightOpen){ c.classList.remove('hidden'); btn.innerText='▲'; } else { c.classList.add('hidden'); btn.innerText='▼'; }
+}
+function renderChips(){
+  let chipsDiv=document.getElementById('chips');
+  chipsDiv.innerHTML='';
+  weights.forEach(w=>{
+    let b=document.createElement('button');
+    b.className='w-full text-left px-3 py-2.5 hover:bg-zinc-800 rounded-lg text-[12px] border-b border-zinc-800/50 last:border-0';
+    b.innerText=w;
+    b.onclick=()=>{ itemWeight.value=w; toggleWeights(); };
+    chipsDiv.appendChild(b);
+  });
+}
+function calcDue(){let total=tempItems.reduce((s,i)=>s+i.price,0); let paid=parseFloat(paidAmount.value)||0; let due=total-paid; totalPrice.innerText=toEN(total)+' TK'; showPaid.innerText=toEN(paid)+' TK'; showDue.innerText=toEN(due)+' TK'; rowCount.innerText=toEN(tempItems.length)+' টি';}
+function addItem(){let name=itemName.value.trim(), wt=itemWeight.value.trim(), price=parseFloat(itemPrice.value)||0; if(!name) return alert('নাম লিখুন'); if(tempItems.length>=100) return alert('100 টা'); tempItems.push({name,weight:wt,price}); itemName.value=''; itemWeight.value=''; itemPrice.value=''; renderTemp();}
+function renderTemp(){let list=document.getElementById('tempList'); list.innerHTML=''; tempItems.forEach((it,i)=>{let d=document.createElement('div'); d.className='glass rounded-xl p-3 grid grid-cols-[1fr_90px_80px_30px] gap-2 items-center'; d.innerHTML=`<span class="font-bold text-[13px] truncate">${it.name}</span><span class="text-center text-[12px]">${toEN(it.weight)}</span><span class="text-right font-black text-[12px] text-yellow-300">${toEN(it.price)} TK</span><button onclick="tempItems.splice(${i},1);renderTemp();calcDue()" class="text-red-400 font-black">×</button>`; list.appendChild(d);}); calcDue();}
+function saveMemo(){if(!tempItems.length) return alert('আইটেম এড করুন'); let {iso,en}=updateDate(); let paid=parseFloat(paidAmount.value)||0; let total=tempItems.reduce((s,i)=>s+i.price,0); let due=total-paid; let memo={id:Date.now(),date:iso,enDate:en,items:[...tempItems],total,paid,due}; memos.unshift(memo); localStorage.setItem('memo_v6',JSON.stringify(memos)); tempItems=[]; paidAmount.value=''; renderTemp(); renderSaved();}
+function renderSaved(){let list=document.getElementById('savedList'); list.innerHTML=''; memos.forEach(m=>{let rows=m.items.map(it=>`<div class="grid grid-cols-[1fr_90px_80px] gap-2 text-[11px] py-1 border-b border-zinc-800/50"><span>${it.name}</span><span class="text-center">${toEN(it.weight)}</span><span class="text-right font-bold">${toEN(it.price)} TK</span></div>`).join(''); let div=document.createElement('div'); div.className='glass rounded-xl p-3'; div.innerHTML=`<div class="flex justify-between mb-2"><span class="text-[10px] font-mono bg-zinc-800 px-2 py-1 rounded-full">${toEN(m.enDate)}</span><span class="text-[11px] font-black">মোট ${toEN(m.total)} | জমা ${toEN(m.paid)} | বাকি <span class="text-red-400">${toEN(m.due)}</span></span></div><div>${rows}</div><div class="flex gap-2 mt-3"><button onclick="editMemo(${m.id})" class="flex-1 bg-zinc-800 border border-zinc-700 py-2 rounded-xl text-[11px] font-bold">✏️ Edit</button><button onclick="deleteMemo(${m.id})" class="bg-red-900/40 border border-red-800 px-4 py-2 rounded-xl text-[11px]">🗑️</button><button onclick="printMemo(${m.id})" class="flex-1 bg-yellow-400 text-black py-2 rounded-xl text-[11px] font-black">🖨️ Print</button></div>`; list.appendChild(div);});}
+function editMemo(id){let m=memos.find(x=>x.id==id); tempItems=[...m.items]; paidAmount.value=m.paid; memos=memos.filter(x=>x.id!=id); localStorage.setItem('memo_v6',JSON.stringify(memos)); renderTemp(); renderSaved(); window.scrollTo(0,0);}
+function deleteMemo(id){if(!confirm('Delete?')) return; memos=memos.filter(x=>x.id!=id); localStorage.setItem('memo_v6',JSON.stringify(memos)); renderSaved();}
+function printMemo(id){let m=memos.find(x=>x.id==id); if(!m) return; currentPoster=m; posterWrap.classList.remove('hidden'); pShop.innerText=shopName.value||'আমার দোকান'; pShopInfo.innerText=(shopInfo.number?toEN(shopInfo.number)+' ':'')+(shopInfo.address||''); pBusiness.innerText=shopInfo.business||''; pDate.innerText=toEN(m.enDate)+' - '+toEN(m.date); pDate2.innerText=toEN(m.enDate); pTotal.innerText=toEN(m.total)+' TK'; pPaid.innerText=toEN(m.paid)+' TK'; pDue.innerText=toEN(m.due)+' TK'; let itemsDiv=document.getElementById('pItems'); itemsDiv.innerHTML=''; m.items.forEach(it=>{let r=document.createElement('div'); r.className='grid grid-cols-[1fr_90px_80px] gap-2 py-1.5 border-b border-zinc-100'; r.innerHTML=`<span>${it.name}</span><span class="text-center">${toEN(it.weight)}</span><span class="text-right font-bold">${toEN(it.price)} TK</span>`; itemsDiv.appendChild(r);}); posterWrap.scrollIntoView({behavior:'smooth'});}
+function openEdit(){editModal.classList.remove('hidden'); eName.value=shopName.value; eNum.value=shopInfo.number||''; eAddr.value=shopInfo.address||''; eBiz.value=shopInfo.business||'';}
+function saveHeader(){shopName.value=eName.value||shopName.value; shopInfo.number=eNum.value; shopInfo.address=eAddr.value; shopInfo.business=eBiz.value; localStorage.setItem('shopName_memo',shopName.value); localStorage.setItem('memo_shop_v6',JSON.stringify(shopInfo)); editModal.classList.add('hidden'); if(currentPoster) printMemo(currentPoster.id);}
+function clearPoster(){posterWrap.classList.add('hidden'); currentPoster=null;}
+function buildCanvas(){return new Promise(res=>{let c=canvas, ctx=c.getContext('2d'); if(!currentPoster) return res(null); let m=currentPoster; let lineH=26, h=220 + m.items.length*lineH + 140; c.width=900; c.height=h; ctx.fillStyle='#fff'; ctx.fillRect(0,0,c.width,c.height); ctx.fillStyle='rgba(33,150,243,.11)'; ctx.font='900 86px sans-serif'; ctx.save(); ctx.translate(450,h/2); ctx.rotate(-0.45); ctx.fillText('JUBAYER-A.S',-300,0); ctx.restore(); ctx.fillStyle='#000'; ctx.textAlign='center'; ctx.font='900 22px Hind Siliguri'; ctx.fillText(pShop.innerText,450,35); ctx.font='11px Hind Siliguri'; ctx.fillText(pShopInfo.innerText,450,55); ctx.fillText(pBusiness.innerText,450,70); ctx.fillRect(20,85,860,3); ctx.textAlign='left'; ctx.font='11px monospace'; ctx.fillText(pDate.innerText,20,105); ctx.textAlign='right'; ctx.fillText('MEMO',880,105); ctx.textAlign='left'; ctx.font='900 12px Hind Siliguri'; ctx.fillText('আইটেম নাম',20,130); ctx.fillText('ওজন',500,130); ctx.textAlign='right'; ctx.fillText('টাকা',880,130); ctx.textAlign='left'; ctx.fillRect(20,138,860,1); ctx.font='12px Hind Siliguri'; let y=160; m.items.forEach(it=>{ctx.fillText(toEN(it.name).slice(0,30),20,y); ctx.textAlign='center'; ctx.fillText(toEN(it.weight),540,y); ctx.textAlign='right'; ctx.fillText(toEN(it.price)+' TK',880,y); ctx.textAlign='left'; y+=lineH;}); y+=10; ctx.fillRect(20,y,860,2); y+=25; ctx.font='900 13px Hind Siliguri'; ctx.fillText('মোট: '+toEN(m.total)+' TK',20,y); ctx.fillText('জমা: '+toEN(m.paid)+' TK',300,y); ctx.fillStyle='#b00'; ctx.fillText('বাকি: '+toEN(m.due)+' TK',550,y); ctx.fillStyle='#000'; ctx.font='10px monospace'; ctx.fillText('তারিখ: '+toEN(m.enDate)+' | '+toEN(m.date),20,h-40); ctx.textAlign='center'; ctx.fillText('___________________',750,h-50); ctx.fillText('স্বাক্ষর',750,h-30); res(c.toDataURL('image/png'));});}
+async function downloadPoster(){let url=await buildCanvas(); if(!url) return alert('প্রথমে Print ক্লিক করুন'); let a=document.createElement('a'); a.href=url; a.download='memo-'+Date.now()+'.png'; a.click();}
+async function sharePoster(){let url=await buildCanvas(); if(!url) return alert('প্রথমে Print ক্লিক করুন'); try{let blob=await (await fetch(url)).blob(); let file=new File([blob],'memo.png',{type:'image/png'}); if(navigator.canShare && navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Memo',text:`মোট ${toEN(currentPoster.total)} TK | জমা ${toEN(currentPoster.paid)} | বাকি ${toEN(currentPoster.due)}`});} else {downloadPoster();}} catch(e){downloadPoster();}}
+shopName.value=localStorage.getItem('shopName_memo')||localStorage.getItem('shopName_black_v5')||'আমার দোকান'; updateDate(); renderChips(); renderTemp(); renderSaved();
+shopName.addEventListener('input',e=>localStorage.setItem('shopName_memo',e.target.value));
+</script>
+</body>
+</html>
