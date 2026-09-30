@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Islamic Hub - A-S A2Z</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&family=Poppins:wght@900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{font-family:'Hind Siliguri'; box-sizing:border-box;}
+body{margin:0; background:#f0fdf4;}
+.bg-islamic{
+  background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15) 0%, transparent 40%),
+              radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 40%),
+              linear-gradient(135deg, #16a34a 0%, #15803d 50%, #14532d 100%);
+}
+.glass{backdrop-filter:blur(10px); background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2);}
+.card{transition:0.2s;}
+.card:active{transform:scale(0.95);}
+</style>
+</head>
+<body class="bg-islamic min-h-screen">
+
+<div class="w-full max-w-[480px] mx-auto min-h-screen flex flex-col relative overflow-hidden">
+
+  <!-- Header -->
+  <div class="flex justify-between items-center px-4 pt-5 pb-4">
+    <button onclick="history.back()" class="w-10 h-10 rounded-full glass flex items-center justify-center text-white text-[20px]">←</button>
+    <h1 class="font-black text-white text-[18px] tracking-wide" data-bn="ইসলামিক সেন্টার" data-en="Islamic Center">ইসলামিক সেন্টার</h1>
+    <button id="langBtn" onclick="toggleLang()" class="w-[44px] h-[24px] rounded-full bg-white text-[11px] font-black text-green-700 shadow">EN</button>
+  </div>
+
+  <!-- Title Design -->
+  <div class="px-6 mt-2">
+    <div class="glass rounded-[20px] p-4 text-center">
+      <p class="text-white font-black text-[16px]" data-bn="🕌 আলোর পথে" data-en="🕌 In the Path of Light">🕌 আলোর পথে</p>
+      <p class="text-white/80 text-[11px] mt-1" data-bn="ইসলামিক জ্ঞানের ভান্ডার" data-en="Treasure of Islamic Knowledge">ইসলামিক জ্ঞানের ভান্ডার</p>
+    </div>
+  </div>
+
+  <!-- Options -->
+  <div class="px-4 mt-6 grid grid-cols-2 gap-4">
+    <div onclick="location.href='./islamic_bn.html'" class="card bg-white rounded-[22px] p-5 text-center shadow-[0_10px_25px_rgba(0,0,0,0.15)] cursor-pointer">
+      <div class="w-14 h-14 mx-auto rounded-[16px] bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-[26px] text-white">🕌</div>
+      <p class="font-black text-[14px] mt-3 text-black" data-bn="ইসলামিক BN" data-en="Islamic BN">ইসলামিক BN</p>
+      <p class="text-[10px] text-zinc-500 mt-1" data-bn="বাংলা প্রশ্নোত্তর" data-en="Bengali Q&A">বাংলা প্রশ্নোত্তর</p>
+    </div>
+
+    <div onclick="location.href='./islamic_en.html'" class="card bg-white rounded-[22px] p-5 text-center shadow-[0_10px_25px_rgba(0,0,0,0.15)] cursor-pointer">
+      <div class="w-14 h-14 mx-auto rounded-[16px] bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-[26px] text-white">🌍</div>
+      <p class="font-black text-[14px] mt-3 text-black" data-bn="ইসলামিক EN" data-en="Islamic EN">ইসলামিক EN</p>
+      <p class="text-[10px] text-zinc-500 mt-1" data-bn="English Q&A" data-en="English Q&A">English Q&A</p>
+    </div>
+
+    <div onclick="location.href='./poster.html'" class="card bg-white rounded-[22px] p-5 text-center shadow-[0_10px_25px_rgba(0,0,0,0.15)] cursor-pointer">
+      <div class="w-14 h-14 mx-auto rounded-[16px] bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-[26px] text-white">🎨</div>
+      <p class="font-black text-[14px] mt-3 text-black" data-bn="ইসলামিক পোস্টার" data-en="Poster">পোস্টার</p>
+      <p class="text-[10px] text-zinc-500 mt-1" data-bn="হাদিস ও আয়াত" data-en="Hadith & Ayah">হাদিস ও আয়াত</p>
+    </div>
+
+    <div onclick="location.href='./islamic_500.html'" class="card bg-white rounded-[22px] p-5 text-center shadow-[0_10px_25px_rgba(0,0,0,0.15)] cursor-pointer">
+      <div class="w-14 h-14 mx-auto rounded-[16px] bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-[26px] text-white">📚</div>
+      <p class="font-black text-[14px] mt-3 text-black" data-bn="ইসলামিক প্রশ্ন" data-en="Islamic Quiz">ইসলামিক প্রশ্ন</p>
+      <p class="text-[10px] text-zinc-500 mt-1" data-bn="৫০০+ প্রশ্ন" data-en="500+ Questions">৫০০+ প্রশ্ন</p>
+    </div>
+  </div>
+
+  <!-- Developer -->
+  <div class="mt-auto text-center py-8">
+    <p class="text-white/60 text-[10px] tracking-widest uppercase">Developer</p>
+    <p class="font-black text-white text-[14px] mt-1">Qari MD Jubayer Ahmed Siyam</p>
+    <p class="text-white/50 text-[11px] mt-1">A-S A 2 Z • Islamic Hub</p>
+  </div>
+
+</div>
+
+<script>
+let lang = localStorage.getItem('app_lang') || 'bn';
+document.getElementById('langBtn').innerText = lang==='bn'?'EN':'BN';
+function toggleLang(){
+  lang = lang==='bn'?'en':'bn';
+  localStorage.setItem('app_lang', lang);
+  document.getElementById('langBtn').innerText = lang==='bn'?'EN':'BN';
+  apply();
+}
+function apply(){
+  document.querySelectorAll('[data-bn]').forEach(el=>{
+    el.innerText = el.getAttribute(lang==='bn'?'data-bn':'data-en');
+  });
+}
+apply();
+</script>
+</body>
+</html>
