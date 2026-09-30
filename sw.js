@@ -1,8 +1,10 @@
-const CACHE_NAME = "a-s-a2z-final-v11";
+const CACHE_NAME = "a-s-a2z-final-v12";
 const FILES_TO_CACHE = [
   "/a2zas/",
   "/a2zas/index.html",
   "/a2zas/memo.html",
+  "/a2zas/islamic.html",
+  "/a2zas/event.html",
   "/a2zas/manifest.json",
   "/a2zas/icon-192.png",
   "/a2zas/icon-512.png"
@@ -11,7 +13,7 @@ const FILES_TO_CACHE = [
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log("Caching A-S A2Z v11");
+      console.log("Caching A-S A2Z v12");
       return cache.addAll(FILES_TO_CACHE);
     })
   );
