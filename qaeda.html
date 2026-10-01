@@ -5,36 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>নূরানী কায়েদা</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
 *{font-family:'Hind Siliguri';}
-.book-wrap{perspective:1200px;}
-.page{
-  position:absolute; width:100%; height:100%; top:0; left:0;
-  background:white; border-radius:18px; overflow:hidden;
-  box-shadow:0 20px 40px rgba(0,0,0,0.2);
-  transform-origin:left center;
-  transition:transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
-  backface-visibility:hidden;
-}
+.page{position:absolute; width:100%; height:100%; top:0; left:0; background:white; border-radius:18px; overflow:hidden; box-shadow:0 20px 40px rgba(0,0,0,0.2); transform-origin:left center; transition:transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);}
 .page.flipped{transform:rotateY(-180deg);}
-#finger{
-  position:absolute; width:80px; height:80px; z-index:99;
-  font-size:50px; touch-action:none; cursor:grab; filter:drop-shadow(0 5px 10px rgba(0,0,0,0.3));
-  user-select:none;
-}
+#finger{position:absolute; width:80px; height:80px; z-index:99; font-size:50px; touch-action:none; cursor:grab; filter:drop-shadow(0 5px 10px rgba(0,0,0,0.3)); user-select:none;}
+.book-wrap{perspective:1200px;}
 </style>
 </head>
 <body class="bg-[#e8f5e9] min-h-screen flex flex-col items-center">
 
 <div class="w-full max-w-[480px] bg-green-700 p-4 flex justify-between items-center text-white">
-  <button onclick="history.back()" class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">←</button>
+  <button onclick="location.href='./islamic.html'" class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">←</button>
   <h1 class="font-black">নূরানী কায়েদা</h1>
-  <span id="pageNum" class="text-[12px] bg-white/20 px-3 py-1 rounded-full">1 / 5</span>
+  <span id="pageNum" class="text-[12px] bg-white/20 px-3 py-1 rounded-full">লোড হচ্ছে...</span>
 </div>
 
 <div class="w-full max-w-[420px] mt-6 px-4">
-  <div id="book" class="book-wrap relative w-full h-[520px]">
-    <!-- Pages will load here -->
+  <div id="book" class="book-wrap relative w-full h-[520px] bg-white rounded-[18px] flex items-center justify-center">
+    <p id="loading" class="text-zinc-500 font-bold">📦 Zip লোড হচ্ছে...</p>
   </div>
   <div class="flex justify-between mt-6 gap-3">
     <button onclick="prevPage()" class="flex-1 py-3 bg-white rounded-full font-black shadow">আগের পাতা</button>
@@ -45,54 +35,63 @@
 <div id="finger">👆</div>
 
 <script>
-// ==== এখানে আপনি ছবি যোগ করবেন ====
-const pages = [
-  "https://i.ibb.co/1.jpg", // পাতা ১ এর ছবি লিংক
-  "https://i.ibb.co/2.jpg", // পাতা ২ এর ছবি লিংক
-  "https://i.ibb.co/3.jpg",
-  "https://i.ibb.co/4.jpg",
-  "https://i.ibb.co/5.jpg"
-];
-// ==================================
+let pages=[], current=0;
+const book=document.getElementById('book');
+const pageNum=document.getElementById('pageNum');
 
-let current = 0;
-const book = document.getElementById('book');
-const pageNum = document.getElementById('pageNum');
+// Zip থেকে ছবি লোড
+fetch('./qaeda.zip')
+.then(res=>res.arrayBuffer())
+.then(data=>JSZip.loadAsync(data))
+.then(zip=>{
+  const sortedFiles = Object.keys(zip.files).filter(n=>!zip.files[n].dir).sort((a,b)=>a.localeCompare(b, undefined, {numeric:true}));
+  let promises = sortedFiles.map(name=> zip.files[name].async('base64').then(base64=>{
+    return "data:image/jpeg;base64,"+base64;
+  }));
+  return Promise.all(promises);
+})
+.then(images=>{
+  pages=images;
+  document.getElementById('loading').style.display='none';
+  render();
+})
+.catch(err=>{
+  document.getElementById('loading').innerText='Zip পাওয়া যায়নি! qaeda.zip আপলোড করেন';
+  console.log(err);
+});
 
 function render(){
-  book.innerHTML = '';
-  pages.forEach((src, i)=>{
-    const div = document.createElement('div');
-    div.className = 'page' + (i < current? ' flipped' : '');
-    div.style.zIndex = pages.length - i;
-    div.innerHTML = `<img src="${src}" class="w-full h-full object-contain bg-white">`;
+  book.innerHTML='';
+  pages.forEach((src,i)=>{
+    const div=document.createElement('div');
+    div.className='page'+(i<current?' flipped':'');
+    div.style.zIndex=pages.length-i;
+    div.innerHTML=`<img src="${src}" class="w-full h-full object-contain bg-white">`;
     book.appendChild(div);
   });
-  pageNum.innerText = (current+1) + ' / ' + pages.length;
+  pageNum.innerText=(current+1)+' / '+pages.length;
 }
-function nextPage(){ if(current < pages.length-1){current++; render();} }
-function prevPage(){ if(current > 0){current--; render();} }
-render();
+function nextPage(){if(current<pages.length-1){current++; render();}}
+function prevPage(){if(current>0){current--; render();}}
 
-// Finger drag system
-const finger = document.getElementById('finger');
+// Finger drag
+const finger=document.getElementById('finger');
 let isDragging=false, startX, startY;
-finger.addEventListener('touchstart', (e)=>{isDragging=true; const t=e.touches[0]; startX=t.clientX-finger.offsetLeft; startY=t.clientY-finger.offsetTop;});
-finger.addEventListener('touchmove', (e)=>{if(!isDragging)return; const t=e.touches[0]; finger.style.left=(t.clientX-startX)+'px'; finger.style.top=(t.clientY-startY)+'px';});
-finger.addEventListener('touchend', ()=>isDragging=false);
-finger.addEventListener('mousedown', (e)=>{isDragging=true; startX=e.clientX-finger.offsetLeft; startY=e.clientY-finger.offsetTop;});
-document.addEventListener('mousemove', (e)=>{if(!isDragging)return; finger.style.left=(e.clientX-startX)+'px'; finger.style.top=(e.clientY-startY)+'px';});
-document.addEventListener('mouseup', ()=>isDragging=false);
-// initial position
+finger.addEventListener('touchstart',e=>{isDragging=true; const t=e.touches[0]; startX=t.clientX-finger.offsetLeft; startY=t.clientY-finger.offsetTop;});
+finger.addEventListener('touchmove',e=>{if(!isDragging)return; const t=e.touches[0]; finger.style.left=(t.clientX-startX)+'px'; finger.style.top=(t.clientY-startY)+'px';});
+finger.addEventListener('touchend',()=>isDragging=false);
+finger.addEventListener('mousedown',e=>{isDragging=true; startX=e.clientX-finger.offsetLeft; startY=e.clientY-finger.offsetTop;});
+document.addEventListener('mousemove',e=>{if(!isDragging)return; finger.style.left=(e.clientX-startX)+'px'; finger.style.top=(e.clientY-startY)+'px';});
+document.addEventListener('mouseup',()=>isDragging=false);
 finger.style.left='200px'; finger.style.top='400px';
 
-// swipe to change page
+// Swipe
 let sx=0;
-book.addEventListener('touchstart', e=>sx=e.touches[0].clientX);
-book.addEventListener('touchend', e=>{
-  let dx = e.changedTouches[0].clientX - sx;
-  if(dx < -50) nextPage();
-  if(dx > 50) prevPage();
+book.addEventListener('touchstart',e=>sx=e.touches[0].clientX);
+book.addEventListener('touchend',e=>{
+  let dx=e.changedTouches[0].clientX-sx;
+  if(dx<-50) nextPage();
+  if(dx>50) prevPage();
 });
 </script>
 </body>
