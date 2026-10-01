@@ -2,63 +2,138 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>নূরানী কায়েদা</title>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-select:none">
+<title>প্রাথমিক নূরানী কায়দা শিক্ষা</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
-*{font-family:'Hind Siliguri', sans-serif; box-sizing:border-box;}
+*{font-family:'Hind Siliguri'; box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
 body{margin:0; background:#f0fdf4; overscroll-behavior:none;}
-.book-wrap{perspective:2000px; width:100%;}
+.book-wrap{perspective:2000px;}
 .page{
   position:absolute; width:100%; height:100%; top:0; left:0;
   background:white; border-radius:12px; overflow:hidden;
-  box-shadow:0 15px 40px rgba(0,0,0,0.25);
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
   transform-origin:left center;
-  transition:transform 1.5s cubic-bezier(0.645, 0.045, 0.355, 1);
-  backface-visibility:hidden;
-  border:1px solid #e5e7eb;
+  transition:transform 0.3s ease-out;
 }
-.page.flipped{
-  transform:rotateY(-180deg);
-  box-shadow:-10px 0 30px rgba(0,0,0,0.2);
-}
+.page.flipped{transform:rotateY(-180deg);}
 #finger{
-  position:fixed; width:110px; height:110px; z-index:9999;
-  font-size:75px; line-height:110px; text-align:center;
-  touch-action:none; cursor:grab;
-  filter:drop-shadow(0 8px 15px rgba(0,0,0,0.4));
-  user-select:none; transition:filter 0.1s;
+  position:fixed; width:120px; height:120px; z-index:9999;
+  font-size:85px; line-height:120px; text-align:center;
+  filter:drop-shadow(0 8px 12px rgba(0,0,0,0.4));
+  touch-action:none;
 }
-#finger:active{filter:drop-shadow(0 12px 20px rgba(0,0,0,0.5)) scale(1.1);}
 </style>
 </head>
 <body class="min-h-screen flex flex-col items-center">
 
 <!-- Header -->
-<div class="w-full max-w-[480px] bg-gradient-to-r from-green-700 to-emerald-600 p-4 flex justify-between items-center text-white sticky top-0 z-50 shadow-lg">
-  <button onclick="location.href='./islamic.html'" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-[20px] font-black">←</button>
-  <h1 class="font-black text-[16px]">নূরানী কায়েদা</h1>
-  <div class="flex items-center gap-2">
-    <button onclick="openSearch()" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-[18px]">🔍</button>
-    <span id="pageNum" class="text-[11px] bg-white text-green-700 px-3 py-1 rounded-full font-black">0 / 0</span>
+<div class="w-full max-w-[480px] bg-green-700 p-4 flex justify-between items-center text-white sticky top-0 z-50 shadow">
+  <button onclick="location.href='./islamic.html'" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-[22px]">←</button>
+  <h1 class="font-black text-[15px] tracking-wide">প্রাথমিক নূরানী কায়দা শিক্ষা</h1>
+  <span id="pageNum" class="text-[11px] bg-white text-green-700 px-3 py-1 rounded-full font-black">-- / --</span>
+</div>
+
+<!-- Book Area - No loading text -->
+<div class="w-full max-w-[480px] flex-1 px-2 mt-3 flex flex-col">
+  <div id="book" class="book-wrap relative w-full h-[80vh] bg-white rounded-[12px] shadow-xl overflow-hidden">
+    <!-- খালি সাদা থাকবে, কোন লেখা নাই -->
+  </div>
+  <div class="flex gap-3 mt-4 pb-6">
+    <button onclick="prevPage()" class="flex-1 py-4 bg-white rounded-full font-black shadow border text-[15px]">← আগের</button>
+    <button onclick="nextPage()" class="flex-1 py-4 bg-green-600 text-white rounded-full font-black shadow text-[15px]">পরের →</button>
   </div>
 </div>
 
-<!-- Search Box - Hidden -->
-<div id="searchBox" class="w-full max-w-[480px] bg-white p-3 shadow-md hidden sticky top-[68px] z-40">
-  <div class="flex gap-2">
-    <input id="searchInput" type="number" placeholder="পৃষ্ঠা নম্বর লিখুন যেমন: 5" class="flex-1 px-4 py-3 rounded-full border-2 border-green-200 outline-none focus:border-green-500 font-bold text-[14px]">
-    <button onclick="goToPage()" class="px-6 py-3 bg-green-600 text-white rounded-full font-black text-[14px]">যান</button>
-    <button onclick="closeSearch()" class="px-4 py-3 bg-zinc-100 rounded-full font-black">✕</button>
+<div id="finger">👆</div>
+
+<!-- Search Modal - Only by search button, not by icon click -->
+<div id="searchModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-6">
+  <div class="bg-white w-full max-w-[320px] rounded-[20px] p-5">
+    <h3 class="font-black text-center">পৃষ্ঠায় যান</h3>
+    <input id="searchInput" type="number" inputmode="numeric" placeholder="যেমন: 5" class="w-full mt-4 px-4 py-3 rounded-full border-2 border-green-200 outline-none font-bold text-center text-[18px]">
+    <div class="flex gap-2 mt-4">
+      <button onclick="closeSearch()" class="flex-1 py-3 bg-zinc-100 rounded-full font-black">বন্ধ</button>
+      <button onclick="goToPage()" class="flex-1 py-3 bg-green-600 text-white rounded-full font-black">যান</button>
+    </div>
   </div>
 </div>
 
-<!-- Book - Bigger -->
-<div class="w-full max-w-[480px] flex-1 flex flex-col px-2 mt-3">
-  <div id="book" class="book-wrap relative w-full h-[78vh] bg-white rounded-[12px] flex items-center justify-center overflow-hidden shadow-xl">
-    <p id="loading" class="text-zinc-500 font-bold text-center p-4">📦 বই লোড হচ্ছে...<br><span class="text-[12px] font-normal">qaeda1.zip + qaeda2.zip</span></p>
-  </div>
+<script>
+let pages=[], current=0;
+const book=document.getElementById('book');
+const pageNum=document.getElementById('pageNum');
 
-  <div class="flex justify-between mt-4 gap-3 pb-6">
+async function loadZipFast(url){
+  try{
+    const res=await fetch(url, {cache:'force-cache'});
+    if(!res.ok) return [];
+    const buf=await res.arrayBuffer();
+    const zip=await JSZip.loadAsync(buf);
+    const names=Object.keys(zip.files).filter(n=>!zip.files[n].dir).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+    const out=[];
+    for(let name of names){
+      const blob=await zip.files[name].async('blob');
+      out.push(URL.createObjectURL(blob));
+    }
+    return out;
+  }catch(e){return [];}
+}
+
+// সঙ্গে সঙ্গে লোড - কোন লেখা দেখাবে না
+Promise.all([loadZipFast('./qaeda1.zip'), loadZipFast('./qaeda2.zip')]).then(r=>{
+  pages=[...r[0],...r[1]];
+  if(pages.length>0) render();
+  // যদি একটাও না পায় তাহলে qaeda.zip ট্রাই করবে
+  if(pages.length===0){
+    loadZipFast('./qaeda.zip').then(imgs=>{ pages=imgs; render(); });
+  }
+});
+
+function render(){
+  book.innerHTML='';
+  pages.forEach((src,i)=>{
+    const d=document.createElement('div');
+    d.className='page'+(i<current?' flipped':'');
+    d.style.zIndex=pages.length-i;
+    d.innerHTML=`<img src="${src}" class="w-full h-full object-contain bg-white" draggable="false" loading="eager">`;
+    book.appendChild(d);
+  });
+  pageNum.innerText=(current+1)+' / '+pages.length;
+}
+function nextPage(){ if(current<pages.length-1){ current++; render(); } }
+function prevPage(){ if(current>0){ current--; render(); } }
+function goToPage(){
+  let n=parseInt(document.getElementById('searchInput').value);
+  if(n>=1 && n<=pages.length){ current=n-1; render(); closeSearch(); }
+}
+function openSearch(){ document.getElementById('searchModal').classList.remove('hidden'); }
+function closeSearch(){ document.getElementById('searchModal').classList.add('hidden'); }
+
+// Search open - header number click
+pageNum.onclick=openSearch;
+
+// Finger free move - no search open on click
+const finger=document.getElementById('finger');
+let drag=false, sx, sy;
+finger.addEventListener('touchstart',e=>{drag=true; const t=e.touches[0]; sx=t.clientX-finger.offsetLeft; sy=t.clientY-finger.offsetTop;},{passive:true});
+document.addEventListener('touchmove',e=>{if(!drag)return; const t=e.touches[0]; finger.style.left=(t.clientX-sx)+'px'; finger.style.top=(t.clientY-sy)+'px';},{passive:false});
+document.addEventListener('touchend',()=>drag=false);
+finger.addEventListener('mousedown',e=>{drag=true; sx=e.clientX-finger.offsetLeft; sy=e.clientY-finger.offsetTop;});
+document.addEventListener('mousemove',e=>{if(!drag)return; finger.style.left=(e.clientX-sx)+'px'; finger.style.top=(e.clientY-sy)+'px';});
+document.addEventListener('mouseup',()=>drag=false);
+finger.style.left='150px'; finger.style.top='60vh';
+
+// Swipe instant
+let tx=0;
+book.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+book.addEventListener('touchend',e=>{
+  let dx=e.changedTouches[0].clientX-tx;
+  if(dx<-50) nextPage();
+  if(dx>50) prevPage();
+});
+</script>
+</body>
+</html>
