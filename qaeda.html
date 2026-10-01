@@ -4,34 +4,70 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>নূরানী কায়েদা</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
-*{font-family:'Hind Siliguri';}
-.page{position:absolute; width:100%; height:100%; top:0; left:0; background:white; border-radius:18px; overflow:hidden; box-shadow:0 20px 40px rgba(0,0,0,0.2); transform-origin:left center; transition:transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);}
-.page.flipped{transform:rotateY(-180deg);}
-#finger{position:absolute; width:80px; height:80px; z-index:99; font-size:50px; touch-action:none; cursor:grab; filter:drop-shadow(0 5px 10px rgba(0,0,0,0.3)); user-select:none;}
-.book-wrap{perspective:1200px;}
+*{font-family:'Hind Siliguri', sans-serif; box-sizing:border-box;}
+body{margin:0; background:#f0fdf4; overscroll-behavior:none;}
+.book-wrap{perspective:2000px; width:100%;}
+.page{
+  position:absolute; width:100%; height:100%; top:0; left:0;
+  background:white; border-radius:12px; overflow:hidden;
+  box-shadow:0 15px 40px rgba(0,0,0,0.25);
+  transform-origin:left center;
+  transition:transform 1.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  backface-visibility:hidden;
+  border:1px solid #e5e7eb;
+}
+.page.flipped{
+  transform:rotateY(-180deg);
+  box-shadow:-10px 0 30px rgba(0,0,0,0.2);
+}
+#finger{
+  position:fixed; width:110px; height:110px; z-index:9999;
+  font-size:75px; line-height:110px; text-align:center;
+  touch-action:none; cursor:grab;
+  filter:drop-shadow(0 8px 15px rgba(0,0,0,0.4));
+  user-select:none; transition:filter 0.1s;
+}
+#finger:active{filter:drop-shadow(0 12px 20px rgba(0,0,0,0.5)) scale(1.1);}
 </style>
 </head>
-<body class="bg-[#e8f5e9] min-h-screen flex flex-col items-center">
+<body class="min-h-screen flex flex-col items-center">
 
-<div class="w-full max-w-[480px] bg-green-700 p-4 flex justify-between items-center text-white">
-  <button onclick="location.href='./islamic.html'" class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">←</button>
-  <h1 class="font-black">নূরানী কায়েদা</h1>
-  <span id="pageNum" class="text-[12px] bg-white/20 px-3 py-1 rounded-full">লোড হচ্ছে...</span>
-</div>
-
-<div class="w-full max-w-[420px] mt-6 px-4">
-  <div id="book" class="book-wrap relative w-full h-[520px] bg-white rounded-[18px] flex items-center justify-center">
-    <p id="loading" class="text-zinc-500 font-bold">📦 Zip লোড হচ্ছে...</p>
-  </div>
-  <div class="flex justify-between mt-6 gap-3">
-    <button onclick="prevPage()" class="flex-1 py-3 bg-white rounded-full font-black shadow">আগের পাতা</button>
-    <button onclick="nextPage()" class="flex-1 py-3 bg-green-600 text-white rounded-full font-black shadow">পরের পাতা →</button>
+<!-- Header -->
+<div class="w-full max-w-[480px] bg-gradient-to-r from-green-700 to-emerald-600 p-4 flex justify-between items-center text-white sticky top-0 z-50 shadow-lg">
+  <button onclick="location.href='./islamic.html'" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-[20px] font-black">←</button>
+  <h1 class="font-black text-[16px]">নূরানী কায়েদা</h1>
+  <div class="flex items-center gap-2">
+    <button onclick="openSearch()" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-[18px]">🔍</button>
+    <span id="pageNum" class="text-[11px] bg-white text-green-700 px-3 py-1 rounded-full font-black">0 / 0</span>
   </div>
 </div>
 
+<!-- Search Box - Hidden -->
+<div id="searchBox" class="w-full max-w-[480px] bg-white p-3 shadow-md hidden sticky top-[68px] z-40">
+  <div class="flex gap-2">
+    <input id="searchInput" type="number" placeholder="পৃষ্ঠা নম্বর লিখুন যেমন: 5" class="flex-1 px-4 py-3 rounded-full border-2 border-green-200 outline-none focus:border-green-500 font-bold text-[14px]">
+    <button onclick="goToPage()" class="px-6 py-3 bg-green-600 text-white rounded-full font-black text-[14px]">যান</button>
+    <button onclick="closeSearch()" class="px-4 py-3 bg-zinc-100 rounded-full font-black">✕</button>
+  </div>
+</div>
+
+<!-- Book - Bigger -->
+<div class="w-full max-w-[480px] flex-1 flex flex-col px-2 mt-3">
+  <div id="book" class="book-wrap relative w-full h-[78vh] bg-white rounded-[12px] flex items-center justify-center overflow-hidden shadow-xl">
+    <p id="loading" class="text-zinc-500 font-bold text-center p-4">📦 বই লোড হচ্ছে...<br><span class="text-[12px] font-normal">qaeda1.zip + qaeda2.zip</span></p>
+  </div>
+
+  <div class="flex justify-between mt-4 gap-3 pb-6">
+    <button onclick="prevPage()" class="flex-1 py-4 bg-white rounded-full font-black shadow text-[15px] border border-zinc-200">← আগের</button>
+    <button onclick="nextPage()" class="flex-1 py-4 bg-green-600 text-white rounded-full font-black shadow text-[15px]">পরের →</button>
+  </div>
+</div>
+
+<!-- Finger - Bigger -->
 <div id="finger">👆</div>
 
 <script>
@@ -39,25 +75,27 @@ let pages=[], current=0;
 const book=document.getElementById('book');
 const pageNum=document.getElementById('pageNum');
 
-// Zip থেকে ছবি লোড
-fetch('./qaeda.zip')
-.then(res=>res.arrayBuffer())
-.then(data=>JSZip.loadAsync(data))
-.then(zip=>{
-  const sortedFiles = Object.keys(zip.files).filter(n=>!zip.files[n].dir).sort((a,b)=>a.localeCompare(b, undefined, {numeric:true}));
-  let promises = sortedFiles.map(name=> zip.files[name].async('base64').then(base64=>{
-    return "data:image/jpeg;base64,"+base64;
-  }));
-  return Promise.all(promises);
-})
-.then(images=>{
-  pages=images;
+// Load 2 zips - qaeda1.zip and qaeda2.zip
+async function loadZip(url){
+  try{
+    const res = await fetch(url);
+    if(!res.ok) return [];
+    const data = await res.arrayBuffer();
+    const zip = await JSZip.loadAsync(data);
+    const sortedFiles = Object.keys(zip.files).filter(n=>!zip.files[n].dir).sort((a,b)=>a.localeCompare(b, undefined, {numeric:true}));
+    const imgs = await Promise.all(sortedFiles.map(name=> zip.files[name].async('base64').then(b64=>"data:image/jpeg;base64,"+b64)));
+    return imgs;
+  }catch(e){ return []; }
+}
+
+Promise.all([loadZip('./qaeda1.zip'), loadZip('./qaeda2.zip')]).then(results=>{
+  pages = [...results[0],...results[1]];
+  if(pages.length===0){
+    document.getElementById('loading').innerHTML='❌ Zip পাওয়া যায়নি!<br>qaeda1.zip এবং qaeda2.zip Root এ আপলোড করেন';
+    return;
+  }
   document.getElementById('loading').style.display='none';
   render();
-})
-.catch(err=>{
-  document.getElementById('loading').innerText='Zip পাওয়া যায়নি! qaeda.zip আপলোড করেন';
-  console.log(err);
 });
 
 function render(){
@@ -66,32 +104,48 @@ function render(){
     const div=document.createElement('div');
     div.className='page'+(i<current?' flipped':'');
     div.style.zIndex=pages.length-i;
-    div.innerHTML=`<img src="${src}" class="w-full h-full object-contain bg-white">`;
+    // Real book shadow effect
+    div.innerHTML=`<img src="${src}" class="w-full h-full object-contain bg-white" draggable="false">`;
+    if(i===current){
+      div.innerHTML+=`<div class="absolute top-0 right-0 w-[40%] h-full bg-gradient-to-l from-black/10 to-transparent pointer-events-none"></div>`;
+    }
     book.appendChild(div);
   });
   pageNum.innerText=(current+1)+' / '+pages.length;
 }
-function nextPage(){if(current<pages.length-1){current++; render();}}
-function prevPage(){if(current>0){current--; render();}}
+function nextPage(){ if(current<pages.length-1){current++; render();} }
+function prevPage(){ if(current>0){current--; render();} }
+function goToPage(){
+  let n = parseInt(document.getElementById('searchInput').value);
+  if(n>=1 && n<=pages.length){ current=n-1; render(); closeSearch(); }
+  else{ alert('1 থেকে '+pages.length+' এর মধ্যে লিখুন'); }
+}
+function openSearch(){ document.getElementById('searchBox').classList.remove('hidden'); document.getElementById('searchInput').focus(); }
+function closeSearch(){ document.getElementById('searchBox').classList.add('hidden'); }
 
-// Finger drag
+// Finger Drag - Bigger and free move
 const finger=document.getElementById('finger');
 let isDragging=false, startX, startY;
-finger.addEventListener('touchstart',e=>{isDragging=true; const t=e.touches[0]; startX=t.clientX-finger.offsetLeft; startY=t.clientY-finger.offsetTop;});
-finger.addEventListener('touchmove',e=>{if(!isDragging)return; const t=e.touches[0]; finger.style.left=(t.clientX-startX)+'px'; finger.style.top=(t.clientY-startY)+'px';});
-finger.addEventListener('touchend',()=>isDragging=false);
-finger.addEventListener('mousedown',e=>{isDragging=true; startX=e.clientX-finger.offsetLeft; startY=e.clientY-finger.offsetTop;});
-document.addEventListener('mousemove',e=>{if(!isDragging)return; finger.style.left=(e.clientX-startX)+'px'; finger.style.top=(e.clientY-startY)+'px';});
-document.addEventListener('mouseup',()=>isDragging=false);
-finger.style.left='200px'; finger.style.top='400px';
+const startDrag = (x,y)=>{isDragging=true; startX=x-finger.offsetLeft; startY=y-finger.offsetTop; finger.style.cursor='grabbing';};
+const moveDrag = (x,y)=>{ if(!isDragging)return; finger.style.left=(x-startX)+'px'; finger.style.top=(y-startY)+'px'; };
 
-// Swipe
+finger.addEventListener('touchstart', e=>{const t=e.touches[0]; startDrag(t.clientX,t.clientY);},{passive:false});
+document.addEventListener('touchmove', e=>{if(!isDragging)return; e.preventDefault(); const t=e.touches[0]; moveDrag(t.clientX,t.clientY);},{passive:false});
+document.addEventListener('touchend', ()=>{isDragging=false; finger.style.cursor='grab';});
+
+finger.addEventListener('mousedown', e=>startDrag(e.clientX,e.clientY));
+document.addEventListener('mousemove', e=>moveDrag(e.clientX,e.clientY));
+document.addEventListener('mouseup', ()=>{isDragging=false; finger.style.cursor='grab';});
+
+finger.style.left='160px'; finger.style.top='65vh';
+
+// Swipe for page change
 let sx=0;
-book.addEventListener('touchstart',e=>sx=e.touches[0].clientX);
-book.addEventListener('touchend',e=>{
+book.addEventListener('touchstart', e=>sx=e.touches[0].clientX,{passive:true});
+book.addEventListener('touchend', e=>{
   let dx=e.changedTouches[0].clientX-sx;
-  if(dx<-50) nextPage();
-  if(dx>50) prevPage();
+  if(dx<-60) nextPage();
+  if(dx>60) prevPage();
 });
 </script>
 </body>
