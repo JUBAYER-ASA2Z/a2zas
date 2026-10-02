@@ -11,7 +11,7 @@
 <style>
 *{font-family:'Hind Siliguri'; -webkit-touch-callout:none; -webkit-user-select:none; user-select:none; box-sizing:border-box;}
 html{font-size:16px; -webkit-text-size-adjust:100%;}
-body{margin:0;background:#f8f8;overscroll-behavior:none; width:100%; overflow-x:hidden;}
+body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-x:hidden;}
 .app-wrapper{width:100%; max-width:480px; margin:0 auto; background:#fff; min-height:100vh; position:relative; box-shadow:0 0 30px rgba(0,0,0,0.06);}
 .glass-pink{background:linear-gradient(135deg,#ff3a7a 0%,#ff5a8a 50%,#ff2d6b 100%);position:relative;overflow:hidden}
 .glass-pink::before{content:'';position:absolute;top:-50%;left:-30%;width:80%;height:200%;background:linear-gradient(120deg,rgba(255,255,255,0.35) 0%,rgba(255,255,255,0.15) 30%,transparent 70%);transform:rotate(15deg);pointer-events:none}
@@ -29,6 +29,21 @@ body{margin:0;background:#f8f8;overscroll-behavior:none; width:100%; overflow-x:
 @keyframes shine{0%{transform:translateX(-100%)} 100%{transform:translateX(250%)}}
 .locked{opacity:0.45; pointer-events:none; position:relative;}
 .locked::after{content:'🔒'; position:absolute; top:6px; right:6px; font-size:12px;}
+
+/* মার্বেল চকচকে নাম বাটন */
+.marble-name-btn{
+  background: radial-gradient(circle at 30% 20%, #ffffff 0%, #fff8fb 35%, #ffe4ec 65%, #ffc2d4 90%);
+  position:relative; overflow:hidden;
+  border:1.5px solid #ffb3d1;
+  box-shadow: 0 8px 25px rgba(255,105,180,0.35), inset 0 1px 0 white, 0 0 0 1px rgba(255,255,255,0.6);
+}
+.marble-name-btn::before{
+  content:''; position:absolute; top:0; left:-60%; width:60%; height:100%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.9) 50%, transparent 100%);
+  animation: marbleShine 2.2s infinite;
+}
+@keyframes marbleShine{0%{transform:translateX(-100%)} 100%{transform:translateX(260%)}}
+
 @media (max-width:380px){
 .date-pill{font-size:9px; padding:2px 7px;}
 .logo-3d{font-size:16px; padding:4px 12px;}
@@ -63,8 +78,19 @@ body{margin:0;background:#f8f8;overscroll-behavior:none; width:100%; overflow-x:
 </div>
 
 <div class="mt-5 grid grid-cols-4 gap-2 sm:gap-3 relative z-10">
+<!-- ইসলামিক -->
 <div class="bg-white rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-sm" onclick="location.href='./islamic.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-green-600 to-emerald-500 flex items-center justify-center text-[20px]">🕌</div><p class="text-[11px] font-bold mt-2 text-black" data-bn="ইসলামিক" data-en="Islamic">ইসলামিক</p></div>
-<div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center shadow-sm locked"><div class="w-11 h-11 mx-auto rounded-[13px] bg-zinc-100 flex items-center justify-center text-[20px]">✨</div><p class="text-[11px] font-bold mt-2 text-zinc-300">---</p></div>
+
+<!-- ★ নতুন শিশুর নাম - মার্বেল চকচকে -->
+<div class="marble-name-btn rounded-[18px] p-3 text-center active:scale-95 cursor-pointer" onclick="location.href='./naam.html'">
+  <div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-pink-500 via-rose-400 to-pink-600 flex items-center justify-center text-[20px] shadow-[0_4px_15px_rgba(236,72,153,0.5)] relative">
+    <span class="absolute w-2 h-2 bg-white rounded-full top-[3px] left-[4px] opacity-90"></span>
+    👶
+  </div>
+  <p class="text-[11px] font-black mt-2 text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-rose-600 leading-[11px]" data-bn="শিশুর নাম" data-en="Baby Name">শিশুর<br>নাম</p>
+  <span class="absolute top-[5px] right-[5px] bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[7px] font-black px-[5px] py-[1px] rounded-full shadow">NEW</span>
+</div>
+
 <div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center shadow-sm locked"><div class="w-11 h-11 mx-auto rounded-[13px] bg-zinc-100 flex items-center justify-center text-[20px]">✨</div><p class="text-[11px] font-bold mt-2 text-zinc-300">---</p></div>
 <div class="bg-white rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-sm" onclick="location.href='./event.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-orange-500 to-amber-400 flex items-center justify-center text-[20px]">🎉</div><p class="text-[11px] font-bold mt-2 text-black" data-bn="ইভেন্ট" data-en="Event">ইভেন্ট</p></div>
 </div>
