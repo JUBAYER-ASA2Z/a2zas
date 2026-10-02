@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>অর্থ বুঝে নাম রাখুন - A-S A2Z</title>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="male_names.js"></script>
 <script src="female_names.js"></script>
@@ -13,92 +13,124 @@
 body{margin:0; min-height:100vh; overflow-x:hidden;}
 .marble-bg{position:fixed; inset:0; z-index:-3; background: radial-gradient(120% 120% at 10% 10%, #fff 0%, #ffe4ec 25%, #ffc2d4 55%, #ff9ebf 85%, #ff7aa8 100%);}
 .marble-glow{position:fixed; inset:0; z-index:-2; background: radial-gradient(ellipse at top left, rgba(255,255,255,0.9) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(255,105,180,0.3) 0%, transparent 60%);}
-.marble-shine{position:fixed; inset:0; z-index:-1; pointer-events:none; background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.7) 35%, rgba(255,255,255,0.9) 40%, transparent 60%); animation: shineMove 4s infinite ease-in-out; mix-blend-mode: overlay;}
-@keyframes shineMove{0%{transform:translateX(-100%)} 100%{transform:translateX(100%)}}
 .sparkle{position:fixed; width:3px; height:3px; background:white; border-radius:50%; box-shadow:0 0 10px white, 0 0 20px #ff69b4; animation: sparkleAnim 2s infinite alternate; pointer-events:none; z-index:-1;}
 @keyframes sparkleAnim{0%{opacity:0.2; transform:scale(0.5)} 100%{opacity:1; transform:scale(1.8)}}
 .glass-card{background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%); backdrop-filter: blur(20px); border:1px solid rgba(255,255,255,0.8); box-shadow: 0 10px 40px rgba(255,105,180,0.25), inset 0 1px 0 rgba(255,255,255,0.9);}
 .name-card{background: linear-gradient(135deg, #ffffff 0%, #fff8fb 50%, #ffeef5 100%); border:1px solid rgba(255,182,193,0.4); box-shadow: 0 8px 25px rgba(255,105,180,0.15), inset 0 1px 0 white; position:relative; overflow:hidden;}
-.name-card::before{content:''; position:absolute; top:0; left:-50%; width:50%; height:100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.8), transparent); animation: cardShine 3s infinite;}
-@keyframes cardShine{0%{transform:translateX(-100%)} 100%{transform:translateX(250%)}}
-.poster-bg{background: radial-gradient(circle at 30% 20%, #fff 0%, #ffe4ec 30%, #ffc2d4 70%, #ff9ebf 100%); position:relative; overflow:hidden;}
+.poster-bg{position:relative; overflow:hidden; background: radial-gradient(circle at 30% 15%, #fffdfd 0%, #fff5f8 20%, #ffe4ec 45%, #ffd0de 75%, #ffb3c8 100%);}
+.islamic-pattern{position:absolute; inset:0; opacity:0.07; background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0 L45 20 L65 20 L50 35 L55 55 L40 42 L25 55 L30 35 L15 20 L35 20 Z' fill='none' stroke='%23ad1457' stroke-width='1'/%3E%3C/svg%3E"); pointer-events:none;}
+.gold-border{position:absolute; inset:12px; border:1.5px solid transparent; border-image: linear-gradient(135deg, #d4af37, #f9e79f, #d4af37) 1; pointer-events:none; border-radius:24px; opacity:0.6;}
 </style>
 </head>
 <body>
-<div class="marble-bg"></div><div class="marble-glow"></div><div class="marble-shine"></div>
+<div class="marble-bg"></div><div class="marble-glow"></div>
 <span class="sparkle" style="left:10%; top:15%; animation-delay:0s"></span>
 <span class="sparkle" style="left:85%; top:20%; animation-delay:0.3s"></span>
-<span class="sparkle" style="left:25%; top:60%; animation-delay:0.6s"></span>
-<span class="sparkle" style="left:70%; top:75%; animation-delay:0.9s"></span>
 
 <div class="max-w-[480px] mx-auto min-h-screen relative pb-10">
 <div class="px-5 pt-6 pb-5">
   <div class="glass-card rounded-[28px] p-5 text-center relative overflow-hidden">
-    <div class="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-pink-200 to-rose-300 rounded-full blur-[20px] opacity-60"></div>
     <h1 class="relative font-black text-[22px] text-transparent bg-clip-text bg-gradient-to-r from-[#d81b60] to-[#ad1457]">অর্থ বুঝে নাম রাখুন</h1>
     <p class="relative font-bold text-[13px] mt-1 text-[#880e4f] opacity-80">আপনার নামের অর্থ জেনে নিন</p>
-    <p class="relative text-[11px] mt-2 font-semibold text-pink-600 bg-white/70 inline-block px-3 py-1 rounded-full">ইসলামিক সুন্দর নাম 🌸</p>
   </div>
 </div>
 
 <div class="px-5 grid grid-cols-2 gap-4">
   <button id="btnMale" onclick="showGender('male')" class="glass-card rounded-[20px] p-4 text-center border-2 border-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.4)]">
-    <div class="w-14 h-14 mx-auto rounded-[16px] bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-[24px] shadow-lg">👦</div>
-    <p class="font-black text-[15px] mt-2 text-slate-800">ছেলে</p>
-    <p class="text-[10px] text-slate-500 font-bold" id="maleCount">10 টি নাম</p>
+    <div class="w-14 h-14 mx-auto rounded-[16px] bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-[24px]">👦</div>
+    <p class="font-black text-[15px] mt-2">ছেলে</p>
+    <p class="text-[10px] font-bold" id="maleCount">0 টি নাম</p>
   </button>
   <button id="btnFemale" onclick="showGender('female')" class="glass-card rounded-[20px] p-4 text-center opacity-70">
-    <div class="w-14 h-14 mx-auto rounded-[16px] bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-white text-[24px] shadow-lg">👧</div>
-    <p class="font-black text-[15px] mt-2 text-slate-800">মেয়ে</p>
-    <p class="text-[10px] text-slate-500 font-bold" id="femaleCount">10 টি নাম</p>
+    <div class="w-14 h-14 mx-auto rounded-[16px] bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-white text-[24px]">👧</div>
+    <p class="font-black text-[15px] mt-2">মেয়ে</p>
+    <p class="text-[10px] font-bold" id="femaleCount">0 টি নাম</p>
   </button>
 </div>
 
 <div class="px-5 mt-5">
   <div class="glass-card rounded-[18px] flex items-center px-4 py-3 gap-3">
     <span class="text-pink-500 font-black">🔍</span>
-    <input id="searchInput" oninput="doSearch()" placeholder="নাম লিখুন... যেমন: 1, Jubayer, ফাতিমা" class="flex-1 bg-transparent outline-none text-[13px] font-bold text-slate-700 placeholder:text-slate-400">
-    <span id="searchCount" class="text-[10px] font-black bg-pink-500 text-white px-2 py-1 rounded-full">10</span>
+    <input id="searchInput" oninput="doSearch()" placeholder="নাম লিখুন... যেমন: Jubayer, ফাতিমা" class="flex-1 bg-transparent outline-none text-[13px] font-bold">
+    <span id="searchCount" class="text-[10px] font-black bg-pink-500 text-white px-2 py-1 rounded-full">0</span>
   </div>
 </div>
 
 <div id="nameList" class="px-5 mt-4 space-y-3"></div>
-
-<div class="mt-8 text-center pb-6"><p class="text-[10px] font-black text-pink-300 tracking-[3px]">A-S A 2 Z</p><p class="text-[11px] font-bold text-slate-400 mt-1">Qari MD Jubayer Ahmed Siyam</p></div>
 </div>
 
-<div id="posterModal" class="fixed inset-0 z-[100] hidden bg-black/60 backdrop-blur-[8px] flex items-end sm:items-center justify-center p-0 sm:p-4">
-  <div class="w-full max-w-[380px] bg-white rounded-t-[32px] sm:rounded-[32px] overflow-hidden shadow-[0_20px_80px_rgba(0,0,0,0.4)]">
+<!-- PREMIUM POSTER MODAL -->
+<div id="posterModal" class="fixed inset-0 z-[100] hidden bg-black/60 backdrop-blur-[10px] flex items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto">
+  <div class="w-full max-w-[380px] bg-[#fffafb] rounded-t-[32px] sm:rounded-[32px] overflow-hidden shadow-[0_20px_80px_rgba(0,0,0,0.5)] max-h-[95vh] overflow-y-auto">
     <canvas id="posterCanvas" width="1080" height="1350" class="hidden"></canvas>
-    <div id="posterView" class="poster-bg p-7 text-center relative">
-      <button onclick="closePoster()" class="absolute top-4 right-4 w-8 h-8 bg-black/10 rounded-full font-black">✕</button>
-      <div class="inline-block bg-white/80 px-3 py-1 rounded-full text-[10px] font-black text-pink-600 tracking-widest">ISLAMIC NAME</div>
-      <p id="pArabic" class="font-black text-[32px] mt-3 text-[#ad1457]">زبير</p>
-      <h2 id="pName" class="font-black text-[28px] leading-[32px] mt-1 text-slate-900">জুবায়ের / Jubayer</h2>
-      <div class="w-16 h-[3px] bg-gradient-to-r from-pink-400 to-rose-500 mx-auto mt-3 rounded-full"></div>
-      <div class="mt-5 bg-white/90 rounded-[20px] p-4 shadow-[0_8px_25px_rgba(0,0,0,0.08)] border border-white">
-        <p class="text-[10px] font-black tracking-widest text-pink-500">নামের অর্থ</p>
-        <p id="pMeaning" class="font-bold text-[16px] mt-1 text-slate-800">সাহসী, শক্তিশালী</p>
+
+    <div id="posterView" class="poster-bg p-6 text-center relative">
+      <div class="islamic-pattern"></div>
+      <div class="gold-border"></div>
+      <button onclick="closePoster()" class="absolute top-4 right-4 w-8 h-8 bg-black/10 rounded-full font-black z-10">✕</button>
+
+      <!-- Image Upload Area -->
+      <div class="relative z-10">
+        <div class="inline-block bg-gradient-to-r from-[#d4af37] to-[#f9e79f] px-4 py-1 rounded-full text-[9px] font-black text-[#5d4037] tracking-[3px] shadow">ISLAMIC PREMIUM NAME</div>
+
+        <!-- Baby Photo Circle -->
+        <div class="mt-4 relative w-[110px] h-[110px] mx-auto">
+          <div id="photoCircle" class="w-full h-full rounded-full bg-gradient-to-br from-white to-pink-100 border-[4px] border-white shadow-[0_8px_25px_rgba(0,0,0,0.15)] flex items-center justify-center overflow-hidden">
+            <span class="text-[36px]">🌸</span>
+            <img id="previewImg" class="hidden w-full h-full object-cover">
+          </div>
+          <div class="absolute -bottom-1 -right-1 w-8 h-8 bg-gradient-to-br from-amber-400 to-yellow-600 rounded-full flex items-center justify-center text-white text-[12px] shadow">﷽</div>
+        </div>
+
+        <p id="pArabic" class="font-black text-[36px] mt-3 text-[#ad1457]" style="font-family:'Amiri'">زبير</p>
+        <h2 id="pName" class="font-black text-[26px] leading-[30px] mt-1 text-slate-900">জুবায়ের / Jubayer</h2>
+        <div class="w-20 h-[3px] bg-gradient-to-r from-[#d4af37] via-[#f9e79f] to-[#d4af37] mx-auto mt-3 rounded-full"></div>
+
+        <div class="mt-5 bg-white/90 backdrop-blur rounded-[20px] p-4 shadow-[0_8px_25px_rgba(0,0,0,0.08)] border border-white/80">
+          <p class="text-[9px] font-black tracking-[3px] text-[#d4af37]">المعنى</p>
+          <p id="pMeaning" class="font-black text-[18px] mt-1 text-slate-800">সাহসী, শক্তিশালী</p>
+        </div>
+
+        <div class="mt-3 bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] rounded-[18px] p-4 text-white relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#d4af37]/50 to-transparent"></div>
+          <p id="pQuote" class="text-[13px] leading-[20px] font-semibold relative z-10">সাহসীরা কখনো হার মানে না...</p>
+        </div>
       </div>
-      <div class="mt-4 bg-gradient-to-br from-slate-900 to-slate-800 rounded-[18px] p-4 text-white relative">
-        <p id="pQuote" class="text-[13px] leading-[19px] font-semibold">সাহসীরা কখনো হার মানে না...</p>
+
+      <!-- Photo Upload Button -->
+      <div class="mt-5 relative z-10">
+        <label class="block w-full cursor-pointer">
+          <input type="file" id="photoInput" accept="image/*" class="hidden" onchange="handlePhoto(event)">
+          <div class="w-full border-2 border-dashed border-pink-200 rounded-[14px] py-3 text-[12px] font-bold text-pink-500 bg-white/60 hover:bg-white transition">
+            📷 বাচ্চার ছবি যুক্ত করুন (ঐচ্ছিক)
+          </div>
+        </label>
+        <p id="photoName" class="text-[10px] text-zinc-400 mt-1 hidden"></p>
       </div>
-      <p class="mt-6 text-[10px] font-black text-slate-400 tracking-[3px]">A-S A 2 Z</p>
-      <div class="mt-4 grid grid-cols-2 gap-3">
-        <button onclick="sharePoster()" class="bg-gradient-to-r from-pink-500 to-rose-500 text-white font-black py-3 rounded-[14px] text-[13px]">📤 শেয়ার</button>
-        <button onclick="downloadPoster()" class="bg-slate-900 text-white font-black py-3 rounded-[14px] text-[13px]">⬇️ সেভ</button>
+
+      <div class="mt-5 grid grid-cols-2 gap-3 relative z-10">
+        <button onclick="sharePoster()" class="bg-gradient-to-r from-pink-500 to-rose-500 text-white font-black py-3.5 rounded-[14px] text-[13px] shadow-lg">📤 শেয়ার</button>
+        <button onclick="downloadPoster()" class="bg-slate-900 text-white font-black py-3.5 rounded-[14px] text-[13px] shadow-lg">⬇️ ডাউনলোড</button>
       </div>
-      <p class="mt-3 text-[8px] font-bold text-[#c9a86a]/60 tracking-widest">Qari MD Jubayer Ahmed Siyam</p>
+
+      <!-- Watermark - একদম জলছাপ, নিচে কর্নারে -->
+      <div class="flex justify-between items-end mt-5 relative z-10">
+        <p class="text-[7.5px] font-bold tracking-[1px] text-black/20 select-none">Qari MD jubayer Ahmed siyam</p>
+        <p class="text-[9px] font-black text-pink-300 tracking-[3px]">A-S A 2 Z</p>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-const NAMES_DB = { male: MALE_NAMES, female: FEMALE_NAMES };
+const NAMES_DB = { male: typeof MALE_NAMES!== 'undefined'? MALE_NAMES : [], female: typeof FEMALE_NAMES!== 'undefined'? FEMALE_NAMES : [] };
 let currentGender='male';
 let filtered=[];
-document.getElementById('maleCount').innerText = MALE_NAMES.length + ' টি নাম';
-document.getElementById('femaleCount').innerText = FEMALE_NAMES.length + ' টি নাম';
+let customPhoto = null;
+
+document.getElementById('maleCount').innerText = NAMES_DB.male.length + ' টি নাম';
+document.getElementById('femaleCount').innerText = NAMES_DB.female.length + ' টি নাম';
+
 function showGender(g){
   currentGender=g;
   document.getElementById('btnMale').className = g=='male'? "glass-card rounded-[20px] p-4 text-center border-2 border-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.4)]" : "glass-card rounded-[20px] p-4 text-center opacity-70";
@@ -130,10 +162,26 @@ function doSearch(){
   renderList(list);
 }
 let currentItem=null;
+
+function handlePhoto(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    customPhoto = ev.target.result;
+    document.getElementById('previewImg').src = customPhoto;
+    document.getElementById('previewImg').classList.remove('hidden');
+    document.getElementById('photoName').innerText = '✅ ' + file.name + ' যুক্ত হয়েছে';
+    document.getElementById('photoName').classList.remove('hidden');
+    drawCanvas();
+  }
+  reader.readAsDataURL(file);
+}
+
 function openPoster(id){
   currentItem = NAMES_DB[currentGender].find(x=>x.id==id);
   if(!currentItem) return;
-  document.getElementById('pArabic').innerText = currentItem.arabic;
+  document.getElementById('pArabic').innerText = currentItem.arabic || 'الاسم';
   document.getElementById('pName').innerText = currentItem.bn + ' / ' + currentItem.en;
   document.getElementById('pMeaning').innerText = currentItem.meaning;
   document.getElementById('pQuote').innerText = currentItem.quote;
@@ -141,30 +189,78 @@ function openPoster(id){
   drawCanvas();
 }
 function closePoster(){ document.getElementById('posterModal').classList.add('hidden'); }
+
 function drawCanvas(){
   let c=document.getElementById('posterCanvas'), ctx=c.getContext('2d');
+  // Premium Islamic Background
   let grad=ctx.createLinearGradient(0,0,0,1350);
-  grad.addColorStop(0,'#fff'); grad.addColorStop(0.3,'#ffe4ec'); grad.addColorStop(0.7,'#ffc2d4'); grad.addColorStop(1,'#ff9ebf');
+  grad.addColorStop(0,'#fffdfd'); grad.addColorStop(0.3,'#fff0f5'); grad.addColorStop(0.6,'#ffe4ec'); grad.addColorStop(1,'#ffc2d4');
   ctx.fillStyle=grad; ctx.fillRect(0,0,1080,1350);
-  ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.beginPath(); ctx.ellipse(250,250,400,250, -0.3,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#ad1457'; ctx.font='900 90px Hind Siliguri'; ctx.textAlign='center'; ctx.fillText(currentItem.arabic, 540, 300);
-  ctx.fillStyle='#111'; ctx.font='900 70px Hind Siliguri'; ctx.fillText(currentItem.bn + ' / ' + currentItem.en, 540, 420, 900);
-  ctx.fillStyle='#880e4f'; ctx.font='700 42px Hind Siliguri'; ctx.fillText(currentItem.meaning, 540, 620, 900);
-  ctx.fillStyle='#fff'; ctx.fillRect(80, 720, 920, 200); ctx.fillStyle='#111'; ctx.font='600 36px Hind Siliguri';
-  let words=currentItem.quote.split(' '), line='', y=780;
-  for(let n=0;n<words.length;n++){ let test=line+words[n]+' '; if(ctx.measureText(test).width>860){ ctx.fillText(line,540,y); line=words[n]+' '; y+=50; } else line=test; } ctx.fillText(line,540,y);
-  ctx.fillStyle='rgba(201,168,106,0.35)'; ctx.font='700 26px Poppins'; ctx.fillText('Qari MD Jubayer Ahmed Siyam', 540, 1300);
+
+  // Gold arch border
+  ctx.strokeStyle='rgba(212,175,55,0.35)'; ctx.lineWidth=4; ctx.strokeRect(30,30,1020,1290);
+  ctx.strokeStyle='rgba(212,175,55,0.15)'; ctx.lineWidth=1; ctx.strokeRect(45,45,990,1260);
+
+  // Islamic 8-point star pattern faint
+  ctx.fillStyle='rgba(173,20,87,0.04)';
+  for(let x=0;x<1080;x+=120){ for(let y=0;y<1350;y+=120){ ctx.beginPath(); ctx.arc(x,y,8,0,Math.PI*2); ctx.fill(); } }
+
+  // Photo Circle Premium
+  ctx.save();
+  ctx.beginPath(); ctx.arc(540, 260, 130, 0, Math.PI*2); ctx.clip();
+  if(customPhoto){
+    let img = new Image(); img.src = customPhoto;
+    // draw instantly if loaded, else fallback
+    if(img.complete){ ctx.drawImage(img, 410, 130, 260, 260); }
+    else { img.onload = ()=>{ ctx.save(); ctx.beginPath(); ctx.arc(540,260,130,0,Math.PI*2); ctx.clip(); ctx.drawImage(img,410,130,260,260); ctx.restore(); } }
+  } else {
+    ctx.fillStyle='#fff'; ctx.fillRect(410,130,260,260);
+    ctx.fillStyle='#ff9ebf'; ctx.font='80px serif'; ctx.textAlign='center'; ctx.fillText('🌸',540,290);
+  }
+  ctx.restore();
+  // Gold ring around photo
+  ctx.strokeStyle='#d4af37'; ctx.lineWidth=6; ctx.beginPath(); ctx.arc(540,260,133,0,Math.PI*2); ctx.stroke();
+  ctx.strokeStyle='white'; ctx.lineWidth=4; ctx.beginPath(); ctx.arc(540,260,140,0,Math.PI*2); ctx.stroke();
+
+  // Arabic
+  ctx.fillStyle='#ad1457'; ctx.font='900 88px Amiri'; ctx.textAlign='center'; ctx.fillText(currentItem.arabic || '', 540, 520);
+  // Name
+  ctx.fillStyle='#111827'; ctx.font='900 66px Hind Siliguri'; ctx.fillText(currentItem.bn + ' / ' + currentItem.en, 540, 620, 950);
+  // Gold divider
+  let g2=ctx.createLinearGradient(400,0,680,0); g2.addColorStop(0,'#d4af37'); g2.addColorStop(0.5,'#f9e79f'); g2.addColorStop(1,'#d4af37');
+  ctx.fillStyle=g2; ctx.fillRect(430,650,220,4);
+  // Meaning box
+  ctx.fillStyle='rgba(255,255,255,0.95)'; ctx.fillRect(80,700,920,160); ctx.strokeStyle='rgba(255,255,255,1)'; ctx.lineWidth=2; ctx.strokeRect(80,700,920,160);
+  ctx.fillStyle='#d4af37'; ctx.font='900 28px Hind Siliguri'; ctx.fillText('المعنى • নামের অর্থ',540,750);
+  ctx.fillStyle='#1f2937'; ctx.font='900 48px Hind Siliguri'; ctx.fillText(currentItem.meaning,540,810,900);
+  // Quote box Islamic dark premium
+  ctx.fillStyle='#0f172a'; ctx.fillRect(80,900,920,220);
+  ctx.fillStyle='rgba(212,175,55,0.4)'; ctx.fillRect(80,900,920,2);
+  ctx.fillStyle='#e2e8f0'; ctx.font='600 36px Hind Siliguri';
+  // wrap quote
+  let words=currentItem.quote.split(' '), line='', y=960;
+  for(let n=0;n<words.length;n++){ let test=line+words[n]+' '; if(ctx.measureText(test).width>800){ ctx.fillText(line,540,y); line=words[n]+' '; y+=48; } else line=test; } ctx.fillText(line,540,y);
+
+  // A-S A2Z
+  ctx.fillStyle='#ec4899'; ctx.font='900 32px Hind Siliguri'; ctx.fillText('A-S A 2 Z',540,1200);
+
+  // Watermark - একদম হালকা কর্নারে
+  ctx.fillStyle='rgba(0,0,0,0.08)'; ctx.font='700 22px Poppins'; ctx.textAlign='left'; ctx.fillText('Qari MD jubayer Ahmed siyam', 40, 1320);
 }
+
 function sharePoster(){
-  let c=document.getElementById('posterCanvas');
-  c.toBlob(async (blob)=>{
-    let file=new File([blob], 'name-poster.png', {type:'image/png'});
-    if(navigator.canShare && navigator.canShare({files:[file]})){
-      await navigator.share({files:[file], title: currentItem.bn});
-    } else {
-      let url=URL.createObjectURL(blob); let a=document.createElement('a'); a.href=url; a.download=file.name; a.click();
-    }
-  });
+  drawCanvas();
+  setTimeout(()=>{
+    let c=document.getElementById('posterCanvas');
+    c.toBlob(async (blob)=>{
+      let file=new File([blob], 'islamic-premium-poster.png', {type:'image/png'});
+      if(navigator.canShare && navigator.canShare({files:[file]})){
+        await navigator.share({files:[file], title: currentItem.bn});
+      } else {
+        let url=URL.createObjectURL(blob); let a=document.createElement('a'); a.href=url; a.download=file.name; a.click();
+      }
+    });
+  },300);
 }
 function downloadPoster(){ sharePoster(); }
 showGender('male');
