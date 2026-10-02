@@ -1,246 +1,174 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>অর্থ বুঝে নাম রাখুন</title>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700;900&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@600;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="male_names.js"></script>
-<script src="female_names.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
-*{font-family:'Hind Siliguri'; box-sizing:border-box;}
+*{font-family:'Hind Siliguri'; -webkit-tap-highlight-color:transparent;}
 body{
-  margin:0;
-  background: radial-gradient(120% 120% at 10% 10%, #fff 0%, #ffe4ec 25%, #ffc2d4 55%, #ff9ebf 85%, #ff7aa8 100%);
+  background: #fff;
+  background-image:
+    radial-gradient(at 20% 30%, #ffd6e7 0%, transparent 50%),
+    radial-gradient(at 80% 20%, #c7d2fe 0%, transparent 50%),
+    radial-gradient(at 50% 80%, #fef3c7 0%, transparent 50%),
+    url('https://www.transparenttextures.com/patterns/white-marble.png');
+  background-color: #fff8fa;
   min-height:100vh;
-  overflow-x:hidden;
 }
-/* মার্বেল চকচকে ইফেক্ট */
-.marble-bg{
-  position:fixed; inset:0; z-index:-2;
+.marble-card{
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,248,250,0.9) 100%);
+  backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(255,255,255,0.8);
+  box-shadow:
+    0 8px 32px rgba(255,105,135,0.12),
+    0 2px 8px rgba(0,0,0,0.05),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+}
+.glossy-btn{
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15), inset 0 1px 1px rgba(255,255,255,0.8);
+  transition: all 0.2s;
+}
+.glossy-btn:active{transform:scale(0.96);}
+.poster{
   background:
-    radial-gradient(ellipse at top left, rgba(255,255,255,0.9) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom right, rgba(255,105,180,0.3) 0%, transparent 60%),
-    linear-gradient(135deg, #fff0f6 0%, #ffd6e7 30%, #ffb3d1 60%, #ffcfe0 100%);
-}
-.marble-shine{
-  position:fixed; inset:0; z-index:-1; pointer-events:none;
-  background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.7) 35%, rgba(255,255,255,0.9) 40%, transparent 60%);
-  animation: shineMove 4s infinite ease-in-out;
-  mix-blend-mode: overlay;
-}
-@keyframes shineMove{0%{transform:translateX(-100%)} 100%{transform:translateX(100%)}}
-.sparkle{
-  position:fixed; width:3px; height:3px; background:white; border-radius:50%;
-  box-shadow:0 0 10px white, 0 0 20px #ff69b4;
-  animation: sparkleAnim 2s infinite alternate; pointer-events:none; z-index:-1;
-}
-@keyframes sparkleAnim{0%{opacity:0.2; transform:scale(0.5)} 100%{opacity:1; transform:scale(1.8)}}
-
-.glass-card{
-  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.8);
-  box-shadow: 0 10px 40px rgba(255,105,180,0.25), inset 0 1px 0 rgba(255,255,255,0.9), 0 0 0 1px rgba(255,255,255,0.5);
-}
-.name-card{
-  background: linear-gradient(135deg, #ffffff 0%, #fff8fb 50%, #ffeef5 100%);
-  border: 1px solid rgba(255,182,193,0.4);
-  box-shadow: 0 8px 25px rgba(255,105,180,0.15), inset 0 1px 0 white;
+    radial-gradient(circle at 30% 20%, #ffe4ec 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, #e0e7ff 0%, transparent 40%),
+    linear-gradient(180deg, #ffffff 0%, #fff5f8 100%);
   position:relative; overflow:hidden;
+  border:6px solid white;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,182,193,0.3);
 }
-.name-card::before{
-  content:''; position:absolute; top:0; left:-50%; width:50%; height:100%;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.8), transparent);
-  animation: cardShine 3s infinite;
+.poster::before{
+  content:""; position:absolute; inset:0;
+  background: url('https://www.transparenttextures.com/patterns/white-marble.png');
+  opacity:0.3; pointer-events:none;
 }
-@keyframes cardShine{0%{transform:translateX(-100%)} 100%{transform:translateX(250%)}}
-
-.poster-bg{
-  background: radial-gradient(circle at 30% 20%, #fff 0%, #ffe4ec 30%, #ffc2d4 70%, #ff9ebf 100%);
-  position:relative; overflow:hidden;
+.watermark{
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%) rotate(-30deg);
+  font-size:17px; font-weight:900;
+  color:rgba(0,0,0,0.020);
+  letter-spacing:5px; white-space:nowrap; pointer-events:none;
 }
-.poster-bg::after{
-  content:'🌸'; position:absolute; font-size:120px; opacity:0.08; top:-10px; right:-10px; transform:rotate(15deg);
+.shiny-header{
+  background: linear-gradient(135deg, #ec4899 0%, #f43f5e 50%, #8b5cf6 100%);
+  box-shadow: 0 10px 30px rgba(236,72,153,0.3);
+}
+.name-item{
+  background: linear-gradient(135deg, #ffffff 0%, #fffafb 100%);
+  border: 1.5px solid transparent;
+  background-clip: padding-box;
+  position:relative;
+}
+.name-item::before{
+  content:""; position:absolute; inset:0; border-radius:20px; padding:1.5px;
+  background: linear-gradient(135deg, #ffd6e0, #c7d2fe, #fde68a);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  pointer-events:none;
 }
 </style>
 </head>
-<body>
-<div class="marble-bg"></div>
-<div class="marble-shine"></div>
-<span class="sparkle" style="left:10%; top:15%; animation-delay:0s"></span>
-<span class="sparkle" style="left:85%; top:20%; animation-delay:0.3s"></span>
-<span class="sparkle" style="left:25%; top:60%; animation-delay:0.6s"></span>
-<span class="sparkle" style="left:70%; top:75%; animation-delay:0.9s"></span>
-<span class="sparkle" style="left:50%; top:10%; animation-delay:1.2s"></span>
+<body class="min-h-screen flex flex-col items-center">
 
-<div class="max-w-[480px] mx-auto min-h-screen relative pb-10">
+<!-- Header Marble Shiny -->
+<div class="w-full max-w-[480px] shiny-header p-6 text-center text-white rounded-b-[35px] sticky top-0 z-50">
+  <button onclick="location.href='./islamic.html'" class="absolute left-4 top-6 w-10 h-10 bg-white/20 backdrop-blur rounded-full text-[20px] border border-white/30">←</button>
+  <h1 class="font-black text-[21px] drop-shadow">অর্থ বুঝে নাম রাখুন</h1>
+  <p class="text-[12px] mt-1 opacity-90 font-semibold tracking-wide">আপনার নামের অর্থ জেনে নিন ✨</p>
+</div>
 
-<!-- হেডার -->
-<div class="px-5 pt-6 pb-5">
-  <div class="glass-card rounded-[28px] p-5 text-center relative overflow-hidden">
-    <div class="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-pink-200 to-rose-300 rounded-full blur-[20px] opacity-60"></div>
-    <div class="absolute -bottom-10 -left-10 w-24 h-24 bg-gradient-to-br from-white to-pink-100 rounded-full blur-[15px] opacity-80"></div>
-    <h1 class="relative font-black text-[22px] leading-[26px] text-transparent bg-clip-text bg-gradient-to-r from-[#d81b60] to-[#ad1457]">অর্থ বুঝে নাম রাখুন</h1>
-    <p class="relative font-bold text-[13px] mt-1 text-[#880e4f] opacity-80">আপনার নামের অর্থ জেনে নিন</p>
-    <p class="relative text-[11px] mt-2 font-semibold text-pink-600 bg-white/70 inline-block px-3 py-1 rounded-full">ইসলামিক সুন্দর সুন্দর নাম বাচ্চাদের জন্য 🌸</p>
+<!-- Buttons Colorful Glossy -->
+<div class="w-full max-w-[480px] px-4 mt-6 flex gap-3">
+  <button id="btnMale" class="glossy-btn flex-1 py-4 rounded-full font-black text-[16px] bg-gradient-to-r from-blue-500 to-indigo-600 text-white border border-white">👦 পুরুষ</button>
+  <button id="btnFemale" class="glossy-btn flex-1 py-4 rounded-full font-black text-[16px] bg-white text-pink-600 border-2 border-pink-200">👧 মহিলা</button>
+</div>
+
+<!-- Search Marble -->
+<div class="w-full max-w-[480px] px-4 mt-5">
+  <div class="marble-card rounded-full px-6 py-4 flex gap-3 items-center">
+    <span class="text-[20px]">🔍</span>
+    <input id="searchInput" type="text" placeholder="জু / ay লিখলেই আসবে" class="flex-1 outline-none font-bold bg-transparent text-[15px] placeholder:text-zinc-400">
   </div>
 </div>
 
-<!-- পুরুষ / মহিলা বাটন -->
-<div class="px-5 grid grid-cols-2 gap-4">
-  <button id="btnMale" onclick="showGender('male')" class="glass-card rounded-[20px] p-4 text-center border-2 border-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.4)] scale-[1.02]">
-    <div class="w-14 h-14 mx-auto rounded-[16px] bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-[24px] shadow-lg">👨‍💼</div>
-    <p class="font-black text-[15px] mt-2 text-slate-800">ছেলে</p>
-    <p class="text-[10px] text-slate-500 font-bold" id="maleCount">10 টি নাম</p>
-  </button>
-  <button id="btnFemale" onclick="showGender('female')" class="glass-card rounded-[20px] p-4 text-center opacity-70">
-    <div class="w-14 h-14 mx-auto rounded-[16px] bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-white text-[24px] shadow-lg">👩‍💼</div>
-    <p class="font-black text-[15px] mt-2 text-slate-800">মেয়ে</p>
-    <p class="text-[10px] text-slate-500 font-bold" id="femaleCount">10 টি নাম</p>
-  </button>
-</div>
+<div id="nameList" class="w-full max-w-[480px] px-4 mt-5 pb-10 space-y-4"></div>
 
-<!-- সার্চ -->
-<div class="px-5 mt-5">
-  <div class="glass-card rounded-[18px] flex items-center px-4 py-3 gap-3">
-    <span class="text-pink-500 font-black">🔍</span>
-    <input id="searchInput" oninput="doSearch()" placeholder="নাম, ইংরেজি বা সিরিয়াল লিখুন... (যেমন: 1, Jubayer, জুবায়ের)" class="flex-1 bg-transparent outline-none text-[13px] font-bold text-slate-700 placeholder:text-slate-400">
-    <span id="searchCount" class="text-[10px] font-black bg-pink-500 text-white px-2 py-1 rounded-full">10</span>
-  </div>
-</div>
+<!-- Poster -->
+<div id="posterModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-5">
+  <div class="w-full max-w-[360px]">
+    <div id="posterCard" class="poster rounded-[36px] p-9 text-center">
+      <div class="watermark">Qari MD jubayer Ahmed siyam</div>
+      <div class="relative z-10">
+        <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-pink-400 via-rose-400 to-purple-400 flex items-center justify-center text-[40px] shadow-xl border-4 border-white">🌸</div>
+        <h2 id="pName" class="font-black text-[36px] mt-4 bg-gradient-to-r from-zinc-800 to-zinc-600 bg-clip-text text-transparent"></h2>
+        <p id="pEng" class="text-[12px] font-black tracking-[4px] uppercase bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent"></p>
 
-<!-- লিস্ট -->
-<div id="nameList" class="px-5 mt-4 space-y-3"></div>
-
-</div>
-
-<!-- পোস্টার পপআপ -->
-<div id="posterModal" class="fixed inset-0 z-[100] hidden bg-black/60 backdrop-blur-[8px] flex items-end sm:items-center justify-center p-0 sm:p-4">
-  <div class="w-full max-w-[380px] bg-white rounded-t-[32px] sm:rounded-[32px] overflow-hidden shadow-[0_20px_80px_rgba(0,0,0,0.4)]">
-    <canvas id="posterCanvas" width="1080" height="1350" class="hidden"></canvas>
-    <div id="posterView" class="poster-bg p-7 text-center relative">
-      <button onclick="closePoster()" class="absolute top-4 right-4 w-8 h-8 bg-black/10 rounded-full font-black">✕</button>
-
-      <div class="inline-block bg-white/80 px-3 py-1 rounded-full text-[10px] font-black text-pink-600 tracking-widest">ISLAMIC NAME</div>
-      <p id="pArabic" class="font-black text-[32px] mt-3 text-[#ad1457]">زبير</p>
-      <h2 id="pName" class="font-black text-[28px] leading-[32px] mt-1 text-slate-900">জুবায়ের / Jubayer</h2>
-      <div class="w-16 h-[3px] bg-gradient-to-r from-pink-400 to-rose-500 mx-auto mt-3 rounded-full"></div>
-
-      <div class="mt-5 bg-white/90 backdrop-blur rounded-[20px] p-4 shadow-[0_8px_25px_rgba(0,0,0,0.08)] border border-white">
-        <p class="text-[10px] font-black tracking-widest text-pink-500">নামের অর্থ</p>
-        <p id="pMeaning" class="font-bold text-[16px] mt-1 text-slate-800 leading-[22px]">সাহসী, শক্তিশালী, বুদ্ধিমান</p>
+        <div class="mt-7 marble-card rounded-[22px] p-5">
+          <p class="text-[10px] text-pink-400 font-black tracking-widest uppercase">নামের অর্থ</p>
+          <p id="pMeaning" class="font-black text-[19px] text-zinc-800 mt-1"></p>
+        </div>
+        <div class="mt-4 bg-gradient-to-r from-pink-50 to-purple-50 rounded-[18px] p-4 border border-pink-100">
+          <p id="pQuote" class="text-[13px] italic font-semibold text-zinc-600"></p>
+        </div>
       </div>
-
-      <div class="mt-4 bg-gradient-to-br from-slate-900 to-slate-800 rounded-[18px] p-4 text-white relative overflow-hidden">
-        <span class="absolute text-[40px] opacity-10 top-1 left-2">❝</span>
-        <p id="pQuote" class="text-[13px] leading-[19px] font-semibold relative">সাহসীরা কখনো হার মানে না...</p>
-      </div>
-
-      <p class="mt-6 text-[10px] font-black text-slate-400 tracking-[3px]">A-S A 2 Z</p>
-      <div class="mt-4 grid grid-cols-2 gap-3">
-        <button onclick="sharePoster()" class="bg-gradient-to-r from-pink-500 to-rose-500 text-white font-black py-3 rounded-[14px] text-[13px] shadow-[0_8px_20px_rgba(236,72,153,0.4)]">📤 শেয়ার করুন</button>
-        <button onclick="downloadPoster()" class="bg-slate-900 text-white font-black py-3 rounded-[14px] text-[13px]">⬇️ সেভ করুন</button>
-      </div>
-      <!-- ওয়াটার মার্ক - হালকা সোনালী -->
-      <p class="mt-3 text-[8px] font-bold text-[#c9a86a]/50 tracking-widest">Qari MD Jubayer Ahmed Siyam</p>
+    </div>
+    <div class="flex gap-3 mt-6">
+      <button onclick="closePoster()" class="glossy-btn flex-1 py-4 bg-white rounded-full font-black shadow">বন্ধ</button>
+      <button onclick="sharePosterImage()" class="glossy-btn flex-1 py-4 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-full font-black shadow-lg">📤 শেয়ার</button>
     </div>
   </div>
 </div>
 
 <script>
-const NAMES_DB = { male: MALE_NAMES, female: FEMALE_NAMES };
-let currentGender='male';
-let filtered=[];
+let allNames = {male:[], female:[]};
+let gender = 'male';
 
-document.getElementById('maleCount').innerText = MALE_NAMES.length + ' টি নাম';
-document.getElementById('femaleCount').innerText = FEMALE_NAMES.length + ' টি নাম';
-
-function showGender(g){
-  currentGender=g;
-  document.getElementById('btnMale').className = g=='male'? "glass-card rounded-[20px] p-4 text-center border-2 border-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.4)] scale-[1.02]" : "glass-card rounded-[20px] p-4 text-center opacity-70";
-  document.getElementById('btnFemale').className = g=='female'? "glass-card rounded-[20px] p-4 text-center border-2 border-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.4)] scale-[1.02]" : "glass-card rounded-[20px] p-4 text-center opacity-70";
-  document.getElementById('searchInput').value='';
-  renderList(NAMES_DB[g]);
+async function loadNames(){
+  try{
+    const m = await fetch('./male.json').then(r=>r.json());
+    const f = await fetch('./female.json').then(r=>r.json());
+    allNames.male = m; allNames.female = f;
+  }catch(e){
+    allNames.male = [{bn:"জুবায়ের",en:"Jubayer",meaning:"সাহসী",quote:"সাহসীরাই বিজয়ী"}];
+    allNames.female = [{bn:"আয়েশা",en:"Ayesha",meaning:"জীবন",quote:"জীবনকে সাজাও"}];
+  }
+  renderNames();
 }
 
-function renderList(list){
-  filtered=list;
-  document.getElementById('searchCount').innerText=list.length;
-  let html='';
-  list.forEach(item=>{
-    html+=`
-    <div onclick="openPoster(${item.id})" class="name-card rounded-[20px] p-4 flex items-center gap-4 active:scale-[0.98] cursor-pointer">
-      <div class="w-[48px] h-[48px] rounded-[14px] bg-gradient-to-br ${currentGender=='male'? 'from-blue-500 to-indigo-600' : 'from-pink-400 to-rose-500'} flex items-center justify-center text-white font-black text-[16px] shadow-md">${item.id}</div>
-      <div class="flex-1">
-        <p class="font-black text-[16px] text-slate-900">${item.bn} <span class="text-slate-400 font-bold">/</span> <span class="text-pink-600">${item.en}</span></p>
-        <p class="text-[10px] font-bold text-pink-500 mt-[2px]">নামের অর্থ জানতে নামের উপর ক্লিক করুন ➤</p>
-      </div>
-      <span class="text-pink-300">🌸</span>
-    </div>`;
-  });
-  document.getElementById('nameList').innerHTML = html || `<p class="text-center py-10 font-bold text-pink-400">কোন নাম পাওয়া যায়নি</p>`;
-}
+function renderNames(){
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const list = document.getElementById('nameList');
+  list.innerHTML = '';
+  const data = allNames[gender];
 
-function doSearch(){
-  let q = document.getElementById('searchInput').value.trim().toLowerCase();
-  if(!q){ renderList(NAMES_DB[currentGender]); return; }
-  let list = NAMES_DB[currentGender].filter(it=>{
-    let bn = it.bn.toLowerCase(), en = it.en.toLowerCase(), id = it.id.toString();
-    // ৫০% মিল হলেও আসবে
-    return bn.includes(q) || en.includes(q) || id==q || en.includes(q.substring(0, Math.ceil(q.length*0.5))) || bn.includes(q.substring(0, Math.ceil(q.length*0.5)));
-  });
-  renderList(list);
-}
-
-let currentItem=null;
-function openPoster(id){
-  currentItem = NAMES_DB[currentGender].find(x=>x.id==id);
-  if(!currentItem) return;
-  document.getElementById('pArabic').innerText = currentItem.arabic;
-  document.getElementById('pName').innerText = currentItem.bn + ' / ' + currentItem.en;
-  document.getElementById('pMeaning').innerText = currentItem.meaning;
-  document.getElementById('pQuote').innerText = currentItem.quote;
-  document.getElementById('posterModal').classList.remove('hidden');
-  drawCanvas();
-}
-
-function closePoster(){ document.getElementById('posterModal').classList.add('hidden'); }
-
-function drawCanvas(){
-  let c=document.getElementById('posterCanvas'), ctx=c.getContext('2d');
-  // Background marble
-  let grad=ctx.createLinearGradient(0,0,0,1350);
-  grad.addColorStop(0,'#fff'); grad.addColorStop(0.3,'#ffe4ec'); grad.addColorStop(0.7,'#ffc2d4'); grad.addColorStop(1,'#ff9ebf');
-  ctx.fillStyle=grad; ctx.fillRect(0,0,1080,1350);
-  // White gloss
-  ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.beginPath(); ctx.ellipse(250,250,400,250, -0.3,0,Math.PI*2); ctx.fill();
-  // Text
-  ctx.fillStyle='#ad1457'; ctx.font='900 90px Hind Siliguri'; ctx.textAlign='center'; ctx.fillText(currentItem.arabic, 540, 300);
-  ctx.fillStyle='#111'; ctx.font='900 80px Hind Siliguri'; ctx.fillText(currentItem.bn + ' / ' + currentItem.en, 540, 420);
-  ctx.fillStyle='#880e4f'; ctx.font='700 42px Hind Siliguri'; ctx.fillText(currentItem.meaning, 540, 620, 900);
-  ctx.fillStyle='#fff'; ctx.fillRect(80, 720, 920, 200); ctx.fillStyle='#111'; ctx.font='600 36px Hind Siliguri';
-  let words=currentItem.quote.split(' '), line='', y=780;
-  for(let n=0;n<words.length;n++){ let test=line+words[n]+' '; if(ctx.measureText(test).width>860){ ctx.fillText(line,540,y); line=words[n]+' '; y+=50; } else line=test; } ctx.fillText(line,540,y);
-  // watermark light golden
-  ctx.fillStyle='rgba(201,168,106,0.35)'; ctx.font='700 26px Poppins'; ctx.fillText('Qari MD Jubayer Ahmed Siyam', 540, 1300);
-}
-
-function sharePoster(){
-  let c=document.getElementById('posterCanvas');
-  c.toBlob(async (blob)=>{
-    let file=new File([blob], 'name-poster.png', {type:'image/png'});
-    if(navigator.canShare && navigator.canShare({files:[file]})){
-      await navigator.share({files:[file], title: currentItem.bn});
-    } else {
-      let url=URL.createObjectURL(blob); let a=document.createElement('a'); a.href=url; a.download=file.name; a.click();
+  data.forEach((item,i)=>{
+    const full = (item.bn+' '+item.en).toLowerCase();
+    if(q){
+      let ok = full.includes(q);
+      if(!ok && q.length>=2){ let c=0; for(let ch of q){ if(full.includes(ch)) c++; } if(c/q.length>=0.5) ok=true; }
+      if(!ok) return;
     }
+    const div = document.createElement('div');
+    div.className = 'name-item rounded-[20px] p-5 flex justify-between items-center cursor-pointer shadow-sm active:scale-[0.97] transition';
+    div.innerHTML = `<div><p class="font-black text-[18px] text-zinc-800">${i+1}. ${item.bn} <span class="text-zinc-400 font-bold text-[14px]">/ ${item.en}</span></p><p class="text-[11px] text-zinc-500 mt-1">✨ অর্থ জানতে ক্লিক করুন</p></div><div class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center text-pink-600 font-black">›</div>`;
+    div.onclick = ()=>openPoster(item);
+    list.appendChild(div);
   });
 }
-function downloadPoster(){ sharePoster(); }
 
-showGender('male');
+document.getElementById('btnMale').onclick = ()=>{ gender='male'; document.getElementById('btnMale').className='glossy-btn flex-1 py-4 rounded-full font-black text-[16px] bg-gradient-to-r from-blue-500 to-indigo-600 text-white border border-white'; document.getElementById('btnFemale').className='glossy-btn flex-1 py-4 rounded-full font-black text-[16px] bg-white text-pink-600 border-2 border-pink-200'; renderNames(); }
+document.getElementById('btnFemale').onclick = ()=>{ gender='female'; document.getElementById('btnFemale').className='glossy-btn flex-1 py-4 rounded-full font-black text-[16px] bg-gradient-to-r from-pink-500 to-rose-500 text-white border border-white'; document.getElementById('btnMale').className='glossy-btn flex-1 py-4 rounded-full font-black text-[16px] bg-white text-blue-600 border-2 border-blue-200'; renderNames(); }
+document.getElementById('searchInput').addEventListener('input', renderNames);
+
+function openPoster(item){ document.getElementById('pName').innerText=item.bn; document.getElementById('pEng').innerText=item.en; document.getElementById('pMeaning').innerText=item.meaning; document.getElementById('pQuote').innerText='“ '+item.quote+' ”'; document.getElementById('posterModal').classList.remove('hidden'); }
+function closePoster(){ document.getElementById('posterModal').classList.add('hidden'); }
+async function sharePosterImage(){ const card=document.getElementById('posterCard'); const canvas=await html2canvas(card,{scale:3, backgroundColor:null}); canvas.toBlob(async(b)=>{ const f=new File([b],'name.png',{type:'image/png'}); if(navigator.canShare&&navigator.canShare({files:[f]})){ await navigator.share({files:[f]}); }else{ const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='islamic-name-poster.png'; a.click(); } }); }
+
+loadNames();
 </script>
 </body>
 </html>
