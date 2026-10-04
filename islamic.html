@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="bn" translate="no" class="notranslate">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google" content="notranslate">
+<meta name="googlebot" content="notranslate">
+<meta name="robots" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Islamic Hub - A-S A2Z</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-*{font-family:'Hind Siliguri'; box-sizing:border-box;}
+*{font-family:'Hind Siliguri'; box-sizing:border-box; -webkit-touch-callout:none; -webkit-user-select:none; -khtml-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; -webkit-tap-highlight-color:transparent;}
+html{translate:no;}
+body{top:0!important;}
 .bg-islamic{
   background: radial-gradient(circle at 10% 10%, rgba(255,255,255,0.2) 0%, transparent 40%),
               linear-gradient(135deg, #16a34a 0%, #14532d 100%);
@@ -15,26 +20,24 @@
 .glass{backdrop-filter:blur(12px); background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25);}
 .card{transition:0.15s; box-shadow:0 8px 20px rgba(0,0,0,0.12);}
 .card:active{transform:scale(0.90);}
+/* Google Translate 100% Kill */
+.goog-te-banner-frame,.goog-te-balloon-frame,#goog-gt-tt,.skiptranslate,iframe.goog-te-banner-frame,iframe.skiptranslate,.VIpgJd-ZVi9od-aZ2wEe-wOHMyf,.VIpgJd-ZVi9od-aZ2wEe-OiiCO{display:none!important; visibility:hidden!important; height:0!important; width:0!important; pointer-events:none!important;}
+#google_translate_element{display:none!important;}
 </style>
 </head>
-<body class="bg-islamic min-h-screen">
+<body translate="no" class="notranslate bg-islamic min-h-screen">
 
 <div class="w-full max-w-[480px] mx-auto min-h-screen flex flex-col">
 
-  <!-- Header with Back Button -->
   <div class="flex items-center justify-between px-4 pt-6 pb-3">
-    <!-- Break/Back Button -->
     <button onclick="location.href='./index.html'" class="w-10 h-10 rounded-full glass flex items-center justify-center text-white text-[20px] font-black shadow active:scale-90 transition">←</button>
-
     <div class="text-center">
       <h1 class="font-black text-white text-[18px] tracking-wide">ইসলামিক সেন্টার</h1>
       <p class="text-white/70 text-[10px] -mt-1">A-S A2Z</p>
     </div>
-
     <button id="langBtn" onclick="toggleLang()" class="w-[44px] h-[26px] rounded-full bg-white text-[11px] font-black text-green-700 shadow">EN</button>
   </div>
 
-  <!-- Top Banner -->
   <div class="px-4 mt-3">
     <div class="glass rounded-[18px] p-4 flex items-center gap-3">
       <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-[24px]">🕌</div>
@@ -46,10 +49,8 @@
     </div>
   </div>
 
-  <!-- 4 Buttons in one row - Small Size -->
   <div class="px-3 mt-6 grid grid-cols-4 gap-3">
 
-    <!-- কায়েদা - NEW -->
     <div onclick="location.href='./qaeda.html'" class="card bg-white rounded-[18px] p-3 text-center cursor-pointer border-2 border-yellow-400 relative overflow-hidden">
       <div class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></div>
       <div class="w-11 h-11 mx-auto rounded-[12px] bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-[20px] shadow">📖</div>
@@ -57,44 +58,39 @@
       <p class="text-[8px] text-zinc-500" data-bn="নূরানী" data-en="Noorani">নূরানী</p>
     </div>
 
-    <!-- BN -->
     <div onclick="location.href='./islamic_bn.html'" class="card bg-white rounded-[18px] p-3 text-center cursor-pointer">
       <div class="w-11 h-11 mx-auto rounded-[12px] bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-[20px] text-white shadow">🕌</div>
       <p class="font-black text-[11px] mt-2 text-black" data-bn="বাংলা" data-en="BN">বাংলা</p>
       <p class="text-[8px] text-zinc-500" data-bn="প্রশ্ন" data-en="Q&A">প্রশ্ন</p>
     </div>
 
-    <!-- EN -->
     <div onclick="location.href='./islamic_en.html'" class="card bg-white rounded-[18px] p-3 text-center cursor-pointer">
       <div class="w-11 h-11 mx-auto rounded-[12px] bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-[20px] text-white shadow">🌍</div>
       <p class="font-black text-[11px] mt-2 text-black" data-bn="ইংরেজি" data-en="EN">ইংরেজি</p>
       <p class="text-[8px] text-zinc-500" data-bn="প্রশ্ন" data-en="Q&A">প্রশ্ন</p>
     </div>
 
-    <!-- Poster -->
     <div onclick="location.href='./poster.html'" class="card bg-white rounded-[18px] p-3 text-center cursor-pointer">
       <div class="w-11 h-11 mx-auto rounded-[12px] bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-[20px] text-white shadow">🎨</div>
       <p class="font-black text-[11px] mt-2 text-black" data-bn="পোস্টার" data-en="Poster">পোস্টার</p>
       <p class="text-[8px] text-zinc-500" data-bn="হাদিস" data-en="Hadith">হাদিস</p>
     </div>
 
-    <!-- Quiz -->
     <div onclick="location.href='./islamic_500.html'" class="card bg-white rounded-[18px] p-3 text-center cursor-pointer">
       <div class="w-11 h-11 mx-auto rounded-[12px] bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-[20px] text-white shadow">📚</div>
       <p class="font-black text-[11px] mt-2 text-black" data-bn="কুইজ" data-en="Quiz">কুইজ</p>
       <p class="text-[8px] text-zinc-500" data-bn="৫০০+" data-en="500+">৫০০+</p>
     </div>
 
-    <!-- Dua -->
-    <div onclick="location.href='./dua.html'" class="card bg-white rounded-[18px] p-3 text-center cursor-pointer opacity-80">
-      <div class="w-11 h-11 mx-auto rounded-[12px] bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center text-[20px] text-white shadow">🤲</div>
-      <p class="font-black text-[11px] mt-2 text-black">দোয়া</p>
-      <p class="text-[8px] text-zinc-500">Dua</p>
+    <div onclick="location.href='./doa.html'" class="card bg-white rounded-[18px] p-3 text-center cursor-pointer border-2 border-violet-300 shadow-[0_0_20px_rgba(139,92,246,0.25)] relative overflow-hidden">
+      <span class="absolute top-[4px] right-[4px] bg-violet-600 text-white text-[6px] font-black px-[5px] py-[1px] rounded-full">NEW</span>
+      <div class="w-11 h-11 mx-auto rounded-[12px] bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-[20px] text-white shadow">🤲</div>
+      <p class="font-black text-[11px] mt-2 text-black" data-bn="দোয়া" data-en="Dua">দোয়া</p>
+      <p class="text-[8px] font-bold text-violet-600">100+</p>
     </div>
 
   </div>
 
-  <!-- Break Button - Big -->
   <div class="px-4 mt-8">
     <button onclick="location.href='./index.html'" class="w-full py-4 bg-white rounded-full font-black text-green-700 shadow-[0_10px_20px_rgba(0,0,0,0.15)] flex items-center justify-center gap-2 active:scale-95 transition">
       <span class="text-[18px]">←</span> হোমে ফিরে যান
@@ -109,6 +105,19 @@
 </div>
 
 <script>
+// সব পপআপ ব্লক
+document.addEventListener('contextmenu', e=>e.preventDefault());
+document.addEventListener('selectstart', e=>e.preventDefault());
+document.addEventListener('copy', e=>e.preventDefault());
+document.addEventListener('dragstart', e=>e.preventDefault());
+setInterval(()=>{
+  let b=document.querySelector('.goog-te-banner-frame');
+  if(b) b.remove();
+  let t=document.getElementById('goog-gt-tt');
+  if(t) t.remove();
+  document.body.style.top='0px';
+},500);
+
 let lang = localStorage.getItem('app_lang') || 'bn';
 document.getElementById('langBtn').innerText = lang==='bn'?'EN':'BN';
 function toggleLang(){
