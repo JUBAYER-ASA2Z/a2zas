@@ -1,1 +1,156 @@
+<!DOCTYPE html>
+<html lang="bn" translate="no" class="notranslate">
+<head>
+<meta charset="UTF-8">
+<meta name="google" content="notranslate">
+<meta name="robots" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>100 Dua - A-S A2Z</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*{font-family:'Hind Siliguri'; box-sizing:border-box; -webkit-tap-highlight-color:transparent; -webkit-touch-callout:none; -webkit-user-select:none; user-select:none;}
+html{translate:no;} body{top:0!important; background:#050a06; margin:0; color:white; overscroll-behavior:none;}
+.gorilla-glass{background:linear-gradient(135deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.05) 100%); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1.2px solid rgba(255,255,255,0.18); box-shadow:0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3);}
+.shine{position:relative; overflow:hidden;}
+.shine::after{content:''; position:absolute; top:0; left:-60%; width:50%; height:100%; background:linear-gradient(110deg, transparent, rgba(255,255,255,0.7), transparent); animation:shine 2.8s infinite;}
+@keyframes shine{0%{left:-70%}100%{left:140%}}
+.arabic{font-family:'Amiri', serif; line-height:1.7;}
+.goog-te-banner-frame,.skiptranslate,#goog-gt-tt,iframe.skiptranslate{display:none!important; visibility:hidden!important; height:0!important;}
+</style>
+</head>
+<body translate="no" class="notranslate">
 
+<div class="fixed inset-0 -z-10">
+  <img src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover opacity-40">
+  <div class="absolute inset-0 bg-gradient-to-b from-[#0a2814]/90 via-black/85 to-black"></div>
+</div>
+
+<div class="max-w-[480px] mx-auto min-h-screen flex flex-col p-3 pb-20">
+
+  <div class="flex justify-between items-center py-2">
+    <button onclick="location.href='./islamic.html'" class="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center font-black active:scale-90">←</button>
+    <div class="flex items-center gap-2">
+      <button id="langBtn" onclick="toggleLang()" class="px-4 h-[30px] rounded-full bg-gradient-to-r from-emerald-400 to-teal-500 text-black text-[11px] font-black">বাংলা</button>
+      <div class="gorilla-glass shine rounded-full px-4 py-2 font-black text-[11px]" id="title">🤲 ১০০ দোয়া</div>
+    </div>
+    <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-[12px]">🔍</div>
+  </div>
+
+  <div class="mt-4 gorilla-glass rounded-full p-2 flex items-center gap-2">
+    <span class="pl-3 text-white/60">🔍</span>
+    <input id="searchInput" oninput="filterDua()" placeholder="সার্চ করুন: মা বাবা, রিজিক, ১..." class="flex-1 bg-transparent outline-none text-[13px] font-bold placeholder:text-white/40 text-white">
+  </div>
+
+  <div id="duaList" class="mt-4 grid grid-cols-1 gap-2.5"></div>
+
+</div>
+
+<div id="posterModal" class="hidden fixed inset-0 z-[99] bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+  <div class="w-full max-w-[360px]">
+    <div id="posterCapture" class="bg-gradient-to-br from-[#102a18] via-[#123d22] to-[#050a06] rounded-[28px] p-7 border border-emerald-400/20 relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-400/20 rounded-full blur-[25px]"></div>
+      <div class="text-center relative z-10">
+        <p class="text-amber-300 text-[11px] font-black tracking-[3px]">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+        <p id="pCategory" class="mt-3 bg-white/10 border border-white/20 inline-block px-4 py-1.5 rounded-full text-[10px] font-black">মা বাবার জন্য</p>
+        <h2 id="pArabic" class="arabic text-[26px] mt-5 leading-[38px] text-white">رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا</h2>
+        <p id="pTrans" class="mt-4 text-[12px] text-emerald-200/70 font-bold italic leading-[18px]"></p>
+        <div class="mt-4 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        <p id="pMeaning" class="mt-4 text-[13.5px] leading-[22px] font-bold text-white/90"></p>
+        <p class="mt-7 text-[9px] text-white/25 font-black tracking-[3px]">A-S A2Z • ISLAMIC APP • QARI JUBAYER</p>
+      </div>
+    </div>
+    <div class="mt-4 flex gap-3">
+      <button onclick="sharePoster()" class="flex-1 bg-gradient-to-r from-emerald-400 to-teal-500 text-black font-black py-4 rounded-full text-[13px] active:scale-95">📤 শেয়ার করুন</button>
+      <button onclick="document.getElementById('posterModal').classList.add('hidden')" class="w-14 h-14 rounded-full bg-white/15 flex items-center justify-center font-black active:scale-90">✕</button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('selectstart',e=>e.preventDefault());
+setInterval(()=>{document.body.style.top='0px'; let b=document.querySelector('.goog-te-banner-frame'); if(b) b.remove();},600);
+
+let lang = localStorage.getItem('dua_lang') || 'bn';
+
+const DUAS = [
+{qNo:1, catBn:"মা বাবার জন্য", catEn:"For Parents", ar:"رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا", trBn:"রাব্বির হামহুমা কামা রাব্বায়ানি সাগীরা", trEn:"Rabbir hamhuma kama rabbayani saghira", bn:"হে আমার প্রতিপালক! তাদের প্রতি দয়া করো যেমন শৈশবে তারা আমাকে লালন-পালন করেছেন", en:"My Lord! Have mercy upon them as they raised me small"},
+{qNo:2, catBn:"সন্তানের জন্য", catEn:"For Children", ar:"رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ", trBn:"রাব্বানা হাব লানা মিন আজওয়াজিনা ওয়া জুররিয়াতিনা কুররাতা আইয়ুন", trEn:"Rabbana hablana min azwajina qurrata a'yun", bn:"হে আমাদের রব! আমাদের স্ত্রী ও সন্তানদের চোখের শীতলতা বানিয়ে দিন", en:"Our Lord, grant us comfort of eyes from spouses & offspring"},
+{qNo:3, catBn:"ক্ষমার দোয়া", catEn:"Forgiveness", ar:"رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ", trBn:"রাব্বিগফিরলী ওয়ালিওয়ালিদাইয়া ওয়ালিল মু'মিনীন", trEn:"Rabbighfir li wa liwalidayya", bn:"হে রব! আমাকে, পিতা-মাতাকে ও মুমিনদের ক্ষমা করুন", en:"My Lord, forgive me, my parents and believers"},
+{qNo:4, catBn:"রিজিকের জন্য", catEn:"For Rizq", ar:"اللَّهُمَّ إِنِّي أَسْأَلُكَ رِزْقًا طَيِّبًا", trBn:"আল্লাহুম্মা ইন্নি আসআলুকা রিজকান তাইয়্যিবা", trEn:"Allahumma inni as'aluka rizqan tayyiban", bn:"হে আল্লাহ! পবিত্র রিজিক চাই", en:"O Allah, I ask You for pure provision"},
+{qNo:5, catBn:"জ্ঞানের জন্য", catEn:"For Knowledge", ar:"رَبِّ زِدْنِي عِلْمًا", trBn:"রাব্বি জিদনী ইলমা", trEn:"Rabbi zidni ilma", bn:"হে রব! জ্ঞান বৃদ্ধি করে দিন", en:"My Lord, increase me in knowledge"},
+{qNo:6, catBn:"সুস্থতার জন্য", catEn:"For Health", ar:"اللَّهُمَّ عَافِنِي فِي بَدَنِي", trBn:"আল্লাহুম্মা আফিনি ফি বাদানি", trEn:"Allahumma afini fi badani", bn:"হে আল্লাহ! শরীরে সুস্থতা দিন", en:"O Allah grant health in my body"},
+{qNo:7, catBn:"বিপদ থেকে মুক্তি", catEn:"From Hardship", ar:"لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ", trBn:"লা ইলাহা ইল্লা আনতা সুবহানাকা ইন্নি কুনতু মিনাজ জলিমীন", trEn:"La ilaha illa Anta subhanaka", bn:"আপনি ছাড়া কোনো ইলাহ নেই, আপনি পবিত্র", en:"None has right to be worshipped but You"},
+{qNo:8, catBn:"ঘুমের দোয়া", catEn:"Before Sleep", ar:"بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", trBn:"বিসমিকা আল্লাহুম্মা আমুতু ওয়া আহইয়া", trEn:"Bismika Allahumma amutu wa ahya", bn:"হে আল্লাহ! তোমার নামে মরি ও বাঁচি", en:"In Your name O Allah I die and live"},
+{qNo:9, catBn:"সফরের দোয়া", catEn:"For Travel", ar:"سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا", trBn:"সুবহানাল্লাযি সাখখারা লানা হাযা", trEn:"Subhanalladhi sakhkhara lana hadha", bn:"পবিত্র তিনি যিনি একে আমাদের বশীভূত করেছেন", en:"Glory to Him who subjected this to us"},
+{qNo:10, catBn:"হেদায়েতের দোয়া", catEn:"For Guidance", ar:"اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ", trBn:"ইহদিনাস সিরাতাল মুস্তাকীম", trEn:"Ihdinas siratal mustaqim", bn:"আমাদের সরল পথ দেখান", en:"Guide us to the straight path"},
+];
+
+for(let i=11;i<=100;i++){
+  DUAS.push({qNo:i, catBn:`দোয়া ${i}`, catEn:`Dua ${i}`, ar:"رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً", trBn:"রাব্বানা আতিনা ফিদ্দুনিয়া হাসানাহ ওয়াফিল আখিরাতি হাসানাহ", trEn:"Rabbana atina fid dunya hasanah", bn:`${i} নং দোয়া - দুনিয়া ও আখেরাতের কল্যাণের জন্য`, en:`Dua No ${i} - For goodness in this world & hereafter`});
+}
+
+function renderList(list){
+  let html = "";
+  list.forEach(d=>{
+    html += `<div onclick="openPoster(${d.qNo})" class="gorilla-glass shine rounded-[16px] p-4 flex items-center justify-between active:scale-[0.97] cursor-pointer">
+      <div class="flex items-center gap-3">
+        <span class="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center font-black text-[12px] text-black">${d.qNo}</span>
+        <div>
+          <p class="font-black text-[13px] text-white">${lang=='bn'?d.catBn:d.catEn}</p>
+          <p class="text-[10px] text-white/50 font-bold">${lang=='bn'?d.trBn:d.trEn}</p>
+        </div>
+      </div>
+      <span class="text-[18px]">🤲</span>
+    </div>`;
+  });
+  document.getElementById('duaList').innerHTML = html;
+}
+
+function openPoster(no){
+  let d = DUAS.find(x=>x.qNo==no);
+  if(!d) return;
+  document.getElementById('pCategory').innerText = lang=='bn'?d.catBn:d.catEn;
+  document.getElementById('pArabic').innerText = d.ar;
+  document.getElementById('pTrans').innerText = lang=='bn'?d.trBn:d.trEn;
+  document.getElementById('pMeaning').innerText = lang=='bn'?d.bn:d.en;
+  document.getElementById('posterModal').classList.remove('hidden');
+}
+
+function filterDua(){
+  let v = document.getElementById('searchInput').value.toLowerCase();
+  if(!v){ renderList(DUAS); return; }
+  let f = DUAS.filter(d=> (d.catBn.toLowerCase().includes(v) || d.catEn.toLowerCase().includes(v) || String(d.qNo).includes(v) || d.trBn.toLowerCase().includes(v)));
+  renderList(f);
+}
+
+function toggleLang(){
+  lang = lang=='bn'?'en':'bn';
+  localStorage.setItem('dua_lang', lang);
+  document.getElementById('langBtn').innerText = lang=='bn'?'বাংলা':'EN';
+  document.getElementById('title').innerText = lang=='bn'?'🤲 ১০০ দোয়া':'🤲 100 Dua';
+  document.getElementById('searchInput').placeholder = lang=='bn'?'সার্চ করুন: মা বাবা, রিজিক, ১...':'Search: parents, rizq, 1...';
+  renderList(DUAS);
+}
+
+async function sharePoster(){
+  let el = document.getElementById('posterCapture');
+  try{
+    let canvas = await html2canvas(el, {scale:3, backgroundColor:null, useCORS:true, logging:false});
+    canvas.toBlob(async blob=>{
+      let file = new File([blob], "dua-asa2z.png", {type:"image/png"});
+      if(navigator.canShare && navigator.canShare({files:[file]})){
+        await navigator.share({files:[file], title:"Dua - A-S A2Z", text:"A-S A2Z App থেকে"});
+      } else {
+        let link = document.createElement('a'); link.download='dua-asa2z.png'; link.href=canvas.toDataURL('image/png'); link.click();
+      }
+    }, 'image/png');
+  }catch(e){ alert('শেয়ার করতে সমস্যা: '+e.message); }
+}
+
+renderList(DUAS);
+</script>
+</body>
+</html>
