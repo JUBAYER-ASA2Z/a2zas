@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="bn" translate="no" class="notranslate">
 <head>
 <meta charset="UTF-8">
+<meta name="google" content="notranslate">
+<meta name="googlebot" content="notranslate">
+<meta name="robots" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>A-S A 2 Z</title>
 <link rel="manifest" href="manifest.json">
@@ -9,31 +12,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&family=Poppins:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-*{font-family:'Hind Siliguri'; -webkit-touch-callout:none; -webkit-user-select:none; user-select:none; box-sizing:border-box;}
-html{font-size:16px; -webkit-text-size-adjust:100%;}
-body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-x:hidden;}
+*{font-family:'Hind Siliguri'; -webkit-touch-callout:none; -webkit-user-select:none; -khtml-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; -webkit-tap-highlight-color:transparent; box-sizing:border-box;}
+html{font-size:16px; -webkit-text-size-adjust:100%; translate:no;}
+body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-x:hidden; top:0!important;}
 .app-wrapper{width:100%; max-width:480px; margin:0 auto; background:#fff; min-height:100vh; position:relative; box-shadow:0 0 30px rgba(0,0,0,0.06);}
 
-/* === ফিক্সড নভেম্বর থিম === */
+/* === ক্লিয়ার থিম - গাছ পরিষ্কার দেখা যাবে === */
 .glass-pink{
   position: sticky;
   top: 0;
   z-index: 40;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.25) 0%, rgba(210,225,255,0.35) 50%, rgba(180,200,230,0.4) 100%),
-    url('https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=800&auto=format&fit=crop') center/cover no-repeat;
+  background: url('https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=800&auto=format&fit=crop') center/cover no-repeat;
   overflow:hidden;
   border-bottom:1.5px solid rgba(255,255,255,0.7);
-  box-shadow:
-    0 12px 35px rgba(0,0,0,0.18),
-    inset 0 1px 2px rgba(255,255,255,0.95);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.18);
 }
 .glass-pink::before{
   content:''; position:absolute; inset:0;
-  background:
-    radial-gradient(ellipse at 15% 15%, rgba(255,255,255,0.8) 0%, transparent 55%),
-    radial-gradient(ellipse at 85% 20%, rgba(220,240,255,0.6) 0%, transparent 45%),
-    linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.1) 35%, rgba(0,0,0,0.08) 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 45%, rgba(0,0,0,0.12) 100%);
   pointer-events:none; z-index:1;
 }
 .glass-pink::after{
@@ -44,6 +40,10 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 @keyframes glassShine{0%{transform: translateX(-180%) skewX(-18deg);} 60%{transform: translateX(-180%) skewX(-18deg);} 100%{transform: translateX(350%) skewX(-18deg);}}
 .glass-pink > div{position:relative; z-index:3;}
 
+/* Chrome Translate 100% বন্ধ */
+.goog-te-banner-frame,.goog-te-balloon-frame, #goog-gt-tt,.skiptranslate, iframe.goog-te-banner-frame, iframe.skiptranslate{display:none!important; visibility:hidden!important; height:0!important;}
+.goog-tooltip,.goog-tooltip:hover{display:none!important;}
+
 .no-scrollbar::-webkit-scrollbar{display:none}
 .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none; }
 @keyframes marquee{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
@@ -52,7 +52,7 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 .fall-emoji{position:absolute; top:-50px; animation:fall linear forwards; font-size:28px; pointer-events:none}
 @keyframes congratsDrop{0%{transform:translateY(-150%); opacity:0} 20%{opacity:1} 80%{transform:translateY(0); opacity:1} 100%{transform:translateY(150vh); opacity:0}}
 .congrats-anim{animation:congratsDrop 1.2s ease-in-out forwards}
-.date-pill{background:rgba(255,255,255,0.88); backdrop-filter:blur(12px); color:#1e3a8a; font-size:11px; font-weight:900; padding:4px 11px; border-radius:9px; line-height:14px; width:fit-content; box-shadow:0 3px 10px rgba(0,0,0,0.12), inset 0 1px 0 white; border:1px solid rgba(255,255,255,0.8); white-space:nowrap;}
+.date-pill{background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); color:#1e3a8a; font-size:11px; font-weight:900; padding:4px 11px; border-radius:9px; line-height:14px; width:fit-content; box-shadow:0 3px 10px rgba(0,0,0,0.12), inset 0 1px 0 white; border:1px solid rgba(255,255,255,0.8); white-space:nowrap;}
 .logo-3d{background:linear-gradient(180deg,#ffffff 0%, #f5f7ff 50%, #e8ecff 100%); padding:6px 18px; border-radius:14px; font-family:'Poppins'; font-weight:900; font-size:20px; color:#0046ff; box-shadow:0 4px 15px rgba(0,0,0,0.15), inset 0 1px 0 white; text-shadow:0 1px 0 #fff, 0 2px 0 #cbd5ff, 0 3px 4px rgba(0,70,255,0.3); position:relative; overflow:hidden; cursor:pointer;}
 .logo-3d::before{content:'';position:absolute;top:0; left:-30%; width:60%; height:100%; background:linear-gradient(120deg,transparent 0%, rgba(255,255,255,0.8) 50%, transparent 100%); animation:shine 2.5s infinite;}
 @keyframes shine{0%{transform:translateX(-100%)} 100%{transform:translateX(250%)}}
@@ -61,10 +61,26 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 .marble-name-btn{background: radial-gradient(circle at 30% 20%, #ffffff 0%, #fff8fb 35%, #ffe4ec 65%, #ffc2d4 90%); position:relative; overflow:hidden; border:1.5px solid #ffb3d1; box-shadow: 0 8px 25px rgba(255,105,180,0.35), inset 0 1px 0 white, 0 0 0 1px rgba(255,255,255,0.6);}
 .marble-name-btn::before{content:''; position:absolute; top:0; left:-60%; width:60%; height:100%; background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.9) 50%, transparent 100%); animation: marbleShine 2.2s infinite;}
 @keyframes marbleShine{0%{transform:translateX(-100%)} 100%{transform:translateX(260%)}}
+.gorilla-360{
+  background: linear-gradient(135deg, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0.15) 100%);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border: 1.5px solid rgba(255,255,255,0.7);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.9), 0 0 18px rgba(0,200,255,0.45);
+  position:relative; overflow:hidden;
+}
+.gorilla-360::before{
+  content:''; position:absolute; top:0; left:-60%; width:60%; height:100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.95), transparent);
+  animation: marbleShine 2s infinite;
+}
+.gorilla-360-icon{
+  background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+  box-shadow: 0 4px 15px rgba(0,210,255,0.5);
+}
 @media (max-width:380px){.date-pill{font-size:9px; padding:2px 7px;}.logo-3d{font-size:16px; padding:4px 12px;}}
 </style>
 </head>
-<body>
+<body translate="no" class="notranslate">
 <div id="offlineBadge" class="hidden fixed top-2 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] font-black px-4 py-1.5 rounded-full z-[100] shadow">📴 Offline Mode</div>
 <div id="launchOverlay" class="fixed inset-0 z-[9999] bg-white/90 backdrop-blur-[6px] hidden flex-col items-center justify-start overflow-hidden">
   <div id="emojiContainer" class="absolute inset-0 overflow-hidden"></div>
@@ -74,7 +90,6 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
   </div>
 </div>
 <div class="app-wrapper pb-[80px]">
-<!-- এই অংশ ফিক্সড থাকবে -->
 <div class="glass-pink rounded-b-[32px] pb-6 px-4 pt-4">
 <div class="relative z-10 flex justify-between items-start gap-2">
 <div class="flex flex-col gap-1.5 shrink-0">
@@ -84,7 +99,7 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 </div>
 <div class="flex-1 flex justify-center pt-1"><div class="logo-3d">A-S A2Z</div></div>
 <div class="flex flex-col items-end gap-1 shrink-0">
-  <button id="langToggle" onclick="toggleLang()" class="w-[42px] h-[22px] rounded-full bg-white/90 backdrop-blur text-[11px] font-black text-blue-700 shadow border border-white/60">EN</button>
+  <button id="langToggle" class="w-[42px] h-[22px] rounded-full bg-white/90 backdrop-blur text-[11px] font-black text-blue-700 shadow border border-white/60">EN</button>
   <div class="flex items-center gap-2 mt-1">
     <div id="profileWrap" class="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center overflow-hidden border-2 border-white/70 shadow"><img id="profilePic" src="" class="w-full h-full object-cover hidden"><span id="profileIcon">👤</span></div>
     <button onclick="location.href='menu.html'" class="w-11 h-11 rounded-full bg-white/25 backdrop-blur flex flex-col items-center justify-center gap-1 border border-white/30"><span class="w-5 h-[2px] bg-white"></span><span class="w-5 h-[2px] bg-white"></span><span class="w-5 h-[2px] bg-white"></span></button>
@@ -92,35 +107,33 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 </div>
 </div>
 <div class="mt-5 grid grid-cols-4 gap-2 sm:gap-3 relative z-10">
-<div class="bg-white/90 backdrop-blur rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.08)] border border-white/60" onclick="location.href='./islamic.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-green-600 to-emerald-500 flex items-center justify-center text-[20px]">🕌</div><p class="text-[11px] font-bold mt-2 text-black" data-bn="ইসলামিক" data-en="Islamic">ইসলামিক</p></div>
-<div class="marble-name-btn rounded-[18px] p-3 text-center active:scale-95 cursor-pointer" onclick="location.href='./naam.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-pink-500 via-rose-400 to-pink-600 flex items-center justify-center text-[20px] shadow-[0_4px_15px_rgba(236,72,153,0.5)] relative"><span class="absolute w-2 h-2 bg-white rounded-full top-[3px] left-[4px] opacity-90"></span>👶</div><p class="text-[11px] font-black mt-2 text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-rose-600 leading-[11px]" data-bn="শিশুর নাম" data-en="Baby Name">শিশুর<br>নাম</p><span class="absolute top-[5px] right-[5px] bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[7px] font-black px-[5px] py-[1px] rounded-full shadow">NEW</span></div>
-<div class="bg-white/80 border border-white/50 rounded-[18px] p-3 text-center shadow-sm locked"><div class="w-11 h-11 mx-auto rounded-[13px] bg-zinc-100 flex items-center justify-center text-[20px]">✨</div><p class="text-[11px] font-bold mt-2 text-zinc-300">---</p></div>
-<div class="bg-white/90 backdrop-blur rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.08)] border border-white/60" onclick="location.href='./event.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-orange-500 to-amber-400 flex items-center justify-center text-[20px]">🎉</div><p class="text-[11px] font-bold mt-2 text-black" data-bn="ইভেন্ট" data-en="Event">ইভেন্ট</p></div>
+<div class="bg-white/95 backdrop-blur rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.1)] border border-white/70" onclick="location.href='./islamic.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-green-600 to-emerald-500 flex items-center justify-center text-[20px]">🕌</div><p class="text-[11px] font-bold mt-2 text-black" data-bn="ইসলামিক" data-en="Islamic">ইসলামিক</p></div>
+<div class="marble-name-btn rounded-[18px] p-3 text-center active:scale-95 cursor-pointer" onclick="location.href='./naam.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-pink-500 via-rose-400 to-pink-600 flex items-center justify-center text-[20px] shadow-[0_4px_15px_rgba(236,72,153,0.5)] relative"><span class="absolute w-2 h-2 bg-white rounded-full top-[3px] left-[4px] opacity-90"></span>👶</div><p class="text-[11px] font-black mt-2 text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-rose-600 leading-[11px]">শিশুর<br>নাম</p></div>
+<div class="gorilla-360 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer" onclick="location.href='./360.html'"><div class="w-11 h-11 mx-auto rounded-[13px] gorilla-360-icon flex items-center justify-center text-[20px] relative"><span class="absolute w-2 h-2 bg-white rounded-full top-[3px] left-[4px] opacity-90"></span>🌐</div><p class="text-[11px] font-black mt-2 text-white leading-[11px]" style="text-shadow:0 1px 4px rgba(0,0,0,0.8)">360</p><span class="absolute top-[5px] right-[5px] bg-gradient-to-r from-cyan-400 to-blue-500 text-white text-[7px] font-black px-[5px] py-[1px] rounded-full shadow">NEW</span></div>
+<div class="bg-white/95 backdrop-blur rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.1)] border border-white/70" onclick="location.href='./event.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-orange-500 to-amber-400 flex items-center justify-center text-[20px]">🎉</div><p class="text-[11px] font-bold mt-2 text-black" data-bn="ইভেন্ট" data-en="Event">ইভেন্ট</p></div>
 </div>
 </div>
-
-<!-- এই অংশ স্ক্রল করবে -->
 <div id="scrollContent">
-<div id="adSection" class="px-4 mt-3 hidden"><div class="flex justify-between items-center mb-2"><p class="font-black text-[13px] text-black" data-bn="✨ বিজ্ঞাপন" data-en="✨ Ads">✨ বিজ্ঞাপন</p><p class="text-[10px] text-zinc-400" data-bn="৩ সেকেন্ড" data-en="3 sec">৩ সেকেন্ড</p></div><div id="adSlider" class="flex gap-3 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-2 scroll-smooth"></div></div>
+<div id="adSection" class="px-4 mt-3 hidden"><div class="flex justify-between items-center mb-2"><p class="font-black text-[13px] text-black">✨ বিজ্ঞাপন</p><p class="text-[10px] text-zinc-400">৩ সেকেন্ড</p></div><div id="adSlider" class="flex gap-3 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-2 scroll-smooth"></div></div>
 <div class="px-4 mt-6">
 <div class="grid grid-cols-4 gap-2 sm:gap-3">
 <div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center shadow-[0_4px_15px_rgba(0,0,0,0.05)] locked"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#fef08a] flex items-center justify-center text-[20px]">😊</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]">---</p></div>
-<div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./science_quiz.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-purple-500 to-violet-400 flex items-center justify-center text-[20px]">🔬</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]" data-bn="বিজ্ঞান" data-en="Science">বিজ্ঞান</p></div>
-<div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./medical_final.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#fee2e2] flex items-center justify-center text-[20px]">🩺</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]" data-bn="মেডিকেল" data-en="Medical">মেডিকেল</p></div>
-<div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./calc.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-zinc-900 flex items-center justify-center text-white">🧮</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]" data-bn="ক্যালকুলেটর" data-en="Calculator">ক্যালকুলেটর</p></div>
-<div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./volume_control.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#ffedd5] flex items-center justify-center text-[20px]">🔊</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]" data-bn="ভলিউম" data-en="Volume">ভলিউম</p></div>
-<div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./viral_pro_edit.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#e0e7ff] flex items-center justify-center text-[20px]">🎮</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]" data-bn="ভাইরাল গেম" data-en="Viral Game">ভাইরাল গেম</p></div>
-<div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./hisab.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#ccfbf1] flex items-center justify-center text-[20px]">🧾</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]" data-bn="দৈনন্দিন হিসাব" data-en="Daily Hisab">দৈনন্দিন হিসাব</p></div>
-<div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./memo.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#fef9c3] flex items-center justify-center text-[20px]">📝</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]" data-bn="ব্যবসায়িক মেমো" data-en="Business Memo">ব্যবসায়িক মেমো</p></div>
+<div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./science_quiz.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-purple-500 to-violet-400 flex items-center justify-center text-[20px]">🔬</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]">বিজ্ঞান</p></div>
+<div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./medical_final.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#fee2e2] flex items-center justify-center text-[20px]">🩺</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]">মেডিকেল</p></div>
+<div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./calc.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-zinc-900 flex items-center justify-center text-white">🧮</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]">ক্যালকুলেটর</p></div>
+<div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./volume_control.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#ffedd5] flex items-center justify-center text-[20px]">🔊</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]">ভলিউম</p></div>
+<div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./viral_pro_edit.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#e0e7ff] flex items-center justify-center text-[20px]">🎮</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]">ভাইরাল গেম</p></div>
+<div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./hisab.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#ccfbf1] flex items-center justify-center text-[20px]">🧾</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]">দৈনন্দিন হিসাব</p></div>
+<div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./memo.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#fef9c3] flex items-center justify-center text-[20px]">📝</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]">ব্যবসায়িক মেমো</p></div>
 </div>
 <div class="mt-6 space-y-3">
-<a href="group-chat.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center">💬</div><div><p class="font-black text-[13px] text-black" data-bn="লাইভ গ্রুপ চ্যাট" data-en="Live Group Chat">লাইভ গ্রুপ চ্যাট</p><p class="text-[10px] text-zinc-500" data-bn="সবার সাথে সরাসরি কথা বলুন" data-en="Talk live with everyone">সবার সাথে সরাসরি কথা বলুন</p></div></div><span class="bg-green-500 text-[8px] font-black px-2 py-1 rounded-full text-white animate-pulse">LIVE</span></a>
-<a href="notebook.html" class="flex items-center justify-between bg-white border border-pink-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-yellow-400 flex items-center justify-center text-[18px]">📔</div><div><p class="font-black text-[13px] text-black" data-bn="কবিতার নোটবুক PRO" data-en="Poetry Notebook PRO">কবিতার নোটবুক PRO</p><p class="text-[10px] text-zinc-500">15 Designs • 20 Fonts</p></div></div><span class="bg-pink-500 text-white text-[9px] font-black px-2.5 py-1 rounded-full">NEW</span></a>
-<a href="ukti.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white">💬</div><div><p class="font-black text-[13px] text-black" data-bn="১০০+ সেরা উক্তি" data-en="100+ Best Quotes">১০০+ সেরা উক্তি</p></div></div><span>➤</span></a>
-<a href="number.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex gap-3 items-center"><div class="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center text-white">📞</div><div><p class="font-black text-[13px] text-black" data-bn="জরুরি নাম্বার" data-en="Emergency Numbers">জরুরি নাম্বার</p></div></div><span>➤</span></a>
+<a href="group-chat.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center">💬</div><div><p class="font-black text-[13px] text-black">লাইভ গ্রুপ চ্যাট</p><p class="text-[10px] text-zinc-500">সবার সাথে সরাসরি কথা বলুন</p></div></div><span class="bg-green-500 text-[8px] font-black px-2 py-1 rounded-full text-white animate-pulse">LIVE</span></a>
+<a href="notebook.html" class="flex items-center justify-between bg-white border border-pink-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-yellow-400 flex items-center justify-center text-[18px]">📔</div><div><p class="font-black text-[13px] text-black">কবিতার নোটবুক PRO</p><p class="text-[10px] text-zinc-500">15 Designs • 20 Fonts</p></div></div><span class="bg-pink-500 text-white text-[9px] font-black px-2.5 py-1 rounded-full">NEW</span></a>
+<a href="ukti.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white">💬</div><div><p class="font-black text-[13px] text-black">১০০+ সেরা উক্তি</p></div></div><span>➤</span></a>
+<a href="number.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex gap-3 items-center"><div class="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center text-white">📞</div><div><p class="font-black text-[13px] text-black">জরুরি নাম্বার</p></div></div><span>➤</span></a>
 <a href="support.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex gap-3 items-center"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-blue-500 flex items-center justify-center text-white">🛟</div><div><p class="font-black text-[13px] text-black">Support</p></div></div><span>➤</span></a>
 </div>
-<div class="mt-10 text-center pb-6"><p class="text-zinc-400 text-[11px] tracking-widest uppercase">Developer</p><p class="font-black text-[14px] mt-1 text-black">Qari MD Jubayer Ahmed Siyam</p><p class="text-[11px] text-zinc-400 mt-1">A-S A 2 Z V2.0 • November Fixed 2026</p></div>
+<div class="mt-10 text-center pb-6"><p class="text-zinc-400 text-[11px] tracking-widest uppercase">Developer</p><p class="font-black text-[14px] mt-1 text-black">Qari MD Jubayer Ahmed Siyam</p><p class="text-[11px] text-zinc-400 mt-1">A-S A 2 Z V2.0 • No Translate</p></div>
 </div>
 </div>
 <div id="yellowBar" class="fixed bottom-0 left-0 right-0 z-[90] border-t-2 border-black py-[14px] px-2 flex items-center justify-center" style="background:#2563eb"><div class="w-full max-w-[480px] flex items-center"><div class="bg-black text-white text-[9px] font-black px-3 py-1 rounded-full shrink-0">NOTICE</div><div class="flex-1 overflow-hidden ml-3"><p id="yellowText" class="marquee font-bold text-[13px] text-white">লোড হচ্ছে...</p></div></div></div>
@@ -129,6 +142,16 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 const API_URL="https://script.google.com/macros/s/AKfycbyt07t35S4oRxDY4Ai-wYXlaejv70wQ1-N6Rotz_4-WKZoM9QqGSC0Q8JArx7C6xvw0/exec";
 const TOTAL_VISIT_URL="https://script.google.com/macros/s/AKfycbxdRBVzEORnnwGR6RTN54y58mj6Cdazo9-w278pQXNE91N-SXO90kMuE0WWL_0JJVaCzQ/exec";
 let currentLang=localStorage.getItem('app_lang')||'bn'; let adInterval=null, adIndex=0, adDirection=1;
+
+// === সব পপআপ, ট্রান্সলেট, সিলেক্ট বন্ধ ===
+document.addEventListener('contextmenu', e=>e.preventDefault());
+document.addEventListener('selectstart', e=>e.preventDefault());
+document.addEventListener('copy', e=>e.preventDefault());
+document.addEventListener('dragstart', e=>e.preventDefault());
+if(window.google && window.google.translate){window.google.translate._const={};}
+// Chrome translate element মুছে ফেলা
+setInterval(()=>{let el=document.querySelector('.goog-te-banner-frame'); if(el) el.remove(); document.body.style.top='0px';},500);
+
 function toggleLang(){ currentLang=currentLang==='bn'?'en':'bn'; localStorage.setItem('app_lang',currentLang); document.getElementById('langToggle').innerText=currentLang==='bn'?'EN':'BN'; applyTranslation(); updateDates(); }
 function applyTranslation(){ document.querySelectorAll('[data-bn]').forEach(el=>{ el.innerText=el.getAttribute(currentLang==='bn'?'data-bn':'data-en'); }); }
 function getRealBanglaDate(date){ let bnBN=["বৈশাখ","জ্যৈষ্ঠ","আষাঢ়","শ্রাবণ","ভাদ্র","আশ্বিন","কার্তিক","অগ্রহায়ণ","পৌষ","মাঘ","ফাল্গুন","চৈত্র"]; let bnEN=["Boishakh","Joishtho","Ashar","Srabon","Bhadro","Ashwin","Kartik","Agrahayan","Poush","Magh","Falgun","Chaitra"]; let d=date.getDate(), m=date.getMonth()+1, y=date.getFullYear(); let bnYear=y-593; if(m<4 || (m==4 && d<14)) bnYear--; let startDate=(m<4 || (m==4 && d<14))? new Date(y-1,3,14):new Date(y,3,14); let diff=Math.floor((date-startDate)/(1000*60*60*24)); let md=[31,31,31,31,31,31,30,30,30,30,30,30]; let isLeap=(y%4==0 && y%100!=0)||(y%400==0); md[10]=isLeap?31:29; let idx=0; while(diff>=md[idx] && idx<12){diff-=md[idx]; idx++;} return {day:diff+1, monthBN:bnBN[idx], monthEN:bnEN[idx], year:bnYear}; }
