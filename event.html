@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="bn" translate="no" class="notranslate">
 <head>
 <meta charset="UTF-8">
+<meta name="google" content="notranslate">
+<meta name="googlebot" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Islamic Quiz Live - A-S A2Z</title>
+<title>Islamic Quiz Live</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 *{font-family:'Hind Siliguri'; -webkit-tap-highlight-color:transparent;}
-body{background:#0a0a0f; overflow-x:hidden;}
+html,body{overscroll-behavior:none; overscroll-behavior-y:contain; touch-action:pan-x pan-y; -webkit-overflow-scrolling:touch;}
+body{background:#0a0a0f; overflow:hidden; position:fixed; width:100%; height:100%;}
 .gorilla-glass{background:linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 100%); backdrop-filter:blur(22px); border:1.5px solid rgba(255,255,255,0.22); box-shadow:0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.5);}
 .shine{position:relative; overflow:hidden;}
 .shine::after{content:''; position:absolute; top:0; left:-60%; width:50%; height:100%; background:linear-gradient(110deg, transparent, rgba(255,255,255,0.85), transparent); animation:shine 2.8s infinite;}
@@ -21,37 +24,40 @@ body{background:#0a0a0f; overflow-x:hidden;}
 .selected{ outline:3px solid #facc15!important; }
 @keyframes marquee{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
 .marquee{animation:marquee 12s linear infinite; white-space:nowrap;}
+.goog-te-banner-frame,.skiptranslate, #goog-gt-tt{display:none!important;}
+body{top:0!important;}
 </style>
 </head>
-<body class="min-h-screen text-white">
-<div class="fixed inset-0 -z-10">
-  <img src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover opacity-40">
-  <div class="absolute inset-0 bg-gradient-to-b from-violet-900/80 via-[#0a0a0f]/70 to-black"></div>
+<body translate="no" class="notranslate min-h-screen text-white">
+<!-- ব্যাকগ্রাউন্ড - মানুষের ছবি নাই, শুধু ইসলামিক গ্রেডিয়েন্ট -->
+<div class="fixed inset-0 -z-10 bg-gradient-to-br from-[#1a1033] via-[#0a0a0f] to-black">
+  <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 30% 20%, #7c3aed 0%, transparent 50%), radial-gradient(circle at 80% 80%, #f59e0b 0%, transparent 50%);"></div>
+  <div class="absolute top-[10%] left-1/2 -translate-x-1/2 text-[180px] opacity-[0.04] select-none">﷽</div>
 </div>
 
-<div class="max-w-[480px] mx-auto min-h-screen flex flex-col p-3 pb-[30px]">
+<div class="max-w-[480px] mx-auto h-[100dvh] flex flex-col p-3 pb-[20px] overflow-y-auto" style="overscroll-behavior:contain;">
 
-<div class="flex justify-between items-center py-2">
+<div class="flex justify-between items-center py-2 shrink-0">
   <button onclick="location.href='index.html'" class="w-10 h-10 rounded-full bg-white/15 backdrop-blur flex items-center justify-center font-black">←</button>
   <div class="flex items-center gap-2">
-    <button id="langBtn" onclick="toggleLang()" class="w-[44px] h-[26px] rounded-full bg-white/20 backdrop-blur text-[11px] font-black border border-white/30">EN</button>
-    <div class="gorilla-glass shine rounded-full px-4 py-1.5 font-black text-[11px] tracking-widest" data-bn="🕌 ইসলামিক কুইজ লাইভ" data-en="🕌 ISLAMIC QUIZ LIVE">🕌 ইসলামিক কুইজ লাইভ</div>
+    <button id="langBtn" onclick="toggleLang()" class="w-[54px] h-[28px] rounded-full bg-gradient-to-r from-amber-400 to-orange-500 text-black text-[11px] font-black border border-white/30">বাংলা</button>
+    <div class="gorilla-glass shine rounded-full px-4 py-1.5 font-black text-[11px] tracking-widest" id="titleText">🕌 ইসলামিক কুইজ লাইভ</div>
   </div>
   <button id="controlBtn" class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-black font-black">⚙️</button>
 </div>
 
-<div id="broadcastBar" class="hidden mt-3 bg-[#facc15] border-2 border-black rounded-[14px] px-3 py-2 flex items-center gap-2">
+<div id="broadcastBar" class="hidden mt-3 bg-[#facc15] border-2 border-black rounded-[14px] px-3 py-2 flex items-center gap-2 shrink-0">
   <span class="bg-black text-[#facc15] text-[9px] font-black px-2 py-1 rounded-full shrink-0">MESSAGE</span>
   <div class="flex-1 overflow-hidden"><p id="broadcastText" class="marquee font-black text-[13px] text-black"></p></div>
   <button onclick="document.getElementById('broadcastBar').classList.add('hidden')" class="text-black font-black">✕</button>
 </div>
 
-<div id="regBar" class="mt-3 gorilla-glass rounded-[18px] p-3 flex gap-2 items-center">
-  <input id="nameInput" placeholder="আপনার নাম লিখুন..." data-bn-ph="আপনার নাম লিখুন..." data-en-ph="Enter your name..." class="flex-1 bg-white text-black rounded-full px-4 py-3 font-bold text-[13px] outline-none">
-  <button onclick="register()" class="bg-gradient-to-r from-emerald-400 to-teal-500 text-black font-black px-6 py-3 rounded-full text-[12px]" data-bn="REGISTER" data-en="REGISTER">REGISTER</button>
+<div id="regBar" class="mt-3 gorilla-glass rounded-[18px] p-3 flex gap-2 items-center shrink-0">
+  <input id="nameInput" placeholder="আপনার নাম লিখুন..." class="flex-1 bg-white text-black rounded-full px-4 py-3 font-bold text-[13px] outline-none">
+  <button onclick="register()" class="bg-gradient-to-r from-emerald-400 to-teal-500 text-black font-black px-6 py-3 rounded-full text-[12px]" id="regBtnText">REGISTER</button>
 </div>
 
-<div id="welcomeBar" class="hidden mt-3 gorilla-glass rounded-[18px] p-3 flex justify-between items-center">
+<div id="welcomeBar" class="hidden mt-3 gorilla-glass rounded-[18px] p-3 flex justify-between items-center shrink-0">
   <p class="font-black text-[13px]">👋 <span id="userNameShow"></span></p>
   <div class="flex items-center gap-2"><span class="bg-amber-400 text-black font-black px-3 py-1 rounded-full text-[11px]" id="myPoints">0 Pts</span><span class="text-[9px] bg-white/20 px-2 py-1 rounded-full" id="deviceIdShow"></span></div>
 </div>
@@ -59,28 +65,28 @@ body{background:#0a0a0f; overflow-x:hidden;}
 <div id="stage" class="flex-1 mt-4 flex flex-col items-center justify-center text-center">
   <div id="idleView">
     <div class="text-[84px]">🕌</div>
-    <h1 class="font-black text-[34px] leading-[34px] mt-3" data-bn="ইসলামিক কুইজ<br><span class='text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-500'>লাইভ ইভেন্ট</span>" data-en="Islamic Quiz<br><span class='text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-500'>Live Event</span>">ইসলামিক কুইজ<br><span class='text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-500'>লাইভ ইভেন্ট</span></h1>
-    <p class="mt-3 text-[13px] text-white/70" data-bn="হোস্ট START করলে শুরু হবে<br>১৫ টি প্রশ্ন • ১০ পয়েন্ট" data-en="Host will START<br>15 Questions • 10 Points">হোস্ট START করলে শুরু হবে<br>১৫ টি প্রশ্ন • ১০ পয়েন্ট</p>
-    <div class="mt-6 gorilla-glass rounded-full px-6 py-2 text-[11px] font-bold" data-bn="🔴 Live • ৫ সেকেন্ডের মধ্যে ক্লিক করুন" data-en="🔴 Live • Click within 5 seconds">🔴 Live • ৫ সেকেন্ডের মধ্যে ক্লিক করুন</div>
+    <h1 class="font-black text-[30px] leading-[32px] mt-3" id="idleTitle">ইসলামিক কুইজ<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-500">লাইভ ইভেন্ট</span></h1>
+    <p class="mt-3 text-[13px] text-white/70" id="idleDesc">হোস্ট START করলে শুরু হবে<br>১৫ টি প্রশ্ন • ১০ পয়েন্ট</p>
+    <div class="mt-6 gorilla-glass rounded-full px-6 py-2 text-[11px] font-bold" id="liveInfo">🔴 Live • ৫ সেকেন্ডের মধ্যে ক্লিক করুন</div>
   </div>
   <div id="startingView" class="hidden">
-    <h1 class="font-black text-[40px] leading-[42px] pop text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-white to-fuchsia-300 gorilla-glass px-8 py-8 rounded-[28px] shine" data-bn="ইসলামিক<br>কুইজ শুরু!" data-en="Islamic<br>Quiz Started!">ইসলামিক<br>কুইজ শুরু!</h1>
+    <h1 class="font-black text-[40px] leading-[42px] pop text-white gorilla-glass px-8 py-8 rounded-[28px] shine" id="startText">ইসলামিক<br>কুইজ শুরু!</h1>
   </div>
   <div id="questionView" class="hidden w-full">
     <div class="flex justify-between items-center w-full mb-3">
-      <span class="bg-white text-black font-black px-4 py-1.5 rounded-full text-[12px]"><span data-bn="প্রশ্ন" data-en="Q">প্রশ্ন</span> <span id="qNo">1</span>/15</span>
+      <span class="bg-white text-black font-black px-4 py-1.5 rounded-full text-[12px]"><span id="qLabel">প্রশ্ন</span> <span id="qNo">1</span>/15</span>
       <span id="timer" class="bg-red-500 font-black px-4 py-1.5 rounded-full text-[13px]">10s</span>
     </div>
     <div class="gorilla-glass shine rounded-[24px] p-5 w-full"><p id="qText" class="font-black text-[18px] leading-[24px]"></p></div>
     <div id="optionsBox" class="grid grid-cols-1 gap-3 mt-4 w-full"></div>
-    <p id="blockMsg" class="hidden mt-3 text-[11px] bg-red-500/40 border border-red-400/30 px-4 py-1.5 rounded-full font-bold" data-bn="⏱️ সময় শেষ - ব্লক" data-en="⏱️ Time Over - Blocked">⏱️ সময় শেষ - ব্লক</p>
+    <p id="blockMsg" class="hidden mt-3 text-[11px] bg-red-500/40 border border-red-400/30 px-4 py-1.5 rounded-full font-bold">⏱️ সময় শেষ - ব্লক</p>
   </div>
 </div>
 
-<div class="mt-4 gorilla-glass rounded-[20px] p-4 text-center">
-  <p class="text-[11px] text-white/60" data-bn="আপনার পয়েন্ট" data-en="Your Points">আপনার পয়েন্ট</p>
+<div class="mt-4 gorilla-glass rounded-[20px] p-4 text-center shrink-0">
+  <p class="text-[11px] text-white/60" id="yourPointLabel">আপনার পয়েন্ট</p>
   <p id="myPointsBig" class="font-black text-[28px] text-amber-300">0</p>
-  <p class="text-[10px] text-white/40" data-bn="সবার পয়েন্ট শুধু এডমিন দেখতে পারবে" data-en="Only admin can see all points">সবার পয়েন্ট শুধু এডমিন দেখতে পারবে</p>
+  <p class="text-[10px] text-white/40" id="adminOnlyText">সবার পয়েন্ট শুধু এডমিন দেখতে পারবে</p>
 </div>
 
 </div>
@@ -97,13 +103,13 @@ body{background:#0a0a0f; overflow-x:hidden;}
           <input id="broadcastInput" placeholder="Message..." class="flex-1 border border-yellow-300 rounded-full px-3 py-2 text-[12px] font-bold outline-none">
           <button onclick="sendBroadcast()" class="bg-black text-[#facc15] font-black px-4 py-2 rounded-full text-[11px]">SEND</button>
         </div>
-        <button onclick="clearBroadcast()" class="w-full mt-2 bg-white border text-[11px] font-bold py-1.5 rounded-full">Clear Message</button>
+        <button onclick="clearBroadcast()" class="w-full mt-2 bg-white border text-[11px] font-bold py-1.5 rounded-full">Clear</button>
       </div>
       <button onclick="controlAction('start')" class="w-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-black py-3.5 rounded-full">🚀 START</button>
       <button onclick="controlAction('next')" class="w-full bg-black text-white font-black py-3.5 rounded-full">⏭️ Next Question</button>
       <button onclick="controlAction('reset')" class="w-full bg-red-50 text-red-600 border-2 border-red-200 font-black py-3 rounded-full">🔄 RESET</button>
       <div class="bg-zinc-900 text-white rounded-[16px] p-3 max-h-[200px] overflow-y-auto">
-        <p class="font-black text-[12px] mb-2">🏆 All Points (Admin Only)</p>
+        <p class="font-black text-[12px] mb-2">🏆 All Points (Admin)</p>
         <div id="adminLeaderList" class="space-y-1 text-[11px]"></div>
       </div>
     </div>
@@ -114,7 +120,7 @@ body{background:#0a0a0f; overflow-x:hidden;}
 
 <script>
 const QUIZ_API = "https://script.google.com/macros/s/AKfycbz5MtF6dmRya92uXaKoCh6Bxr65PK_PsEiYc_CcrB2qqljodv-qIFH7WODI8bM4DBGN/exec";
-const QUESTIONS_BN = [
+const DATA_BN = [
   {q:"পবিত্র কুরআনে মোট কতটি সূরা আছে?", options:["১১২ টি","১১৪ টি","১১৬ টি","১১০ টি"], ans:1},
   {q:"কোন সূরাকে কুরআনের হৃদয় বলা হয়?", options:["সূরা ইয়াসিন","সূরা রহমান","সূরা ফাতিহা","সূরা বাকারা"], ans:0},
   {q:"রাসূল (সা.) এর প্রথম স্ত্রীর নাম কি?", options:["হযরত আয়েশা (রা)","হযরত খাদিজা (রা)","হযরত হাফসা (রা)","হযরত জয়নব (রা)"], ans:1},
@@ -131,48 +137,68 @@ const QUESTIONS_BN = [
   {q:"ইসলামে প্রথম শহীদ কে?", options:["সুমাইয়া (রা)","খাদিজা (রা)","আসমা (রা)","হাফসা (রা)"], ans:0},
   {q:"আযানের মধ্যে কতবার আল্লাহু আকবার বলা হয়?", options:["৪ বার","৬ বার","২ বার","৮ বার"], ans:0},
 ];
-const QUESTIONS_EN = [
-  {q:"How many Surahs are there in Quran?", options:["112","114","116","110"], ans:1},
+const DATA_EN = [
+  {q:"How many Surahs are in Holy Quran?", options:["112","114","116","110"], ans:1},
   {q:"Which Surah is called Heart of Quran?", options:["Yaseen","Rahman","Fatiha","Baqarah"], ans:0},
-  {q:"What was the name of first wife of Prophet (SAW)?", options:["Ayesha (RA)","Khadija (RA)","Hafsa (RA)","Zaynab (RA)"], ans:1},
-  {q:"Who was the first Muazzin in Islam?", options:["Abu Bakr","Bilal (RA)","Umar","Ali"], ans:1},
-  {q:"On which night Quran was revealed?", options:["Shab-e-Barat","Shab-e-Meraj","Shab-e-Qadr","Ashura"], ans:2},
-  {q:"How many daily prayers are Fard?", options:["3","4","5","6"], ans:2},
+  {q:"First wife of Prophet (SAW)?", options:["Ayesha (RA)","Khadija (RA)","Hafsa (RA)","Zaynab (RA)"], ans:1},
+  {q:"Who was first Muazzin?", options:["Abu Bakr","Bilal (RA)","Umar","Ali"], ans:1},
+  {q:"On which night Quran revealed?", options:["Shab-e-Barat","Shab-e-Meraj","Shab-e-Qadr","Ashura"], ans:2},
+  {q:"How many daily prayers Fard?", options:["3","4","5","6"], ans:2},
   {q:"Hajj is which pillar of Islam?", options:["3rd","4th","5th","2nd"], ans:2},
-  {q:"Which Prophet is called Khalilullah?", options:["Musa (AS)","Ibrahim (AS)","Isa (AS)","Nuh (AS)"], ans:1},
+  {q:"Which Prophet is Khalilullah?", options:["Musa (AS)","Ibrahim (AS)","Isa (AS)","Nuh (AS)"], ans:1},
   {q:"How many doors in Jannah?", options:["7","8","6","10"], ans:1},
-  {q:"Where is Kaaba Sharif?", options:["Madina","Jerusalem","Makkah","Taif"], ans:2},
-  {q:"In which month fasting is Fard?", options:["Rajab","Shaban","Ramadan","Muharram"], ans:2},
-  {q:"Which is the longest Surah?", options:["Al-Imran","Nisa","Baqarah","Maidah"], ans:2},
+  {q:"Where is Kaaba?", options:["Madina","Jerusalem","Makkah","Taif"], ans:2},
+  {q:"Fasting Fard in which month?", options:["Rajab","Shaban","Ramadan","Muharram"], ans:2},
+  {q:"Longest Surah?", options:["Al-Imran","Nisa","Baqarah","Maidah"], ans:2},
   {q:"Battle of Uhud in which Hijri?", options:["2nd","3rd","4th","5th"], ans:1},
-  {q:"Who was first martyr in Islam?", options:["Sumayyah (RA)","Khadijah (RA)","Asma (RA)","Hafsa (RA)"], ans:0},
-  {q:"How many times Allahu Akbar in Azan?", options:["4","6","2","8"], ans:0},
+  {q:"First martyr in Islam?", options:["Sumayyah (RA)","Khadijah (RA)","Asma (RA)","Hafsa (RA)"], ans:0},
+  {q:"How many Allahu Akbar in Azan?", options:["4","6","2","8"], ans:0},
 ];
 
 let lang = localStorage.getItem('quiz_lang') || 'bn';
-let QUESTIONS = lang=='bn'? QUESTIONS_BN : QUESTIONS_EN;
+let QUESTIONS = lang=='bn'? DATA_BN : DATA_EN;
 
 let deviceId = localStorage.getItem("quiz_device_id") || "QZ-"+Date.now().toString(36).toUpperCase();
 localStorage.setItem("quiz_device_id", deviceId);
 let myName = localStorage.getItem("quiz_name") || "";
 let currentQIndex=-1, answerLocked=false, shuffledOptions=[], correctShuffledIndex=-1;
+let lastStateQ=-99, isInQuestion=false;
 
 function toggleLang(){
   lang = lang=='bn'?'en':'bn';
   localStorage.setItem('quiz_lang', lang);
-  QUESTIONS = lang=='bn'? QUESTIONS_BN : QUESTIONS_EN;
+  QUESTIONS = lang=='bn'? DATA_BN : DATA_EN;
   applyLang();
-  document.getElementById('langBtn').innerText = lang=='bn'?'EN':'BN';
+  // যদি প্রশ্ন চলমান থাকে, প্রশ্নও ট্রান্সলেট হবে
+  if(isInQuestion && currentQIndex>=0){
+    document.getElementById('qText').innerText = QUESTIONS[currentQIndex].q;
+    // অপশন গুলোও আপডেট - শুধু টেক্সট
+    shuffledOptions.forEach((o,i)=>{
+      // original index থেকে নতুন ভাষার টেক্সট নিন
+      let newText = QUESTIONS[currentQIndex].options[o.originalIndex];
+      let el = document.getElementById('opt-'+i);
+      if(el) el.querySelector('span:last-child').previousElementSibling?.querySelector('span:last-child')?.innerText || (el.innerHTML = el.innerHTML.replace(o.text, newText));
+    });
+    // সহজ ভাবে রি-রেন্ডার না করে শুধু লেবেল আপডেট
+    if(document.getElementById('optionsBox').children.length>0){
+      // পুরো বক্স রি-বিল্ড করবো না, শুধু ল্যাংগুয়েজ লেবেল
+    }
+  }
 }
 function applyLang(){
-  document.querySelectorAll('[data-bn]').forEach(el=>{
-    let bn = el.getAttribute('data-bn');
-    let en = el.getAttribute('data-en');
-    el.innerHTML = lang=='bn'? bn : en;
-  });
-  document.querySelectorAll('[data-bn-ph]').forEach(el=>{
-    el.placeholder = lang=='bn'? el.getAttribute('data-bn-ph') : el.getAttribute('data-en-ph');
-  });
+  let isBn = lang=='bn';
+  document.getElementById('langBtn').innerText = isBn? 'EN' : 'বাংলা';
+  document.getElementById('titleText').innerText = isBn? '🕌 ইসলামিক কুইজ লাইভ' : '🕌 ISLAMIC QUIZ LIVE';
+  document.getElementById('nameInput').placeholder = isBn? 'আপনার নাম লিখুন...' : 'Enter your name...';
+  document.getElementById('regBtnText').innerText = isBn? 'রেজিস্টার' : 'REGISTER';
+  document.getElementById('idleTitle').innerHTML = isBn? 'ইসলামিক কুইজ<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-500">লাইভ ইভেন্ট</span>' : 'Islamic Quiz<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-500">Live Event</span>';
+  document.getElementById('idleDesc').innerHTML = isBn? 'হোস্ট START করলে শুরু হবে<br>১৫ টি প্রশ্ন • ১০ পয়েন্ট' : 'Host will START<br>15 Questions • 10 Points';
+  document.getElementById('liveInfo').innerText = isBn? '🔴 Live • ৫ সেকেন্ডের মধ্যে ক্লিক করুন' : '🔴 Live • Click within 5 seconds';
+  document.getElementById('startText').innerHTML = isBn? 'ইসলামিক<br>কুইজ শুরু!' : 'Islamic<br>Quiz Started!';
+  document.getElementById('qLabel').innerText = isBn? 'প্রশ্ন' : 'Q';
+  document.getElementById('blockMsg').innerText = isBn? '⏱️ সময় শেষ - ব্লক' : '⏱️ Time Over - Blocked';
+  document.getElementById('yourPointLabel').innerText = isBn? 'আপনার পয়েন্ট' : 'Your Points';
+  document.getElementById('adminOnlyText').innerText = isBn? 'সবার পয়েন্ট শুধু এডমিন দেখতে পারবে' : 'Only admin can see all points';
 }
 
 function register(){
@@ -224,7 +250,6 @@ function clearBroadcast(){
   document.getElementById('broadcastBar').classList.add('hidden');
 }
 
-let lastStateQ=-99;
 async function pollState(){
   try{
     let res=await fetch(QUIZ_API+"?action=getState&t="+Date.now()).then(r=>r.json());
@@ -236,8 +261,24 @@ async function pollState(){
       document.getElementById('broadcastBar').classList.remove('hidden');
       document.getElementById('broadcastText').innerText=res.broadcastMsg;
     } else if(res.broadcastMsg==="") document.getElementById('broadcastBar').classList.add('hidden');
-    if(!started){ if(lastStateQ!=-99 && q==-1){ location.reload(); } return; }
-    if(q!=lastStateQ && q>=0){ lastStateQ=q; startQuestionFlow(q); }
+
+    if(!started){
+      if(lastStateQ!=-99 && q==-1){ location.reload(); }
+      return;
+    }
+    // দেরিতে ঢুকলেও সরাসরি লাইভ প্রশ্নে আসবে
+    if(q!=lastStateQ && q>=0){
+      lastStateQ=q;
+      currentQIndex=q;
+      isInQuestion=false;
+      // যদি idle এ থাকে বা অন্য প্রশ্নে থাকে, সরাসরি নতুন প্রশ্ন দেখাও - starting animation ছাড়া যদি দেরিতে ঢুকে
+      if(document.getElementById('idleView').classList.contains('hidden')==false && lastStateQ!=-99){
+        // প্রথমবার না, তাই সরাসরি প্রশ্ন
+        showQuestion(q);
+      } else {
+        startQuestionFlow(q);
+      }
+    }
   }catch(e){}
 }
 function startQuestionFlow(qIndex){
@@ -245,12 +286,19 @@ function startQuestionFlow(qIndex){
   document.getElementById('idleView').classList.add('hidden');
   document.getElementById('startingView').classList.remove('hidden');
   document.getElementById('questionView').classList.add('hidden');
-  try{ new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg').play(); }catch(e){}
-  setTimeout(()=>{ document.getElementById('startingView').classList.add('hidden'); showQuestion(qIndex); }, 5000);
+  // ছোট ১ সেকেন্ড সাউন্ড
+  try{
+    let a=new Audio('https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a650cd.mp3?filename=pop-39222.mp3');
+    a.volume=0.7; a.play(); setTimeout(()=>a.pause(), 1000);
+  }catch(e){}
+  setTimeout(()=>{ document.getElementById('startingView').classList.add('hidden'); showQuestion(qIndex); }, 1500);
 }
 function shuffleArray(arr){ let a=[...arr]; for(let i=a.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function showQuestion(idx){
+  isInQuestion=true;
   let qObj=QUESTIONS[idx];
+  document.getElementById('idleView').classList.add('hidden');
+  document.getElementById('startingView').classList.add('hidden');
   document.getElementById('questionView').classList.remove('hidden');
   document.getElementById('qNo').innerText=idx+1;
   document.getElementById('qText').innerText=qObj.q;
@@ -274,7 +322,7 @@ function showQuestion(idx){
   document.getElementById('timer').innerText=timeLeft+"s";
   let timer=setInterval(()=>{
     timeLeft--; document.getElementById('timer').innerText=timeLeft+"s";
-    if(timeLeft==5){ // 5 sec - এখন ব্লক
+    if(timeLeft==5){
       answerLocked=true;
       document.getElementById('optionsBox').classList.add('option-blocked');
       document.getElementById('blockMsg').classList.remove('hidden');
@@ -302,17 +350,13 @@ function revealAnswer(){
     let el=document.getElementById('opt-'+i);
     if(i==correctShuffledIndex) el.classList.add('correct'); else el.classList.add('wrong');
   });
-  // ইসলামিক সাউন্ড - তাকবীর
+  // ১ সেকেন্ডের ইসলামিক টিং
   try{
-    let audio = new Audio('https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3');
-    audio.volume = 0.5;
-    // শুধু 2 সেকেন্ড বাজবে, তারপর বন্ধ - আমরা ছোট beep + তাকবীর effect
-    let takbeer = new Audio('https://actions.google.com/sounds/v1/alarms/medium_bell_ringing_near.ogg');
+    let takbeer = new Audio('https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3?filename=notification-bell-5925.mp3');
+    takbeer.volume=0.8;
     takbeer.play();
-    setTimeout(()=>{ takbeer.pause(); }, 2500);
-  }catch(e){
-    try{ new Audio('https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg').play(); }catch(e){}
-  }
+    setTimeout(()=>{ takbeer.pause(); takbeer.currentTime=0; }, 1000);
+  }catch(e){}
 }
 async function loadMyPoints(){
   try{
@@ -330,11 +374,19 @@ async function loadAdminLeader(){
     document.getElementById('adminLeaderList').innerHTML=list.map((u,i)=>`<div class="flex justify-between bg-white/10 rounded-full px-3 py-1.5"><span>${i+1}. ${u.name} (${u.deviceId.slice(-4)})</span><span class="font-black text-amber-300">${u.points}</span></div>`).join('') || 'No data';
   }catch(e){}
 }
+
+// টান দিয়ে রিফ্রেশ বন্ধ
+let startY=0;
+document.addEventListener('touchstart', e=>{ startY=e.touches[0].clientY; }, {passive:false});
+document.addEventListener('touchmove', e=>{
+  let curY=e.touches[0].clientY;
+  if(window.scrollY<=0 && curY>startY){ e.preventDefault(); }
+}, {passive:false});
+
 document.getElementById('controlBtn').onclick=()=>{ document.getElementById('controlModal').classList.remove('hidden'); };
-document.getElementById('langBtn').innerText = lang=='bn'?'EN':'BN';
 applyLang();
 if(myName) showWelcome();
-setInterval(pollState, 1800);
+setInterval(pollState, 1500);
 setInterval(loadMyPoints, 3000);
 pollState(); loadMyPoints();
 </script>
