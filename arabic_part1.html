@@ -2,35 +2,32 @@
 <html lang="bn" translate="no" class="notranslate">
 <head>
 <meta charset="UTF-8">
-<meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Digital Arabic P1 - A-S A2Z</title>
+<title>Digital Arabic P1</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-*{font-family:'Hind Siliguri'; -webkit-user-select:none; user-select:none; box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-body{top:0!important; background:#050a06; margin:0; overscroll-behavior:none;}
+*{font-family:'Hind Siliguri'; user-select:none; -webkit-tap-highlight-color:transparent; box-sizing:border-box;}
+body{background:#050a06; margin:0;}
 .gorilla{background:linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 100%); backdrop-filter:blur(20px); border:1.2px solid rgba(255,255,255,0.2);}
 .arabic{font-family:'Amiri', serif;}
-.letter-card{transition:0.12s;}
-.letter-card.active{background:linear-gradient(135deg, #ef4444, #b91c1c)!important; border-color:#fca5a5!important; box-shadow:0 0 30px rgba(239,68,68,0.7); transform:scale(1.05);}
+.letter-card.active{background:linear-gradient(135deg, #ef4444, #b91c1c)!important; box-shadow:0 0 30px rgba(239,68,68,0.7); transform:scale(1.05);}
 .letter-card.active p{color:white!important;}
 .no-scrollbar::-webkit-scrollbar{display:none}
-.goog-te-banner-frame,.skiptranslate{display:none!important;}
 </style>
 </head>
-<body translate="no" class="notranslate text-white">
-<div class="fixed inset-0 -z-10"><div class="absolute inset-0 bg-gradient-to-b from-emerald-900 via-black to-black"></div></div>
+<body class="text-white">
+<div class="fixed inset-0 -z-10 bg-gradient-to-b from-emerald-900 via-black to-black"></div>
 <div class="max-w-[480px] mx-auto h-screen flex flex-col">
   <div class="p-3 bg-black/60 backdrop-blur-md sticky top-0 z-30">
     <div class="flex justify-between items-center">
       <button onclick="location.href='./digital_home.html'" class="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center font-black">←</button>
-      <div class="gorilla rounded-full px-5 py-2 font-black text-[11px]">📖 প্রাথমিক আরবি - Part 1</div>
-      <button onclick="toggleMute()" id="muteBtn" class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-[14px]">🔊</button>
+      <div class="gorilla rounded-full px-5 py-2 font-black text-[11px]">📖 প্রাথমিক আরবি - P1</div>
+      <button onclick="toggleMute()" id="muteBtn" class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center">🔊</button>
     </div>
     <div class="mt-3 gorilla rounded-[26px] p-4 text-center border border-emerald-400/30">
       <p class="text-[9px] text-white/40 font-black tracking-[4px]">নির্বাচিত হরফ</p>
-      <div class="w-[92px] h-[92px] mx-auto mt-2 rounded-full bg-white flex items-center justify-center shadow border-4 border-emerald-400">
+      <div class="w-[92px] h-[92px] mx-auto mt-2 rounded-full bg-white flex items-center justify-center border-4 border-emerald-400">
         <h1 id="bigArabic" class="arabic text-[56px] text-black font-bold">ا</h1>
       </div>
       <p id="bigName" class="font-black text-[18px] mt-3">আলিফ</p>
@@ -38,80 +35,88 @@ body{top:0!important; background:#050a06; margin:0; overscroll-behavior:none;}
         <span id="bigBn" class="bg-white text-black px-3 py-1 rounded-full text-[11px] font-black">আলিফ</span>
         <span id="bigEn" class="bg-emerald-400 text-black px-3 py-1 rounded-full text-[11px] font-black">Alif</span>
       </div>
-      <p id="soundStatus" class="text-[10px] text-emerald-300 mt-2 font-bold">🔊 রিয়েল সাউন্ড - ক্লিক করুন</p>
+      <p id="soundStatus" class="text-[10px] text-emerald-300 mt-2 font-bold">👆 হরফে ক্লিক করুন - সাউন্ড বাজবে</p>
     </div>
   </div>
-
   <div class="flex-1 overflow-y-auto no-scrollbar px-3 pb-4">
     <div id="horofGrid" class="grid grid-cols-4 gap-3 mt-3"></div>
-
-    <!-- NEXT BUTTON - NOW LOCKED -->
-    <button onclick="showUpdateModal()" class="mt-6 w-full py-4 bg-zinc-800 border border-zinc-700 rounded-full font-black text-[12px] flex items-center justify-center gap-2">
-      🔒 UPDATE - Coming Soon <span class="bg-amber-400 text-black text-[8px] px-2 py-0.5 rounded-full">LOCKED</span>
-    </button>
-
+    <button onclick="document.getElementById('updateModal').classList.remove('hidden')" class="mt-6 w-full py-4 bg-zinc-800 border border-zinc-700 rounded-full font-black text-[12px]">🔒 UPDATE - Coming Soon</button>
     <div class="mt-8 text-center pb-8">
       <p class="text-white/30 text-[10px] tracking-[3px] font-black">QARI & DEVELOPER</p>
-      <p class="font-black text-white text-[14px] mt-1">Qari MD Jubayer Ahmed Siyam</p>
+      <p class="font-black text-[14px] mt-1">Qari MD Jubayer Ahmed Siyam</p>
     </div>
   </div>
 </div>
 
-<!-- UPDATE MODAL -->
 <div id="updateModal" class="hidden fixed inset-0 z-[99] bg-black/80 backdrop-blur-md flex items-center justify-center p-6">
   <div class="bg-white rounded-[24px] p-6 w-full max-w-[300px] text-center">
-    <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-[28px]">🚧</div>
-    <p class="font-black text-[16px] mt-3 text-black">UPDATE চলছে</p>
-    <p class="text-zinc-500 text-[11px] mt-1 font-bold">পরবর্তী পর্ব খুব শীঘ্রই আসছে...</p>
-    <button onclick="document.getElementById('updateModal').classList.add('hidden')" class="mt-4 w-full py-3 bg-black text-white rounded-full font-black text-[12px]">OK</button>
+    <p class="font-black text-black">UPDATE চলছে</p>
+    <button onclick="document.getElementById('updateModal').classList.add('hidden')" class="mt-4 w-full py-3 bg-black text-white rounded-full font-black">OK</button>
   </div>
 </div>
 
 <script>
-document.addEventListener('contextmenu',e=>e.preventDefault());
 let isMuted=false;
+let audioCtx=null;
+
 const HOROFS=[
-{a:"ا", bn:"আলিফ", en:"Alif", ar:"ألف"},
-{a:"ب", bn:"বা", en:"Ba", ar:"باء"},
-{a:"ت", bn:"তা", en:"Ta", ar:"تاء"},
-{a:"ث", bn:"ছা", en:"Sa", ar:"ثاء"},
-{a:"ج", bn:"জীম", en:"Jeem", ar:"جيم"},
-{a:"ح", bn:"হা", en:"Hha", ar:"حاء"},
-{a:"خ", bn:"খা", en:"Kha", ar:"خاء"},
-{a:"د", bn:"দাল", en:"Dal", ar:"دال"},
-{a:"ذ", bn:"যাল", en:"Zal", ar:"ذال"},
-{a:"ر", bn:"রা", en:"Ra", ar:"راء"},
-{a:"ز", bn:"যা", en:"Za", ar:"زاي"},
-{a:"س", bn:"সীন", en:"Seen", ar:"سين"},
-{a:"ش", bn:"শীন", en:"Sheen", ar:"شين"},
-{a:"ص", bn:"সোয়াদ", en:"Saad", ar:"صاد"},
-{a:"ض", bn:"দোয়াদ", en:"Daad", ar:"ضاد"},
-{a:"ط", bn:"ত্বা", en:"Taa", ar:"طاء"},
-{a:"ظ", bn:"য্বা", en:"Dhaa", ar:"ظاء"},
-{a:"ع", bn:"আইন", en:"Ain", ar:"عين"},
-{a:"غ", bn:"গাইন", en:"Ghain", ar:"غين"},
-{a:"ف", bn:"ফা", en:"Fa", ar:"فاء"},
-{a:"ق", bn:"ক্বফ", en:"Qaf", ar:"قاف"},
-{a:"ك", bn:"কাফ", en:"Kaf", ar:"كاف"},
-{a:"ل", bn:"লাম", en:"Lam", ar:"لام"},
-{a:"م", bn:"মীম", en:"Meem", ar:"ميم"},
-{a:"ن", bn:"নূন", en:"Nun", ar:"نون"},
-{a:"و", bn:"ওয়াও", en:"Waw", ar:"واو"},
-{a:"ه", bn:"হা", en:"Ha", ar:"هاء"},
-{a:"ء", bn:"হামজা", en:"Hamza", ar:"همزة"},
-{a:"ي", bn:"ইয়া", en:"Ya", ar:"ياء"},
+{a:"ا", bn:"আলিফ", en:"Alif", speak:"Alif"},
+{a:"ب", bn:"বা", en:"Ba", speak:"Ba"},
+{a:"ت", bn:"তা", en:"Ta", speak:"Ta"},
+{a:"ث", bn:"ছা", en:"Sa", speak:"Tha"},
+{a:"ج", bn:"জীম", en:"Jeem", speak:"Jeem"},
+{a:"ح", bn:"হা", en:"Hha", speak:"Hha"},
+{a:"خ", bn:"খা", en:"Kha", speak:"Kha"},
+{a:"د", bn:"দাল", en:"Dal", speak:"Dal"},
+{a:"ذ", bn:"যাল", en:"Zal", speak:"Zal"},
+{a:"ر", bn:"রা", en:"Ra", speak:"Ra"},
+{a:"ز", bn:"যা", en:"Za", speak:"Za"},
+{a:"س", bn:"সীন", en:"Seen", speak:"Seen"},
+{a:"ش", bn:"শীন", en:"Sheen", speak:"Sheen"},
+{a:"ص", bn:"সোয়াদ", en:"Saad", speak:"Saad"},
+{a:"ض", bn:"দোয়াদ", en:"Daad", speak:"Daad"},
+{a:"ط", bn:"ত্বা", en:"Taa", speak:"Twa"},
+{a:"ظ", bn:"য্বা", en:"Dhaa", speak:"Dha"},
+{a:"ع", bn:"আইন", en:"Ain", speak:"Ain"},
+{a:"غ", bn:"গাইন", en:"Ghain", speak:"Ghain"},
+{a:"ف", bn:"ফা", en:"Fa", speak:"Fa"},
+{a:"ق", bn:"ক্বফ", en:"Qaf", speak:"Qaf"},
+{a:"ك", bn:"কাফ", en:"Kaf", speak:"Kaf"},
+{a:"ل", bn:"লাম", en:"Lam", speak:"Lam"},
+{a:"م", bn:"মীম", en:"Meem", speak:"Meem"},
+{a:"ن", bn:"নূন", en:"Nun", speak:"Nun"},
+{a:"و", bn:"ওয়াও", en:"Waw", speak:"Waw"},
+{a:"ه", bn:"হা", en:"Ha", speak:"Haa"},
+{a:"ء", bn:"হামজা", en:"Hamza", speak:"Hamza"},
+{a:"ي", bn:"ইয়া", en:"Ya", speak:"Ya"},
 ];
+
+function initAudio(){
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+function playBeep(){
+  initAudio();
+  let osc = audioCtx.createOscillator();
+  let gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.frequency.value = 800;
+  gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime+0.3);
+  osc.start(); osc.stop(audioCtx.currentTime+0.3);
+}
 
 function render(){
   document.getElementById('horofGrid').innerHTML=HOROFS.map((h,i)=>`
-    <div onclick="selectHaraf(${i})" id="card-${i}" class="letter-card gorilla bg-white rounded-[16px] p-3 text-center cursor-pointer">
-      <p class="arabic text-[36px] leading-[36px] text-black font-bold">${h.a}</p>
-      <p class="text-[10px] font-black text-black/80 mt-1">${h.bn}</p>
+    <div onclick="selectHaraf(${i})" id="card-${i}" class="letter-card gorilla bg-white rounded-[16px] p-3 text-center">
+      <p class="arabic text-[36px] text-black font-bold">${h.a}</p>
+      <p class="text-[10px] font-black text-black/80">${h.bn}</p>
     </div>
   `).join('');
 }
 
 function selectHaraf(i){
+  initAudio();
   let h=HOROFS[i];
   document.querySelectorAll('.letter-card').forEach(c=>c.classList.remove('active'));
   document.getElementById(`card-${i}`).classList.add('active');
@@ -119,61 +124,56 @@ function selectHaraf(i){
   document.getElementById('bigName').innerText=h.bn;
   document.getElementById('bigBn').innerText=h.bn;
   document.getElementById('bigEn').innerText=h.en;
-  playRealSound(h);
-  if(navigator.vibrate) navigator.vibrate(40);
+
+  playBeep(); // ১. প্রথমে টোন - যাতে বোঝা যায় ক্লিক হয়েছে
+  speakNow(h);
+  if(navigator.vibrate) navigator.vibrate(50);
 }
 
-function playRealSound(h){
+function speakNow(h){
   if(isMuted) return;
-  document.getElementById('soundStatus').innerText='🔊 বলছে: '+h.bn+' - '+h.ar;
-
-  // Stop previous
   window.speechSynthesis.cancel();
 
-  // 1st - Arabic REAL voice
-  let arUtter = new SpeechSynthesisUtterance(h.ar);
-  arUtter.lang = 'ar-SA';
-  arUtter.rate = 0.7;
-  arUtter.pitch = 1;
-  arUtter.volume = 1;
+  // ১০০% কাজ করবে - ইংরেজি ভয়েস সব ফোনে থাকে
+  let utter = new SpeechSynthesisUtterance(h.speak + ", " + h.bn);
+  utter.lang = 'en-US'; // সব ফোনে en-US থাকেই
+  utter.rate = 0.75;
+  utter.pitch = 1;
+  utter.volume = 1;
 
-  // Try to get best Arabic voice
-  let voices = window.speechSynthesis.getVoices();
-  let arVoice = voices.find(v=>v.lang.includes('ar')) || voices.find(v=>v.name.includes('Arabic'));
-  if(arVoice) arUtter.voice = arVoice;
+  // যদি bn ভয়েস থাকে তাহলে ওটা ইউজ করবে, না থাকলে en
+  let voices = speechSynthesis.getVoices();
+  let bnVoice = voices.find(v=>v.lang.toLowerCase().includes('bn')) || voices.find(v=>v.lang.toLowerCase().includes('en'));
+  if(bnVoice) utter.voice = bnVoice;
 
-  arUtter.onend = ()=>{
-    // 2nd - Bangla after 300ms
-    setTimeout(()=>{
-      let bnUtter = new SpeechSynthesisUtterance(h.bn);
-      bnUtter.lang = 'bn-BD';
-      bnUtter.rate = 0.8;
-      let bnVoice = voices.find(v=>v.lang.includes('bn')) || voices.find(v=>v.lang.includes('en'));
-      if(bnVoice) bnUtter.voice = bnVoice;
-      window.speechSynthesis.speak(bnUtter);
-      document.getElementById('soundStatus').innerText='✅ '+h.bn+' | '+h.ar;
-    },300);
+  utter.onstart = ()=>{ document.getElementById('soundStatus').innerText = "🔊 " + h.bn + " - " + h.en; };
+  utter.onend = ()=>{ document.getElementById('soundStatus').innerText = "✅ " + h.bn; };
+  utter.onerror = ()=>{
+    document.getElementById('soundStatus').innerText = "🔊 " + h.bn + " (Beep Mode)";
+    playBeep();
   };
-  window.speechSynthesis.speak(arUtter);
+
+  speechSynthesis.speak(utter);
 }
 
-function showUpdateModal(){ document.getElementById('updateModal').classList.remove('hidden'); }
 function toggleMute(){
   isMuted=!isMuted;
   document.getElementById('muteBtn').innerText=isMuted?'🔇':'🔊';
-  document.getElementById('muteBtn').className=isMuted?'w-10 h-10 rounded-full bg-red-500 flex items-center justify-center':'w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center';
-  document.getElementById('soundStatus').innerText=isMuted?'🔇 মিউট':'🔊 সাউন্ড অন';
-  if(isMuted) window.speechSynthesis.cancel();
+  if(isMuted) speechSynthesis.cancel();
 }
 
 render();
 selectHaraf(0);
-// Load voices
-window.speechSynthesis.onvoiceschanged = ()=>{ window.speechSynthesis.getVoices(); };
-// Unlock audio on first touch
-document.body.addEventListener('touchstart', function unlock(){
-  window.speechSynthesis.speak(new SpeechSynthesisUtterance(''));
-  document.body.removeEventListener('touchstart', unlock);
+
+// ভয়েস লোড
+setTimeout(()=>{ speechSynthesis.getVoices(); },500);
+speechSynthesis.onvoiceschanged = ()=>{ speechSynthesis.getVoices(); };
+
+// প্রথম টাচে Audio Unlock (APK এর জন্য জরুরি)
+document.body.addEventListener('touchstart', ()=>{
+  initAudio();
+  let u = new SpeechSynthesisUtterance('');
+  speechSynthesis.speak(u);
 }, {once:true});
 </script>
 </body>
