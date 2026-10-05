@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="bn" translate="no" class="notranslate">
+<head>
+<meta charset="UTF-8">
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Digital Arabic - A-S A2Z</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{font-family:'Hind Siliguri'; -webkit-user-select:none; user-select:none; box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+body{top:0!important; background:#050a06; margin:0; overscroll-behavior:none;}
+.gorilla{background:linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 100%); backdrop-filter:blur(20px); border:1.2px solid rgba(255,255,255,0.2);}
+.arabic{font-family:'Amiri', serif;}
+.letter-card{transition:0.12s;}
+.letter-card.active{background:linear-gradient(135deg, #ef4444, #b91c1c)!important; border-color:#fca5a5!important; box-shadow:0 0 30px rgba(239,68,68,0.7); transform:scale(1.05);}
+.letter-card.active p{color:white!important;}
+.no-scrollbar::-webkit-scrollbar{display:none}
+.goog-te-banner-frame,.skiptranslate{display:none!important;}
+</style>
+</head>
+<body translate="no" class="notranslate text-white">
+
+<div class="fixed inset-0 -z-10">
+  <div class="absolute inset-0 bg-gradient-to-b from-emerald-900 via-black to-black"></div>
+</div>
+
+<div class="max-w-[480px] mx-auto h-screen flex flex-col">
+
+  <div class="p-3 bg-black/60 backdrop-blur-md sticky top-0 z-30">
+    <div class="flex justify-between items-center">
+      <button onclick="location.href='./islamic.html'" class="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center font-black">←</button>
+      <div class="gorilla rounded-full px-5 py-2 font-black text-[11px]">📖 ডিজিটাল আরবি শিক্ষা</div>
+      <button onclick="toggleMute()" id="muteBtn" class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-[14px]">🔊</button>
+    </div>
+
+    <div class="mt-3 gorilla rounded-[26px] p-4 text-center border border-emerald-400/30">
+      <p class="text-[9px] text-white/40 font-black tracking-[4px]">নির্বাচিত হরফ</p>
+      <div class="w-[92px] h-[92px] mx-auto mt-2 rounded-full bg-white flex items-center justify-center shadow border-4 border-emerald-400">
+        <h1 id="bigArabic" class="arabic text-[56px] text-black font-bold">ا</h1>
+      </div>
+      <p id="bigName" class="font-black text-[18px] mt-3">আলিফ</p>
+      <div class="mt-2 flex justify-center gap-2">
+        <span id="bigBn" class="bg-white text-black px-3 py-1 rounded-full text-[11px] font-black">আলিফ</span>
+        <span id="bigEn" class="bg-emerald-400 text-black px-3 py-1 rounded-full text-[11px] font-black">Alif</span>
+      </div>
+      <p id="soundStatus" class="text-[10px] text-emerald-300 mt-2 font-bold">🔊 সাউন্ড অন - হরফে ক্লিক করুন</p>
+    </div>
+  </div>
+
+  <div class="flex-1 overflow-y-auto no-scrollbar px-3 pb-4">
+    <div id="horofGrid" class="grid grid-cols-4 gap-3 mt-3"></div>
+
+    <button onclick="location.href='./arabic_part2.html'" class="mt-6 w-full py-4 bg-gradient-to-r from-violet-500 to-purple-600 rounded-full font-black text-[13px] active:scale-95">পরবর্তী পার্ট → হরকত</button>
+
+    <div class="mt-8 text-center pb-8">
+      <p class="text-white/30 text-[10px] tracking-[3px] font-black">QARI & DEVELOPER</p>
+      <p class="font-black text-white text-[14px] mt-1">Qari MD Jubayer Ahmed Siyam</p>
+    </div>
+  </div>
+
+</div>
+
+<audio id="audioPlayer" preload="auto"></audio>
+
+<script>
+document.addEventListener('contextmenu',e=>e.preventDefault());
+let isMuted=false;
+let current=null;
+
+const HOROFS=[
+{a:"ا", bn:"আলিফ", en:"Alif", arWord:"ألف", audioBn:"alif"},
+{a:"ب", bn:"বা", en:"Ba", arWord:"باء", audioBn:"ba"},
+{a:"ت", bn:"তা", en:"Ta", arWord:"تاء", audioBn:"ta"},
+{a:"ث", bn:"ছা", en:"Sa", arWord:"ثاء", audioBn:"tha"},
+{a:"ج", bn:"জীম", en:"Jeem", arWord:"جيم", audioBn:"jim"},
+{a:"ح", bn:"হা", en:"Hha", arWord:"حاء", audioBn:"ha"},
+{a:"خ", bn:"খা", en:"Kha", arWord:"خاء", audioBn:"kha"},
+{a:"د", bn:"দাল", en:"Dal", arWord:"دال", audioBn:"dal"},
+{a:"ذ", bn:"যাল", en:"Zal", arWord:"ذال", audioBn:"zal"},
+{a:"ر", bn:"রা", en:"Ra", arWord:"راء", audioBn:"ra"},
+{a:"ز", bn:"যা", en:"Za", arWord:"زاي", audioBn:"za"},
+{a:"س", bn:"সীন", en:"Seen", arWord:"سين", audioBn:"seen"},
+{a:"ش", bn:"শীন", en:"Sheen", arWord:"شين", audioBn:"sheen"},
+{a:"ص", bn:"সোয়াদ", en:"Saad", arWord:"صاد", audioBn:"swad"},
+{a:"ض", bn:"দোয়াদ", en:"Daad", arWord:"ضاد", audioBn:"dwad"},
+{a:"ط", bn:"ত্বা", en:"Taa", arWord:"طاء", audioBn:"twa"},
+{a:"ظ", bn:"য্বা", en:"Dhaa", arWord:"ظاء", audioBn:"zwa"},
+{a:"ع", bn:"আইন", en:"Ain", arWord:"عين", audioBn:"ain"},
+{a:"غ", bn:"গাইন", en:"Ghain", arWord:"غين", audioBn:"ghain"},
+{a:"ف", bn:"ফা", en:"Fa", arWord:"فاء", audioBn:"fa"},
+{a:"ق", bn:"ক্বফ", en:"Qaf", arWord:"قاف", audioBn:"qaf"},
+{a:"ك", bn:"কাফ", en:"Kaf", arWord:"كاف", audioBn:"kaf"},
+{a:"ل", bn:"লাম", en:"Lam", arWord:"لام", audioBn:"lam"},
+{a:"م", bn:"মীম", en:"Meem", arWord:"ميم", audioBn:"mim"},
+{a:"ن", bn:"নূন", en:"Nun", arWord:"نون", audioBn:"nun"},
+{a:"و", bn:"ওয়াও", en:"Waw", arWord:"واو", audioBn:"waw"},
+{a:"ه", bn:"হা", en:"Ha", arWord:"هاء", audioBn:"haa"},
+{a:"ء", bn:"হামজা", en:"Hamza", arWord:"همزة", audioBn:"hamza"},
+{a:"ي", bn:"ইয়া", en:"Ya", arWord:"ياء", audioBn:"ya"},
+];
+
+function render(){
+  document.getElementById('horofGrid').innerHTML=HOROFS.map((h,i)=>`
+    <div onclick="selectHaraf(${i})" id="card-${i}" class="letter-card gorilla bg-white rounded-[16px] p-3 text-center cursor-pointer">
+      <p class="arabic text-[36px] leading-[36px] text-black font-bold">${h.a}</p>
+      <p class="text-[10px] font-black text-black/80 mt-1">${h.bn}</p>
+    </div>
+  `).join('');
+}
+
+function selectHaraf(i){
+  let h=HOROFS[i];
+  current=h;
+  document.querySelectorAll('.letter-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById(`card-${i}`).classList.add('active');
+  document.getElementById('bigArabic').innerText=h.a;
+  document.getElementById('bigName').innerText=h.bn;
+  document.getElementById('bigBn').innerText=h.bn;
+  document.getElementById('bigEn').innerText=h.en;
+  playSound(h);
+  if(navigator.vibrate) navigator.vibrate(40);
+}
+
+function playSound(h){
+  if(isMuted) return;
+  let status=document.getElementById('soundStatus');
+  status.innerText='🔊 বাজছে: '+h.bn;
+
+  // Method 1: Google TTS - Real human voice (works in WebView)
+  let audio=document.getElementById('audioPlayer');
+
+  // আরবি + বাংলা দুইবার বলবে
+  let arText = h.arWord;
+  let ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(arText)}&tl=ar&client=tw-ob`;
+
+  audio.src=ttsUrl;
+  audio.play().catch(()=>{
+    // Fallback 2: Web Speech API
+    try{
+      speechSynthesis.cancel();
+      let u = new SpeechSynthesisUtterance(h.bn);
+      u.lang='bn-BD';
+      u.rate=0.8;
+      speechSynthesis.speak(u);
+      status.innerText='🔊 '+h.bn;
+    }catch(e){
+      status.innerText='🔇 সাউন্ড এরর';
+    }
+  });
+
+  audio.onended=()=>{
+    // আরবির পরে বাংলা
+    setTimeout(()=>{
+      let bnAudio = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(h.bn)}&tl=bn&client=tw-ob`;
+      audio.src=bnAudio;
+      audio.play().catch(()=>{});
+    },300);
+    status.innerText='✅ '+h.bn+' - '+h.en;
+  };
+}
+
+function toggleMute(){
+  isMuted=!isMuted;
+  document.getElementById('muteBtn').innerText=isMuted?'🔇':'🔊';
+  document.getElementById('muteBtn').className=isMuted?'w-10 h-10 rounded-full bg-red-500 flex items-center justify-center':'w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center';
+  document.getElementById('soundStatus').innerText=isMuted?'🔇 মিউট করা':'🔊 সাউন্ড অন';
+}
+
+render();
+selectHaraf(0);
+// প্রথমবার অডিও আনলক করতে ইউজার ইন্টারঅ্যাকশন লাগে
+document.body.addEventListener('click', function unlock(){
+  let a=document.getElementById('audioPlayer');
+  a.play().then(()=>{a.pause();}).catch(()=>{});
+  document.body.removeEventListener('click', unlock);
+}, {once:true});
+</script>
+</body>
+</html>
