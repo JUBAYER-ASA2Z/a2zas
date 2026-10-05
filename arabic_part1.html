@@ -3,178 +3,117 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fixed Sound</title>
+<title>Arabic Pure Voice - No Beep</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 *{font-family:'Hind Siliguri'; -webkit-tap-highlight-color:transparent;}
 .gorilla{background:linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 100%); backdrop-filter:blur(20px); border:1.2px solid rgba(255,255,255,0.2);}
 .arabic{font-family:'Amiri', serif;}
-.letter-card.active{background:#10b981!important; transform:scale(1.08);}
+.letter-card.active{background:#10b981!important; transform:scale(1.08); box-shadow:0 0 20px #10b981;}
 </style>
 </head>
 <body class="bg-black text-white">
 <div class="max-w-[480px] mx-auto min-h-screen p-3">
-  <div class="flex justify-between">
+  <div class="flex justify-between items-center">
     <button onclick="location.href='./digital_home.html'" class="w-10 h-10 rounded-full bg-white/15">←</button>
-    <div class="gorilla rounded-full px-4 py-2 text-[11px] font-black">📖 আরবি - Fixed Sound</div>
-    <button id="muteBtn" onclick="toggleMute()" class="w-10 h-10 rounded-full bg-emerald-500">🔊</button>
+    <div class="gorilla rounded-full px-4 py-2 text-[11px] font-black">📖 খাঁটি আরবি - No Beep</div>
+    <div class="w-10 h-10"></div>
   </div>
 
   <div class="mt-3 gorilla rounded-[22px] p-5 text-center">
-    <h1 id="bigArabic" class="arabic text-[52px] text-white">ا</h1>
-    <p id="bigArabicName" class="arabic text-[22px] text-emerald-300">أَلِفْ</p>
-    <p id="bigName" class="font-black">আলিফ</p>
-    <p id="debug" class="text-[9px] text-yellow-300 mt-2">Debug: Ready</p>
+    <h1 id="bigArabic" class="arabic text-[60px]">ا</h1>
+    <p id="bigArabicName" class="arabic text-[26px] text-emerald-300">أَلِفْ</p>
+    <p id="bigName" class="font-black text-[13px]">আলিফ</p>
   </div>
 
   <div id="horofGrid" class="grid grid-cols-4 gap-2 mt-4"></div>
-
-  <div class="mt-4 p-3 bg-white/10 rounded-[12px]">
-    <p class="text-[10px] font-bold">🔧 যদি এখনো সাউন্ড না আসে:</p>
-    <p class="text-[9px] text-white/60">1. ফোনের Media Volume বাড়ান 2. Silent Off করুন 3. নিচের Fix বাটন চাপুন</p>
-    <button onclick="fixSound()" class="mt-2 w-full py-3 bg-red-500 rounded-full font-black text-[11px]">🔧 FIX SOUND - এখানে ক্লিক করুন</button>
-  </div>
 </div>
 
-<script>
-let isMuted=false;
-let audioCtx=null;
-let voices=[];
+<!-- Real Human Voice Player -->
+<audio id="realAudio" preload="auto" playsinline></audio>
 
+<script>
 const HOROFS=[
-{a:"ا", bn:"আলিফ", ar:"أَلِفْ", en:"Alif"},
-{a:"ب", bn:"বা", ar:"بَاءْ", en:"Ba"},
-{a:"ت", bn:"তা", ar:"تَاءْ", en:"Ta"},
-{a:"ث", bn:"ছা", ar:"ثَاءْ", en:"Sa"},
-{a:"ج", bn:"জীম", ar:"جِيمْ", en:"Jeem"},
-{a:"ح", bn:"হা", ar:"حَاءْ", en:"Hha"},
-{a:"خ", bn:"খা", ar:"خَاءْ", en:"Kha"},
-{a:"د", bn:"দাল", ar:"دَالْ", en:"Dal"},
-{a:"ذ", bn:"যাল", ar:"ذَالْ", en:"Zal"},
-{a:"ر", bn:"রা", ar:"رَاءْ", en:"Ra"},
-{a:"ز", bn:"যা", ar:"زَايْ", en:"Za"},
-{a:"س", bn:"সীন", ar:"سِينْ", en:"Seen"},
-{a:"ش", bn:"শীন", ar:"شِينْ", en:"Sheen"},
-{a:"ص", bn:"সোয়াদ", ar:"صَادْ", en:"Saad"},
-{a:"ض", bn:"দোয়াদ", ar:"ضَادْ", en:"Daad"},
-{a:"ط", bn:"ত্বা", ar:"طَاءْ", en:"Taa"},
-{a:"ظ", bn:"য্বা", ar:"ظَاءْ", en:"Dhaa"},
-{a:"ع", bn:"আইন", ar:"عَيْنْ", en:"Ain"},
-{a:"غ", bn:"গাইন", ar:"غَيْنْ", en:"Ghain"},
-{a:"ف", bn:"ফা", ar:"فَاءْ", en:"Fa"},
-{a:"ق", bn:"ক্বফ", ar:"قَافْ", en:"Qaf"},
-{a:"ك", bn:"কাফ", ar:"كَافْ", en:"Kaf"},
-{a:"ل", bn:"লাম", ar:"لَامْ", en:"Lam"},
-{a:"م", bn:"মীম", ar:"مِيمْ", en:"Meem"},
-{a:"ن", bn:"নূন", ar:"نُونْ", en:"Nun"},
-{a:"و", bn:"ওয়াও", ar:"وَاوْ", en:"Waw"},
-{a:"ه", bn:"হা", ar:"هَاءْ", en:"Ha"},
-{a:"ء", bn:"হামজা", ar:"هَمْزَةْ", en:"Hamza"},
-{a:"ي", bn:"ইয়া", ar:"يَاءْ", en:"Ya"},
+{a:"ا", bn:"আলিফ", ar:"ألف"},
+{a:"ب", bn:"বা", ar:"باء"},
+{a:"ت", bn:"তা", ar:"تاء"},
+{a:"ث", bn:"ছা", ar:"ثاء"},
+{a:"ج", bn:"জীম", ar:"جيم"},
+{a:"ح", bn:"হা", ar:"حاء"},
+{a:"خ", bn:"খা", ar:"خاء"},
+{a:"د", bn:"দাল", ar:"دال"},
+{a:"ذ", bn:"যাল", ar:"ذال"},
+{a:"ر", bn:"রা", ar:"راء"},
+{a:"ز", bn:"যা", ar:"زاي"},
+{a:"س", bn:"সীন", ar:"سين"},
+{a:"ش", bn:"শীন", ar:"شين"},
+{a:"ص", bn:"সোয়াদ", ar:"صاد"},
+{a:"ض", bn:"দোয়াদ", ar:"ضاد"},
+{a:"ط", bn:"ত্বা", ar:"طاء"},
+{a:"ظ", bn:"য্বা", ar:"ظاء"},
+{a:"ع", bn:"আইন", ar:"عين"},
+{a:"غ", bn:"গাইন", ar:"غين"},
+{a:"ف", bn:"ফা", ar:"فاء"},
+{a:"ق", bn:"ক্বফ", ar:"قاف"},
+{a:"ك", bn:"কাফ", ar:"كاف"},
+{a:"ل", bn:"লাম", ar:"لام"},
+{a:"م", bn:"মীম", ar:"ميم"},
+{a:"ن", bn:"নূন", ar:"نون"},
+{a:"و", bn:"ওয়াও", ar:"واو"},
+{a:"ه", bn:"হা", ar:"هاء"},
+{a:"ء", bn:"হামজা", ar:"همزة"},
+{a:"ي", bn:"ইয়া", ar:"ياء"},
 ];
 
-function loadVoices(){
-  voices = window.speechSynthesis.getVoices();
-  document.getElementById('debug').innerText = "Voices Loaded: "+voices.length+" টা | Arabic: "+(voices.filter(v=>v.lang.includes('ar')).length)+" টা";
-}
-window.speechSynthesis.onvoiceschanged = loadVoices;
-loadVoices();
+let audioPlayer = document.getElementById('realAudio');
 
-function initAudio(){
-  if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-  if(audioCtx.state==='suspended') audioCtx.resume();
-}
-
-function playGuaranteed(ar, bn, en){
-  if(isMuted) return;
-  initAudio();
-
-  // LAYER 1: Beep - এটা 100% বাজবেই - প্রমাণ করার জন্য
-  try{
-    let osc = audioCtx.createOscillator();
-    let g = audioCtx.createGain();
-    osc.frequency.value = 600;
-    g.gain.setValueAtTime(0.15, audioCtx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime+0.2);
-    osc.connect(g); g.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime+0.2);
-  }catch(e){}
-
-  // LAYER 2: আরবি TTS - যদি থাকে
-  setTimeout(()=>{
-    try{
-      window.speechSynthesis.cancel();
-      let utter;
-      let arVoice = voices.find(v=>v.lang.toLowerCase().includes('ar'));
-
-      if(arVoice){
-        utter = new SpeechSynthesisUtterance(ar);
-        utter.voice = arVoice;
-        utter.lang = arVoice.lang;
-        document.getElementById('debug').innerText = "🔊 আরবিতে বলছে: "+ar+" | Voice: "+arVoice.name;
-      } else {
-        // আরবি ভয়েস নাই - বাংলায় বলবে
-        utter = new SpeechSynthesisUtterance(bn);
-        utter.lang = 'bn-BD';
-        let bnVoice = voices.find(v=>v.lang.toLowerCase().includes('bn'));
-        if(bnVoice) utter.voice = bnVoice;
-        document.getElementById('debug').innerText = "⚠️ আরবি Voice নাই, বাংলায় বলছে: "+bn+" | Play Store থেকে Google TTS এ Arabic Download করুন";
-      }
-
-      utter.rate = 0.8;
-      utter.volume = 1;
-      speechSynthesis.speak(utter);
-    }catch(e){
-      document.getElementById('debug').innerText = "Error: "+e.message;
-    }
-  }, 250);
+// ১০০% Real Human Voice - Google এর আরবি মানুষের কণ্ঠ
+function playArabicPure(arText){
+  // কোনো Beep নাই, সরাসরি মানুষের ভয়েস
+  let url = "https://translate.google.com/translate_tts?ie=UTF-8&tl=ar&client=tw-ob&q=" + encodeURIComponent(arText);
+  audioPlayer.src = url;
+  audioPlayer.play().catch(()=>{
+    // যদি Google ব্লক করে, তাহলে ফোনের নিজের আরবি TTS দিয়ে বলবে (তাও মানুষের মতো)
+    let utter = new SpeechSynthesisUtterance(arText);
+    utter.lang = 'ar-SA';
+    utter.rate = 0.7;
+    utter.volume = 1;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utter);
+  });
 }
 
 function render(){
   document.getElementById('horofGrid').innerHTML=HOROFS.map((h,i)=>`
-    <div onclick="selectHaraf(${i})" id="card-${i}" class="letter-card gorilla bg-white rounded-[16px] p-2 text-center">
-      <p class="arabic text-[30px] text-black font-bold">${h.a}</p>
-      <p class="text-[8px] font-black text-black/60">${h.bn}</p>
+    <div onclick="selectHaraf(${i})" id="card-${i}" class="letter-card gorilla bg-white rounded-[16px] p-2 text-center cursor-pointer">
+      <p class="arabic text-[32px] text-black font-bold leading-[32px]">${h.a}</p>
+      <p class="text-[9px] font-black text-black/60">${h.bn}</p>
     </div>
   `).join('');
 }
 
 function selectHaraf(i){
-  initAudio();
   let h=HOROFS[i];
   document.querySelectorAll('.letter-card').forEach(c=>c.classList.remove('active'));
   document.getElementById('card-'+i).classList.add('active');
   document.getElementById('bigArabic').innerText=h.a;
   document.getElementById('bigArabicName').innerText=h.ar;
   document.getElementById('bigName').innerText=h.bn;
-  playGuaranteed(h.ar, h.bn, h.en);
+
+  playArabicPure(h.ar);
   if(navigator.vibrate) navigator.vibrate(20);
 }
 
-function fixSound(){
-  initAudio();
-  loadVoices();
-  // জোর করে আনলক
-  let osc = audioCtx.createOscillator(); let g = audioCtx.createGain();
-  g.gain.value=0; osc.connect(g); g.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime+0.1);
-  speechSynthesis.getVoices();
-  let u = new SpeechSynthesisUtterance("সাউন্ড ঠিক করা হয়েছে");
-  u.lang='bn-BD'; u.rate=0.9;
-  speechSynthesis.speak(u);
-  document.getElementById('debug').innerText="✅ Fix করা হয়েছে - এবার হরফে ক্লিক করুন";
-  // Test
-  setTimeout(()=>selectHaraf(0), 800);
-}
-
-function toggleMute(){
-  isMuted=!isMuted;
-  document.getElementById('muteBtn').innerText=isMuted?'🔇':'🔊';
-}
-
 render();
-document.body.addEventListener('touchstart', ()=>{ initAudio(); loadVoices(); }, {once:true});
-setTimeout(loadVoices, 500);
+
+// APK তে প্রথম টাচে Audio Unlock - এটা জরুরি
+document.body.addEventListener('touchstart', function unlock(){
+  audioPlayer.play().then(()=>{ audioPlayer.pause(); }).catch(()=>{});
+  let u = new SpeechSynthesisUtterance('');
+  speechSynthesis.speak(u);
+}, {once:true});
+
 </script>
 </body>
 </html>
