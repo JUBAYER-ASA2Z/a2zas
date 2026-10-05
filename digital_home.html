@@ -23,18 +23,10 @@ body{background:#f8fafc; margin:0;}
   box-shadow: 0 10px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,1);
   transition:0.18s cubic-bezier(.2,.8,.2,1);
 }
-.card-premium:active{transform:scale(0.92) translateY(2px); box-shadow:0 4px 12px rgba(0,0,0,0.1);}
-.card-premium.open{
-  box-shadow: 0 20px 40px rgba(16,185,129,0.18), 0 8px 16px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,1);
-  border-color: #6ee7b7;
-}
-.icon-box{
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 8px 16px rgba(0,0,0,0.15);
-}
-.locked-premium{
-  background:linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%)!important;
-  opacity:0.95;
-}
+.card-premium:active{transform:scale(0.92) translateY(2px);}
+.card-premium.open{ box-shadow: 0 20px 40px rgba(16,185,129,0.18), 0 8px 16px rgba(0,0,0,0.06); border-color: #6ee7b7; }
+.icon-box{ box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 8px 16px rgba(0,0,0,0.15); }
+.locked-premium{ background:linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%)!important; }
 </style>
 </head>
 <body translate="no" class="notranslate">
@@ -43,49 +35,49 @@ body{background:#f8fafc; margin:0;}
 
 <div class="max-w-[480px] mx-auto min-h-screen flex flex-col p-4 pb-24">
 
-  <!-- Header Dark Premium -->
+  <!-- Header -->
   <div class="flex justify-between items-center">
     <button onclick="location.href='./index.html'" class="w-11 h-11 rounded-full glass-dark text-white flex items-center justify-center font-black text-[18px] active:scale-90">←</button>
     <div class="glass-dark rounded-full px-6 py-2.5 font-black text-[12px] text-white tracking-wide shadow-xl">📚 DIGITAL EDUCATION</div>
     <button id="langBtn" onclick="toggleLang()" class="w-11 h-11 rounded-full bg-slate-900 text-white text-[11px] font-black active:scale-90 shadow-xl">EN</button>
   </div>
 
-  <!-- Title Premium White -->
+  <!-- Title -->
   <div class="mt-5 card-premium open rounded-[22px] p-4 flex items-center gap-3">
     <div class="w-14 h-14 rounded-[16px] bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-[26px] text-white icon-box">🎓</div>
     <div class="flex-1">
       <p class="font-black text-[15px] text-slate-900" id="subTitle">ডিজিটাল প্রফেশনাল শিক্ষা</p>
       <p class="text-slate-500 text-[11px] font-bold mt-0.5" id="subDesc">১০টি পর্ব • High Quality</p>
     </div>
-    <div class="w-9 h-9 rounded-full bg-emerald-500 flex items-center justify-center text-white font-black text-[12px] shadow">✓</div>
+    <div class="w-9 h-9 rounded-full bg-emerald-500 flex items-center justify-center text-white font-black text-[12px]">✓</div>
   </div>
 
-  <!-- Grid -->
+  <!-- Grid 3 per row -->
   <div class="mt-6 grid grid-cols-3 gap-3.5" id="eduGrid"></div>
 
-  <!-- Modal Premium -->
+  <!-- Modal -->
   <div id="updateModal" class="hidden fixed inset-0 z-[99] bg-slate-900/60 backdrop-blur-xl flex items-center justify-center p-6">
     <div class="bg-white rounded-[24px] p-7 w-full max-w-[320px] text-center shadow-[0_30px_60px_rgba(0,0,0,0.3)]">
-      <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-[36px] shadow-lg">🚧</div>
+      <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-[36px]">🚧</div>
       <p class="font-black text-[18px] mt-4 text-slate-900" id="modalTitle">আপডেট চলছে</p>
-      <p class="text-slate-500 text-[12px] mt-2 font-bold leading-[18px]" id="modalDesc">এই পর্বটি শীঘ্রই আসছে ইনশাআল্লাহ</p>
-      <button onclick="document.getElementById('updateModal').classList.add('hidden')" class="mt-6 w-full py-3.5 bg-slate-900 text-white rounded-full font-black text-[13px] active:scale-95 shadow">ঠিক আছে</button>
+      <p class="text-slate-500 text-[12px] mt-2 font-bold" id="modalDesc">এই পর্বটি শীঘ্রই আসছে ইনশাআল্লাহ</p>
+      <button onclick="document.getElementById('updateModal').classList.add('hidden')" class="mt-6 w-full py-3.5 bg-slate-900 text-white rounded-full font-black text-[13px]">ঠিক আছে</button>
     </div>
   </div>
 
+  <!-- Watermark -->
   <div class="mt-auto pt-10 text-center">
     <p class="text-slate-400 text-[10px] tracking-[4px] font-black">QARI & DEVELOPER</p>
     <p class="font-black text-slate-900 text-[14px] mt-1">Qari MD Jubayer Ahmed Siyam</p>
-    <p class="text-slate-400 text-[9px] mt-1">A-S A2Z • Premium Quality</p>
+    <p class="text-slate-400 text-[9px] mt-1">A-S A2Z • Premium Quality • 2026</p>
   </div>
 
 </div>
 
 <script>
 let lang = localStorage.getItem('edu_lang') || 'bn';
-
 const ITEMS=[
-{ id:1, bn:"প্রাথমিক আরবি", en:"Arabic P1", subBn:"হরফ শিক্ষা", subEn:"Horof", icon:"ا", grad:"from-emerald-400 via-emerald-500 to-teal-600", shadow:"shadow-emerald-500/30", open:true, link:"./arabic_horof.html"},
+{ id:1, bn:"প্রাথমিক আরবি", en:"Arabic P1", subBn:"হরফ শিক্ষা", subEn:"Horof", icon:"ا", grad:"from-emerald-400 via-emerald-500 to-teal-600", shadow:"shadow-emerald-500/30", open:true, link:"./arabic_part1.html"},
 { id:2, bn:"২য় পর্ব আরবি", en:"Arabic P2", subBn:"হরকত", subEn:"Harakat", icon:"َ", grad:"from-violet-500 via-purple-500 to-indigo-600", shadow:"shadow-violet-500/30", open:false},
 { id:3, bn:"৩য় পর্ব আরবি", en:"Arabic P3", subBn:"তানবীন", subEn:"Tanween", icon:"ً", grad:"from-blue-500 via-sky-500 to-cyan-500", shadow:"shadow-blue-500/30", open:false},
 { id:4, bn:"৪র্থ পর্ব আরবি", en:"Arabic P4", subBn:"সুকুন", subEn:"Sukun", icon:"ْ", grad:"from-orange-400 via-amber-500 to-orange-600", shadow:"shadow-orange-500/30", open:false},
@@ -99,21 +91,17 @@ const ITEMS=[
 
 function renderGrid(){
   document.getElementById('eduGrid').innerHTML = ITEMS.map(it=>`
-    <div onclick="openItem(${it.id})" class="card-premium ${it.open?'open':'locked-premium'} rounded-[20px] p-3 text-center cursor-pointer relative overflow-hidden">
-      ${it.open?'<div class="absolute top-0 right-0 w-16 h-16 bg-emerald-400/20 rounded-full blur-[12px]"></div>':''}
-      <div class="relative">
-        <div class="w-14 h-14 mx-auto rounded-[15px] bg-gradient-to-br ${it.grad} ${it.shadow} shadow-[0_10px_20px] flex items-center justify-center text-white font-black text-[20px] icon-box border-white/30">
-          ${it.icon}
-          ${!it.open?'<span class="absolute -top-1 -right-1 w-5 h-5 bg-slate-800 text-white rounded-full flex items-center justify-center text-[9px] border-2 border-white">🔒</span>':''}
-        </div>
-        <p class="font-black text-[11px] mt-3 leading-[13px] ${it.open?'text-slate-900':'text-slate-600'}">${lang=='bn'?it.bn:it.en}</p>
-        <p class="text-[9px] font-bold mt-1 ${it.open?'text-emerald-600':'text-slate-400'}">${lang=='bn'?it.subBn:it.subEn}</p>
-        ${it.open?'<span class="mt-2 inline-block bg-emerald-500 text-white text-[7px] font-black px-2.5 py-1 rounded-full tracking-widest">OPEN</span>':'<span class="mt-2 inline-block bg-slate-200 text-slate-500 text-[7px] font-black px-2.5 py-1 rounded-full">LOCK</span>'}
+    <div onclick="openItem(${it.id})" class="card-premium ${it.open?'open':'locked-premium'} rounded-[20px] p-3 text-center cursor-pointer relative">
+      <div class="w-14 h-14 mx-auto rounded-[15px] bg-gradient-to-br ${it.grad} shadow-[0_10px_20px] flex items-center justify-center text-white font-black text-[20px] icon-box">
+        ${it.icon}
+        ${!it.open?'<span class="absolute -top-1 -right-1 w-5 h-5 bg-slate-800 text-white rounded-full flex items-center justify-center text-[9px] border-2 border-white">🔒</span>':''}
       </div>
+      <p class="font-black text-[11px] mt-3 leading-[13px] ${it.open?'text-slate-900':'text-slate-600'}">${lang=='bn'?it.bn:it.en}</p>
+      <p class="text-[9px] font-bold mt-1 ${it.open?'text-emerald-600':'text-slate-400'}">${lang=='bn'?it.subBn:it.subEn}</p>
+      ${it.open?'<span class="mt-2 inline-block bg-emerald-500 text-white text-[7px] font-black px-2.5 py-1 rounded-full">OPEN</span>':'<span class="mt-2 inline-block bg-slate-200 text-slate-500 text-[7px] font-black px-2.5 py-1 rounded-full">LOCK</span>'}
     </div>
   `).join('');
 }
-
 function openItem(id){
   let it=ITEMS.find(x=>x.id==id);
   if(it.open && it.link) location.href=it.link;
@@ -132,6 +120,7 @@ function toggleLang(){
   renderGrid();
 }
 renderGrid();
+document.getElementById('langBtn').innerText=lang=='bn'?'EN':'BN';
 </script>
 </body>
 </html>
