@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Digital Arabic P1</title>
+<title>Digital Arabic P1 - Real Voice</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.responsivevoice.org/responsivevoice.js?key=5k1u1w2q"></script>
 <style>
 *{font-family:'Hind Siliguri'; user-select:none; -webkit-tap-highlight-color:transparent; box-sizing:border-box;}
 body{background:#050a06; margin:0;}
@@ -13,7 +14,6 @@ body{background:#050a06; margin:0;}
 .arabic{font-family:'Amiri', serif;}
 .letter-card.active{background:linear-gradient(135deg, #ef4444, #b91c1c)!important; box-shadow:0 0 30px rgba(239,68,68,0.7); transform:scale(1.05);}
 .letter-card.active p{color:white!important;}
-.no-scrollbar::-webkit-scrollbar{display:none}
 </style>
 </head>
 <body class="text-white">
@@ -35,14 +35,14 @@ body{background:#050a06; margin:0;}
         <span id="bigBn" class="bg-white text-black px-3 py-1 rounded-full text-[11px] font-black">আলিফ</span>
         <span id="bigEn" class="bg-emerald-400 text-black px-3 py-1 rounded-full text-[11px] font-black">Alif</span>
       </div>
-      <p id="soundStatus" class="text-[10px] text-emerald-300 mt-2 font-bold">👆 হরফে ক্লিক করুন - সাউন্ড বাজবে</p>
+      <p id="soundStatus" class="text-[10px] text-emerald-300 mt-2 font-bold animate-pulse">🔊 Real Human Voice - ক্লিক করুন</p>
     </div>
   </div>
-  <div class="flex-1 overflow-y-auto no-scrollbar px-3 pb-4">
+  <div class="flex-1 overflow-y-auto px-3 pb-4">
     <div id="horofGrid" class="grid grid-cols-4 gap-3 mt-3"></div>
     <button onclick="document.getElementById('updateModal').classList.remove('hidden')" class="mt-6 w-full py-4 bg-zinc-800 border border-zinc-700 rounded-full font-black text-[12px]">🔒 UPDATE - Coming Soon</button>
     <div class="mt-8 text-center pb-8">
-      <p class="text-white/30 text-[10px] tracking-[3px] font-black">QARI & DEVELOPER</p>
+      <p class="text-white/30 text-[10px] tracking-[4px] font-black">QARI & DEVELOPER</p>
       <p class="font-black text-[14px] mt-1">Qari MD Jubayer Ahmed Siyam</p>
     </div>
   </div>
@@ -57,15 +57,13 @@ body{background:#050a06; margin:0;}
 
 <script>
 let isMuted=false;
-let audioCtx=null;
-
 const HOROFS=[
 {a:"ا", bn:"আলিফ", en:"Alif", speak:"Alif"},
 {a:"ب", bn:"বা", en:"Ba", speak:"Ba"},
 {a:"ت", bn:"তা", en:"Ta", speak:"Ta"},
 {a:"ث", bn:"ছা", en:"Sa", speak:"Tha"},
 {a:"ج", bn:"জীম", en:"Jeem", speak:"Jeem"},
-{a:"ح", bn:"হা", en:"Hha", speak:"Hha"},
+{a:"ح", bn:"হা", en:"Hha", speak:"Haa"},
 {a:"خ", bn:"খা", en:"Kha", speak:"Kha"},
 {a:"د", bn:"দাল", en:"Dal", speak:"Dal"},
 {a:"ذ", bn:"যাল", en:"Zal", speak:"Zal"},
@@ -73,10 +71,10 @@ const HOROFS=[
 {a:"ز", bn:"যা", en:"Za", speak:"Za"},
 {a:"س", bn:"সীন", en:"Seen", speak:"Seen"},
 {a:"ش", bn:"শীন", en:"Sheen", speak:"Sheen"},
-{a:"ص", bn:"সোয়াদ", en:"Saad", speak:"Saad"},
-{a:"ض", bn:"দোয়াদ", en:"Daad", speak:"Daad"},
-{a:"ط", bn:"ত্বা", en:"Taa", speak:"Twa"},
-{a:"ظ", bn:"য্বা", en:"Dhaa", speak:"Dha"},
+{a:"ص", bn:"সোয়াদ", en:"Saad", speak:"Swad"},
+{a:"ض", bn:"দোয়াদ", en:"Daad", speak:"Dwad"},
+{a:"ط", bn:"ত্বা", en:"Taa", speak:"Toa"},
+{a:"ظ", bn:"য্বা", en:"Dhaa", speak:"Zoaa"},
 {a:"ع", bn:"আইন", en:"Ain", speak:"Ain"},
 {a:"غ", bn:"গাইন", en:"Ghain", speak:"Ghain"},
 {a:"ف", bn:"ফা", en:"Fa", speak:"Fa"},
@@ -84,31 +82,16 @@ const HOROFS=[
 {a:"ك", bn:"কাফ", en:"Kaf", speak:"Kaf"},
 {a:"ل", bn:"লাম", en:"Lam", speak:"Lam"},
 {a:"م", bn:"মীম", en:"Meem", speak:"Meem"},
-{a:"ن", bn:"নূন", en:"Nun", speak:"Nun"},
+{a:"ن", bn:"নূন", en:"Nun", speak:"Noon"},
 {a:"و", bn:"ওয়াও", en:"Waw", speak:"Waw"},
 {a:"ه", bn:"হা", en:"Ha", speak:"Haa"},
 {a:"ء", bn:"হামজা", en:"Hamza", speak:"Hamza"},
 {a:"ي", bn:"ইয়া", en:"Ya", speak:"Ya"},
 ];
 
-function initAudio(){
-  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-}
-
-function playBeep(){
-  initAudio();
-  let osc = audioCtx.createOscillator();
-  let gain = audioCtx.createGain();
-  osc.connect(gain); gain.connect(audioCtx.destination);
-  osc.frequency.value = 800;
-  gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime+0.3);
-  osc.start(); osc.stop(audioCtx.currentTime+0.3);
-}
-
 function render(){
   document.getElementById('horofGrid').innerHTML=HOROFS.map((h,i)=>`
-    <div onclick="selectHaraf(${i})" id="card-${i}" class="letter-card gorilla bg-white rounded-[16px] p-3 text-center">
+    <div onclick="selectHaraf(${i})" id="card-${i}" class="letter-card gorilla bg-white rounded-[16px] p-3 text-center cursor-pointer active:scale-90">
       <p class="arabic text-[36px] text-black font-bold">${h.a}</p>
       <p class="text-[10px] font-black text-black/80">${h.bn}</p>
     </div>
@@ -116,7 +99,6 @@ function render(){
 }
 
 function selectHaraf(i){
-  initAudio();
   let h=HOROFS[i];
   document.querySelectorAll('.letter-card').forEach(c=>c.classList.remove('active'));
   document.getElementById(`card-${i}`).classList.add('active');
@@ -125,55 +107,33 @@ function selectHaraf(i){
   document.getElementById('bigBn').innerText=h.bn;
   document.getElementById('bigEn').innerText=h.en;
 
-  playBeep(); // ১. প্রথমে টোন - যাতে বোঝা যায় ক্লিক হয়েছে
-  speakNow(h);
+  if(!isMuted){
+    document.getElementById('soundStatus').innerText="🔊 বলছে: "+h.bn;
+    // REAL HUMAN VOICE - Arabic
+    responsiveVoice.speak(h.speak, "Arabic Female", {
+      rate: 0.7,
+      onend: function(){
+        // তারপর বাংলা
+        responsiveVoice.speak(h.bn, "Bangla", {rate: 0.8});
+        document.getElementById('soundStatus').innerText="✅ "+h.bn;
+      }
+    });
+  }
   if(navigator.vibrate) navigator.vibrate(50);
-}
-
-function speakNow(h){
-  if(isMuted) return;
-  window.speechSynthesis.cancel();
-
-  // ১০০% কাজ করবে - ইংরেজি ভয়েস সব ফোনে থাকে
-  let utter = new SpeechSynthesisUtterance(h.speak + ", " + h.bn);
-  utter.lang = 'en-US'; // সব ফোনে en-US থাকেই
-  utter.rate = 0.75;
-  utter.pitch = 1;
-  utter.volume = 1;
-
-  // যদি bn ভয়েস থাকে তাহলে ওটা ইউজ করবে, না থাকলে en
-  let voices = speechSynthesis.getVoices();
-  let bnVoice = voices.find(v=>v.lang.toLowerCase().includes('bn')) || voices.find(v=>v.lang.toLowerCase().includes('en'));
-  if(bnVoice) utter.voice = bnVoice;
-
-  utter.onstart = ()=>{ document.getElementById('soundStatus').innerText = "🔊 " + h.bn + " - " + h.en; };
-  utter.onend = ()=>{ document.getElementById('soundStatus').innerText = "✅ " + h.bn; };
-  utter.onerror = ()=>{
-    document.getElementById('soundStatus').innerText = "🔊 " + h.bn + " (Beep Mode)";
-    playBeep();
-  };
-
-  speechSynthesis.speak(utter);
 }
 
 function toggleMute(){
   isMuted=!isMuted;
   document.getElementById('muteBtn').innerText=isMuted?'🔇':'🔊';
-  if(isMuted) speechSynthesis.cancel();
+  if(isMuted) responsiveVoice.cancel();
 }
 
 render();
 selectHaraf(0);
 
-// ভয়েস লোড
-setTimeout(()=>{ speechSynthesis.getVoices(); },500);
-speechSynthesis.onvoiceschanged = ()=>{ speechSynthesis.getVoices(); };
-
-// প্রথম টাচে Audio Unlock (APK এর জন্য জরুরি)
-document.body.addEventListener('touchstart', ()=>{
-  initAudio();
-  let u = new SpeechSynthesisUtterance('');
-  speechSynthesis.speak(u);
+// প্রথম টাচে unlock
+document.body.addEventListener('click', function(){
+  responsiveVoice.speak("", "US English Female");
 }, {once:true});
 </script>
 </body>
