@@ -1,201 +1,30 @@
 <!DOCTYPE html>
-<html lang="bn">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Account - A2Z</title>
-<style>
-body{font-family: sans-serif; background:#f5f5f5; margin:0; padding:0;}
-.top-bar{display:flex; align-items:center; padding:12px; background:#fff; border-bottom:1px solid #ddd; position:sticky; top:0;}
-.back-btn{background:#111; color:#fff; border:none; padding:8px 15px; border-radius:8px; font-size:16px;}
-.container{max-width:420px; margin:auto; padding:15px;}
-.card{background:#fff; padding:20px; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.05); margin-top:15px;}
-input{width:100%; padding:12px; margin:6px 0; border:1px solid #ccc; border-radius:8px; box-sizing:border-box; font-size:15px;}
-.btn{width:100%; padding:12px; border:none; border-radius:8px; font-size:16px; cursor:pointer; margin-top:10px;}
-.btn-blue{background:#007bff; color:#fff;}
-.btn-green{background:#28a745; color:#fff;}
-.btn-dark{background:#222; color:#fff;}
-.btn-red{background:#ff2d2d; color:#fff;}
-.link{color:#007bff; cursor:pointer; font-weight:bold;}
-.profile-img{width:90px; height:90px; border-radius:50%; object-fit:cover; border:3px solid #007bff;}
-.notice-box{margin-top:15px; background:#fff; border-left:4px solid #ffc107; padding:10px; border-radius:8px; display:flex; align-items:center; gap:10px;}
-.notice-yellow{background:#ffeb3b; padding:4px 10px; border-radius:20px; font-size:13px; font-weight:bold;}
-.small{font-size:12px; color:#666; margin-top:8px;}
-</style>
-</head>
-<body>
-
-<div class="top-bar">
-  <button class="back-btn" onclick="history.back()">← Break</button>
-  <b style="margin-left:15px; font-size:18px;">Account</b>
-</div>
-
+<html lang="bn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Account</title>
+<style>body{font-family:sans-serif;background:#f5f5f5;margin:0}.top-bar{display:flex;justify-content:space-between;padding:12px;background:#fff;border-bottom:1px solid #ddd;position:sticky;top:0;z-index:10}.back-btn{background:#111;color:#fff;border:none;padding:8px 15px;border-radius:8px}.container{max-width:420px;margin:auto;padding:15px}.card{background:#fff;padding:20px;border-radius:12px;margin-top:15px}.btn{width:100%;padding:12px;border:none;border-radius:8px;font-weight:bold;margin-top:10px}.btn-blue{background:#007bff;color:#fff}.btn-green{background:#28a745;color:#fff}.btn-gold{background:linear-gradient(135deg,#FFD700,#FFA500);color:#000}.gold-badge{background:linear-gradient(135deg,#FFD700,#FFB700);padding:6px 14px;border-radius:20px;font-weight:900}input{width:100%;padding:12px;margin:6px 0;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}#adminPanel{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:999;padding:15px;box-sizing:border-box;overflow:auto}</style></head><body>
+<div class="top-bar"><div><button class="back-btn" onclick="history.back()">←</button><b id="secretTrigger" style="margin-left:10px;">Account</b></div><div id="goldDisplay" class="gold-badge" style="display:none;">💰 0</div></div>
 <div class="container">
-
-  <!-- LOGIN -->
-  <div id="loginBox" class="card">
-    <h2 style="margin:0 0 10px 0;">Login</h2>
-    <input id="loginId" placeholder="Number বা Gmail দিন">
-    <input id="loginPass" type="password" placeholder="Password">
-    <button class="btn btn-blue" onclick="doLogin()">Login</button>
-    <p class="small">একাউন্ট নেই? <span class="link" onclick="showReg()">Registration করুন</span></p>
-    <p class="small">পাসওয়ার্ড ভুলে গেলে সাপোর্টের সাথে যোগাযোগ করুন</p>
-  </div>
-
-  <!-- REGISTRATION -->
-  <div id="regBox" class="card" style="display:none;">
-    <h2 style="margin:0 0 10px 0;">Registration</h2>
-    <input id="regId" placeholder="User ID (Number অথবা Gmail)">
-    <input id="regName" placeholder="আপনার নাম">
-    <input id="regPass" type="password" placeholder="Password তৈরি করুন">
-    <button class="btn btn-green" onclick="doReg()">Registration</button>
-    <p class="small">এক ডিভাইসে একবার রেজিস্ট্রেশন করতে পারবেন</p>
-    <p class="small">একাউন্ট আছে? <span class="link" onclick="showLogin()">Login করুন</span></p>
-  </div>
-
-  <!-- PROFILE -->
-  <div id="profileBox" class="card" style="display:none;">
-    <center>
-      <img id="profileImg" class="profile-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
-      <br>
-      <input type="file" id="profilePicInput" accept="image/*" style="margin-top:10px;">
-      <h3 id="pName" style="margin:10px 0 2px 0;"></h3>
-      <p id="pId" style="margin:0; color:#666; font-size:13px;"></p>
-    </center>
-
-    <div style="margin-top:20px;">
-      <label>নাম পরিবর্তন</label>
-      <input id="editName" placeholder="নতুন নাম লিখুন">
-      <button class="btn btn-dark" onclick="updateName()">নাম আপডেট করুন</button>
-    </div>
-
-    <hr style="margin:20px 0;">
-
-    <div>
-      <label>পাসওয়ার্ড পরিবর্তন</label>
-      <input id="oldPass" type="password" placeholder="পুরান পাসওয়ার্ড">
-      <input id="newPass" type="password" placeholder="নতুন পাসওয়ার্ড">
-      <button class="btn btn-dark" onclick="changePass()">পাসওয়ার্ড পরিবর্তন</button>
-      <p class="small" style="color:red;">পাসওয়ার্ড ভুলে গেলে সাপোর্টের সাথে যোগাযোগ করুন</p>
-    </div>
-
-    <div class="notice-box">
-      <b>Notice</b>
-      <span id="liveNotice" class="notice-yellow">লোড হচ্ছে...</span>
-    </div>
-
-    <button class="btn btn-red" onclick="doLogout()">Logout / Break</button>
-  </div>
-
+<div id="loginBox" class="card"><h2>Login</h2><input id="loginId" placeholder="User ID"><input id="loginPass" type="password" placeholder="Password"><button class="btn btn-blue" onclick="doLogin()">Login</button><p style="font-size:12px;text-align:center">No account? <span onclick="showReg()" style="color:#007bff;font-weight:bold">Register</span></p></div>
+<div id="regBox" class="card" style="display:none"><h2>Registration</h2><input id="regId" placeholder="User ID (6 char a-z 0-9)" oninput="this.value=this.value.toLowerCase()"><input id="regName" placeholder="Name"><input id="regPass" type="password" placeholder="Password"><button class="btn btn-green" onclick="doReg()">Create</button><p style="font-size:12px;text-align:center"><span onclick="showLogin()" style="color:#007bff;font-weight:bold">Login</span></p></div>
+<div id="profileBox" class="card" style="display:none"><center><h3 id="pName"></h3><p id="pId"></p><div id="pGold" style="font-size:22px;font-weight:900">💰 0 Gold</div></center>
+<div style="margin-top:15px"><input id="transferId" placeholder="Receiver User ID"><input id="transferAmount" type="number" placeholder="Gold Amount"><button class="btn btn-gold" onclick="transferGold()">Transfer Gold</button></div>
+<div id="noticeBox" style="margin-top:15px;background:#fffbe6;border-left:4px solid #FFD700;padding:10px;border-radius:8px"><span id="liveNotice">No notice</span></div>
+<button class="btn" style="background:#222;color:#fff" onclick="doLogout()">Logout</button><button class="btn" style="background:#ff2d2d;color:#fff" onclick="deleteAccount()">Delete Account</button>
+<p style="font-size:11px;text-align:center;color:#888">Gold is virtual points, no real money value.<br><a href="privacy.html">Privacy Policy</a></p></div>
 </div>
-
+<div id="adminPanel"><div style="max-width:500px;margin:auto;background:#fff;padding:15px;border-radius:10px"><h3>Admin <button onclick="adminPanel.style.display='none'" style="float:right">X</button></h3><div id="allUsersList"></div><button class="btn btn-blue" onclick="loadAllUsers()">Refresh Users</button><hr><input id="noticeToId" placeholder="User ID or blank=all"><input id="noticeText" placeholder="Notice text"><button class="btn btn-blue" onclick="sendNotice()">Send Notice</button><hr><input id="goldUserId" placeholder="User ID"><input id="goldAmount" type="number" placeholder="Amount"><button class="btn btn-gold" onclick="adminAddGold()">Add Gold</button></div></div>
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzp1BocPfy59Y0FBNutnHdBq1nY4QfIWwsrIZy-s-ECXHn0hgpq_whU475M1KnqVCC/exec";
-
-let deviceId = localStorage.getItem('a2z_deviceId');
-if(!deviceId){
-  deviceId = 'dev_'+Date.now()+'_'+Math.random().toString(36).substr(2,9);
-  localStorage.setItem('a2z_deviceId', deviceId);
-}
-
-function showReg(){ document.getElementById('loginBox').style.display='none'; document.getElementById('regBox').style.display='block'; }
-function showLogin(){ document.getElementById('regBox').style.display='none'; document.getElementById('loginBox').style.display='block'; }
-
-function doReg(){
-  let uid = document.getElementById('regId').value.trim();
-  let name = document.getElementById('regName').value.trim();
-  let pass = document.getElementById('regPass').value.trim();
-  if(!uid ||!pass){ alert("ID ও Password দিন"); return; }
-  fetch(`${SCRIPT_URL}?action=register&userId=${encodeURIComponent(uid)}&name=${encodeURIComponent(name)}&pass=${encodeURIComponent(pass)}&deviceId=${deviceId}`)
- .then(r=>r.json()).then(d=>{
-    if(d.error){
-      if(d.error=="Exists") alert("এই ID দিয়ে আগেই রেজিস্ট্রেশন হয়েছে");
-      else alert(d.error);
-    } else {
-      localStorage.setItem('a2z_userId', d.userId);
-      localStorage.setItem('a2z_name', name);
-      alert("রেজিস্ট্রেশন সফল");
-      location.reload();
-    }
-  });
-}
-
-function doLogin(){
-  let uid = document.getElementById('loginId').value.trim();
-  let pass = document.getElementById('loginPass').value.trim();
-  fetch(`${SCRIPT_URL}?action=login&userId=${encodeURIComponent(uid)}&pass=${encodeURIComponent(pass)}`)
- .then(r=>r.json()).then(d=>{
-    if(d.error){ alert("User ID বা Password ভুল"); }
-    else {
-      localStorage.setItem('a2z_userId', d.userId);
-      localStorage.setItem('a2z_name', d.name);
-      location.reload();
-    }
-  });
-}
-
-function checkLogin(){
-  let uid = localStorage.getItem('a2z_userId');
-  if(uid){
-    document.getElementById('loginBox').style.display='none';
-    document.getElementById('regBox').style.display='none';
-    document.getElementById('profileBox').style.display='block';
-    document.getElementById('pId').innerText = uid;
-    document.getElementById('pName').innerText = localStorage.getItem('a2z_name') || uid;
-    document.getElementById('editName').value = localStorage.getItem('a2z_name') || "";
-    let pic = localStorage.getItem('a2z_profile_pic_'+uid);
-    if(pic) document.getElementById('profileImg').src = pic;
-    // Live Notice Load - এখানে Admin Notice লেখা থাকবে না
-    fetch(`${SCRIPT_URL}?action=getNotice`).then(r=>r.json()).then(data=>{
-      if(data && data.length>0){ document.getElementById('liveNotice').innerText = data[0].text; }
-      else { document.getElementById('liveNotice').innerText = "কোন নোটিশ নেই"; }
-    });
-  }
-}
-
-function updateName(){
-  let newName = document.getElementById('editName').value.trim();
-  if(!newName) return;
-  localStorage.setItem('a2z_name', newName);
-  document.getElementById('pName').innerText = newName;
-  alert("নাম আপডেট হয়েছে");
-}
-
-function changePass(){
-  let uid = localStorage.getItem('a2z_userId');
-  let oldP = document.getElementById('oldPass').value.trim();
-  let newP = document.getElementById('newPass').value.trim();
-  if(!oldP ||!newP){ alert("দুটি পাসওয়ার্ডই দিন"); return; }
-  fetch(`${SCRIPT_URL}?action=changePassword&userId=${encodeURIComponent(uid)}&oldPass=${encodeURIComponent(oldP)}&newPass=${encodeURIComponent(newP)}`)
- .then(r=>r.json()).then(d=>{
-    if(d.ok) alert("পাসওয়ার্ড পরিবর্তন হয়েছে");
-    else alert(d.error || "ভুল হয়েছে");
-  });
-}
-
-function doLogout(){
-  if(confirm("Break করতে চান?")){
-    localStorage.removeItem('a2z_userId');
-    localStorage.removeItem('a2z_name');
-    location.reload();
-  }
-}
-
-// ছবি শুধু প্রোফাইলে থাকবে, শিটে যাবে না
-document.getElementById('profilePicInput').addEventListener('change', function(e){
-  let file = e.target.files[0];
-  if(!file) return;
-  let reader = new FileReader();
-  reader.onload = function(){
-    let uid = localStorage.getItem('a2z_userId');
-    localStorage.setItem('a2z_profile_pic_'+uid, reader.result);
-    document.getElementById('profileImg').src = reader.result;
-  }
-  reader.readAsDataURL(file);
-});
-
-checkLogin();
-</script>
-
-</body>
-</html>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_oRlZS8lwB9JnkZQeUCQOfn-BVrMSPtEyqVvBuKUjH9KMAyMABT0PER46gTqB4P4J/exec";
+let c=0,t; document.getElementById('secretTrigger').addEventListener('click',()=>{ c++; clearTimeout(t); t=setTimeout(()=>c=0,2000); if(c>=3){ c=0; if(prompt("Code:")==="321123"){ adminPanel.style.display='block'; loadAllUsers(); } } });
+function showReg(){loginBox.style.display='none';regBox.style.display='block'} function showLogin(){regBox.style.display='none';loginBox.style.display='block'}
+function isValidId(id){return /^[a-z0-9]{6,}$/.test(id)}
+function doReg(){let u=regId.value.trim().toLowerCase(),n=regName.value.trim(),p=regPass.value.trim(); if(!isValidId(u)){alert("ID 6 char a-z 0-9");return} fetch(`${SCRIPT_URL}?action=register&userId=${u}&name=${encodeURIComponent(n)}&pass=${encodeURIComponent(p)}`).then(r=>r.json()).then(d=>{ if(d.error){alert(d.error=="Exists"?"ID already exists":"Error")} else{localStorage.setItem('a2z_userId',d.userId);localStorage.setItem('a2z_name',n);location.reload()}})}
+function doLogin(){let u=loginId.value.trim().toLowerCase(),p=loginPass.value.trim(); fetch(`${SCRIPT_URL}?action=login&userId=${u}&pass=${encodeURIComponent(p)}`).then(r=>r.json()).then(d=>{ if(d.error)alert("Wrong ID/Pass"); else{localStorage.setItem('a2z_userId',d.userId);localStorage.setItem('a2z_name',d.name);location.reload()}})}
+function check(){let u=localStorage.getItem('a2z_userId'); if(u){loginBox.style.display='none';regBox.style.display='none';profileBox.style.display='block';goldDisplay.style.display='block';pId.innerText=u;pName.innerText=localStorage.getItem('a2z_name')||u;refresh()}}
+function refresh(){let u=localStorage.getItem('a2z_userId'); fetch(`${SCRIPT_URL}?action=getUserData&userId=${u}`).then(r=>r.json()).then(d=>{pGold.innerText="💰 "+(d.gold||0)+" Gold";goldDisplay.innerText="💰 "+(d.gold||0);liveNotice.innerText=d.notice||"No notice"})}
+function transferGold(){let f=localStorage.getItem('a2z_userId'),to=transferId.value.trim().toLowerCase(),am=parseInt(transferAmount.value); if(!isValidId(to)||!am){alert("Check ID/Amount");return} fetch(`${SCRIPT_URL}?action=transferGold&fromId=${f}&toId=${to}&amount=${am}`).then(r=>r.json()).then(d=>{ if(d.ok){alert("Sent");refresh()} else alert(d.error)})}
+function doLogout(){localStorage.removeItem('a2z_userId');location.reload()} function deleteAccount(){if(!confirm("Delete all data?"))return; let u=localStorage.getItem('a2z_userId'); fetch(`${SCRIPT_URL}?action=deleteAccount&userId=${u}`).then(r=>r.json()).then(d=>{ if(d.ok){localStorage.clear();location.reload()}})}
+function loadAllUsers(){fetch(`${SCRIPT_URL}?action=getAllUsers&adminCode=321123`).then(r=>r.json()).then(d=>{ let h=""; d.forEach(x=>h+=`<div style="padding:5px;border-bottom:1px solid #ddd">${x.userId} | ${x.name} | 💰${x.gold}</div>`); allUsersList.innerHTML=h})}
+function sendNotice(){fetch(`${SCRIPT_URL}?action=sendNotice&adminCode=321123&toId=${noticeToId.value}&text=${encodeURIComponent(noticeText.value)}`).then(r=>r.json()).then(d=>alert("Sent"))}
+function adminAddGold(){fetch(`${SCRIPT_URL}?action=adminAddGold&adminCode=321123&userId=${goldUserId.value}&amount=${goldAmount.value}`).then(r=>r.json()).then(d=>alert("Done"))}
+check();
+</script></body></html>
