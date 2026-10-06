@@ -1,128 +1,82 @@
 <!DOCTYPE html>
-<html lang="bn" translate="no" class="notranslate">
+<html lang="bn" class="notranslate">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Digital Arabic - Fixed for GitHub & APK</title>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
+<title>Digital Arabic Offline</title>
 <style>
-*{font-family:'Hind Siliguri'; -webkit-tap-highlight-color:transparent; box-sizing:border-box;}
+*{font-family:system-ui,'Hind Siliguri',sans-serif; -webkit-tap-highlight-color:transparent; box-sizing:border-box; margin:0; padding:0;}
+body{background:#000; color:#fff;}
 .gorilla{background:linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 100%); backdrop-filter:blur(20px); border:1.2px solid rgba(255,255,255,0.2);}
 .arabic{font-family:'Amiri', serif;}
 .letter-card.active{background:#ef4444!important; transform:scale(1.05); box-shadow:0 0 20px red;}
 .letter-card.active p{color:white!important;}
+.grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
 </style>
 </head>
-<body class="text-white bg-black">
-<div class="max-w-[480px] mx-auto min-h-screen flex flex-col p-3">
-  <div class="flex justify-between items-center">
-    <button onclick="location.href='./islamic.html'" class="w-10 h-10 rounded-full bg-white/15 font-black">←</button>
-    <div class="gorilla rounded-full px-5 py-2 font-black text-[11px]">📖 ডিজিটাল আরবি শিক্ষা</div>
-    <button onclick="toggleMute()" id="muteBtn" class="w-10 h-10 rounded-full bg-emerald-500">🔊</button>
+<body>
+<div style="max-width:480px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; padding:12px;">
+
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <button onclick="history.back()" style="width:40px; height:40px; border-radius:999px; background:rgba(255,255,255,0.15); color:#fff; font-weight:900; border:none;">←</button>
+    <div class="gorilla" style="border-radius:999px; padding:8px 20px; font-weight:900; font-size:11px;">📖 ডিজিটাল আরবি শিক্ষা</div>
+    <button onclick="toggleMute()" id="muteBtn" style="width:40px; height:40px; border-radius:999px; background:#10b981; border:none;">🔊</button>
   </div>
 
-  <div class="mt-3 gorilla rounded-[26px] p-4 text-center border border-emerald-400/30">
-    <h1 id="bigArabic" class="arabic text-[56px]">ا</h1>
-    <p id="bigName" class="font-black text-[18px]">আলিফ</p>
-    <p id="bigEn" class="text-[11px] bg-emerald-400 text-black px-3 py-1 rounded-full inline-block mt-1 font-black">Alif</p>
-    <p id="soundStatus" class="text-[10px] text-emerald-300 mt-2 font-bold">👇 হরফে ক্লিক করুন - আরবিতে বলবে</p>
+  <div class="gorilla" style="margin-top:12px; border-radius:26px; padding:16px; text-align:center; border:1px solid rgba(16,185,129,0.3);">
+    <h1 id="bigArabic" class="arabic" style="font-size:56px; line-height:1;">ا</h1>
+    <p id="bigName" style="font-weight:900; font-size:18px; margin-top:4px;">আলিফ</p>
+    <p id="bigEn" style="font-size:11px; background:#10b981; color:#000; padding:4px 12px; border-radius:999px; display:inline-block; margin-top:4px; font-weight:900;">Alif</p>
+    <p id="soundStatus" style="font-size:10px; color:#6ee7b7; margin-top:8px; font-weight:700;">👇 হরফে ক্লিক করুন</p>
   </div>
 
-  <div id="horofGrid" class="grid grid-cols-4 gap-3 mt-3"></div>
+  <div id="horofGrid" class="grid" style="margin-top:12px;"></div>
 </div>
+
+<!-- একটাই Audio Player -->
+<audio id="harafAudio" preload="auto"></audio>
 
 <script>
 let isMuted = false;
-let voices = [];
-let arabicVoice = null;
-let banglaVoice = null;
+const audioPlayer = document.getElementById('harafAudio');
 
 const HOROFS=[
-{a:"ا", bn:"আলিফ", en:"Alif", ar:"ألف"},
-{a:"ب", bn:"বা", en:"Ba", ar:"باء"},
-{a:"ت", bn:"তা", en:"Ta", ar:"تاء"},
-{a:"ث", bn:"ছা", en:"Sa", ar:"ثاء"},
-{a:"ج", bn:"জীম", en:"Jeem", ar:"جيم"},
-{a:"ح", bn:"হা", en:"Hha", ar:"حاء"},
-{a:"خ", bn:"খা", en:"Kha", ar:"خاء"},
-{a:"د", bn:"দাল", en:"Dal", ar:"دال"},
-{a:"ذ", bn:"যাল", en:"Zal", ar:"ذال"},
-{a:"ر", bn:"রা", en:"Ra", ar:"راء"},
-{a:"ز", bn:"যা", en:"Za", ar:"زاي"},
-{a:"س", bn:"সীন", en:"Seen", ar:"سين"},
-{a:"ش", bn:"শীন", en:"Sheen", ar:"شين"},
-{a:"ص", bn:"সোয়াদ", en:"Saad", ar:"صاد"},
-{a:"ض", bn:"দোয়াদ", en:"Daad", ar:"ضاد"},
-{a:"ط", bn:"ত্বা", en:"Taa", ar:"طاء"},
-{a:"ظ", bn:"য্বা", en:"Dhaa", ar:"ظاء"},
-{a:"ع", bn:"আইন", en:"Ain", ar:"عين"},
-{a:"غ", bn:"গাইন", en:"Ghain", ar:"غين"},
-{a:"ف", bn:"ফা", en:"Fa", ar:"فاء"},
-{a:"ق", bn:"ক্বফ", en:"Qaf", ar:"قاف"},
-{a:"ك", bn:"কাফ", en:"Kaf", ar:"كاف"},
-{a:"ل", bn:"লাম", en:"Lam", ar:"لام"},
-{a:"م", bn:"মীম", en:"Meem", ar:"ميم"},
-{a:"ن", bn:"নূন", en:"Nun", ar:"نون"},
-{a:"و", bn:"ওয়াও", en:"Waw", ar:"واو"},
-{a:"ه", bn:"হা", en:"Ha", ar:"هاء"},
-{a:"ء", bn:"হামজা", en:"Hamza", ar:"همزة"},
-{a:"ي", bn:"ইয়া", en:"Ya", ar:"ياء"},
+{a:"ا", bn:"আলিফ", en:"Alif", file:"alif.mp3"},
+{a:"ب", bn:"বা", en:"Ba", file:"ba.mp3"},
+{a:"ت", bn:"তা", en:"Ta", file:"ta.mp3"},
+{a:"ث", bn:"ছা", en:"Sa", file:"sa.mp3"},
+{a:"ج", bn:"জীম", en:"Jeem", file:"jeem.mp3"},
+{a:"ح", bn:"হা", en:"Hha", file:"hha.mp3"},
+{a:"خ", bn:"খা", en:"Kha", file:"kha.mp3"},
+{a:"د", bn:"দাল", en:"Dal", file:"dal.mp3"},
+{a:"ذ", bn:"যাল", en:"Zal", file:"zal.mp3"},
+{a:"ر", bn:"রা", en:"Ra", file:"ra.mp3"},
+{a:"ز", bn:"যা", en:"Za", file:"za.mp3"},
+{a:"س", bn:"সীন", en:"Seen", file:"seen.mp3"},
+{a:"ش", bn:"শীন", en:"Sheen", file:"sheen.mp3"},
+{a:"ص", bn:"সোয়াদ", en:"Saad", file:"saad.mp3"},
+{a:"ض", bn:"দোয়াদ", en:"Daad", file:"daad.mp3"},
+{a:"ط", bn:"ত্বা", en:"Taa", file:"taa.mp3"},
+{a:"ظ", bn:"য্বা", en:"Dhaa", file:"dhaa.mp3"},
+{a:"ع", bn:"আইন", en:"Ain", file:"ain.mp3"},
+{a:"غ", bn:"গাইন", en:"Ghain", file:"ghain.mp3"},
+{a:"ف", bn:"ফা", en:"Fa", file:"fa.mp3"},
+{a:"ق", bn:"ক্বফ", en:"Qaf", file:"qaf.mp3"},
+{a:"ك", bn:"কাফ", en:"Kaf", file:"kaf.mp3"},
+{a:"ل", bn:"লাম", en:"Lam", file:"lam.mp3"},
+{a:"م", bn:"মীম", en:"Meem", file:"meem.mp3"},
+{a:"ن", bn:"নূন", en:"Nun", file:"nun.mp3"},
+{a:"و", bn:"ওয়াও", en:"Waw", file:"waw.mp3"},
+{a:"ه", bn:"হা", en:"Ha", file:"ha.mp3"},
+{a:"ء", bn:"হামজা", en:"Hamza", file:"hamza.mp3"},
+{a:"ي", bn:"ইয়া", en:"Ya", file:"ya.mp3"},
 ];
-
-function loadVoices(){
-  voices = speechSynthesis.getVoices();
-  arabicVoice = voices.find(v => v.lang.toLowerCase().includes('ar-sa') || v.lang.toLowerCase().includes('ar')) || null;
-  banglaVoice = voices.find(v => v.lang.toLowerCase().includes('bn')) || null;
-  // Debug
-  document.getElementById('soundStatus').innerText = voices.length > 0? "✅ "+voices.length+" Voice Ready - ক্লিক করুন" : "⌛ Voice লোড হচ্ছে...";
-}
-// Voice লোড হওয়া GitHub/APK তে দেরি করে, তাই ২ জায়গায় ধরতে হবে
-speechSynthesis.onvoiceschanged = loadVoices;
-setTimeout(loadVoices, 500);
-setTimeout(loadVoices, 1500);
-
-function playPureArabic(arText, bnText){
-  if(isMuted) return;
-  speechSynthesis.cancel();
-
-  // ১. প্রথমে খাঁটি আরবিতে বলবে
-  let utterAr = new SpeechSynthesisUtterance(arText);
-  utterAr.lang = 'ar-SA';
-  utterAr.rate = 0.7; // ধীরে, স্পষ্ট
-  utterAr.pitch = 1.0;
-  utterAr.volume = 1;
-  if(arabicVoice) utterAr.voice = arabicVoice;
-
-  utterAr.onstart = ()=>{ document.getElementById('soundStatus').innerText = "🔊 বলছে: "+arText; };
-
-  utterAr.onend = ()=>{
-    // ২. আরবির পর বাংলায় বলবে (যদি চান, এটা বাদ দিতে পারেন)
-    // let utterBn = new SpeechSynthesisUtterance(bnText);
-    // utterBn.lang = 'bn-BD';
-    // if(banglaVoice) utterBn.voice = banglaVoice;
-    // utterBn.rate = 0.9;
-    // speechSynthesis.speak(utterBn);
-    document.getElementById('soundStatus').innerText = "✅ "+bnText;
-  };
-
-  utterAr.onerror = ()=>{
-    // আরবি ফেইল করলে বাংলায় বলবে যাতে সাইলেন্ট না থাকে
-    let utterBn = new SpeechSynthesisUtterance(bnText);
-    utterBn.lang = 'bn-BD';
-    utterBn.rate = 0.9;
-    speechSynthesis.speak(utterBn);
-    document.getElementById('soundStatus').innerText = "🔊 "+bnText+" (আরবি Voice ইনস্টল করুন)";
-  };
-
-  speechSynthesis.speak(utterAr);
-}
 
 function render(){
   document.getElementById('horofGrid').innerHTML=HOROFS.map((h,i)=>`
-    <div onclick="selectHaraf(${i})" id="card-${i}" class="letter-card gorilla bg-white rounded-[16px] p-3 text-center">
-      <p class="arabic text-[36px] leading-[36px] text-black font-bold">${h.a}</p>
-      <p class="text-[10px] font-black text-black/80 mt-1">${h.bn}</p>
+    <div onclick="selectHaraf(${i})" id="card-${i}" class="letter-card gorilla" style="background:#fff; border-radius:16px; padding:12px; text-align:center; cursor:pointer;">
+      <p class="arabic" style="font-size:36px; line-height:36px; color:#000; font-weight:700;">${h.a}</p>
+      <p style="font-size:10px; font-weight:900; color:rgba(0,0,0,0.8); margin-top:4px;">${h.bn}</p>
     </div>
   `).join('');
 }
@@ -134,28 +88,37 @@ function selectHaraf(i){
   document.getElementById('bigArabic').innerText=h.a;
   document.getElementById('bigName').innerText=h.bn;
   document.getElementById('bigEn').innerText=h.en;
-  loadVoices(); // প্রত্যেক ক্লিকে Voice রিফ্রেশ
-  playPureArabic(h.ar, h.bn);
+
+  playMp3(h.file, h.bn);
   if(navigator.vibrate) navigator.vibrate(30);
+}
+
+function playMp3(fileName, bnName){
+  if(isMuted) return;
+  // Play Store Safe Path - Offline
+  audioPlayer.src = './data/horof/' + fileName;
+  // For Android assets: file:///android_asset/data/horof/ auto handle হবে
+
+  document.getElementById('soundStatus').innerText = "🔊 বলছে: " + bnName;
+
+  audioPlayer.play().then(()=>{
+    document.getElementById('soundStatus').innerText = "✅ " + bnName;
+  }).catch(e=>{
+    document.getElementById('soundStatus').innerText = "⚠️ অডিও পাওয়া যায়নি: " + fileName;
+    console.log(e);
+  });
 }
 
 function toggleMute(){
   isMuted=!isMuted;
   document.getElementById('muteBtn').innerText=isMuted?'🔇':'🔊';
+  if(isMuted) audioPlayer.pause();
 }
 
 render();
 
-// GitHub & APK এর জন্য Audio Unlock - খুব জরুরি
-function unlockAudio(){
-  speechSynthesis.getVoices();
-  // একটা খালি উচ্চারণ দিয়ে আনলক
-  let u = new SpeechSynthesisUtterance('');
-  speechSynthesis.speak(u);
-  loadVoices();
-}
-document.body.addEventListener('touchstart', unlockAudio, {once:true});
-document.body.addEventListener('click', unlockAudio, {once:true});
+// Mobile Audio Unlock - খুব জরুরি
+document.body.addEventListener('touchstart', ()=>{ audioPlayer.play().then(()=>audioPlayer.pause()).catch(()=>{}); }, {once:true});
 </script>
 </body>
 </html>
