@@ -1,124 +1,52 @@
-<!DOCTYPE html>
-<html lang="bn" class="notranslate">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Digital Arabic Offline</title>
-<style>
-*{font-family:system-ui,'Hind Siliguri',sans-serif; -webkit-tap-highlight-color:transparent; box-sizing:border-box; margin:0; padding:0;}
-body{background:#000; color:#fff;}
-.gorilla{background:linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 100%); backdrop-filter:blur(20px); border:1.2px solid rgba(255,255,255,0.2);}
-.arabic{font-family:'Amiri', serif;}
-.letter-card.active{background:#ef4444!important; transform:scale(1.05); box-shadow:0 0 20px red;}
-.letter-card.active p{color:white!important;}
-.grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
-</style>
-</head>
-<body>
-<div style="max-width:480px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; padding:12px;">
-
-  <div style="display:flex; justify-content:space-between; align-items:center;">
-    <button onclick="history.back()" style="width:40px; height:40px; border-radius:999px; background:rgba(255,255,255,0.15); color:#fff; font-weight:900; border:none;">←</button>
-    <div class="gorilla" style="border-radius:999px; padding:8px 20px; font-weight:900; font-size:11px;">📖 ডিজিটাল আরবি শিক্ষা</div>
-    <button onclick="toggleMute()" id="muteBtn" style="width:40px; height:40px; border-radius:999px; background:#10b981; border:none;">🔊</button>
-  </div>
-
-  <div class="gorilla" style="margin-top:12px; border-radius:26px; padding:16px; text-align:center; border:1px solid rgba(16,185,129,0.3);">
-    <h1 id="bigArabic" class="arabic" style="font-size:56px; line-height:1;">ا</h1>
-    <p id="bigName" style="font-weight:900; font-size:18px; margin-top:4px;">আলিফ</p>
-    <p id="bigEn" style="font-size:11px; background:#10b981; color:#000; padding:4px 12px; border-radius:999px; display:inline-block; margin-top:4px; font-weight:900;">Alif</p>
-    <p id="soundStatus" style="font-size:10px; color:#6ee7b7; margin-top:8px; font-weight:700;">👇 হরফে ক্লিক করুন</p>
-  </div>
-
-  <div id="horofGrid" class="grid" style="margin-top:12px;"></div>
-</div>
-
-<!-- একটাই Audio Player -->
-<audio id="harafAudio" preload="auto"></audio>
-
 <script>
 let isMuted = false;
 const audioPlayer = document.getElementById('harafAudio');
 
 const HOROFS=[
-{a:"ا", bn:"আলিফ", en:"Alif", file:"alif.mp3"},
-{a:"ب", bn:"বা", en:"Ba", file:"ba.mp3"},
-{a:"ت", bn:"তা", en:"Ta", file:"ta.mp3"},
-{a:"ث", bn:"ছা", en:"Sa", file:"sa.mp3"},
-{a:"ج", bn:"জীম", en:"Jeem", file:"jeem.mp3"},
-{a:"ح", bn:"হা", en:"Hha", file:"hha.mp3"},
-{a:"خ", bn:"খা", en:"Kha", file:"kha.mp3"},
-{a:"د", bn:"দাল", en:"Dal", file:"dal.mp3"},
-{a:"ذ", bn:"যাল", en:"Zal", file:"zal.mp3"},
-{a:"ر", bn:"রা", en:"Ra", file:"ra.mp3"},
-{a:"ز", bn:"যা", en:"Za", file:"za.mp3"},
-{a:"س", bn:"সীন", en:"Seen", file:"seen.mp3"},
-{a:"ش", bn:"শীন", en:"Sheen", file:"sheen.mp3"},
-{a:"ص", bn:"সোয়াদ", en:"Saad", file:"saad.mp3"},
-{a:"ض", bn:"দোয়াদ", en:"Daad", file:"daad.mp3"},
-{a:"ط", bn:"ত্বা", en:"Taa", file:"taa.mp3"},
-{a:"ظ", bn:"য্বা", en:"Dhaa", file:"dhaa.mp3"},
-{a:"ع", bn:"আইন", en:"Ain", file:"ain.mp3"},
-{a:"غ", bn:"গাইন", en:"Ghain", file:"ghain.mp3"},
-{a:"ف", bn:"ফা", en:"Fa", file:"fa.mp3"},
-{a:"ق", bn:"ক্বফ", en:"Qaf", file:"qaf.mp3"},
-{a:"ك", bn:"কাফ", en:"Kaf", file:"kaf.mp3"},
-{a:"ل", bn:"লাম", en:"Lam", file:"lam.mp3"},
-{a:"م", bn:"মীম", en:"Meem", file:"meem.mp3"},
-{a:"ن", bn:"নূন", en:"Nun", file:"nun.mp3"},
-{a:"و", bn:"ওয়াও", en:"Waw", file:"waw.mp3"},
-{a:"ه", bn:"হা", en:"Ha", file:"ha.mp3"},
-{a:"ء", bn:"হামজা", en:"Hamza", file:"hamza.mp3"},
-{a:"ي", bn:"ইয়া", en:"Ya", file:"ya.mp3"},
+{a:"ا", bn:"আলিফ", en:"Alif", file:"ac_alif_drillheat.m4a"},
+{a:"ب", bn:"বা", en:"Ba", file:"ac_ba_drillheat.m4a"},
+{a:"ت", bn:"তা", en:"Ta", file:"ac_ta_drillheat.m4a"},
+{a:"ث", bn:"ছা", en:"Sa", file:"ac_sa_drillheat.m4a"},
+{a:"ج", bn:"জীম", en:"Jeem", file:"ac_jeem_drillheat.m4a"},
+{a:"ح", bn:"হা", en:"Hha", file:"ac_hha_drillheat.m4a"},
+{a:"خ", bn:"খা", en:"Kha", file:"ac_kha_drillheat.m4a"},
+{a:"د", bn:"দাল", en:"Dal", file:"ac_dal_drillheat.m4a"},
+{a:"ذ", bn:"যাল", en:"Zal", file:"ac_zal_drillheat.m4a"},
+{a:"ر", bn:"রা", en:"Ra", file:"ac_ra_drillheat.m4a"},
+{a:"ز", bn:"যা", en:"Za", file:"ac_za_drillheat.m4a"},
+{a:"س", bn:"সীন", en:"Seen", file:"ac_seen_drillheat.m4a"},
+{a:"ش", bn:"শীন", en:"Sheen", file:"ac_sheen_drillheat.m4a"},
+{a:"ص", bn:"সোয়াদ", en:"Saad", file:"ac_saad_drillheat.m4a"},
+{a:"ض", bn:"দোয়াদ", en:"Daad", file:"ac_daad_drillheat.m4a"},
+{a:"ط", bn:"ত্বা", en:"Taa", file:"ac_taa_drillheat.m4a"},
+{a:"ظ", bn:"য্বা", en:"Dhaa", file:"ac_dhaa_drillheat.m4a"},
+{a:"ع", bn:"আইন", en:"Ain", file:"ac_ain_drillheat.m4a"},
+{a:"غ", bn:"গাইন", en:"Ghain", file:"ac_ghain_drillheat.m4a"},
+{a:"ف", bn:"ফা", en:"Fa", file:"ac_fa_drillheat.m4a"},
+{a:"ق", bn:"ক্বফ", en:"Qaf", file:"ac_qaf_drillheat.m4a"},
+{a:"ك", bn:"কাফ", en:"Kaf", file:"ac_kaf_drillheat.m4a"},
+{a:"ل", bn:"লাম", en:"Lam", file:"ac_lam_drillheat.m4a"},
+{a:"م", bn:"মীম", en:"Meem", file:"ac_meem_drillheat.m4a"},
+{a:"ن", bn:"নূন", en:"Nun", file:"ac_nun_drillheat.m4a"},
+{a:"و", bn:"ওয়াও", en:"Waw", file:"ac_waw_drillheat.m4a"},
+{a:"ه", bn:"হা", en:"Ha", file:"ac_ha_drillheat.m4a"},
+{a:"ء", bn:"হামজা", en:"Hamza", file:"ac_hamza_drillheat.m4a"},
+{a:"ي", bn:"ইয়া", en:"Ya", file:"ac_ya_drillheat.m4a"},
 ];
-
-function render(){
-  document.getElementById('horofGrid').innerHTML=HOROFS.map((h,i)=>`
-    <div onclick="selectHaraf(${i})" id="card-${i}" class="letter-card gorilla" style="background:#fff; border-radius:16px; padding:12px; text-align:center; cursor:pointer;">
-      <p class="arabic" style="font-size:36px; line-height:36px; color:#000; font-weight:700;">${h.a}</p>
-      <p style="font-size:10px; font-weight:900; color:rgba(0,0,0,0.8); margin-top:4px;">${h.bn}</p>
-    </div>
-  `).join('');
-}
-
-function selectHaraf(i){
-  let h=HOROFS[i];
-  document.querySelectorAll('.letter-card').forEach(c=>c.classList.remove('active'));
-  document.getElementById(`card-${i}`).classList.add('active');
-  document.getElementById('bigArabic').innerText=h.a;
-  document.getElementById('bigName').innerText=h.bn;
-  document.getElementById('bigEn').innerText=h.en;
-
-  playMp3(h.file, h.bn);
-  if(navigator.vibrate) navigator.vibrate(30);
-}
 
 function playMp3(fileName, bnName){
   if(isMuted) return;
-  // Play Store Safe Path - Offline
-  audioPlayer.src = './data/horof/' + fileName;
-  // For Android assets: file:///android_asset/data/horof/ auto handle হবে
+  // এখন সরাসরি একই ফোল্ডার থেকে বাজবে - কোনো data/horof/ নাই
+  audioPlayer.src = './' + fileName;
 
   document.getElementById('soundStatus').innerText = "🔊 বলছে: " + bnName;
-
+  audioPlayer.load();
   audioPlayer.play().then(()=>{
     document.getElementById('soundStatus').innerText = "✅ " + bnName;
   }).catch(e=>{
-    document.getElementById('soundStatus').innerText = "⚠️ অডিও পাওয়া যায়নি: " + fileName;
+    document.getElementById('soundStatus').innerText = "⚠️ পাওয়া যায়নি: " + fileName;
     console.log(e);
   });
 }
-
-function toggleMute(){
-  isMuted=!isMuted;
-  document.getElementById('muteBtn').innerText=isMuted?'🔇':'🔊';
-  if(isMuted) audioPlayer.pause();
-}
-
-render();
-
-// Mobile Audio Unlock - খুব জরুরি
-document.body.addEventListener('touchstart', ()=>{ audioPlayer.play().then(()=>audioPlayer.pause()).catch(()=>{}); }, {once:true});
+// বাকি সব আগের মতোই থাকবে
 </script>
-</body>
-</html>
