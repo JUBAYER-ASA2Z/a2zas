@@ -9,6 +9,18 @@
 <title>A-S A 2 Z</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2563eb">
+
+<!-- OneSignal Push - PWABuilder APK এর জন্য -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "0d9d55bf-5bb9-4108-b4e9-bd19c9026d90",
+    });
+  });
+</script>
+
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&family=Poppins:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
