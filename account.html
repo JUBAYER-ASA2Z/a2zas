@@ -1,30 +1,137 @@
 <!DOCTYPE html>
-<html lang="bn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Account</title>
-<style>body{font-family:sans-serif;background:#f5f5f5;margin:0}.top-bar{display:flex;justify-content:space-between;padding:12px;background:#fff;border-bottom:1px solid #ddd;position:sticky;top:0;z-index:10}.back-btn{background:#111;color:#fff;border:none;padding:8px 15px;border-radius:8px}.container{max-width:420px;margin:auto;padding:15px}.card{background:#fff;padding:20px;border-radius:12px;margin-top:15px}.btn{width:100%;padding:12px;border:none;border-radius:8px;font-weight:bold;margin-top:10px}.btn-blue{background:#007bff;color:#fff}.btn-green{background:#28a745;color:#fff}.btn-gold{background:linear-gradient(135deg,#FFD700,#FFA500);color:#000}.gold-badge{background:linear-gradient(135deg,#FFD700,#FFB700);padding:6px 14px;border-radius:20px;font-weight:900}input{width:100%;padding:12px;margin:6px 0;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}#adminPanel{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:999;padding:15px;box-sizing:border-box;overflow:auto}</style></head><body>
-<div class="top-bar"><div><button class="back-btn" onclick="history.back()">←</button><b id="secretTrigger" style="margin-left:10px;">Account</b></div><div id="goldDisplay" class="gold-badge" style="display:none;">💰 0</div></div>
-<div class="container">
-<div id="loginBox" class="card"><h2>Login</h2><input id="loginId" placeholder="User ID"><input id="loginPass" type="password" placeholder="Password"><button class="btn btn-blue" onclick="doLogin()">Login</button><p style="font-size:12px;text-align:center">No account? <span onclick="showReg()" style="color:#007bff;font-weight:bold">Register</span></p></div>
-<div id="regBox" class="card" style="display:none"><h2>Registration</h2><input id="regId" placeholder="User ID (6 char a-z 0-9)" oninput="this.value=this.value.toLowerCase()"><input id="regName" placeholder="Name"><input id="regPass" type="password" placeholder="Password"><button class="btn btn-green" onclick="doReg()">Create</button><p style="font-size:12px;text-align:center"><span onclick="showLogin()" style="color:#007bff;font-weight:bold">Login</span></p></div>
-<div id="profileBox" class="card" style="display:none"><center><h3 id="pName"></h3><p id="pId"></p><div id="pGold" style="font-size:22px;font-weight:900">💰 0 Gold</div></center>
-<div style="margin-top:15px"><input id="transferId" placeholder="Receiver User ID"><input id="transferAmount" type="number" placeholder="Gold Amount"><button class="btn btn-gold" onclick="transferGold()">Transfer Gold</button></div>
-<div id="noticeBox" style="margin-top:15px;background:#fffbe6;border-left:4px solid #FFD700;padding:10px;border-radius:8px"><span id="liveNotice">No notice</span></div>
-<button class="btn" style="background:#222;color:#fff" onclick="doLogout()">Logout</button><button class="btn" style="background:#ff2d2d;color:#fff" onclick="deleteAccount()">Delete Account</button>
-<p style="font-size:11px;text-align:center;color:#888">Gold is virtual points, no real money value.<br><a href="privacy.html">Privacy Policy</a></p></div>
+<html lang="bn" translate="no" class="notranslate">
+<head>
+<meta charset="UTF-8">
+<meta name="google" content="notranslate">
+<meta name="googlebot" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Account</title>
+<style>
+*{ -webkit-tap-highlight-color:transparent; -webkit-touch-callout:none; }
+html,body{ overscroll-behavior:none; overscroll-behavior-y:contain; touch-action:pan-y; user-select:none; -webkit-user-select:none; }
+input{ user-select:text; -webkit-user-select:text; }
+body{font-family:sans-serif;background:#f5f5f5;margin:0}
+.top-bar{display:flex;justify-content:space-between;align-items:center;padding:12px;background:#fff;border-bottom:1px solid #ddd;position:sticky;top:0;z-index:10}
+.back-btn{background:#111;color:#fff;border:none;padding:8px 15px;border-radius:8px;font-weight:bold}
+.container{max-width:420px;margin:auto;padding:15px}
+.card{background:#fff;padding:20px;border-radius:12px;margin-top:15px}
+.btn{width:100%;padding:12px;border:none;border-radius:8px;font-weight:bold;margin-top:10px;cursor:pointer}
+.btn-blue{background:#007bff;color:#fff}.btn-green{background:#28a745;color:#fff}.btn-gold{background:linear-gradient(135deg,#FFD700,#FFA500);color:#000}
+.gold-badge{background:linear-gradient(135deg,#FFD700,#FFB700);padding:6px 14px;border-radius:20px;font-weight:900}
+input{width:100%;padding:12px;margin:6px 0;border:1px solid #ccc;border-radius:8px;box-sizing:border-box;outline:none}
+#adminPanel{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:999;padding:15px;box-sizing:border-box;overflow:auto}
+#toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-120px);background:#111;color:#fff;padding:14px 22px;border-radius:30px;font-weight:900;z-index:10000;transition:0.45s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 10px 30px rgba(0,0,0,0.35);opacity:0;pointer-events:none;min-width:200px;text-align:center}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+#toast.success{background:linear-gradient(135deg,#00c853,#009624)}
+#toast.error{background:linear-gradient(135deg,#ff1744,#d50000)}
+#toast.info{background:linear-gradient(135deg,#111,#333)}
+.lang-btn{border:1px solid #111;background:#fff;color:#111;padding:6px 12px;border-radius:20px;font-weight:900;font-size:12px}
+.goog-te-banner-frame,.skiptranslate,#goog-gt-tt{display:none!important} body{top:0!important}
+</style>
+</head>
+<body translate="no" class="notranslate">
+<div id="toast"></div>
+<div class="top-bar">
+  <div><button class="back-btn" onclick="history.back()">←</button><b id="secretTrigger" style="margin-left:10px;" data-i18n="title">Account</b></div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <button id="langBtn" class="lang-btn" onclick="toggleLang()">English</button>
+    <div id="goldDisplay" class="gold-badge" style="display:none;">💰 0</div>
+  </div>
 </div>
+
+<div class="container">
+<div id="loginBox" class="card"><h2 data-i18n="loginTitle">Login</h2><input id="loginId" placeholder="User ID"><input id="loginPass" type="password" placeholder="Password"><button class="btn btn-blue" onclick="doLogin()" data-i18n="loginBtn">Login</button><p style="font-size:12px;text-align:center"><span data-i18n="noAccount">No account?</span> <span onclick="showReg()" style="color:#007bff;font-weight:bold;cursor:pointer" data-i18n="registerLink">Register</span></p></div>
+
+<div id="regBox" class="card" style="display:none"><h2 data-i18n="regTitle">Registration</h2><input id="regId" placeholder="User ID (6 char a-z 0-9)"><input id="regName" placeholder="Name"><input id="regPass" type="password" placeholder="Password"><button class="btn btn-green" onclick="doReg()" data-i18n="createBtn">Create Account</button><p style="font-size:12px;text-align:center"><span onclick="showLogin()" style="color:#007bff;font-weight:bold;cursor:pointer" data-i18n="loginLink">Login</span></p></div>
+
+<div id="profileBox" class="card" style="display:none"><center><h3 id="pName"></h3><p id="pId"></p><div id="pGold" style="font-size:22px;font-weight:900">💰 0 Gold</div></center>
+<div style="margin-top:15px"><input id="transferId" placeholder="Receiver User ID" data-i18n-ph="transferIdPh"><input id="transferAmount" type="number" placeholder="Gold Amount" data-i18n-ph="amountPh"><button class="btn btn-gold" onclick="transferGold()" data-i18n="transferBtn">Transfer Gold</button></div>
+<div id="noticeBox" style="margin-top:15px;background:#fffbe6;border-left:4px solid #FFD700;padding:10px;border-radius:8px"><span id="liveNotice">No notice</span></div>
+<button class="btn" style="background:#222;color:#fff" onclick="doLogout()" data-i18n="logoutBtn">Logout</button><button class="btn" style="background:#ff2d2d;color:#fff" onclick="deleteAccount()" data-i18n="deleteBtn">Delete Account</button>
+<p style="font-size:11px;text-align:center;color:#888"><span data-i18n="goldNote">Gold is virtual points, no real money value.</span><br><a href="privacy.html" data-i18n="privacyLink">Privacy Policy</a></p></div>
+</div>
+
 <div id="adminPanel"><div style="max-width:500px;margin:auto;background:#fff;padding:15px;border-radius:10px"><h3>Admin <button onclick="adminPanel.style.display='none'" style="float:right">X</button></h3><div id="allUsersList"></div><button class="btn btn-blue" onclick="loadAllUsers()">Refresh Users</button><hr><input id="noticeToId" placeholder="User ID or blank=all"><input id="noticeText" placeholder="Notice text"><button class="btn btn-blue" onclick="sendNotice()">Send Notice</button><hr><input id="goldUserId" placeholder="User ID"><input id="goldAmount" type="number" placeholder="Amount"><button class="btn btn-gold" onclick="adminAddGold()">Add Gold</button></div></div>
+
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_oRlZS8lwB9JnkZQeUCQOfn-BVrMSPtEyqVvBuKUjH9KMAyMABT0PER46gTqB4P4J/exec";
+
+// --- Language System ---
+let lang = localStorage.getItem('a2z_lang') || 'bn';
+const i18n = {
+ bn: { title:"একাউন্ট", loginTitle:"লগইন", loginBtn:"লগইন", noAccount:"একাউন্ট নেই?", registerLink:"রেজিস্ট্রেশন", regTitle:"রেজিস্ট্রেশন", createBtn:"একাউন্ট তৈরি করুন", loginLink:"লগইন করুন", transferBtn:"Gold পাঠান", logoutBtn:"লগআউট", deleteBtn:"একাউন্ট ডিলিট", goldNote:"Gold হলো ভার্চুয়াল পয়েন্ট, এর কোনো বাস্তব মূল্য নেই।", privacyLink:"প্রাইভেসি পলিসি", transferIdPh:"যাকে পাঠাবেন তার ID", amountPh:"Gold পরিমাণ", toastWait:"অপেক্ষা করুন...", toastIdRule:"ID 6 অক্ষরের হতে হবে a-z 0-9", toastFillAll:"সব ঘর পূরণ করুন", toastExists:"এই ID আগেই আছে", toastCreated:"🎉 একাউন্ট সফলভাবে তৈরি হয়েছে!", toastLoginOk:"✅ সফলভাবে লগইন হয়েছে", toastWrongPass:"ভুল পাসওয়ার্ড!", toastNotFound:"এই ID পাওয়া যায়নি", toastSent:"Gold সফলভাবে সেন্ড হয়েছে", toastCheck:"ID / Amount ঠিক করুন" },
+ en: { title:"Account", loginTitle:"Login", loginBtn:"Login", noAccount:"No account?", registerLink:"Register", regTitle:"Registration", createBtn:"Create Account", loginLink:"Login", transferBtn:"Transfer Gold", logoutBtn:"Logout", deleteBtn:"Delete Account", goldNote:"Gold is virtual points, no real money value.", privacyLink:"Privacy Policy", transferIdPh:"Receiver User ID", amountPh:"Gold Amount", toastWait:"Please wait...", toastIdRule:"ID must be 6 chars a-z 0-9", toastFillAll:"Fill all fields", toastExists:"ID already exists", toastCreated:"🎉 Account created successfully!", toastLoginOk:"✅ Login successful", toastWrongPass:"Wrong password!", toastNotFound:"ID not found", toastSent:"Gold sent successfully", toastCheck:"Check ID / Amount" }
+};
+
+function applyLang(){
+  document.getElementById('langBtn').innerText = lang=='bn'? 'English' : 'বাংলা';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    let k=el.getAttribute('data-i18n');
+    if(i18n[lang][k]) el.innerText = i18n[lang][k];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
+    let k=el.getAttribute('data-i18n-ph');
+    if(i18n[lang][k]) el.placeholder = i18n[lang][k];
+  });
+  document.getElementById('loginId').placeholder = "User ID";
+  document.getElementById('regId').placeholder = "User ID (6 char)";
+  localStorage.setItem('a2z_lang', lang);
+}
+function toggleLang(){ lang = lang=='bn'? 'en' : 'bn'; applyLang(); }
+
+// --- Block Browser Popups ---
+document.addEventListener('contextmenu', e=>e.preventDefault());
+let startY=0;
+document.addEventListener('touchstart', e=>{ startY=e.touches[0].clientY; }, {passive:false});
+document.addEventListener('touchmove', e=>{
+  if(window.scrollY<=0 && e.touches[0].clientY>startY) e.preventDefault();
+}, {passive:false});
+
 let c=0,t; document.getElementById('secretTrigger').addEventListener('click',()=>{ c++; clearTimeout(t); t=setTimeout(()=>c=0,2000); if(c>=3){ c=0; if(prompt("Code:")==="321123"){ adminPanel.style.display='block'; loadAllUsers(); } } });
+
+function toast(msg, type="success"){
+  const el=document.getElementById('toast');
+  el.innerHTML=(type=="success"?"✅ ":"❌ ")+msg;
+  el.className=type; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 3000);
+}
+
 function showReg(){loginBox.style.display='none';regBox.style.display='block'} function showLogin(){regBox.style.display='none';loginBox.style.display='block'}
-function isValidId(id){return /^[a-z0-9]{6,}$/.test(id)}
-function doReg(){let u=regId.value.trim().toLowerCase(),n=regName.value.trim(),p=regPass.value.trim(); if(!isValidId(u)){alert("ID 6 char a-z 0-9");return} fetch(`${SCRIPT_URL}?action=register&userId=${u}&name=${encodeURIComponent(n)}&pass=${encodeURIComponent(p)}`).then(r=>r.json()).then(d=>{ if(d.error){alert(d.error=="Exists"?"ID already exists":"Error")} else{localStorage.setItem('a2z_userId',d.userId);localStorage.setItem('a2z_name',n);location.reload()}})}
-function doLogin(){let u=loginId.value.trim().toLowerCase(),p=loginPass.value.trim(); fetch(`${SCRIPT_URL}?action=login&userId=${u}&pass=${encodeURIComponent(p)}`).then(r=>r.json()).then(d=>{ if(d.error)alert("Wrong ID/Pass"); else{localStorage.setItem('a2z_userId',d.userId);localStorage.setItem('a2z_name',d.name);location.reload()}})}
+function isValidId(id){return /^[a-zA-Z0-9]{6,}$/.test(id)} // বড় হাতের ছোট হাতের সব allow
+
+function doReg(){
+  let rawId=regId.value.trim(); let u=rawId.toLowerCase(); let n=regName.value.trim(),p=regPass.value.trim();
+  if(!isValidId(rawId)){toast(i18n[lang].toastIdRule,"error");return}
+  if(!n||!p){toast(i18n[lang].toastFillAll,"error");return}
+  toast(i18n[lang].toastWait,"info");
+  fetch(`${SCRIPT_URL}?action=register&userId=${u}&name=${encodeURIComponent(n)}&pass=${encodeURIComponent(p)}`).then(r=>r.json()).then(d=>{
+    if(d.error){toast(d.error=="Exists"?i18n[lang].toastExists:"Error","error")}
+    else{toast(i18n[lang].toastCreated,"success");localStorage.setItem('a2z_userId',d.userId);localStorage.setItem('a2z_name',n);setTimeout(()=>location.reload(),1000);}
+  }).catch(()=>toast("Network Error","error"));
+}
+
+function doLogin(){
+  let rawId=loginId.value.trim(); let u=rawId.toLowerCase(); let p=loginPass.value.trim();
+  if(!u||!p){toast(i18n[lang].toastFillAll,"error");return}
+  toast(i18n[lang].toastWait,"info");
+  fetch(`${SCRIPT_URL}?action=login&userId=${u}&pass=${encodeURIComponent(p)}`).then(r=>r.json()).then(d=>{
+    if(d.error){
+      if(d.error=="WrongPass") toast(i18n[lang].toastWrongPass,"error");
+      else if(d.error=="NotFound") toast(i18n[lang].toastNotFound,"error");
+      else toast("Wrong ID/Pass","error");
+    } else{toast(i18n[lang].toastLoginOk,"success");localStorage.setItem('a2z_userId',d.userId);localStorage.setItem('a2z_name',d.name);setTimeout(()=>location.reload(),800);}
+  }).catch(()=>toast("Network Error","error"));
+}
+
 function check(){let u=localStorage.getItem('a2z_userId'); if(u){loginBox.style.display='none';regBox.style.display='none';profileBox.style.display='block';goldDisplay.style.display='block';pId.innerText=u;pName.innerText=localStorage.getItem('a2z_name')||u;refresh()}}
 function refresh(){let u=localStorage.getItem('a2z_userId'); fetch(`${SCRIPT_URL}?action=getUserData&userId=${u}`).then(r=>r.json()).then(d=>{pGold.innerText="💰 "+(d.gold||0)+" Gold";goldDisplay.innerText="💰 "+(d.gold||0);liveNotice.innerText=d.notice||"No notice"})}
-function transferGold(){let f=localStorage.getItem('a2z_userId'),to=transferId.value.trim().toLowerCase(),am=parseInt(transferAmount.value); if(!isValidId(to)||!am){alert("Check ID/Amount");return} fetch(`${SCRIPT_URL}?action=transferGold&fromId=${f}&toId=${to}&amount=${am}`).then(r=>r.json()).then(d=>{ if(d.ok){alert("Sent");refresh()} else alert(d.error)})}
-function doLogout(){localStorage.removeItem('a2z_userId');location.reload()} function deleteAccount(){if(!confirm("Delete all data?"))return; let u=localStorage.getItem('a2z_userId'); fetch(`${SCRIPT_URL}?action=deleteAccount&userId=${u}`).then(r=>r.json()).then(d=>{ if(d.ok){localStorage.clear();location.reload()}})}
+function transferGold(){let f=localStorage.getItem('a2z_userId'),raw=transferId.value.trim(),to=raw.toLowerCase(),am=parseInt(transferAmount.value); if(!isValidId(raw)||!am){toast(i18n[lang].toastCheck,"error");return} toast(i18n[lang].toastWait,"info"); fetch(`${SCRIPT_URL}?action=transferGold&fromId=${f}&toId=${to}&amount=${am}`).then(r=>r.json()).then(d=>{ if(d.ok){toast(`✅ ${am} ${i18n[lang].toastSent}`,"success");refresh()} else toast(d.error||"Failed","error")})}
+function doLogout(){localStorage.removeItem('a2z_userId');toast("Logout","info");setTimeout(()=>location.reload(),500)}
+function deleteAccount(){if(!confirm("Delete?"))return; let u=localStorage.getItem('a2z_userId'); fetch(`${SCRIPT_URL}?action=deleteAccount&userId=${u}`).then(r=>r.json()).then(d=>{ if(d.ok){localStorage.clear();location.reload()}})}
 function loadAllUsers(){fetch(`${SCRIPT_URL}?action=getAllUsers&adminCode=321123`).then(r=>r.json()).then(d=>{ let h=""; d.forEach(x=>h+=`<div style="padding:5px;border-bottom:1px solid #ddd">${x.userId} | ${x.name} | 💰${x.gold}</div>`); allUsersList.innerHTML=h})}
-function sendNotice(){fetch(`${SCRIPT_URL}?action=sendNotice&adminCode=321123&toId=${noticeToId.value}&text=${encodeURIComponent(noticeText.value)}`).then(r=>r.json()).then(d=>alert("Sent"))}
-function adminAddGold(){fetch(`${SCRIPT_URL}?action=adminAddGold&adminCode=321123&userId=${goldUserId.value}&amount=${goldAmount.value}`).then(r=>r.json()).then(d=>alert("Done"))}
+function sendNotice(){fetch(`${SCRIPT_URL}?action=sendNotice&adminCode=321123&toId=${noticeToId.value.toLowerCase()}&text=${encodeURIComponent(noticeText.value)}`).then(r=>r.json()).then(d=>toast("📢 Notice Sent","success"))}
+function adminAddGold(){fetch(`${SCRIPT_URL}?action=adminAddGold&adminCode=321123&userId=${goldUserId.value.toLowerCase()}&amount=${goldAmount.value}`).then(r=>r.json()).then(d=>toast("✅ Gold Added","success"))}
+
+applyLang();
 check();
 </script></body></html>
