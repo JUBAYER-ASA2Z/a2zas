@@ -1,18 +1,14 @@
 {
-  "id": "/a2zas/",
+  "id": "/",
   "name": "A-S A2Z - All Bangla Tools",
-  "short_name": "ASA2Z",
+  "short_name": "A-S A2Z",
   "description": "All Bangla Tools and Calculator in one app",
-  "start_url": "/a2zas/?utm_source=pwa",
-  "scope": "/a2zas/",
+  "start_url": "/index.html",
+  "scope": "/",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone"],
   "orientation": "any",
   "background_color": "#ffffff",
-  "theme_color": "#ff3a7a",
-  "launch_handler": {
-    "client_mode": ["navigate-existing", "auto"]
-  },
+  "theme_color": "#2563eb",
   "icons": [
     {
       "src": "icon-192.png",
@@ -30,7 +26,7 @@
   "shortcuts": [
     {
       "name": "Open A-S A2Z",
-      "url": "/a2zas/",
+      "url": "/index.html",
       "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     }
   ]
