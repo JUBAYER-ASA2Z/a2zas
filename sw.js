@@ -1,12 +1,40 @@
-self.addEventListener('install', () => {
+const CACHE_NAME = "asa2z-v2";
+const FILES_TO_CACHE = [
+  "/",
+  "/index.html",
+  "/manifest.json",
+  "/icon-192.png",
+  "/icon-512.png"
+];
+
+self.addEventListener("install", (event) => {
   self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(FILES_TO_CACHE);
+    })
+  );
 });
-self.addEventListener('activate', () => {
-  self.registration.unregister();
-  caches.keys().then(keys => {
-    keys.forEach(key => caches.delete(key));
-  });
-  self.clients.matchAll().then(clients => {
-    clients.forEach(client => client.navigate(client.url));
-  });
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys().then((keyList) => {
+      return Promise.all(
+        keyList.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      );
+    })
+  );
+  self.clients.claim();
+});
+
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
 });
