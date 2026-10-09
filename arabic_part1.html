@@ -2,11 +2,11 @@
 <html lang="bn" class="notranslate">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Digital Arabic Offline</title>
 <style>
 *{font-family:system-ui,sans-serif; -webkit-tap-highlight-color:transparent; box-sizing:border-box; margin:0; padding:0;}
-body{background:#080808; color:#fff; min-height:100vh;}
+body{background:#080808; color:#fff; overflow:hidden; height:100vh; height:100dvh;}
 .gorilla{background:linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 100%); backdrop-filter:blur(20px); border:1.2px solid rgba(255,255,255,0.18);}
 .arabic{font-family:serif;}
 .letter-card.active{background:#ef4444!important; transform:scale(1.05); box-shadow:0 0 20px rgba(239,68,68,0.6);}
@@ -14,25 +14,38 @@ body{background:#080808; color:#fff; min-height:100vh;}
 .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
 @keyframes pop{0%{transform:scale(1)} 50%{transform:scale(1.08)} 100%{transform:scale(1.05)}}
 .active{animation:pop 0.2s ease;}
+
+/* FIXED HEADER */
+.fixed-top{position:sticky; top:0; z-index:50; background:#080808; padding:12px 12px 14px 12px; border-bottom:1px solid rgba(255,255,255,0.08); box-shadow:0 10px 30px rgba(0,0,0,0.8);}
+.scroll-area{flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:12px; padding-bottom:30px;}
+.scroll-area::-webkit-scrollbar{display:none;}
+.scroll-area{scrollbar-width:none;}
 </style>
 </head>
 <body>
-<div style="max-width:480px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; padding:12px;">
+<div style="max-width:480px; margin:0 auto; height:100vh; height:100dvh; display:flex; flex-direction:column; background:#080808;">
 
-  <div style="display:flex; justify-content:space-between; align-items:center;">
-    <button onclick="history.back()" style="width:42px; height:42px; border-radius:999px; background:rgba(255,255,255,0.12); color:#fff; font-weight:900; border:1px solid rgba(255,255,255,0.2);">←</button>
-    <div class="gorilla" style="border-radius:999px; padding:9px 20px; font-weight:900; font-size:12px; letter-spacing:0.3px;">📖 ডিজিটাল আরবি শিক্ষা</div>
-    <button onclick="toggleMute()" id="muteBtn" style="width:42px; height:42px; border-radius:999px; background:#10b981; border:none; font-size:18px;">🔊</button>
+  <!-- FIXED TOP - এটা নড়বে না -->
+  <div class="fixed-top">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <button onclick="history.back()" style="width:42px; height:42px; border-radius:999px; background:rgba(255,255,255,0.12); color:#fff; font-weight:900; border:1px solid rgba(255,255,255,0.2);">←</button>
+      <div class="gorilla" style="border-radius:999px; padding:9px 20px; font-weight:900; font-size:12px; letter-spacing:0.3px;">📖 ডিজিটাল আরবি শিক্ষা</div>
+      <button onclick="toggleMute()" id="muteBtn" style="width:42px; height:42px; border-radius:999px; background:#10b981; border:none; font-size:18px;">🔊</button>
+    </div>
+
+    <div class="gorilla" style="margin-top:14px; border-radius:28px; padding:20px; text-align:center; border:1px solid rgba(16,185,129,0.25); box-shadow:0 10px 30px rgba(0,0,0,0.4);">
+      <h1 id="bigArabic" class="arabic" style="font-size:64px; line-height:1; font-weight:700;">ا</h1>
+      <p id="bigName" style="font-weight:900; font-size:20px; margin-top:8px;">আলিফ</p>
+      <p id="bigEn" style="font-size:11px; background:#10b981; color:#000; padding:5px 14px; border-radius:999px; display:inline-block; margin-top:6px; font-weight:900;">Alif</p>
+      <p id="soundStatus" style="font-size:11px; color:#6ee7b7; margin-top:10px; font-weight:700;">👇 হরফে ক্লিক করুন</p>
+    </div>
   </div>
 
-  <div class="gorilla" style="margin-top:14px; border-radius:28px; padding:20px; text-align:center; border:1px solid rgba(16,185,129,0.25); box-shadow:0 10px 30px rgba(0,0,0,0.4);">
-    <h1 id="bigArabic" class="arabic" style="font-size:64px; line-height:1; font-weight:700;">ا</h1>
-    <p id="bigName" style="font-weight:900; font-size:20px; margin-top:8px;">আলিফ</p>
-    <p id="bigEn" style="font-size:11px; background:#10b981; color:#000; padding:5px 14px; border-radius:999px; display:inline-block; margin-top:6px; font-weight:900;">Alif</p>
-    <p id="soundStatus" style="font-size:11px; color:#6ee7b7; margin-top:10px; font-weight:700;">👇 হরফে ক্লিক করুন</p>
+  <!-- SCROLLABLE BOTTOM - এটা স্ক্রল হবে -->
+  <div class="scroll-area">
+    <div id="horofGrid" class="grid"></div>
   </div>
 
-  <div id="horofGrid" class="grid" style="margin-top:14px; padding-bottom:20px;"></div>
 </div>
 
 <audio id="harafAudio" preload="auto" playsinline></audio>
@@ -95,16 +108,14 @@ function selectHaraf(i){
 
 function playMp3(fileName, bnName){
   if(isMuted) return;
-  // সরাসরি একই ফোল্ডার থেকে -./fileName
   audioPlayer.src = './' + fileName;
   document.getElementById('soundStatus').innerText = "🔊 বলছে: " + bnName;
   audioPlayer.load();
   const p = audioPlayer.play();
   if(p!== undefined){
     p.then(()=>{ document.getElementById('soundStatus').innerText = "✅ " + bnName + " - বাজছে"; })
-    .catch(e=>{
+   .catch(e=>{
         document.getElementById('soundStatus').innerText = "⚠️ অডিও পাওয়া যায়নি: " + fileName;
-        console.log("Audio error:", e);
      });
   }
 }
@@ -116,8 +127,6 @@ function toggleMute(){
 }
 
 render();
-
-// মোবাইল অডিও আনলক
 document.body.addEventListener('touchstart', function unlock(){
   audioPlayer.play().then(()=>{ audioPlayer.pause(); audioPlayer.currentTime=0; }).catch(()=>{});
 }, {once:true});
