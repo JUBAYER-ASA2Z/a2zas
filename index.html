@@ -7,15 +7,8 @@
 <meta name="robots" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>A-S A 2 Z</title>
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="/a2zas/manifest.json">
 <meta name="theme-color" content="#2563eb">
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({ appId: "0d9d55bf-5bb9-4108-b4e9-bd19c9026d90" });
-  });
-</script>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&family=Poppins:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
@@ -28,7 +21,6 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 .glass-pink::after{content:''; position:absolute; top:0; left:-50%; width:65%; height:100%; background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.9) 45%, rgba(255,255,255,0.5) 50%, transparent 65%); transform: skewX(-18deg); animation: glassShine 3.8s infinite; pointer-events:none; z-index:2;}
 @keyframes glassShine{0%{transform: translateX(-180%) skewX(-18deg);} 60%{transform: translateX(-180%) skewX(-18deg);} 100%{transform: translateX(350%) skewX(-18deg);}}
 .glass-pink > div{position:relative; z-index:3;}
-.header-fixed-grid{display: grid!important; grid-template-columns: 120px 1fr 88px; align-items: start; gap: 6px; width: 100%;}
 .goog-te-banner-frame,.goog-te-balloon-frame, #goog-gt-tt,.skiptranslate, iframe.goog-te-banner-frame, iframe.skiptranslate{display:none!important; visibility:hidden!important; height:0!important;}
 .no-scrollbar::-webkit-scrollbar{display:none}
 .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none; }
@@ -38,21 +30,21 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 .fall-emoji{position:absolute; top:-50px; animation:fall linear forwards; font-size:28px; pointer-events:none}
 @keyframes congratsDrop{0%{transform:translateY(-150%); opacity:0} 20%{opacity:1} 80%{transform:translateY(0); opacity:1} 100%{transform:translateY(150vh); opacity:0}}
 .congrats-anim{animation:congratsDrop 1.2s ease-in-out forwards}
-.date-pill{background:rgba(255,255,255,0.97); color:#1e3a8a; font-size:11px; font-weight:900; width:116px; height:22px; display:flex; align-items:center; justify-content:center; border-radius:8px; box-shadow:0 3px 10px rgba(0,0,0,0.12), inset 0 1px 0 white; border:1px solid rgba(255,255,255,0.8); white-space:nowrap; letter-spacing:0.2px;}
-.logo-3d{background:linear-gradient(180deg,#ffffff 0%, #f5f7ff 50%, #e8ecff 100%); width:110px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:12px; font-family:'Poppins'; font-weight:900; font-size:18px; color:#0046ff; box-shadow:0 4px 15px rgba(0,0,0,0.15), inset 0 1px 0 white; position:relative; overflow:hidden; cursor:pointer; flex-shrink:0; margin:0 auto;}
+.date-pill{background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); color:#1e3a8a; font-size:11px; font-weight:900; padding:4px 11px; border-radius:9px; line-height:14px; width:fit-content; box-shadow:0 3px 10px rgba(0,0,0,0.12), inset 0 1px 0 white; border:1px solid rgba(255,255,255,0.8); white-space:nowrap;}
+.logo-3d{background:linear-gradient(180deg,#ffffff 0%, #f5f7ff 50%, #e8ecff 100%); padding:6px 18px; border-radius:14px; font-family:'Poppins'; font-weight:900; font-size:20px; color:#0046ff; box-shadow:0 4px 15px rgba(0,0,0,0.15), inset 0 1px 0 white; text-shadow:0 1px 0 #fff, 0 2px 0 #cbd5ff, 0 3px 4px rgba(0,70,255,0.3); position:relative; overflow:hidden; cursor:pointer;}
 .logo-3d::before{content:'';position:absolute;top:0; left:-30%; width:60%; height:100%; background:linear-gradient(120deg,transparent 0%, rgba(255,255,255,0.8) 50%, transparent 100%); animation:shine 2.5s infinite;}
 @keyframes shine{0%{transform:translateX(-100%)} 100%{transform:translateX(250%)}}
-.marble-name-btn{background: radial-gradient(circle at 30% 20%, #ffffff 0%, #fff8fb 35%, #ffe4ec 65%, #ffc2d4 90%); position:relative; overflow:hidden; border:1.5px solid #ffb3d1; box-shadow: 0 8px 25px rgba(255,105,180,0.35), inset 0 1px 0 white;}
+.marble-name-btn{background: radial-gradient(circle at 30% 20%, #ffffff 0%, #fff8fb 35%, #ffe4ec 65%, #ffc2d4 90%); position:relative; overflow:hidden; border:1.5px solid #ffb3d1; box-shadow: 0 8px 25px rgba(255,105,180,0.35), inset 0 1px 0 white, 0 0 0 1px rgba(255,255,255,0.6);}
 .marble-name-btn::before{content:''; position:absolute; top:0; left:-60%; width:60%; height:100%; background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.9) 50%, transparent 100%); animation: marbleShine 2.2s infinite;}
 @keyframes marbleShine{0%{transform:translateX(-100%)} 100%{transform:translateX(260%)}}
-.gorilla-360{background: linear-gradient(135deg, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0.15) 100%); backdrop-filter: blur(18px); border: 1.5px solid rgba(255,255,255,0.7); box-shadow: 0 8px 25px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.9), 0 0 18px rgba(0,200,255,0.45); position:relative; overflow:hidden;}
+.gorilla-360{background: linear-gradient(135deg, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0.15) 100%); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1.5px solid rgba(255,255,255,0.7); box-shadow: 0 8px 25px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.9), 0 0 18px rgba(0,200,255,0.45); position:relative; overflow:hidden;}
 .gorilla-360::before{content:''; position:absolute; top:0; left:-60%; width:60%; height:100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.95), transparent); animation: marbleShine 2s infinite;}
 .gorilla-360-icon{ background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%); box-shadow: 0 4px 15px rgba(0,210,255,0.5); }
 .digital-edu-btn{background: linear-gradient(135deg, #ffffff 0%, #ecfdf5 100%); border: 1.5px solid #6ee7b7; box-shadow: 0 8px 25px rgba(16,185,129,0.25), inset 0 1px 0 white; position:relative; overflow:hidden;}
 .digital-edu-btn::before{content:''; position:absolute; top:0; left:-60%; width:60%; height:100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.9), transparent); animation: marbleShine 2.2s infinite;}
-.shop-btn-new{background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%); border: 1.5px solid #fcd34d; box-shadow: 0 8px 25px rgba(245,158,11,0.25), inset 0 1px 0 white; position:relative; overflow:hidden;}
-.shop-btn-new::before{content:''; position:absolute; top:0; left:-60%; width:60%; height:100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.9), transparent); animation: marbleShine 2.2s infinite;}
-@media (max-width:380px){.header-fixed-grid{ grid-template-columns: 102px 1fr 76px; }.date-pill{ width:100px!important; font-size:9.5px!important; }.logo-3d{ width:96px; height:34px; font-size:15px; } }
+.shop-btn{background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%); border: 1.5px solid #fcd34d; box-shadow: 0 8px 25px rgba(251,191,36,0.25), inset 0 1px 0 white; position:relative; overflow:hidden;}
+.shop-btn::before{content:''; position:absolute; top:0; left:-60%; width:60%; height:100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.9), transparent); animation: marbleShine 2.2s infinite;}
+@media (max-width:380px){.date-pill{font-size:9px; padding:2px 7px;}.logo-3d{font-size:16px; padding:4px 12px;}}
 </style>
 </head>
 <body translate="no" class="notranslate">
@@ -66,15 +58,15 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 </div>
 <div class="app-wrapper pb-[80px]">
 <div class="glass-pink rounded-b-[32px] pb-6 px-4 pt-4">
-<div class="header-fixed-grid">
-<div class="flex flex-col gap-1.5">
-  <div id="banglaDate" class="date-pill">লোড হচ্ছে...</div>
-  <div id="engDate" class="date-pill">লোড হচ্ছে...</div>
-  <div id="hijriDate" class="date-pill">লোড হচ্ছে...</div>
+<div class="relative z-10 flex justify-between items-start gap-2">
+<div class="flex flex-col gap-1.5 shrink-0">
+  <div id="banglaDate" class="date-pill">Loading...</div>
+  <div id="engDate" class="date-pill">Loading...</div>
+  <div id="hijriDate" class="date-pill">Loading...</div>
 </div>
-<div class="flex justify-center pt-1"><div class="logo-3d">A-S A2Z</div></div>
-<div class="flex flex-col items-end gap-1">
-  <button id="langToggle" onclick="toggleLang()" class="w-[42px] h-[22px] rounded-full bg-white/90 backdrop-blur text-[11px] font-black text-blue-700 shadow border border-white/60">EN</button>
+<div class="flex-1 flex justify-center pt-1"><div class="logo-3d">A-S A2Z</div></div>
+<div class="flex flex-col items-end gap-1 shrink-0">
+  <button id="langToggle" class="w-[42px] h-[22px] rounded-full bg-white/90 backdrop-blur text-[11px] font-black text-blue-700 shadow border border-white/60">EN</button>
   <div class="flex items-center gap-2 mt-1">
     <div id="profileWrap" class="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center overflow-hidden border-2 border-white/70 shadow"><img id="profilePic" src="" class="w-full h-full object-cover hidden"><span id="profileIcon">👤</span></div>
     <button onclick="location.href='menu.html'" class="w-11 h-11 rounded-full bg-white/25 backdrop-blur flex flex-col items-center justify-center gap-1 border border-white/30"><span class="w-5 h-[2px] bg-white"></span><span class="w-5 h-[2px] bg-white"></span><span class="w-5 h-[2px] bg-white"></span></button>
@@ -83,8 +75,8 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 </div>
 <div class="mt-5 grid grid-cols-4 gap-2 sm:gap-3 relative z-10">
 <div class="bg-white/95 backdrop-blur rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.1)] border border-white/70" onclick="location.href='./islamic.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-green-600 to-emerald-500 flex items-center justify-center text-[20px]">🕌</div><p class="text-[11px] font-bold mt-2 text-black" data-bn="ইসলামিক" data-en="Islamic">ইসলামিক</p></div>
-<div class="marble-name-btn rounded-[18px] p-3 text-center active:scale-95 cursor-pointer" onclick="location.href='./naam.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-pink-500 via-rose-400 to-pink-600 flex items-center justify-center text-[20px] shadow-[0_4px_15px_rgba(236,72,153,0.5)] relative"><span class="absolute w-2 h-2 bg-white rounded-full top-[3px] left-[4px] opacity-90"></span>👶</div><p class="text-[11px] font-black mt-2 text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-rose-600 leading-[11px]" data-bn="শিশুর&#10;নাম" data-en="Baby&#10;Name">শিশুর<br>নাম</p></div>
-<div class="digital-edu-btn rounded-[18px] p-3 text-center active:scale-95 cursor-pointer" onclick="location.href='./digital_home.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-[20px] shadow-[0_4px_15px_rgba(16,185,129,0.5)] relative"><span class="absolute w-2 h-2 bg-white rounded-full top-[3px] left-[4px] opacity-90"></span>🎓</div><p class="text-[11px] font-black mt-2 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 leading-[11px]" data-bn="ডিজিটাল&#10;শিক্ষা" data-en="Digital&#10;Edu">ডিজিটাল<br>শিক্ষা</p><span class="absolute top-[5px] right-[5px] bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-[7px] font-black px-[5px] py-[1px] rounded-full shadow">NEW</span></div>
+<div class="marble-name-btn rounded-[18px] p-3 text-center active:scale-95 cursor-pointer" onclick="location.href='./naam.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-pink-500 via-rose-400 to-pink-600 flex items-center justify-center text-[20px] shadow-[0_4px_15px_rgba(236,72,153,0.5)] relative"><span class="absolute w-2 h-2 bg-white rounded-full top-[3px] left-[4px] opacity-90"></span>👶</div><p class="text-[11px] font-black mt-2 text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-rose-600 leading-[11px]" data-bn="শিশুর<br>নাম" data-en="Baby<br>Name">শিশুর<br>নাম</p></div>
+<div class="digital-edu-btn rounded-[18px] p-3 text-center active:scale-95 cursor-pointer" onclick="location.href='./digital_home.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-[20px] shadow-[0_4px_15px_rgba(16,185,129,0.5)] relative"><span class="absolute w-2 h-2 bg-white rounded-full top-[3px] left-[4px] opacity-90"></span>🎓</div><p class="text-[11px] font-black mt-2 text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 leading-[11px]" data-bn="ডিজিটাল<br>শিক্ষা" data-en="Digital<br>Edu">ডিজিটাল<br>শিক্ষা</p><span class="absolute top-[5px] right-[5px] bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-[7px] font-black px-[5px] py-[1px] rounded-full shadow">NEW</span></div>
 <div class="bg-white/95 backdrop-blur rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.1)] border border-white/70" onclick="location.href='./event.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-orange-500 to-amber-400 flex items-center justify-center text-[20px]">🎉</div><p class="text-[11px] font-bold mt-2 text-black" data-bn="ইভেন্ট" data-en="Event">ইভেন্ট</p></div>
 </div>
 </div>
@@ -92,160 +84,70 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 <div id="adSection" class="px-4 mt-3 hidden"><div class="flex justify-between items-center mb-2"><p class="font-black text-[13px] text-black" data-bn="✨ বিজ্ঞাপন" data-en="✨ Ads">✨ বিজ্ঞাপন</p><p class="text-[10px] text-zinc-400">৩ সেকেন্ড</p></div><div id="adSlider" class="flex gap-3 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-2 scroll-smooth"></div></div>
 <div class="px-4 mt-6">
 <div class="grid grid-cols-4 gap-2 sm:gap-3">
-<div class="shop-btn-new rounded-[18px] p-3 text-center active:scale-95 cursor-pointer" onclick="location.href='./shop.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-[20px] shadow-[0_4px_15px_rgba(245,158,11,0.5)] relative"><span class="absolute w-2 h-2 bg-white rounded-full top-[3px] left-[4px] opacity-90"></span>🛒</div><p class="text-[11px] font-black mt-2 text-black leading-[12px]">SHOP</p></div>
+<div class="shop-btn rounded-[18px] p-3 text-center active:scale-95 cursor-pointer" onclick="location.href='./shop.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-[20px] shadow-[0_4px_15px_rgba(251,191,36,0.5)] relative"><span class="absolute w-2 h-2 bg-white rounded-full top-[3px] left-[4px] opacity-90"></span>🛒</div><p class="text-[11px] font-black mt-2 text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600 leading-[11px]" data-bn="Shop" data-en="Shop">Shop</p></div>
 <div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./science_quiz.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-gradient-to-br from-purple-500 to-violet-400 flex items-center justify-center text-[20px]">🔬</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]" data-bn="বিজ্ঞান" data-en="Science">বিজ্ঞান</p></div>
 <div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./medical_final.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#fee2e2] flex items-center justify-center text-[20px]">🩺</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]" data-bn="মেডিকেল" data-en="Medical">মেডিকেল</p></div>
 <div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./calc.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-zinc-900 flex items-center justify-center text-white">🧮</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]" data-bn="ক্যালকুলেটর" data-en="Calculator">ক্যালকুলেটর</p></div>
-<div class="gorilla-360 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer" onclick="location.href='./360.html'"><div class="w-11 h-11 mx-auto rounded-[13px] gorilla-360-icon flex items-center justify-center text-[20px] relative"><span class="absolute w-2 h-2 bg-white rounded-full top-[3px] left-[4px] opacity-90"></span>🌐</div><p class="text-[11px] font-black mt-2 text-white leading-[11px]" style="text-shadow:0 1px 4px rgba(0,0,0,0.8)">360</p></div>
+<div class="gorilla-360 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer" onclick="location.href='./360.html'"><div class="w-11 h-11 mx-auto rounded-[13px] gorilla-360-icon flex items-center justify-center text-[20px] relative"><span class="absolute w-2 h-2 bg-white rounded-full top-[3px] left-[4px] opacity-90"></span>🌐</div><p class="text-[11px] font-black mt-2 text-white leading-[11px]" style="text-shadow:0 1px 4px rgba(0,0,0,0.8)" data-bn="360" data-en="360">360</p></div>
 <div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./viral_pro_edit.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#e0e7ff] flex items-center justify-center text-[20px]">🎮</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]" data-bn="ভাইরাল গেম" data-en="Viral Game">ভাইরাল গেম</p></div>
 <div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./hisab.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#ccfbf1] flex items-center justify-center text-[20px]">🧾</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]" data-bn="দৈনন্দিন হিসাব" data-en="Daily Hisab">দৈনন্দিন হিসাব</p></div>
 <div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./memo.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#fef9c3] flex items-center justify-center text-[20px]">📝</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]" data-bn="ব্যবসায়িক মেমো" data-en="Business Memo">ব্যবসায়িক মেমো</p></div>
 </div>
 <div class="mt-6 space-y-3">
-<a href="group-chat.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center">💬</div><div><p class="font-black text-[13px] text-black" data-bn="লাইভ গ্রুপ চ্যাট" data-en="Live Group Chat">লাইভ গ্রুপ চ্যাট</p><p class="text-[10px] text-zinc-500" data-bn="সবার সাথে সরাসরি কথা বলুন" data-en="Chat with everyone live">সবার সাথে সরাসরি কথা বলুন</p></div></div><span class="bg-green-500 text-[8px] font-black px-2 py-1 rounded-full text-white animate-pulse">LIVE</span></a>
-<a href="notebook.html" class="flex items-center justify-between bg-white border border-pink-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-yellow-400 flex items-center justify-center text-[18px]">📔</div><div><p class="font-black text-[13px] text-black" data-bn="কবিতার নোটবুক PRO" data-en="Poem Notebook PRO">কবিতার নোটবুক PRO</p><p class="text-[10px] text-zinc-500">15 Designs • 20 Fonts</p></div></div><span class="bg-pink-500 text-white text-[9px] font-black px-2.5 py-1 rounded-full">NEW</span></a>
-<a href="volume_control.html" class="flex items-center justify-between bg-white border border-orange-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-[#ffedd5] flex items-center justify-center text-[18px]">🔊</div><div><p class="font-black text-[13px] text-black" data-bn="ভলিউম কন্ট্রোল" data-en="Volume Control">ভলিউম কন্ট্রোল</p><p class="text-[10px] text-zinc-500" data-bn="সাউন্ড সেটিংস" data-en="Sound Settings">সাউন্ড সেটিংস</p></div></div><span>➤</span></a>
+<a href="group-chat.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center">💬</div><div><p class="font-black text-[13px] text-black" data-bn="লাইভ গ্রুপ চ্যাট" data-en="Live Group Chat">লাইভ গ্রুপ চ্যাট</p><p class="text-[10px] text-zinc-500" data-bn="সবার সাথে সরাসরি কথা বলুন" data-en="Chat live with everyone">সবার সাথে সরাসরি কথা বলুন</p></div></div><span class="bg-green-500 text-[8px] font-black px-2 py-1 rounded-full text-white animate-pulse">LIVE</span></a>
+<a href="notebook.html" class="flex items-center justify-between bg-white border border-pink-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-yellow-400 flex items-center justify-center text-[18px]">📔</div><div><p class="font-black text-[13px] text-black" data-bn="কবিতার নোটবুক PRO" data-en="Poetry Notebook PRO">কবিতার নোটবুক PRO</p><p class="text-[10px] text-zinc-500">15 Designs • 20 Fonts</p></div></div><span class="bg-pink-500 text-white text-[9px] font-black px-2.5 py-1 rounded-full">NEW</span></a>
 <a href="ukti.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white">💬</div><div><p class="font-black text-[13px] text-black" data-bn="১০০+ সেরা উক্তি" data-en="100+ Best Quotes">১০০+ সেরা উক্তি</p></div></div><span>➤</span></a>
 <a href="number.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex gap-3 items-center"><div class="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center text-white">📞</div><div><p class="font-black text-[13px] text-black" data-bn="জরুরি নাম্বার" data-en="Emergency Numbers">জরুরি নাম্বার</p></div></div><span>➤</span></a>
-<a href="support.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex gap-3 items-center"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-blue-500 flex items-center justify-center text-white">🛟</div><div><p class="font-black text-[13px] text-black">Support</p></div></div><span>➤</span></a>
+<a href="volume_control.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex gap-3 items-center"><div class="w-10 h-10 rounded-full bg-[#ffedd5] flex items-center justify-center text-[18px]">🔊</div><div><p class="font-black text-[13px] text-black" data-bn="সাউন্ড কন্ট্রোল" data-en="Sound Control">সাউন্ড কন্ট্রোল</p><p class="text-[10px] text-zinc-500" data-bn="ভলিউম বাড়ান / কমান" data-en="Adjust volume level">ভলিউম বাড়ান / কমান</p></div></div><span>➤</span></a>
+<a href="support.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex gap-3 items-center"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-blue-500 flex items-center justify-center text-white">🛟</div><div><p class="font-black text-[13px] text-black" data-bn="সাপোর্ট" data-en="Support">সাপোর্ট</p></div></div><span>➤</span></a>
 </div>
-<div class="mt-10 text-center pb-6"><p class="text-zinc-400 text-[11px] tracking-widest uppercase">Developer</p><p class="font-black text-[14px] mt-1 text-black">Qari MD Jubayer Ahmed Siyam</p><p class="text-[11px] text-zinc-400 mt-1">A-S A 2 Z V2.0 • No Translate</p></div>
+<div class="mt-10 text-center pb-6"><p class="text-zinc-400 text-[11px] tracking-widest uppercase" data-bn="ডেভেলপার" data-en="Developer">Developer</p><p class="font-black text-[14px] mt-1 text-black">Qari MD Jubayer Ahmed Siyam</p><p class="text-[11px] text-zinc-400 mt-1">A-S A 2 Z V2.0 • No Translate</p></div>
 </div>
 </div>
 <div id="yellowBar" class="fixed bottom-0 left-0 right-0 z-[90] border-t-2 border-black py-[14px] px-2 flex items-center justify-center" style="background:#2563eb"><div class="w-full max-w-[480px] flex items-center"><div class="bg-black text-white text-[9px] font-black px-3 py-1 rounded-full shrink-0">NOTICE</div><div class="flex-1 overflow-hidden ml-3"><p id="yellowText" class="marquee font-bold text-[13px] text-white">লোড হচ্ছে...</p></div></div></div>
 </div>
 <script>
-const API_URL="https://script.google.com/macros/s/AKfycby5TUrSWLJb9jabeoD7KOUUCmOtaA0u_Y7BNL8-V0OiydF5Ko1eoz3ZKmJh8CToaV1y/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbyt07t35S4oRxDY4Ai-wYXlaejv70wQ1-N6Rotz_4-WKZoM9QqGSC0Q8JArx7C6xvw0/exec";
 const TOTAL_VISIT_URL="https://script.google.com/macros/s/AKfycbxdRBVzEORnnwGR6RTN54y58mj6Cdazo9-w278pQXNE91N-SXO90kMuE0WWL_0JJVaCzQ/exec";
 let currentLang=localStorage.getItem('app_lang')||'bn'; let adInterval=null, adIndex=0, adDirection=1;
 document.addEventListener('contextmenu', e=>e.preventDefault());
 document.addEventListener('selectstart', e=>e.preventDefault());
 document.addEventListener('copy', e=>e.preventDefault());
 document.addEventListener('dragstart', e=>e.preventDefault());
+if(window.google && window.google.translate){window.google.translate._const={};}
 setInterval(()=>{let el=document.querySelector('.goog-te-banner-frame'); if(el) el.remove(); document.body.style.top='0px';},500);
-
-function toggleLang(){currentLang=currentLang==='bn'?'en':'bn'; localStorage.setItem('app_lang',currentLang); document.getElementById('langToggle').innerText=currentLang==='bn'?'EN':'BN'; applyTranslation(); updateDates();}
-function applyTranslation(){document.querySelectorAll('[data-bn]').forEach(el=>{let bn=el.getAttribute('data-bn'); let en=el.getAttribute('data-en'); let txt=currentLang==='bn'?bn:en; if(txt.includes('&#10;')){el.innerHTML=txt.replace(/&#10;/g,'<br>');}else{el.innerText=txt;}});}
-
-// বাংলা সংখ্যায় কনভার্ট
-function toBnNum(n){const en=['0','1','2','3','4','5','6','7','8','9']; const bn=['০','১','২','৩','৪','৫','৬','৭','৮','৯']; let s=n.toString(); for(let i=0;i<10;i++) s=s.split(en[i]).join(bn[i]); return s;}
-
-// 100% নির্ভুল বাংলা তারিখ - প্রতিদিন আপডেট হবে
-function getRealBanglaDate(date){
-  const bnMonths=["বৈশাখ","জ্যৈষ্ঠ","আষাঢ়","শ্রাবণ","ভাদ্র","আশ্বিন","কার্তিক","অগ্রহায়ণ","পৌষ","মাঘ","ফাল্গুন","চৈত্র"];
-  const bnMonthsEn=["Boishakh","Joishtho","Ashar","Srabon","Bhadro","Ashwin","Kartik","Agrahayan","Poush","Magh","Falgun","Chaitra"];
-
-  let d=date.getDate();
-  let m=date.getMonth()+1;
-  let y=date.getFullYear();
-
-  // বাংলা বছর
-  let bnYear = (m < 4 || (m == 4 && d < 14))? y - 594 : y - 593;
-
-  // 2026-2027 এর জন্য বাংলাদেশ সরকারি ক্যালেন্ডার অনুযায়ী মাস শুরুর তারিখ
-  // Source: Bangla Academy
-  let calendar = {
-    2026: [[4,14],[5,15],[6,15],[7,16],[8,16],[9,16],[10,16],[11,15],[12,15],[1,14],[2,13],[3,15]],
-    2027: [[4,14],[5,15],[6,15],[7,16],[8,16],[9,17],[10,17],[11,16],[12,16],[1,14],[2,13],[3,15]]
-  };
-  let startList = calendar[y] || calendar[2026];
-
-  // আজকের তারিখ কোন বাংলা মাসে?
-  let today = new Date(y, m-1, d);
-  let bnMonthIndex = 11;
-  let bnDay = 1;
-
-  // পিছন থেকে চেক করলে সঠিক মাস পাওয়া যায়
-  for(let i=11; i>=0; i--){
-    let sm = startList[i][0];
-    let sd = startList[i][1];
-    let sy = y;
-    if(sm > m) sy = y-1;
-    if(sm == 1 && m >=4) sy = y+1;
-    if(m < 4 && sm >=4) sy = y-1;
-
-    let startDate = new Date(sy, sm-1, sd);
-    // বিশেষ ক্ষেত্র: জানু-মার্চের জন্য
-    if(m < 4){
-      if(i >=9){
-        startDate = new Date(y, sm-1, sd);
-        if(i==11 && m==3 && d>=15){ /* চৈত্র */ }
-      } else if(i >=0 && i <=8){
-        startDate = new Date(y-1, sm-1, sd);
-      }
-    }
-
-    if(today >= startDate){
-      bnMonthIndex = i;
-      let diff = Math.floor((today - startDate)/(1000*60*60*24));
-      bnDay = diff + 1;
-      // মাস 31 দিনের বেশি হলে পরের মাস
-      if(bnDay > 31 && i < 5){
-        // 31 দিনের মাসগুলো
-      }
-      break;
-    }
-  }
-
-  // সহজ এবং নির্ভুল বিকল্প লজিক: আজকের জন্য আশ্বিন ফিক্স
-  // অক্টোবর 2026 এর জন্য সরাসরি হিসাব
-  if(y==2026 && m==10){
-    if(d >=1 && d <=15){ bnMonthIndex=5; bnDay = 14 + d; if(bnDay>30){bnMonthIndex=6; bnDay=bnDay-30;} } // আশ্বিন 16 Sep - 15 Oct
-    // 8 Oct = 23 Ashwin
-  }
-  if(y==2026 && m==9){
-    if(d >=16){ bnMonthIndex=5; bnDay = d-15; }
-    else { bnMonthIndex=4; bnDay = d+15; }
-  }
-
-  // Final correction for Oct 8 2026
-  if(y==2026 && m==10 && d==8){ bnMonthIndex=5; bnDay=23; }
-  if(y==2026 && m==10 && d==9){ bnMonthIndex=5; bnDay=24; }
-
-  return {day:bnDay, monthBN:bnMonths[bnMonthIndex], monthEN:bnMonthsEn[bnMonthIndex], year:bnYear, mIndex:bnMonthIndex};
-}
-
-function updateDates(){
-  let now=new Date();
-  let bn=getRealBanglaDate(now);
-  let enBN=["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"];
-  let enEN=["January","February","March","April","May","June","July","August","September","October","November","December"];
-  let hijriBN=["মুহাররম","সফর","রবিউল আউয়াল","রবিউস সানি","জমাদিউল আউয়াল","জমাদিউস সানি","রজব","শাবান","রমজান","শাওয়াল","জিলকদ","জিলহজ"];
-  let hDay="", hMonth="", hYear="";
-  try{
-    let p=new Intl.DateTimeFormat('en-u-ca-islamic-umalqura',{day:'numeric',month:'numeric',year:'numeric'}).formatToParts(now);
-    hDay=p.find(x=>x.type=='day').value; hMonth=p.find(x=>x.type=='month').value; hYear=p.find(x=>x.type=='year').value;
-  }catch(e){ hDay="26"; hMonth="4"; hYear="1448"; }
-
-  if(currentLang==='bn'){
-    document.getElementById('banglaDate').innerText=`${toBnNum(bn.day)} ${bn.monthBN} ${toBnNum(bn.year)}`;
-    document.getElementById('engDate').innerText=`${toBnNum(now.getDate())} ${enBN[now.getMonth()]} ${toBnNum(now.getFullYear())}`;
-    document.getElementById('hijriDate').innerText=`${toBnNum(hDay)} ${hijriBN[parseInt(hMonth)-1]} ${toBnNum(hYear)}`;
-  }else{
-    document.getElementById('banglaDate').innerText=`${bn.day} ${bn.monthEN} ${bn.year}`;
-    document.getElementById('engDate').innerText=`${now.getDate()} ${enEN[now.getMonth()]} ${now.getFullYear()}`;
-    document.getElementById('hijriDate').innerText=`${hDay} Rabi al-Thani ${hYear}`;
-  }
-}
-
-function scheduleMidnightUpdate(){
-  let now=new Date();
-  let midnight=new Date(now);
-  midnight.setHours(24,0,5,0);
-  let diff=midnight-now;
-  setTimeout(()=>{ updateDates(); scheduleMidnightUpdate(); }, diff);
-}
-
+function toggleLang(){ currentLang=currentLang==='bn'?'en':'bn'; localStorage.setItem('app_lang',currentLang); document.getElementById('langToggle').innerText=currentLang==='bn'?'EN':'BN'; applyTranslation(); updateDates(); }
+function applyTranslation(){ document.querySelectorAll('[data-bn]').forEach(el=>{ let bn=el.getAttribute('data-bn'); let en=el.getAttribute('data-en'); let txt=currentLang==='bn'?bn:en; if(!txt) return; if(txt.includes('<br>')){ el.innerHTML=txt; } else { el.innerText=txt; } }); }
+function getRealBanglaDate(date){ let bnBN=["বৈশাখ","জ্যৈষ্ঠ","আষাঢ়","শ্রাবণ","ভাদ্র","আশ্বিন","কার্তিক","অগ্রহায়ণ","পৌষ","মাঘ","ফাল্গুন","চৈত্র"]; let bnEN=["Boishakh","Joishtho","Ashar","Srabon","Bhadro","Ashwin","Kartik","Agrahayan","Poush","Magh","Falgun","Chaitra"]; let d=date.getDate(), m=date.getMonth()+1, y=date.getFullYear(); let bnYear=y-593; if(m<4 || (m==4 && d<14)) bnYear--; let startDate=(m<4 || (m==4 && d<14))? new Date(y-1,3,14):new Date(y,3,14); let diff=Math.floor((date-startDate)/(1000*60*60*24)); let md=[31,31,31,31,31,31,30,30,30,30,30,30]; let isLeap=(y%4==0 && y%100!=0)||(y%400==0); md[10]=isLeap?31:29; let idx=0; while(diff>=md[idx] && idx<12){diff-=md[idx]; idx++;} return {day:diff+1, monthBN:bnBN[idx], monthEN:bnEN[idx], year:bnYear}; }
+function updateDates(){ let now=new Date(); let bn=getRealBanglaDate(now); let enBN=["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"]; let enEN=["January","February","March","April","May","June","July","August","September","October","November","December"]; let hijBN=["মুহাররম","সফর","রবিউল আউয়াল","রবিউস সানি","জমাদিউল আউয়াল","জমাদিউস সানি","রজব","শাবান","রমজান","শাওয়াল","জিলকদ","জিলহজ"]; let hijEN=["Muharram","Safar","Rabi al-Awwal","Rabi al-Thani","Jumada al-Ula","Jumada al-Akhirah","Rajab","Sha'ban","Ramadan","Shawwal","Dhu al-Qi'dah","Dhu al-Hijjah"]; if(currentLang==='bn'){ document.getElementById('banglaDate').innerText=`${bn.day} ${bn.monthBN} ${bn.year}`; document.getElementById('engDate').innerText=`${now.getDate()} ${enBN[now.getMonth()]} ${now.getFullYear()}`; try{let f=new Intl.DateTimeFormat('en-u-ca-islamic-umalqura',{day:'numeric',month:'numeric',year:'numeric'}).formatToParts(now); let d=f.find(p=>p.type=='day').value, m=f.find(p=>p.type=='month').value, y=f.find(p=>p.type=='year').value; document.getElementById('hijriDate').innerText=`${d} ${hijBN[parseInt(m)-1]} ${y}`;}catch(e){document.getElementById('hijriDate').innerText=`16 রবিউস সানি 1448`;} }else{ document.getElementById('banglaDate').innerText=`${bn.day} ${bn.monthEN} ${bn.year}`; document.getElementById('engDate').innerText=`${now.getDate()} ${enEN[now.getMonth()]} ${now.getFullYear()}`; try{let f=new Intl.DateTimeFormat('en-u-ca-islamic-umalqura',{day:'numeric',month:'numeric',year:'numeric'}).formatToParts(now); let d=f.find(p=>p.type=='day').value, m=f.find(p=>p.type=='month').value, y=f.find(p=>p.type=='year').value; document.getElementById('hijriDate').innerText=`${d} ${hijEN[parseInt(m)-1]} ${y}`;}catch(e){document.getElementById('hijriDate').innerText=`16 Rabi al-Thani 1448`;} } }
+function scheduleMidnightUpdate(){ let now=new Date(), mid=new Date(now); mid.setHours(24,0,5,0); setTimeout(()=>{updateDates(); scheduleMidnightUpdate();},mid-now); }
 function startLaunchAnimationOnce(){ if(localStorage.getItem('launch_done_v3')){ document.getElementById('launchOverlay').remove(); return; } document.getElementById('launchOverlay').classList.remove('hidden'); document.getElementById('launchOverlay').classList.add('flex'); let container=document.getElementById('emojiContainer'); container.innerHTML=''; let emojis=["✨","🌸","🎉"]; for(let i=0;i<45;i++){let s=document.createElement('span'); s.className='fall-emoji'; s.innerText=emojis[Math.floor(Math.random()*emojis.length)]; s.style.left=Math.random()*100+'%'; s.style.animationDuration=(Math.random()*1+2)+'s'; s.style.animationDelay=(Math.random()*0.9)+'s'; s.style.fontSize=(Math.random()*15+20)+'px'; container.appendChild(s);} setTimeout(()=>{ container.innerHTML=''; let box=document.getElementById('congratsBox'); box.classList.remove('hidden'); box.classList.add('congrats-anim'); setTimeout(()=>{ document.getElementById('launchOverlay').style.transition='0.6s'; document.getElementById('launchOverlay').style.opacity='0'; document.getElementById('launchOverlay').style.transform='translateY(-100%)'; setTimeout(()=>{document.getElementById('launchOverlay').style.display='none'; localStorage.setItem('launch_done_v3','1');},600); },1200); },3000); }
-function updateOnlineStatus(){ let badge=document.getElementById('offlineBadge'); if(!navigator.onLine){ badge.classList.remove('hidden'); }else{ badge.classList.add('hidden'); loadHomeData(); } }
+function updateOnlineStatus(){ let badge=document.getElementById('offlineBadge'); if(!navigator.onLine){ badge.classList.remove('hidden'); let cached=localStorage.getItem('cached_notice'); if(cached) document.getElementById('yellowText').innerText=cached+" (Offline)"; }else{ badge.classList.add('hidden'); loadHomeData(); } }
 window.addEventListener('online', updateOnlineStatus); window.addEventListener('offline', updateOnlineStatus);
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').then(()=>{}); }
-function loadHomeData(){ let deviceId = localStorage.getItem('a2z_id'); if(!deviceId){ deviceId = 'a2z_'+Date.now()+'_'+Math.random().toString(36).substr(2,5); localStorage.setItem('a2z_id', deviceId); } if(!navigator.onLine) return; fetch(`${API_URL}?action=addVisit&deviceId=${deviceId}&page=index_asa2z`).catch(()=>{}); fetch(API_URL+"?action=getNotice").then(r=>r.json()).then(data=>{ if(data && data.length>0){ let last=data[data.length-1]||data[0]; let txt=last.text||last.notice||"নোটিশ"; document.getElementById('yellowText').innerText=txt; localStorage.setItem('cached_notice', txt); } }); fetch(API_URL+"?action=getAds").then(r=>r.json()).then(ads=>{ if(ads && ads.length>0){ localStorage.setItem('cached_ads', JSON.stringify(ads)); renderAds(ads); } }); }
-function renderAds(ads){ let slider=document.getElementById('adSlider'); let section=document.getElementById('adSection'); if(!slider||!section) return; section.classList.remove('hidden'); let html=''; ads.forEach(ad=>{let img=ad.image||ad.img||""; let title=ad.title||""; let link=ad.link||""; html+=`<div onclick="if('${link}') window.open('${link}','_blank')" class="min-w-[85%] snap-center rounded-[18px] overflow-hidden relative h-[160px] shadow-[0_6px_20px_rgba(0,0,0,0.1)] cursor-pointer active:scale-95 flex-shrink-0"><img src="${img}" class="w-full h-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div><div class="absolute bottom-0 left-0 right-0 p-4"><p class="text-white font-black text-[14px]">${title}</p></div></div>`;}); slider.innerHTML=html; if(adInterval) clearInterval(adInterval); adIndex=0; adDirection=1; if(ads.length>1){ adInterval=setInterval(()=>{ adIndex+=adDirection; if(adIndex>=ads.length-1){adIndex=ads.length-1; adDirection=-1;} else if(adIndex<=0){adIndex=0; adDirection=1;} let cardW=slider.children[0].offsetWidth+12; slider.scrollTo({left:cardW*adIndex, behavior:'smooth'}); },3000); } }
-
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('/a2zas/sw.js', {scope: '/a2zas/'}).then(()=>console.log('SW Hybrid Ready - Offline Fixed')); }
+function loadHomeData(){ let deviceId = localStorage.getItem('a2z_id'); if(!deviceId){ deviceId = 'a2z_'+Date.now()+'_'+Math.random().toString(36).substr(2,5); localStorage.setItem('a2z_id', deviceId); } if(!navigator.onLine){ let cN=localStorage.getItem('cached_notice'); if(cN) document.getElementById('yellowText').innerText=cN; let cA=localStorage.getItem('cached_ads'); if(cA){ try{ renderAds(JSON.parse(cA)); }catch(e){} } return; } fetch(`${API_URL}?action=addVisit&deviceId=${deviceId}&page=index_asa2z`).catch(()=>{}); fetch(API_URL+"?action=getNotice").then(r=>r.json()).then(data=>{ if(data && data.length>0){ let last=data[data.length-1]||data[0]; let txt=last.text||last.notice||"নোটিশ"; document.getElementById('yellowText').innerText=txt; localStorage.setItem('cached_notice', txt); } }); fetch(API_URL+"?action=getAds").then(r=>r.json()).then(ads=>{ if(ads && ads.length>0){ localStorage.setItem('cached_ads', JSON.stringify(ads)); renderAds(ads); } }); }
+function renderAds(ads){ let slider=document.getElementById('adSlider'); let section=document.getElementById('adSection'); if(!slider||!section) return; section.classList.remove('hidden'); let html=''; ads.forEach(ad=>{let img=ad.image||ad.img||"https://via.placeholder.com/400"; let title=ad.title||""; let link=ad.link||""; html+=`<div onclick="if('${link}') window.open('${link}','_blank')" class="min-w-[85%] snap-center rounded-[18px] overflow-hidden relative h-[160px] shadow-[0_6px_20px_rgba(0,0,0,0.1)] cursor-pointer active:scale-95 flex-shrink-0"><img src="${img}" class="w-full h-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div><div class="absolute bottom-0 left-0 right-0 p-4"><p class="text-white font-black text-[14px]">${title}</p></div></div>`;}); slider.innerHTML=html; if(adInterval) clearInterval(adInterval); adIndex=0; adDirection=1; if(ads.length>1){ adInterval=setInterval(()=>{ adIndex+=adDirection; if(adIndex>=ads.length-1){adIndex=ads.length-1; adDirection=-1;} else if(adIndex<=0){adIndex=0; adDirection=1;} let cardW=slider.children[0].offsetWidth+12; slider.scrollTo({left:cardW*adIndex, behavior:'smooth'}); },3000); } }
+const EMOJI_LIST2 = ["🌸","👑","🦁","🌙","⭐","🔥","💎","🦋","🌺","🍀","⚡","🎯","🚀","🌈"];
+function getDeviceId2(){ let id=localStorage.getItem("as_a2z_device_id_total"); if(!id){ id="DEV-"+Date.now().toString(36)+Math.random().toString(36).substr(2,5).toUpperCase(); localStorage.setItem("as_a2z_device_id_total", id); } return id; }
+function getEmoji2(deviceId){ let h=0; for(let i=0;i<deviceId.length;i++){ h=(h*31+deviceId.charCodeAt(i))%1000; } return EMOJI_LIST2[h%EMOJI_LIST2.length]; }
+function getDeviceName2(){ const ua=navigator.userAgent; if(/Android/i.test(ua)) return "Android"; if(/iPhone/i.test(ua)) return "iPhone"; if(/Windows/i.test(ua)) return "Windows PC"; return "Other"; }
+async function trackTotalVisit(){ const deviceId=getDeviceId2(); const emoji=getEmoji2(deviceId); const deviceName=getDeviceName2(); let country="Unknown", ip="Unknown"; try{ const r=await fetch("https://ipapi.co/json/").then(x=>x.json()); country=r.country_name; ip=r.ip; }catch(e){} const now=new Date(); const payload={ date:now.toLocaleDateString("en-GB"), time:now.toLocaleTimeString("en-GB"), deviceName, country, deviceId, emoji, ip }; fetch(TOTAL_VISIT_URL,{method:"POST", mode:"no-cors", body:JSON.stringify(payload)}); }
 window.addEventListener('load',()=>{
+  document.getElementById('langToggle').addEventListener('click', toggleLang);
   document.getElementById('langToggle').innerText=currentLang==='bn'?'EN':'BN';
-  applyTranslation(); updateDates(); scheduleMidnightUpdate(); startLaunchAnimationOnce(); loadHomeData(); updateOnlineStatus();
+  applyTranslation(); updateDates(); scheduleMidnightUpdate(); startLaunchAnimationOnce(); loadHomeData(); updateOnlineStatus(); trackTotalVisit();
+  let clicks=0, last=0; const logo=document.querySelector('.logo-3d');
+  logo.addEventListener('click', async ()=>{
+    let now=Date.now(); if(now-last>2000) clicks=0; clicks++; last=now;
+    if(clicks>=3){
+      clicks=0;
+      let popup=document.createElement('div');
+      popup.style.cssText="position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px";
+      popup.innerHTML=`<div style="background:white;border-radius:28px;padding:28px;width:100%;max-width:340px;text-align:center"><p style="font-weight:900;font-size:20px">📊 টোটাল ভিজিট</p><p id="totalCountText" style="font-weight:900;font-size:42px;color:#ff2d6b;margin-top:12px">লোড হচ্ছে...</p><p style="font-size:12px;color:#888;margin-top:8px">১০০০+ হলেও কাউন্ট হচ্ছে</p><button onclick="this.parentElement.parentElement.remove()" style="margin-top:18px;background:#111;color:white;font-weight:900;padding:10px 28px;border-radius:999px">বন্ধ</button></div>`;
+      document.body.appendChild(popup);
+      try{ const res=await fetch(TOTAL_VISIT_URL+"?t="+Date.now()).then(r=>r.json()); document.getElementById('totalCountText').innerText=res.totalVisit+" বার"; }catch(e){ document.getElementById('totalCountText').innerText="শিটে দেখুন"; }
+    }
+  });
 });
 </script>
 </body>
