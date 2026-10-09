@@ -9,6 +9,7 @@
 <title>A-S A 2 Z</title>
 <link rel="manifest" href="/a2zas/manifest.json">
 <meta name="theme-color" content="#2563eb">
+<meta name="mobile-web-app-capable" content="yes">
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&family=Poppins:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
@@ -105,6 +106,20 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 </div>
 </div>
 <div id="yellowBar" class="fixed bottom-0 left-0 right-0 z-[90] border-t-2 border-black py-[14px] px-2 flex items-center justify-center" style="background:#2563eb"><div class="w-full max-w-[480px] flex items-center"><div class="bg-black text-white text-[9px] font-black px-3 py-1 rounded-full shrink-0">NOTICE</div><div class="flex-1 overflow-hidden ml-3"><p id="yellowText" class="marquee font-bold text-[13px] text-white">লোড হচ্ছে...</p></div></div></div>
+
+<!-- PWA BUILDER APK BANNER - শুধু ব্রাউজারে দেখাবে, APK তে দেখাবে না -->
+<div id="apkBanner" style="display:none; position:fixed; bottom:82px; left:50%; transform:translateX(-50%); width:92%; max-width:400px; background:#111; border:1.5px solid #fcd34d; border-radius:20px; padding:14px; z-index:9999; box-shadow:0 10px 30px rgba(0,0,0,0.6);">
+  <div style="display:flex; align-items:center; gap:12px;">
+    <div style="width:48px; height:48px; background:#fbbf24; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px;">📲</div>
+    <div style="flex:1;">
+      <p style="font-weight:900; font-size:13px; color:#fff;" data-bn="A-S A2Z অ্যাপ ইনস্টল করুন" data-en="Install A-S A2Z App">A-S A2Z অ্যাপ ইনস্টল করুন</p>
+      <p style="font-size:10px; color:#aaa; margin-top:2px;" data-bn="অফলাইনে সুপার ফাস্ট চলবে" data-en="Super fast offline">অফলাইনে সুপার ফাস্ট চলবে</p>
+    </div>
+    <a id="apkLink" href="https://github.com/jubayer-asa2z/a2zas/releases" style="background:#fbbf24; color:#000; font-weight:900; font-size:11px; padding:9px 16px; border-radius:999px; text-decoration:none;" data-bn="INSTALL" data-en="INSTALL">INSTALL</a>
+    <button onclick="closeApkBanner()" style="background:rgba(255,255,255,0.12); border:none; color:#fff; width:26px; height:26px; border-radius:999px;">✕</button>
+  </div>
+</div>
+
 </div>
 <script>
 const API_URL="https://script.google.com/macros/s/AKfycbyt07t35S4oRxDY4Ai-wYXlaejv70wQ1-N6Rotz_4-WKZoM9QqGSC0Q8JArx7C6xvw0/exec";
@@ -132,10 +147,44 @@ function getDeviceId2(){ let id=localStorage.getItem("as_a2z_device_id_total"); 
 function getEmoji2(deviceId){ let h=0; for(let i=0;i<deviceId.length;i++){ h=(h*31+deviceId.charCodeAt(i))%1000; } return EMOJI_LIST2[h%EMOJI_LIST2.length]; }
 function getDeviceName2(){ const ua=navigator.userAgent; if(/Android/i.test(ua)) return "Android"; if(/iPhone/i.test(ua)) return "iPhone"; if(/Windows/i.test(ua)) return "Windows PC"; return "Other"; }
 async function trackTotalVisit(){ const deviceId=getDeviceId2(); const emoji=getEmoji2(deviceId); const deviceName=getDeviceName2(); let country="Unknown", ip="Unknown"; try{ const r=await fetch("https://ipapi.co/json/").then(x=>x.json()); country=r.country_name; ip=r.ip; }catch(e){} const now=new Date(); const payload={ date:now.toLocaleDateString("en-GB"), time:now.toLocaleTimeString("en-GB"), deviceName, country, deviceId, emoji, ip }; fetch(TOTAL_VISIT_URL,{method:"POST", mode:"no-cors", body:JSON.stringify(payload)}); }
+
+// PWA Builder APK Detection - NEW
+async function isPWABuilderApp() {
+  if (document.referrer.startsWith('android-app://')) return true;
+  if (window.matchMedia('(display-mode: standalone)').matches) return true;
+  try {
+    if ('getInstalledRelatedApps' in navigator) {
+      const apps = await navigator.getInstalledRelatedApps();
+      if (apps.length > 0) return true;
+    }
+  } catch(e){}
+  if (localStorage.getItem('asa2z_twa_installed') === '1') return true;
+  return false;
+}
+async function handleApkBanner() {
+  const banner = document.getElementById('apkBanner');
+  if (!banner) return;
+  const isApp = await isPWABuilderApp();
+  if (isApp) {
+    banner.style.display = 'none';
+    localStorage.setItem('asa2z_twa_installed', '1');
+    return;
+  }
+  const closedTime = localStorage.getItem('apk_banner_closed_time');
+  const now = Date.now();
+  if (!closedTime || (now - parseInt(closedTime)) > 3*24*60*60*1000) {
+    setTimeout(() => { banner.style.display = 'block'; }, 2500);
+  }
+}
+function closeApkBanner() {
+  document.getElementById('apkBanner').style.display = 'none';
+  localStorage.setItem('apk_banner_closed_time', Date.now().toString());
+}
+
 window.addEventListener('load',()=>{
   document.getElementById('langToggle').addEventListener('click', toggleLang);
   document.getElementById('langToggle').innerText=currentLang==='bn'?'EN':'BN';
-  applyTranslation(); updateDates(); scheduleMidnightUpdate(); startLaunchAnimationOnce(); loadHomeData(); updateOnlineStatus(); trackTotalVisit();
+  applyTranslation(); updateDates(); scheduleMidnightUpdate(); startLaunchAnimationOnce(); loadHomeData(); updateOnlineStatus(); trackTotalVisit(); handleApkBanner();
   let clicks=0, last=0; const logo=document.querySelector('.logo-3d');
   logo.addEventListener('click', async ()=>{
     let now=Date.now(); if(now-last>2000) clicks=0; clicks++; last=now;
@@ -148,6 +197,11 @@ window.addEventListener('load',()=>{
       try{ const res=await fetch(TOTAL_VISIT_URL+"?t="+Date.now()).then(r=>r.json()); document.getElementById('totalCountText').innerText=res.totalVisit+" বার"; }catch(e){ document.getElementById('totalCountText').innerText="শিটে দেখুন"; }
     }
   });
+});
+window.addEventListener('appinstalled', () => {
+  localStorage.setItem('asa2z_twa_installed', '1');
+  const b = document.getElementById('apkBanner');
+  if(b) b.style.display = 'none';
 });
 </script>
 </body>
