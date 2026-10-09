@@ -2,11 +2,12 @@
   "id": "/a2zas/",
   "name": "A-S A2Z - All Bangla Tools",
   "short_name": "A-S A2Z",
-  "description": "All Bangla Tools and Calculator in one app",
-  "start_url": "/a2zas/",
+  "description": "All Bangla Tools and Calculator in one app - Islamic, Digital Education, Science, Medical and Daily Life tools.",
+  "start_url": "/a2zas/index.html",
   "scope": "/a2zas/",
   "display": "standalone",
-  "orientation": "any",
+  "display_override": ["window-controls-overlay", "standalone", "browser"],
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
   "icons": [
@@ -26,8 +27,28 @@
   "shortcuts": [
     {
       "name": "Open A-S A2Z",
-      "url": "/a2zas/",
+      "short_name": "Open",
+      "description": "Open A-S A2Z Home",
+      "url": "/a2zas/index.html",
+      "icons": [{ "src": "/a2zas/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Digital Education",
+      "short_name": "Education",
+      "url": "/a2zas/digital_home.html",
       "icons": [{ "src": "/a2zas/icon-192.png", "sizes": "192x192" }]
     }
-  ]
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "id": "com.asa2z.twa",
+      "url": "https://play.google.com/store/apps/details?id=com.asa2z.twa"
+    }
+  ],
+  "prefer_related_applications": false,
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  },
+  "handle_links": "preferred"
 }
