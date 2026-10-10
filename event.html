@@ -1,193 +1,139 @@
 <!DOCTYPE html>
 <html lang="bn" translate="no" class="notranslate">
 <head>
-<meta charset="UTF-8">
-<meta name="google" content="notranslate">
+<meta charset="UTF-8"><meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Islamic Quiz Live Final</title>
+<title>Event Live - 10 Q + Gold + BN/EN</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-*{font-family:'Hind Siliguri'; -webkit-tap-highlight-color:transparent; box-sizing:border-box}
-body{background:#0a0a0f; overflow:hidden; position:fixed; width:100%; height:100%; top:0!important}
-.glass{background:linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06)); backdrop-filter:blur(22px); border:1.5px solid rgba(255,255,255,0.22);}
-@keyframes pop{0%{transform:translate(-50%,-120%) scale(0.8); opacity:0} 100%{transform:translate(-50%,0) scale(1); opacity:1}}
-.toast{animation:pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)}
-#google_translate_element,.goog-te-banner-frame,.skiptranslate{display:none!important}
+*{font-family:'Hind Siliguri';box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{top:0!important;background:#050510;position:fixed;width:100%;height:100%;overflow:hidden}
+.glass{background:linear-gradient(135deg,rgba(255,255,255,0.18),rgba(255,255,255,0.06));backdrop-filter:blur(24px);border:1.5px solid rgba(255,255,255,0.22)}
+@keyframes pop{0%{transform:translate(-50%,-150%) scale(0.5);opacity:0}100%{transform:translate(-50%,0) scale(1);opacity:1}}
+.big-toast{animation:pop 0.5s cubic-bezier(0.175,0.885,0.32,1.275)}
+.goog-te-banner-frame,.skiptranslate{display:none!important}
 </style>
 </head>
-<body class="notranslate text-white">
-<div class="fixed inset-0 -z-10 bg-gradient-to-br from-[#1a1033] via-[#0a0a0f] to-black"></div>
+<body class="text-white">
+<div class="fixed inset-0 -z-10 bg-gradient-to-br from-[#1a1033] via-black to-[#1a1033]"></div>
 
-<!-- Professional Banner -->
-<div id="proToast" class="hidden fixed top-3 left-1/2 -translate-x-1/2 z-[9999] w-[94%] max-w-[420px]">
-  <div id="proToastInner" class="toast rounded-[18px] px-4 py-3 flex items-center gap-3 border-2 border-black shadow-2xl">
-    <span id="proToastIcon" class="w-9 h-9 rounded-full flex items-center justify-center font-black shrink-0">✓</span>
-    <p id="proToastText" class="font-black text-[13px] leading-[15px]"></p>
-  </div>
+<div id="bigAlert" class="hidden fixed top-3 left-1/2 -translate-x-1/2 z-[9999] w-[96%] max-w-[500px]">
+<div id="bigAlertInner" class="big-toast rounded-[22px] p-5 border-[3px] border-black shadow-2xl text-center">
+<p id="bigAlertTitle" class="font-black text-[20px]"></p><p id="bigAlertSub" class="font-bold text-[12px] mt-1"></p>
+</div>
 </div>
 
 <div class="max-w-[480px] mx-auto h-[100dvh] flex flex-col p-3 overflow-y-auto">
-
-<div class="flex justify-between items-center py-2 shrink-0">
-  <button onclick="location.href='account.html'" class="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center font-black">←</button>
-  <div class="flex items-center gap-1.5">
-    <div id="btnBN" onclick="setLang('bn')" class="px-4 py-1.5 rounded-full text-[11px] font-black bg-white text-black cursor-pointer">BN</div>
-    <div id="btnEN" onclick="setLang('en')" class="px-4 py-1.5 rounded-full text-[11px] font-black bg-white/15 text-white cursor-pointer">EN</div>
-  </div>
-  <button id="controlBtn" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center font-black">•••</button>
+<div class="flex justify-between items-center py-2">
+<button onclick="location.href='account.html'" class="w-10 h-10 rounded-full bg-white/15 font-black">←</button>
+<div class="flex gap-1.5">
+<div id="btnBN" onclick="setLang('bn')" class="px-5 py-2 rounded-full text-[11px] font-black bg-white text-black cursor-pointer">BN</div>
+<div id="btnEN" onclick="setLang('en')" class="px-5 py-2 rounded-full text-[11px] font-black bg-white/15 cursor-pointer">EN</div>
+</div>
+<button id="adminBtn" class="w-10 h-10 rounded-full bg-white/10">•••</button>
 </div>
 
-<div id="loginNeeded" class="hidden mt-3 bg-red-500/20 border border-red-500/30 rounded-[18px] p-4 text-center"><p class="font-black text-[14px]" id="t_needLogin">আগে Account খুলুন</p><button onclick="location.href='account.html'" class="mt-2 bg-white text-black font-black px-6 py-2 rounded-full text-[12px]" id="t_goAcc">Account</button></div>
-<div id="welcomeBar" class="hidden mt-3 glass rounded-[18px] p-3 flex justify-between items-center shrink-0"><p class="font-black text-[13px]">👋 <span id="userNameShow"></span></p><span class="bg-amber-400 text-black font-black px-3 py-1 rounded-full text-[11px]" id="myGold">💰 0</span></div>
-<div id="broadcastBar" class="hidden mt-3 bg-[#facc15] border-2 border-black rounded-[14px] px-3 py-2 flex items-center gap-2"><span class="bg-black text-[#facc15] text-[9px] font-black px-2 py-1 rounded-full">MSG</span><p id="broadcastText" class="flex-1 font-black text-[13px] text-black"></p></div>
+<div id="topBar" class="hidden mt-3 glass rounded-[18px] p-3 flex justify-between"><p class="font-black text-[12px]">👋 <span id="uName"></span></p><span id="uGold" class="bg-amber-400 text-black font-black px-4 py-1 rounded-full text-[12px]">💰 0 Gold</span></div>
 
-<div id="stage" class="flex-1 mt-5 flex flex-col items-center justify-center text-center">
-  <div id="idleView">
-    <div class="text-[80px]">🕌</div>
-    <h1 class="font-black text-[26px] leading-[28px] mt-2" id="t_idleTitle">ইসলামিক কুইজ<br><span class="text-amber-300">লাইভ ইভেন্ট</span></h1>
-    <p class="mt-3 text-[13px] text-white/60" id="t_idleDesc">হোস্ট START করলে শুরু হবে<br>১০ টি প্রশ্ন • ১০ Gold</p>
-    <div class="mt-6 glass rounded-full px-5 py-2 text-[11px] font-bold" id="t_liveNote">🔴 Live • Gold জমা হবে</div>
-  </div>
-  <div id="startingView" class="hidden"><h1 class="font-black text-[38px] glass px-8 py-8 rounded-[28px]" id="t_starting">কুইজ শুরু!</h1></div>
-  <div id="nextView" class="hidden text-center"><div class="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin mx-auto"></div><h1 class="font-black text-[18px] mt-4 leading-[22px]" id="t_nextWait">পরবর্তী প্রশ্ন শুরু হচ্ছে<br>অপেক্ষা করুন...</h1></div>
-  <div id="questionView" class="hidden w-full">
-    <div class="flex justify-between items-center w-full mb-3"><span class="bg-white text-black font-black px-4 py-1.5 rounded-full text-[12px]"><span id="t_qLabel">প্রশ্ন</span> <span id="qNo">1</span>/10</span><span id="timer" class="bg-red-500 font-black px-4 py-1.5 rounded-full text-[13px]">10s</span></div>
-    <div class="glass rounded-[24px] p-5 w-full"><p id="qText" class="font-black text-[18px]"></p></div>
-    <div id="optionsBox" class="grid gap-3 mt-4 w-full"></div>
-    <p id="blockMsg" class="hidden mt-3 text-[11px] bg-red-500/40 border px-4 py-1.5 rounded-full">⏱️ <span id="t_timeUp">সময় শেষ</span></p>
-  </div>
+<div id="stage" class="flex-1 flex flex-col items-center justify-center text-center mt-4">
+<div id="vIdle"><div class="text-[80px]">🕌</div><h1 id="t_idle" class="font-black text-[26px] leading-[28px]"></h1><p id="t_idleSub" class="mt-2 text-[11px] opacity-60"></p><div id="qListPreview" class="mt-4 text-left bg-white/10 rounded-[16px] p-3 max-h-[140px] overflow-y-auto"></div></div>
+<div id="vCount" class="hidden"><h1 id="countNum" class="font-black text-[90px]">5</h1><p id="t_count" class="font-black"></p></div>
+<div id="vNext" class="hidden"><div class="w-12 h-12 border-4 border-white/20 border-t-amber-400 rounded-full animate-spin mx-auto"></div><h1 id="t_next" class="font-black mt-4"></h1></div>
+<div id="vQ" class="hidden w-full"><div class="flex justify-between mb-3"><span class="bg-white text-black font-black px-4 py-1.5 rounded-full text-[11px]"><span id="t_q"></span> <span id="qNo">1</span>/10</span><span id="timer" class="bg-red-500 font-black px-4 py-1.5 rounded-full">4s</span></div><div class="glass rounded-[24px] p-5"><p id="qText" class="font-black text-[18px]"></p></div><div id="optBox" class="grid gap-3 mt-4"></div><p id="lockMsg" class="hidden mt-3 bg-red-500/20 border border-red-500/40 px-4 py-1.5 rounded-full text-[11px] font-bold"><span id="t_lock"></span></p><p id="goldMsg" class="hidden mt-2 text-[11px] font-black text-amber-300"></p></div>
 </div>
 </div>
 
-<!-- Admin - CODE HIDDEN -->
-<div id="controlModal" class="hidden fixed inset-0 z-[99] bg-black/75 backdrop-blur-md flex items-center justify-center p-4">
-<div class="bg-white text-black rounded-[24px] p-5 w-full max-w-[360px]">
-<p class="font-black text-[18px]">🔐 Admin Access</p>
-<input id="codeInput" type="password" placeholder="Security Code" class="w-full mt-3 border-2 border-zinc-200 rounded-full px-4 py-3 font-black outline-none text-center tracking-[8px]">
-<div id="controlPanel" class="hidden mt-4 space-y-2">
-<button onclick="controlAction('start')" class="w-full bg-violet-600 text-white font-black py-3 rounded-full">🚀 START</button>
-<button onclick="controlAction('next')" class="w-full bg-black text-white font-black py-3 rounded-full">⏭️ NEXT</button>
-<button onclick="controlAction('reset')" class="w-full bg-red-100 text-red-600 border font-black py-3 rounded-full">🔄 RESET</button>
-<div class="flex gap-2"><input id="broadcastInput" placeholder="Broadcast..." class="flex-1 border-2 rounded-full px-3 py-2 text-[12px]"><button onclick="sendBroadcast()" class="bg-black text-[#facc15] font-black px-4 py-2 rounded-full text-[11px]">SEND</button></div>
-<p id="adminStatus" class="text-[11px] font-bold text-center text-green-600"></p>
+<div id="adminModal" class="hidden fixed inset-0 z-[99] bg-black/80 backdrop-blur flex items-center justify-center p-4">
+<div class="bg-white text-black rounded-[24px] p-5 w-full max-w-[380px]">
+<p class="font-black text-[18px]">🔐 Admin - 10 Question Control</p>
+<input id="codeIn" type="password" placeholder="Code" class="w-full mt-3 border-2 rounded-full px-4 py-3 font-black text-center tracking-[8px] outline-none">
+<div id="aPanel" class="hidden mt-4 space-y-2">
+<div class="grid grid-cols-3 gap-2"><button onclick="doAct('start')" class="bg-violet-600 text-white font-black py-3 rounded-full text-[12px]">START</button><button onclick="doAct('next')" class="bg-black text-white font-black py-3 rounded-full text-[12px]">NEXT</button><button onclick="doAct('reset')" class="bg-red-500 text-white font-black py-3 rounded-full text-[12px]">RESET</button></div>
+<button onclick="location.reload()" class="w-full bg-zinc-200 text-black font-black py-2.5 rounded-full text-[11px]">♻️ REPLACE / Refresh All Users</button>
+<div id="adminQList" class="max-h-[200px] overflow-y-auto bg-zinc-100 rounded-[16px] p-2 mt-2 text-[11px]"></div>
+<p id="aStat" class="text-[11px] font-bold text-center text-green-600"></p>
 </div>
-<button id="verifyBtn" onclick="verifyCode()" class="w-full mt-3 bg-black text-white font-black py-3 rounded-full">VERIFY</button>
-<button onclick="document.getElementById('controlModal').classList.add('hidden')" class="w-full mt-3 text-[11px] font-bold text-zinc-500">Close</button>
+<button id="vBtn" onclick="verify()" class="w-full mt-3 bg-black text-white font-black py-3 rounded-full">VERIFY</button>
+<button onclick="adminModal.classList.add('hidden')" class="w-full mt-2 text-[11px] opacity-40">Close</button>
 </div>
 </div>
 
 <script>
-const QUIZ_API = "https://script.google.com/macros/s/AKfycbyms9tHrSbE04E7DZfwZ-vVS4gP9XWu0D_3EpmTTmZEYAez-ekb1tGnj-JFS4Ku1y8/exec";
-const GOLD_API = "https://script.google.com/macros/s/AKfycbw_oRlZS8lwB9JnkZQeUCQOfn-BVrMSPtEyqVvBuKUjH9KMAyMABT0PER46gTqB4P4J/exec";
-const _sec = "321123";
+const QUIZ_API="https://script.google.com/macros/s/AKfycbzbCL7gQlj3wqVAPYpQAhWWe7afGiKdB3hdq489PMvdJ7UG8gKOtJl5-UilBhsrAtsOyQ/exec";
+const GOLD_API="https://script.google.com/macros/s/AKfycbw_oRlZS8lwB9JnkZQeUCQOfn-BVrMSPtEyqVvBuKUjH9KMAyMABT0PER46gTqB4P4J/exec";
+const _sec="321123";
 
-const DATA_BN = [
-{q:"কুরআন নাজিল হতে কত বছর লেগেছে?", options:["২৩ বছর","২০ বছর","২৫ বছর","৩০ বছর"], ans:0, gold:10},
-{q:"কোন ফেরেশতা ওহী নিয়ে আসতেন?", options:["ইসরাফিল (আ)","জিবরাঈল (আ)","মিকাঈল (আ)","আজরাঈল (আ)"], ans:1, gold:10},
-{q:"মুসলমানদের প্রথম কিবলা কোনটি?", options:["কাবা","বায়তুল মুকাদ্দাস","মসজিদে নববী","মসজিদে কুবা"], ans:1, gold:10},
-{q:"সাওম অর্থ কি?", options:["নামাজ","রোজা","হজ্ব","যাকাত"], ans:1, gold:10},
-{q:"কোন সূরায় বিসমিল্লাহ নেই?", options:["সূরা তাওবা","সূরা ফাতিহা","সূরা নাস","সূরা ফালাক"], ans:0, gold:10},
-{q:"ইসলামের ২য় খলিফা কে?", options:["আবু বকর (রা)","ওমর (রা)","উসমান (রা)","আলী (রা)"], ans:1, gold:10},
-{q:"কুরআনের কোন সূরা দুইবার নাজিল হয়েছে?", options:["ফাতিহা","ইখলাস","বাকারা","রহমান"], ans:0, gold:10},
-{q:"জুমার নামাজ কত রাকাত ফরজ?", options:["২ রাকাত","৪ রাকাত","৩ রাকাত","১০ রাকাত"], ans:0, gold:10},
-{q:"কোন নবী নৌকা তৈরি করেছিলেন?", options:["মূসা (আ)","নূহ (আ)","ইব্রাহিম (আ)","আদম (আ)"], ans:1, gold:10},
-{q:"লাইলাতুল কদর কোন মাসে?", options:["রজব","রমজান","শাবান","শাওয়াল"], ans:1, gold:10},
+// ১০ টা প্রশ্ন বাংলা + ইংরেজি - ফুল লিস্ট
+const DATA_BN=[
+{q:"১. কুরআন নাজিল হতে কত বছর লেগেছে?",o:["২৩ বছর","২০ বছর","২৫ বছর","৩০ বছর"],a:0},
+{q:"২. কোন ফেরেশতা ওহী আনতেন?",o:["ইসরাফিল","জিবরাঈল","মিকাঈল","আজরাঈল"],a:1},
+{q:"৩. প্রথম কিবলা কোনটি?",o:["কাবা","বায়তুল মুকাদ্দাস","মসজিদে নববী","কুবা"],a:1},
+{q:"৪. সাওম শব্দের অর্থ কি?",o:["নামাজ","রোজা","হজ্ব","যাকাত"],a:1},
+{q:"৫. কোন সূরায় বিসমিল্লাহ নেই?",o:["সূরা তাওবা","সূরা ফাতিহা","সূরা নাস","সূরা ফালাক"],a:0},
+{q:"৬. ইসলামের ২য় খলিফা কে?",o:["আবু বকর (রা)","ওমর (রা)","উসমান (রা)","আলী (রা)"],a:1},
+{q:"৭. কোন সূরা দুবার নাজিল হয়েছে?",o:["সূরা ফাতিহা","সূরা ইখলাস","সূরা বাকারা","সূরা রহমান"],a:0},
+{q:"৮. জুমার ফরজ নামাজ কত রাকাত?",o:["২ রাকাত","৪ রাকাত","৩ রাকাত","১০ রাকাত"],a:0},
+{q:"৯. কে নৌকা বানিয়েছিলেন?",o:["মূসা (আ)","নূহ (আ)","ইব্রাহিম (আ)","আদম (আ)"],a:1},
+{q:"১০. লাইলাতুল কদর কোন মাসে?",o:["রজব","রমজান","শাবান","শাওয়াল"],a:1}
 ];
-const DATA_EN = [
-{q:"How many years to reveal Quran?", options:["23 Years","20 Years","25 Years","30 Years"], ans:0, gold:10},
-{q:"Which Angel brought Wahi?", options:["Israfil","Jibrail","Mikail","Azrail"], ans:1, gold:10},
-{q:"First Qibla of Muslims?", options:["Kaaba","Baitul Muqaddas","Nabawi","Quba"], ans:1, gold:10},
-{q:"What does Sawm mean?", options:["Salah","Fasting","Hajj","Zakat"], ans:1, gold:10},
-{q:"Which Surah has no Bismillah?", options:["Tawbah","Fatiha","Nas","Falaq"], ans:0, gold:10},
-{q:"2nd Caliph of Islam?", options:["Abu Bakr","Umar","Usman","Ali"], ans:1, gold:10},
-{q:"Surah revealed twice?", options:["Fatiha","Ikhlas","Baqarah","Rahman"], ans:0, gold:10},
-{q:"Fard Rakats in Jumuah?", options:["2","4","3","10"], ans:0, gold:10},
-{q:"Who built the Ark?", options:["Musa","Nuh","Ibrahim","Adam"], ans:1, gold:10},
-{q:"Laylatul Qadr in which month?", options:["Rajab","Ramadan","Shaban","Shawwal"], ans:1, gold:10},
+const DATA_EN=[
+{q:"1. How many years to reveal Quran?",o:["23 Years","20 Years","25 Years","30 Years"],a:0},
+{q:"2. Which Angel brought Wahi?",o:["Israfil","Jibrail","Mikail","Azrail"],a:1},
+{q:"3. First Qibla?",o:["Kaaba","Baitul Muqaddas","Nabawi","Quba"],a:1},
+{q:"4. What does Sawm mean?",o:["Salah","Fasting","Hajj","Zakat"],a:1},
+{q:"5. Which Surah has no Bismillah?",o:["Tawbah","Fatiha","Nas","Falaq"],a:0},
+{q:"6. Who is 2nd Caliph?",o:["Abu Bakr","Umar","Usman","Ali"],a:1},
+{q:"7. Surah revealed twice?",o:["Fatiha","Ikhlas","Baqarah","Rahman"],a:0},
+{q:"8. Fard in Jumuah?",o:["2 Rakats","4 Rakats","3 Rakats","10 Rakats"],a:0},
+{q:"9. Who built the Ark?",o:["Musa","Nuh","Ibrahim","Adam"],a:1},
+{q:"10. Lailatul Qadr in which month?",o:["Rajab","Ramadan","Shaban","Shawwal"],a:1}
 ];
-const TXT = {
-bn:{idleTitle:'ইসলামিক কুইজ<br><span class="text-amber-300">লাইভ ইভেন্ট</span>', idleDesc:'হোস্ট START করলে শুরু হবে<br>১০ টি প্রশ্ন • ১০ Gold', liveNote:'🔴 Live • উত্তর দিলে Gold জমা হবে', starting:'কুইজ শুরু!', nextWait:'পরবর্তী প্রশ্ন শুরু হচ্ছে<br>অপেক্ষা করুন...', qLabel:'প্রশ্ন', timeUp:'সময় শেষ', needLogin:'আগে Account খুলুন', goAcc:'একাউন্টে যান', correct:'সঠিক! {g} Gold যোগ হয়েছে', wrong:'ভুল উত্তর!', already:'এই প্রশ্নের Gold পেয়ে গেছেন'},
-en:{idleTitle:'Islamic Quiz<br><span class="text-amber-300">Live Event</span>', idleDesc:'Will start when host clicks START<br>10 Questions • 10 Gold', liveNote:'🔴 Live • Answer to earn Gold', starting:'Quiz Started!', nextWait:'Next question is starting<br>Please wait...', qLabel:'Question', timeUp:'Time Up', needLogin:'Create Account First', goAcc:'Go to Account', correct:'Correct! {g} Gold Added', wrong:'Wrong Answer!', already:'You already got Gold'}
+const TXT={
+bn:{idle:'ইসলামিক কুইজ<br><span class="text-amber-300">লাইভ ইভেন্ট - 10 প্রশ্ন</span>',idleSub:'Admin START করলে ৫ সেকেন্ড পর ১০টি প্রশ্ন শুরু হবে। প্রতিটি সঠিক উত্তরে 10 Gold Account এ যোগ হবে।',count:'শুরু হচ্ছে...',next:'পরবর্তী প্রশ্ন আসছে...',q:'প্রশ্ন',lock:'⏱️ সময় শেষ - উত্তর লক',correct:'✅ সঠিক! 10 Gold যোগ হয়েছে',wrong:'❌ ভুল উত্তর!',already:'এই প্রশ্নের Gold পেয়ে গেছেন',goldAdd:'💰 10 Gold আপনার Account এ যোগ হয়েছে'},
+en:{idle:'Islamic Quiz<br><span class="text-amber-300">Live Event - 10 Questions</span>',idleSub:'Starts 5s after Admin START. 10 questions, 10 Gold for each correct answer directly to your Account.',count:'Starting...',next:'Next question coming...',q:'Question',lock:'⏱️ Time up - Locked',correct:'✅ Correct! 10 Gold Added',wrong:'❌ Wrong Answer!',already:'Already got Gold for this question',goldAdd:'💰 10 Gold added to your Account'}
 };
 
-let curLang=localStorage.getItem('quiz_lang')||'bn', currentQIndex=-1, lastStateQ=-99, answerLocked=false, correctIdx=-1, shuffled=[], timerInt=null;
-let userId=localStorage.getItem('a2z_userId');
+let lang=localStorage.getItem('quiz_lang')||'bn',lastQ=-99,locked=false,correctIdx=-1,shuffled=[],timer=null,uid=null,ctx=null,curQ=-1;
 
-// SOUND
-let ctx=null;
-function sound(t){
- try{
-  if(!ctx) ctx=new (window.AudioContext||window.webkitAudioContext)();
-  let o=ctx.createOscillator(), g=ctx.createGain(); o.connect(g); g.connect(ctx.destination);
-  if(t=='click'){ o.frequency.value=850; g.gain.setValueAtTime(0.3,ctx.currentTime); o.start(); g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.15); o.stop(ctx.currentTime+0.15); }
-  if(t=='correct'){ o.frequency.value=500; o.frequency.linearRampToValueAtTime(1000,ctx.currentTime+0.3); g.gain.setValueAtTime(0.4,ctx.currentTime); o.start(); o.stop(ctx.currentTime+0.4); }
-  if(t=='wrong'){ o.frequency.value=220; g.gain.setValueAtTime(0.4,ctx.currentTime); o.start(); o.stop(ctx.currentTime+0.25); }
-  if(t=='start'){ [400,600,900].forEach((f,i)=>{ let os=ctx.createOscillator(), ga=ctx.createGain(); os.connect(ga); ga.connect(ctx.destination); os.frequency.value=f; ga.gain.setValueAtTime(0.3,ctx.currentTime+i*0.12); os.start(ctx.currentTime+i*0.12); os.stop(ctx.currentTime+i*0.12+0.2); }); }
-  if(t=='next'){ o.frequency.value=500; o.frequency.linearRampToValueAtTime(900,ctx.currentTime+0.2); g.gain.setValueAtTime(0.3,ctx.currentTime); o.start(); o.stop(ctx.currentTime+0.22); }
- }catch{}
-}
-function toast(text,type='success'){
- let box=document.getElementById('proToast'), inner=document.getElementById('proToastInner'), icon=document.getElementById('proToastIcon'), txt=document.getElementById('proToastText');
- txt.innerHTML=text; box.classList.remove('hidden');
- if(type=='success'){ inner.className="toast rounded-[18px] px-4 py-3 flex items-center gap-3 border-2 border-black shadow-2xl bg-[#facc15] text-black"; icon.className="w-9 h-9 rounded-full bg-black text-[#facc15] flex items-center justify-center font-black shrink-0"; icon.innerText="✓"; }
- if(type=='error'){ inner.className="toast rounded-[18px] px-4 py-3 flex items-center gap-3 border-2 border-black shadow-2xl bg-red-500 text-white"; icon.className="w-9 h-9 rounded-full bg-white text-red-500 flex items-center justify-center font-black shrink-0"; icon.innerText="✕"; }
- if(type=='info'){ inner.className="toast rounded-[18px] px-4 py-3 flex items-center gap-3 border-2 border-black shadow-2xl bg-white text-black"; icon.className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center font-black shrink-0"; icon.innerText="•"; }
- setTimeout(()=>box.classList.add('hidden'),3000);
-}
+function sound(t){try{if(!ctx) ctx=new (window.AudioContext||window.webkitAudioContext)(); if(ctx.state==='suspended') ctx.resume(); let o=ctx.createOscillator(),g=ctx.createGain(); o.connect(g); g.connect(ctx.destination); if(t=='click'){o.frequency.value=850;g.gain.setValueAtTime(0.3,ctx.currentTime);o.start();o.stop(ctx.currentTime+0.12);} if(t=='correct'){o.frequency.value=500;o.frequency.linearRampToValueAtTime(1300,ctx.currentTime+0.4);g.gain.setValueAtTime(0.45,ctx.currentTime);o.start();o.stop(ctx.currentTime+0.5);} if(t=='wrong'){o.frequency.value=180;g.gain.setValueAtTime(0.4,ctx.currentTime);o.start();o.stop(ctx.currentTime+0.35);} if(t=='start'){[300,600,950].forEach((f,i)=>{let os=ctx.createOscillator(),ga=ctx.createGain();os.connect(ga);ga.connect(ctx.destination);os.frequency.value=f;ga.gain.setValueAtTime(0.35,ctx.currentTime+i*0.12);os.start(ctx.currentTime+i*0.12);os.stop(ctx.currentTime+i*0.12+0.2);});}}catch{}}
+function bigToast(title,sub,type){let box=document.getElementById('bigAlert'),inner=document.getElementById('bigAlertInner');bigAlertTitle.innerHTML=title;bigAlertSub.innerHTML=sub||"";box.classList.remove('hidden');if(type=='success') inner.className="big-toast rounded-[22px] p-5 border-[3px] border-black shadow-2xl text-center bg-[#facc15] text-black";else if(type=='error') inner.className="big-toast rounded-[22px] p-5 border-[3px] border-black shadow-2xl text-center bg-red-500 text-white";else inner.className="big-toast rounded-[22px] p-5 border-[3px] border-black shadow-2xl text-center bg-white text-black";setTimeout(()=>box.classList.add('hidden'),3500);}
 function setLang(l){
- curLang=l; localStorage.setItem('quiz_lang',l);
- document.getElementById('btnBN').className=l=='bn'?"px-4 py-1.5 rounded-full text-[11px] font-black bg-white text-black cursor-pointer":"px-4 py-1.5 rounded-full text-[11px] font-black bg-white/15 text-white cursor-pointer";
- document.getElementById('btnEN').className=l=='en'?"px-4 py-1.5 rounded-full text-[11px] font-black bg-white text-black cursor-pointer":"px-4 py-1.5 rounded-full text-[11px] font-black bg-white/15 text-white cursor-pointer";
- document.getElementById('t_idleTitle').innerHTML=TXT[l].idleTitle; document.getElementById('t_idleDesc').innerHTML=TXT[l].idleDesc;
- document.getElementById('t_liveNote').innerText=TXT[l].liveNote; document.getElementById('t_starting').innerText=TXT[l].starting;
- document.getElementById('t_nextWait').innerHTML=TXT[l].nextWait; document.getElementById('t_qLabel').innerText=TXT[l].qLabel;
- document.getElementById('t_timeUp').innerText=TXT[l].timeUp; document.getElementById('t_needLogin').innerText=TXT[l].needLogin;
- document.getElementById('t_goAcc').innerText=TXT[l].goAcc;
- if(currentQIndex>=0) showQ(currentQIndex,true);
+ lang=l;localStorage.setItem('quiz_lang',l);
+ btnBN.className=l=='bn'?"px-5 py-2 rounded-full text-[11px] font-black bg-white text-black":"px-5 py-2 rounded-full text-[11px] font-black bg-white/15";
+ btnEN.className=l=='en'?"px-5 py-2 rounded-full text-[11px] font-black bg-white text-black":"px-5 py-2 rounded-full text-[11px] font-black bg-white/15";
+ t_idle.innerHTML=TXT[l].idle; t_idleSub.innerText=TXT[l].idleSub; t_count.innerText=TXT[l].count; t_next.innerText=TXT[l].next; t_q.innerText=TXT[l].q; t_lock.innerText=TXT[l].lock;
+ let D=l=='bn'?DATA_BN:DATA_EN;
+ qListPreview.innerHTML=D.map(x=>`<div class="py-1 border-b border-white/10 text-[10px]">${x.q}</div>`).join('');
+ adminQList.innerHTML=D.map((x,i)=>`<div class="py-1.5 font-bold">Q${i+1}: ${x.q} - Ans: ${x.o[x.a]}</div>`).join('');
+ if(curQ>=0) showQ(curQ,true);
 }
-function checkLogin(){ userId=localStorage.getItem('a2z_userId'); if(!userId){ document.getElementById('loginNeeded').classList.remove('hidden'); document.getElementById('welcomeBar').classList.add('hidden'); return false;} else { document.getElementById('loginNeeded').classList.add('hidden'); document.getElementById('welcomeBar').classList.remove('hidden'); document.getElementById('userNameShow').innerText=localStorage.getItem('a2z_name')||userId; refreshGold(); return true; } }
-async function refreshGold(){ if(!userId) return; try{ let r=await fetch(GOLD_API+"?action=getGold&userId="+userId).then(x=>x.json()); document.getElementById('myGold').innerText="💰 "+(r.gold||0); }catch{} }
-async function poll(){
- try{
-  let res=await fetch(QUIZ_API+"?action=getState&t="+Date.now()).then(r=>r.json());
-  let q=parseInt(res.currentQ??"-1"), started=res.started=="1";
-  if(res.broadcastMsg && res.broadcastMsg!=""){ document.getElementById('broadcastBar').classList.remove('hidden'); document.getElementById('broadcastText').innerText=res.broadcastMsg; } else if(res.broadcastMsg==="") document.getElementById('broadcastBar').classList.add('hidden');
-  if(!started){ lastStateQ=-99; document.getElementById('idleView').classList.remove('hidden'); document.getElementById('questionView').classList.add('hidden'); document.getElementById('startingView').classList.add('hidden'); document.getElementById('nextView').classList.add('hidden'); return; }
-  if(q!=lastStateQ && q>=0){
-   if(lastStateQ!=-99 && q>lastStateQ){ sound('next'); document.getElementById('idleView').classList.add('hidden'); document.getElementById('startingView').classList.add('hidden'); document.getElementById('questionView').classList.add('hidden'); document.getElementById('nextView').classList.remove('hidden'); setTimeout(()=>{ document.getElementById('nextView').classList.add('hidden'); startFlow(q); },2000); }
-   else startFlow(q);
-   lastStateQ=q;
-  }
- }catch{}
-}
-function startFlow(q){ currentQIndex=q; sound('start'); document.getElementById('idleView').classList.add('hidden'); document.getElementById('nextView').classList.add('hidden'); document.getElementById('startingView').classList.remove('hidden'); document.getElementById('questionView').classList.add('hidden'); setTimeout(()=>{ document.getElementById('startingView').classList.add('hidden'); showQ(q); },1000); }
-function shuffle(a){ let b=[...a]; for(let i=b.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]]; } return b; }
-function showQ(idx,isLang=false){
- let DATA=curLang=='bn'?DATA_BN:DATA_EN; let qObj=DATA[idx]; if(!qObj) return;
- document.getElementById('idleView').classList.add('hidden'); document.getElementById('startingView').classList.add('hidden'); document.getElementById('nextView').classList.add('hidden'); document.getElementById('questionView').classList.remove('hidden');
- document.getElementById('qNo').innerText=idx+1; document.getElementById('qText').innerText=qObj.q;
- if(!isLang){ let withIdx=qObj.options.map((t,i)=>({t,i})); shuffled=shuffle(withIdx); correctIdx=shuffled.findIndex(o=>o.i==qObj.ans); }
- let box=document.getElementById('optionsBox'); box.innerHTML=""; answerLocked=false; document.getElementById('blockMsg').classList.add('hidden');
- shuffled.forEach((o,i)=>{ let d=document.createElement('div'); d.className="glass rounded-[16px] p-3.5 flex items-center gap-3 cursor-pointer active:scale-[0.98]"; d.id="opt-"+i; d.innerHTML=`<span class="w-8 h-8 rounded-full bg-white text-black font-black flex items-center justify-center text-[12px]">${["A","B","C","D"][i]}</span><span class="font-bold text-[14px]">${o.t}</span>`; d.onclick=()=>pick(i); box.appendChild(d); });
- if(!isLang){ let tl=10; document.getElementById('timer').innerText=tl+"s"; clearInterval(timerInt); timerInt=setInterval(()=>{ tl--; document.getElementById('timer').innerText=tl+"s"; if(tl==5){ answerLocked=true; document.getElementById('blockMsg').classList.remove('hidden'); } if(tl<=0){ clearInterval(timerInt); reveal(); } },1000); }
-}
+function checkAcc(){uid=localStorage.getItem('a2z_userId');let nm=localStorage.getItem('a2z_name');if(!uid){topBar.classList.add('hidden');return false;}else{topBar.classList.remove('hidden');uName.innerText=nm;refreshGold();return true;}}
+async function refreshGold(){if(!uid) return;try{let r=await fetch(GOLD_API+"?action=getGold&userId="+uid+"&t="+Date.now()).then(x=>x.json());if(r.ok) uGold.innerText="💰 "+(r.gold||0)+" Gold";}catch{}}
+async function poll(){try{let res=await fetch(QUIZ_API+"?action=getState&t="+Date.now()).then(r=>r.json());let q=parseInt(res.currentQ||"-1"),started=res.started=="1";if(!started){lastQ=-99;vIdle.classList.remove('hidden');vQ.classList.add('hidden');vCount.classList.add('hidden');vNext.classList.add('hidden');return;}if(q!=lastQ&&q>=0){if(lastQ==-99){sound('start');bigToast("🚀 LIVE STARTED","5s পর 10 টি প্রশ্ন শুরু","info");vIdle.classList.add('hidden');vQ.classList.add('hidden');vNext.classList.add('hidden');vCount.classList.remove('hidden');let c=5;countNum.innerText=c;let iv=setInterval(()=>{c--;countNum.innerText=c;if(c<=0){clearInterval(iv);vCount.classList.add('hidden');curQ=q;showQ(q);}},1000);}else{vQ.classList.add('hidden');vNext.classList.remove('hidden');setTimeout(()=>{vNext.classList.add('hidden');curQ=q;showQ(q);},2000);}lastQ=q;}}catch{}}
+function shuffleArr(a){let b=[...a];for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function showQ(idx,isLang){let D=lang=='bn'?DATA_BN:DATA_EN;let qo=D[idx];if(!qo) return;vIdle.classList.add('hidden');vCount.classList.add('hidden');vNext.classList.add('hidden');vQ.classList.remove('hidden');qNo.innerText=idx+1;qText.innerText=qo.q;goldMsg.classList.add('hidden');if(!isLang){let withI=qo.o.map((t,i)=>({t,i}));shuffled=shuffleArr(withI);correctIdx=shuffled.findIndex(o=>o.i==qo.a);}optBox.innerHTML="";locked=false;lockMsg.classList.add('hidden');shuffled.forEach((o,i)=>{let d=document.createElement('div');d.className="glass rounded-[16px] p-3.5 flex items-center gap-3 cursor-pointer active:scale-[0.97]";d.id="opt-"+i;d.innerHTML=`<span class="w-8 h-8 rounded-full bg-white text-black font-black flex items-center justify-center text-[11px]">${["A","B","C","D"][i]}</span><span class="font-bold text-[14px]">${o.t}</span>`;d.onclick=()=>pick(i);optBox.appendChild(d);});if(!isLang){let tl=4;timer.innerText=tl+"s";clearInterval(timer);timer=setInterval(()=>{tl--;timer.innerText=tl+"s";if(tl<=0){clearInterval(timer);locked=true;lockMsg.classList.remove('hidden');setTimeout(()=>reveal(),3000);}},1000);}}
 function pick(i){
- if(answerLocked) return; if(!checkLogin()) return; sound('click');
- let DATA=curLang=='bn'?DATA_BN:DATA_EN; let qObj=DATA[currentQIndex];
- let key=`gold_${userId}_${currentQIndex}`; if(localStorage.getItem(key)){ toast(TXT[curLang].already,'info'); return; }
- document.getElementById('opt-'+i).style.outline="3px solid #facc15"; answerLocked=true;
- if(i==correctIdx){ sound('correct'); fetch(`${GOLD_API}?action=addEventGold&userId=${userId}&amount=${qObj.gold}`).then(r=>r.json()).then(d=>{ if(d.ok){ toast(TXT[curLang].correct.replace('{g}',qObj.gold),'success'); localStorage.setItem(key,'done'); refreshGold(); } }); }
- else { sound('wrong'); toast(TXT[curLang].wrong,'error'); }
- fetch(QUIZ_API,{method:"POST",mode:"no-cors",body:JSON.stringify({action:"answer",deviceId:userId,name:localStorage.getItem('a2z_name'),qno:String(currentQIndex),option:String(i),isCorrect:i==correctIdx})});
+ if(locked) return;if(!checkAcc()){location.href='account.html';return;}sound('click');
+ let key=`gold_${uid}_${curQ}`;if(localStorage.getItem(key)){bigToast(TXT[lang].already,"","info");return;}
+ let el=document.getElementById('opt-'+i);if(el) el.style.outline="3px solid #facc15";locked=true;
+ if(i==correctIdx){
+  sound('correct');
+  fetch(`${GOLD_API}?action=addEventGold&userId=${uid}&amount=10`).then(r=>r.json()).then(d=>{
+   if(d.ok){
+    bigToast(TXT[lang].correct,TXT[lang].goldAdd,"success");
+    goldMsg.innerText=TXT[lang].goldAdd; goldMsg.classList.remove('hidden');
+    localStorage.setItem(key,"done"); refreshGold();
+   } else { bigToast("Gold API Error","Account API চেক করুন","error"); }
+  });
+ } else { sound('wrong'); bigToast(TXT[lang].wrong,"সঠিক উত্তর ৩ সেকেন্ড পর দেখাবে","error"); setTimeout(()=>reveal(),1000); }
 }
-function reveal(){ shuffled.forEach((_,i)=>{ let el=document.getElementById('opt-'+i); if(i==correctIdx) el.style.background="#22c55e"; else el.style.background="rgba(239,68,68,0.5)"; }); }
-function verifyCode(){ if(document.getElementById('codeInput').value.trim()===_sec){ document.getElementById('controlPanel').classList.remove('hidden'); document.getElementById('verifyBtn').classList.add('hidden'); } else toast('Wrong Code','error'); }
-async function controlAction(act){ document.getElementById('adminStatus').innerText="Processing..."; await fetch(QUIZ_API+"?action="+act+"&t="+Date.now()); document.getElementById('adminStatus').innerText=act.toUpperCase()+" Done"; toast(act.toUpperCase()+' Done','success'); if(act=='reset') setTimeout(()=>location.reload(),800); }
-async function sendBroadcast(){ let m=document.getElementById('broadcastInput').value.trim(); if(!m) return; await fetch(QUIZ_API,{method:"POST",mode:"no-cors",body:JSON.stringify({action:"broadcast",message:m})}); toast('Broadcast Sent','success'); }
+function reveal(){shuffled.forEach((_,i)=>{let el=document.getElementById('opt-'+i);if(!el) return;if(i==correctIdx) el.style.background="#22c55e";else el.style.background="rgba(239,68,68,0.45)";});}
+function verify(){if(codeIn.value.trim()===_sec){aPanel.classList.remove('hidden');vBtn.classList.add('hidden');}else bigToast("Wrong Code","","error");}
+async function doAct(act){aStat.innerText="...";await fetch(QUIZ_API+"?action="+act+"&t="+Date.now());aStat.innerText=act.toUpperCase()+" DONE - "+new Date().toLocaleTimeString();bigToast(act.toUpperCase()+" DONE","","info");if(act=='reset') setTimeout(()=>location.reload(),800);}
 
-document.getElementById('controlBtn').onclick=()=>document.getElementById('controlModal').classList.remove('hidden');
-setLang(curLang); checkLogin(); setInterval(poll,1500); poll();
+adminBtn.onclick=()=>adminModal.classList.remove('hidden');
+setLang(lang);checkAcc();setInterval(poll,1000);setInterval(refreshGold,3000);poll();
 </script>
 </body>
 </html>
