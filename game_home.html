@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="bn" class="notranslate" translate="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Game Home - A-S A2Z</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@600;700;900&family=Orbitron:wght@800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{font-family:'Hind Siliguri'; -webkit-tap-highlight-color:transparent; box-sizing:border-box}
+body{margin:0; display:flex; justify-content:center; background:#fff}
+.app{width:100%; max-width:480px; min-height:100vh; position:relative; background: linear-gradient(180deg,#ffffff 0%,#fef9f0 15%,#fdf2f8 35%,#f3e8ff 60%,#ffffff 100%); overflow-x:hidden}
+.glass-top{backdrop-filter:blur(16px); background:rgba(255,255,255,0.8); border-bottom:1px solid rgba(0,0,0,0.06)}
+.lang-btn{border:1.5px solid #e2e8f0; border-radius:999px; padding:5px 14px; font-size:11px; font-weight:900; font-family:'Orbitron'; cursor:pointer; transition:0.2s; background:white; color:#64748b}
+.lang-btn.active{background: linear-gradient(145deg,#0f172a,#334155); color:white; border-color:#0f172a; box-shadow:0 4px 12px rgba(0,0,0,0.2)}
+.game-card{
+  border-radius:22px; padding:14px 10px; text-align:center; cursor:pointer; position:relative;
+  transition:0.2s; border:2px solid transparent;
+  box-shadow:0 8px 20px rgba(0,0,0,0.06);
+}
+.game-card:active{transform:scale(0.94)}
+.game-card.active{
+  background: white; border-color:#f59e0b;
+  box-shadow:0 12px 28px rgba(245,158,11,0.25), 0 0 0 1px rgba(245,158,11,0.15) inset;
+}
+.game-card.locked{
+  background: #f8fafc; border-color:#e2e8f0; opacity:0.7;
+  box-shadow:none; cursor:not-allowed;
+}
+.icon-box{width:52px; height:52px; border-radius:16px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; font-size:26px;}
+.badge-new{position:absolute; top:-8px; right:-6px; background: linear-gradient(145deg,#f59e0b,#ef4444); color:white; font-size:8px; font-weight:900; padding:3px 7px; border-radius:999px; font-family:'Orbitron'; letter-spacing:0.5px; box-shadow:0 4px 10px rgba(239,68,68,0.4)}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- Header -->
+  <div class="glass-top sticky top-0 z-20 px-4 py-3 flex justify-between items-center">
+    <div class="flex items-center gap-2">
+      <button onclick="history.back()" class="w-9 h-9 bg-zinc-900 text-white rounded-full font-black">‹</button>
+      <div>
+        <p id="t_headerTitle" class="font-black text-[16px] leading-none text-zinc-900">গেম জোন</p>
+        <p id="t_headerSub" class="text-[10px] font-bold text-zinc-500 tracking-widest mt-0.5">A-S A2Z • GAMES</p>
+      </div>
+    </div>
+    <div class="flex gap-1.5">
+      <div id="btnBN" onclick="setLang('bn')" class="lang-btn active">BN</div>
+      <div id="btnEN" onclick="setLang('en')" class="lang-btn">EN</div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="px-5 pt-5 pb-3">
+    <div class="rounded-[28px] p-[1.5px] bg-gradient-to-br from-amber-200 via-pink-200 to-purple-200">
+      <div class="rounded-[26px] bg-white p-4 flex items-center gap-4">
+        <div class="w-14 h-14 rounded-[18px] bg-gradient-to-br from-amber-400 to-pink-400 flex items-center justify-center text-[28px] shadow-lg">🎮</div>
+        <div class="flex-1">
+          <p id="t_heroTitle" class="font-black text-[16px] text-zinc-900">ইসলামিক গেমস</p>
+          <p id="t_heroDesc" class="text-[11px] text-zinc-500 font-semibold leading-[14px] mt-0.5">হালাল-হারাম চিনুন, মজা করে শিখুন<br>প্রতি লাইনে ৪ টা গেম</p>
+        </div>
+        <div class="bg-zinc-900 text-white text-[10px] font-black px-3 py-1.5 rounded-full font-[Orbitron]">v2.0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Games Grid - 4 per line -->
+  <div class="px-3 pb-24">
+    <div class="grid grid-cols-4 gap-2.5">
+
+      <!-- 1. HALAL HARAM - ACTIVE -->
+      <div onclick="location.href='./halal_haram_pro.html'" class="game-card active">
+        <div class="badge-new">LIVE</div>
+        <div class="icon-box bg-gradient-to-br from-cyan-100 to-blue-100 border border-blue-200">👁️</div>
+        <p id="t_g1" class="font-black text-[11px] leading-[12px] text-zinc-900">হালাল<br>হারাম</p>
+        <p class="text-[8px] font-bold text-amber-600 mt-1 font-[Orbitron]">PRO</p>
+      </div>
+
+      <!-- 2. WUDU - LOCKED WHITE -->
+      <div class="game-card locked">
+        <div class="icon-box bg-white border border-zinc-200">💧</div>
+        <p id="t_g2" class="font-bold text-[10px] leading-[11px] text-zinc-400">অজু<br>গেম</p>
+        <p id="t_soon2" class="text-[7px] font-black text-zinc-400 mt-1 font-[Orbitron]">SOON</p>
+      </div>
+
+      <!-- 3. QUIZ -->
+      <div class="game-card locked">
+        <div class="icon-box bg-white border border-zinc-200">📚</div>
+        <p id="t_g3" class="font-bold text-[10px] leading-[11px] text-zinc-400">কুইজ<br>গেম</p>
+        <p class="text-[7px] font-black text-zinc-400 mt-1 font-[Orbitron]">SOON</p>
+      </div>
+
+      <!-- 4. MEMORY -->
+      <div class="game-card locked">
+        <div class="icon-box bg-white border border-zinc-200">🧠</div>
+        <p id="t_g4" class="font-bold text-[10px] leading-[11px] text-zinc-400">স্মৃতি<br>গেম</p>
+        <p class="text-[7px] font-black text-zinc-400 mt-1 font-[Orbitron]">SOON</p>
+      </div>
+
+      <!-- 5-8 LOCKED ROW -->
+      <div class="game-card locked">
+        <div class="icon-box bg-white border">🕋</div>
+        <p id="t_g5" class="font-bold text-[10px] leading-[11px] text-zinc-400">হজ্জ<br>গেম</p>
+        <p class="text-[7px] font-black text-zinc-400 mt-1 font-[Orbitron]">SOON</p>
+      </div>
+      <div class="game-card locked">
+        <div class="icon-box bg-white border">📿</div>
+        <p id="t_g6" class="font-bold text-[10px] leading-[11px] text-zinc-400">তসবিহ<br>গেম</p>
+        <p class="text-[7px] font-black text-zinc-400 mt-1 font-[Orbitron]">SOON</p>
+      </div>
+      <div class="game-card locked">
+        <div class="icon-box bg-white border">🌙</div>
+        <p id="t_g7" class="font-bold text-[10px] leading-[11px] text-zinc-400">রমজান<br>গেম</p>
+        <p class="text-[7px] font-black text-zinc-400 mt-1 font-[Orbitron]">SOON</p>
+      </div>
+      <div class="game-card locked">
+        <div class="icon-box bg-white border">🔤</div>
+        <p id="t_g8" class="font-bold text-[10px] leading-[11px] text-zinc-400">আরবি<br>গেম</p>
+        <p class="text-[7px] font-black text-zinc-400 mt-1 font-[Orbitron]">SOON</p>
+      </div>
+
+      <!-- 9-12 MORE LOCKED -->
+      <div class="game-card locked"><div class="icon-box bg-white border">🎯</div><p class="font-bold text-[10px] text-zinc-400">টার্গেট</p><p class="text-[7px] font-black text-zinc-400 mt-1 font-[Orbitron]">SOON</p></div>
+      <div class="game-card locked"><div class="icon-box bg-white border">🏆</div><p class="font-bold text-[10px] text-zinc-400">চ্যাম্প</p><p class="text-[7px] font-black text-zinc-400 mt-1 font-[Orbitron]">SOON</p></div>
+      <div class="game-card locked"><div class="icon-box bg-white border">🧩</div><p class="font-bold text-[10px] text-zinc-400">পাজল</p><p class="text-[7px] font-black text-zinc-400 mt-1 font-[Orbitron]">SOON</p></div>
+      <div class="game-card locked"><div class="icon-box bg-white border">✨</div><p class="font-bold text-[10px] text-zinc-400">আরো</p><p class="text-[7px] font-black text-zinc-400 mt-1 font-[Orbitron]">SOON</p></div>
+
+    </div>
+
+    <!-- Dev Footer -->
+    <div class="mt-8 text-center">
+      <p class="text-[9px] font-black tracking-[2px] text-zinc-400 font-[Orbitron]">DEVELOPED BY JUBAYER AHMED</p>
+      <p class="text-[9px] font-bold text-zinc-400 mt-1">A-S A 2 Z • ISLAMIC GAME ZONE • 2026</p>
+      <div class="mt-3 flex justify-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-amber-300"></span>
+        <span class="w-2 h-2 rounded-full bg-pink-300"></span>
+        <span class="w-2 h-2 rounded-full bg-purple-300"></span>
+        <span class="w-2 h-2 rounded-full bg-white border"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Blob Colors -->
+  <div class="absolute bottom-0 left-0 w-full h-[200px] pointer-events-none opacity-40" style="background: radial-gradient(600px at 0% 100%, #fde68a 0%, transparent 60%), radial-gradient(500px at 100% 100%, #f9a8d4 0%, transparent 60%), radial-gradient(400px at 50% 100%, #c4b5fd 0%, transparent 60%);"></div>
+</div>
+
+<script>
+const T = {
+  bn: {
+    headerTitle:'গেম জোন', headerSub:'A-S A2Z • GAMES',
+    heroTitle:'ইসলামিক গেমস', heroDesc:'হালাল-হারাম চিনুন, মজা করে শিখুন<br>প্রতি লাইনে ৪ টা গেম',
+    g1:'হালাল<br>হারাম', g2:'অজু<br>গেম', g3:'কুইজ<br>গেম', g4:'স্মৃতি<br>গেম', g5:'হজ্জ<br>গেম', g6:'তসবিহ<br>গেম', g7:'রমজান<br>গেম', g8:'আরবি<br>গেম'
+  },
+  en: {
+    headerTitle:'GAME ZONE', headerSub:'A-S A2Z • GAMES',
+    heroTitle:'ISLAMIC GAMES', heroDesc:'Learn Halal-Haram with fun<br>4 Games per line',
+    g1:'HALAL<br>HARAM', g2:'WUDU<br>GAME', g3:'QUIZ<br>GAME', g4:'MEMORY<br>GAME', g5:'HAJJ<br>GAME', g6:'TASBIH<br>GAME', g7:'RAMADAN<br>GAME', g8:'ARABIC<br>GAME'
+  }
+};
+let cur = localStorage.getItem('halal_lang') || 'bn';
+function setLang(l){
+  cur=l; localStorage.setItem('halal_lang',l);
+  document.getElementById('btnBN').classList.toggle('active', l==='bn');
+  document.getElementById('btnEN').classList.toggle('active', l==='en');
+  const t=T[l];
+  document.getElementById('t_headerTitle').innerText=t.headerTitle;
+  document.getElementById('t_headerSub').innerText=t.headerSub;
+  document.getElementById('t_heroTitle').innerText=t.heroTitle;
+  document.getElementById('t_heroDesc').innerHTML=t.heroDesc;
+  document.getElementById('t_g1').innerHTML=t.g1; document.getElementById('t_g2').innerHTML=t.g2;
+  document.getElementById('t_g3').innerHTML=t.g3; document.getElementById('t_g4').innerHTML=t.g4;
+  document.getElementById('t_g5').innerHTML=t.g5; document.getElementById('t_g6').innerHTML=t.g6;
+  document.getElementById('t_g7').innerHTML=t.g7; document.getElementById('t_g8').innerHTML=t.g8;
+}
+setLang(cur);
+</script>
+</body>
+</html>
