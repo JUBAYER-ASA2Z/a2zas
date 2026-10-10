@@ -4,25 +4,32 @@
 <meta charset="UTF-8">
 <meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Islamic Quiz Live</title>
+<title>Islamic Quiz Live - Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 *{font-family:'Hind Siliguri'; -webkit-tap-highlight-color:transparent;}
 body{background:#0a0a0f; overflow:hidden; position:fixed; width:100%; height:100%;}
 .gorilla-glass{background:linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 100%); backdrop-filter:blur(22px); border:1.5px solid rgba(255,255,255,0.22);}
+.toast{position:fixed; top:80px; left:50%; transform:translateX(-50%) translateY(-100px); z-index:999; transition:0.4s cubic-bezier(0.2,0.8,0.2,1); opacity:0; pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0); opacity:1}
 </style>
 </head>
 <body class="notranslate min-h-screen text-white">
 <div class="fixed inset-0 -z-10 bg-gradient-to-br from-[#1a1033] via-[#0a0a0f] to-black"></div>
+<div id="toast" class="toast gorilla-glass rounded-full px-6 py-3 font-black text-[13px] text-center shadow-2xl"></div>
 
 <div class="max-w-[480px] mx-auto h-[100dvh] flex flex-col p-3 pb-[20px] overflow-y-auto">
-
 <div class="flex justify-between items-center py-2 shrink-0">
   <button onclick="location.href='account.html'" class="w-10 h-10 rounded-full bg-white/15 backdrop-blur flex items-center justify-center font-black">←</button>
-  <div class="gorilla-glass rounded-full px-4 py-1.5 font-black text-[11px]">🕌 ইসলামিক কুইজ লাইভ</div>
+  <div class="flex items-center gap-1.5">
+    <div id="btnBN" onclick="setLang('bn')" class="px-3 py-1.5 rounded-full text-[11px] font-black bg-white text-black">BN</div>
+    <div id="btnEN" onclick="setLang('en')" class="px-3 py-1.5 rounded-full text-[11px] font-black bg-white/15 text-white">EN</div>
+  </div>
   <button id="controlBtn" class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-black font-black">⚙️</button>
 </div>
+
+<div class="gorilla-glass rounded-full px-4 py-2 text-center font-black text-[11px] mt-2" id="t_topTitle">🕌 ইসলামিক কুইজ লাইভ</div>
 
 <div id="broadcastBar" class="hidden mt-3 bg-[#facc15] border-2 border-black rounded-[14px] px-3 py-2 flex items-center gap-2 shrink-0">
   <span class="bg-black text-[#facc15] text-[9px] font-black px-2 py-1 rounded-full">MESSAGE</span>
@@ -31,36 +38,36 @@ body{background:#0a0a0f; overflow:hidden; position:fixed; width:100%; height:100
 </div>
 
 <div id="loginNeeded" class="hidden mt-3 bg-red-500/20 border border-red-500/30 rounded-[18px] p-4 text-center">
-  <p class="font-black text-[14px]">আগে Account খুলুন</p>
+  <p class="font-black text-[14px]" id="t_login">আগে Account খুলুন</p>
   <button onclick="location.href='account.html'" class="mt-2 bg-white text-black font-black px-6 py-2 rounded-full text-[12px]">Go to Account</button>
 </div>
 
 <div id="welcomeBar" class="hidden mt-3 gorilla-glass rounded-[18px] p-3 flex justify-between items-center shrink-0">
-  <p class="font-black text-[13px]">👋 <span id="userNameShow"></span> (<span id="userIdShow"></span>)</p>
+  <p class="font-black text-[13px]">👋 <span id="userNameShow"></span></p>
   <span class="bg-amber-400 text-black font-black px-3 py-1 rounded-full text-[11px]" id="myGold">💰 0 Gold</span>
 </div>
 
 <div id="stage" class="flex-1 mt-4 flex flex-col items-center justify-center text-center">
   <div id="idleView">
     <div class="text-[84px]">🕌</div>
-    <h1 class="font-black text-[28px] leading-[30px] mt-3">ইসলামিক কুইজ<br><span class="text-amber-300">লাইভ ইভেন্ট</span></h1>
-    <p class="mt-3 text-[13px] text-white/70">হোস্ট START করলে শুরু হবে<br>১০ টি প্রশ্ন • প্রতিটিতে ১০ Gold</p>
-    <div class="mt-6 gorilla-glass rounded-full px-6 py-2 text-[11px] font-bold">🔴 Live • উত্তর দিলে Gold Account এ জমা হবে</div>
+    <h1 class="font-black text-[28px] leading-[30px] mt-3" id="t_idleTitle">ইসলামিক কুইজ<br><span class="text-amber-300">লাইভ ইভেন্ট</span></h1>
+    <p class="mt-3 text-[13px] text-white/70" id="t_idleDesc">হোস্ট START করলে শুরু হবে<br>১০ টি প্রশ্ন • প্রতিটিতে ১০ Gold</p>
+    <div class="mt-6 gorilla-glass rounded-full px-6 py-2 text-[11px] font-bold" id="t_liveTag">🔴 Live • উত্তর দিলে Gold Account এ জমা হবে</div>
   </div>
-  <div id="startingView" class="hidden">
-    <h1 class="font-black text-[40px] gorilla-glass px-8 py-8 rounded-[28px]">কুইজ শুরু!</h1>
+  <div id="waitingView" class="hidden">
+    <div class="gorilla-glass px-8 py-8 rounded-[28px] animate-pulse"><h1 class="font-black text-[22px]" id="t_waiting">পরবর্তী প্রশ্ন শুরু হচ্ছে, অপেক্ষা করুন...</h1></div>
   </div>
+  <div id="startingView" class="hidden"><h1 class="font-black text-[40px] gorilla-glass px-8 py-8 rounded-[28px]" id="t_starting">কুইজ শুরু!</h1></div>
   <div id="questionView" class="hidden w-full">
     <div class="flex justify-between items-center w-full mb-3">
-      <span class="bg-white text-black font-black px-4 py-1.5 rounded-full text-[12px]">প্রশ্ন <span id="qNo">1</span>/10</span>
+      <span class="bg-white text-black font-black px-4 py-1.5 rounded-full text-[12px]"><span id="t_qLabel">প্রশ্ন</span> <span id="qNo">1</span>/10</span>
       <span id="timer" class="bg-red-500 font-black px-4 py-1.5 rounded-full text-[13px]">10s</span>
     </div>
     <div class="gorilla-glass rounded-[24px] p-5 w-full"><p id="qText" class="font-black text-[18px]"></p></div>
     <div id="optionsBox" class="grid grid-cols-1 gap-3 mt-4 w-full"></div>
-    <p id="blockMsg" class="hidden mt-3 text-[11px] bg-red-500/40 border px-4 py-1.5 rounded-full">⏱️ সময় শেষ</p>
+    <p id="blockMsg" class="hidden mt-3 text-[11px] bg-red-500/40 border px-4 py-1.5 rounded-full" id="t_block">⏱️ সময় শেষ</p>
   </div>
 </div>
-
 </div>
 
 <div id="controlModal" class="hidden fixed inset-0 z-[99] bg-black/75 backdrop-blur-md flex items-center justify-center p-4">
@@ -69,12 +76,8 @@ body{background:#0a0a0f; overflow:hidden; position:fixed; width:100%; height:100
     <input id="codeInput" type="password" placeholder="Code" class="w-full mt-3 border-2 border-zinc-200 rounded-full px-4 py-3 font-black outline-none">
     <div id="controlPanel" class="hidden mt-4 space-y-3">
       <button onclick="controlAction('start')" class="w-full bg-violet-600 text-white font-black py-3 rounded-full">🚀 START</button>
-      <button onclick="controlAction('next')" class="w-full bg-black text-white font-black py-3 rounded-full">⏭️ Next Question</button>
+      <button onclick="controlAction('next')" class="w-full bg-black text-white font-black py-3 rounded-full">⏭️ Next</button>
       <button onclick="controlAction('reset')" class="w-full bg-red-100 text-red-600 border font-black py-3 rounded-full">🔄 RESET</button>
-      <div class="bg-yellow-50 border-2 border-yellow-200 rounded-[16px] p-3">
-        <input id="broadcastInput" placeholder="Message..." class="w-full border rounded-full px-3 py-2 text-[12px] font-bold">
-        <div class="flex gap-2 mt-2"><button onclick="sendBroadcast()" class="flex-1 bg-black text-[#facc15] font-black py-2 rounded-full text-[11px]">SEND</button><button onclick="clearBroadcast()" class="flex-1 bg-white border font-bold py-2 rounded-full text-[11px]">Clear</button></div>
-      </div>
     </div>
     <button id="verifyBtn" onclick="verifyCode()" class="w-full mt-3 bg-black text-white font-black py-3 rounded-full">VERIFY</button>
     <button onclick="document.getElementById('controlModal').classList.add('hidden')" class="w-full mt-3 text-[12px] font-bold text-zinc-500">Close</button>
@@ -82,131 +85,154 @@ body{background:#0a0a0f; overflow:hidden; position:fixed; width:100%; height:100
 </div>
 
 <script>
-// --- আপনাদের দুইটা API ---
 const QUIZ_API = "https://script.google.com/macros/s/AKfycbz5MtF6dmRya92uXaKoCh6Bxr65PK_PsEiYc_CcrB2qqljodv-qIFH7WODI8bM4DBGN/exec";
 const GOLD_API = "https://script.google.com/macros/s/AKfycbw_oRlZS8lwB9JnkZQeUCQOfn-BVrMSPtEyqVvBuKUjH9KMAyMABT0PER46gTqB4P4J/exec";
 
-// --- নতুন ১০ টা ইসলামিক প্রশ্ন ---
 const DATA_BN = [
-  {q:"কুরআন নাজিল হতে কত বছর লেগেছে?", options:["২৩ বছর","২০ বছর","২৫ বছর","৩০ বছর"], ans:0, gold:10},
-  {q:"কোন ফেরেশতা ওহী নিয়ে আসতেন?", options:["ইসরাফিল (আ)","জিবরাঈল (আ)","মিকাঈল (আ)","আজরাঈল (আ)"], ans:1, gold:10},
-  {q:"মুসলমানদের প্রথম কিবলা কোনটি?", options:["কাবা","বায়তুল মুকাদ্দাস","মসজিদে নববী","মসজিদে কুবা"], ans:1, gold:10},
-  {q:"সাওম অর্থ কি?", options:["নামাজ","রোজা","হজ্ব","যাকাত"], ans:1, gold:10},
-  {q:"কোন সূরায় বিসমিল্লাহ নেই?", options:["সূরা তাওবা","সূরা ফাতিহা","সূরা নাস","সূরা ফালাক"], ans:0, gold:10},
-  {q:"ইসলামের ২য় খলিফা কে?", options:["আবু বকর (রা)","ওমর (রা)","উসমান (রা)","আলী (রা)"], ans:1, gold:10},
-  {q:"কুরআনের কোন সূরা দুইবার নাজিল হয়েছে?", options:["ফাতিহা","ইখলাস","বাকারা","রহমান"], ans:0, gold:10},
-  {q:"জুমার নামাজ কত রাকাত ফরজ?", options:["২ রাকাত","৪ রাকাত","৩ রাকাত","১০ রাকাত"], ans:0, gold:10},
-  {q:"কোন নবী নৌকা তৈরি করেছিলেন?", options:["মূসা (আ)","নূহ (আ)","ইব্রাহিম (আ)","আদম (আ)"], ans:1, gold:10},
-  {q:"লাইলাতুল কদর কোন মাসে?", options:["রজব","রমজান","শাবান","শাওয়াল"], ans:1, gold:10},
+{q:"কুরআন নাজিল হতে কত বছর লেগেছে?",options:["২৩ বছর","২০ বছর","২৫ বছর","৩০ বছর"],ans:0,gold:10},
+{q:"কোন ফেরেশতা ওহী নিয়ে আসতেন?",options:["ইসরাফিল (আ)","জিবরাঈল (আ)","মিকাঈল (আ)","আজরাঈল (আ)"],ans:1,gold:10},
+{q:"মুসলমানদের প্রথম কিবলা কোনটি?",options:["কাবা","বায়তুল মুকাদ্দাস","মসজিদে নববী","মসজিদে কুবা"],ans:1,gold:10},
+{q:"সাওম অর্থ কি?",options:["নামাজ","রোজা","হজ্ব","যাকাত"],ans:1,gold:10},
+{q:"কোন সূরায় বিসমিল্লাহ নেই?",options:["সূরা তাওবা","সূরা ফাতিহা","সূরা নাস","সূরা ফালাক"],ans:0,gold:10},
+{q:"ইসলামের ২য় খলিফা কে?",options:["আবু বকর (রা)","ওমর (রা)","উসমান (রা)","আলী (রা)"],ans:1,gold:10},
+{q:"কুরআনের কোন সূরা দুইবার নাজিল হয়েছে?",options:["ফাতিহা","ইখলাস","বাকারা","রহমান"],ans:0,gold:10},
+{q:"জুমার নামাজ কত রাকাত ফরজ?",options:["২ রাকাত","৪ রাকাত","৩ রাকাত","১০ রাকাত"],ans:0,gold:10},
+{q:"কোন নবী নৌকা তৈরি করেছিলেন?",options:["মূসা (আ)","নূহ (আ)","ইব্রাহিম (আ)","আদম (আ)"],ans:1,gold:10},
+{q:"লাইলাতুল কদর কোন মাসে?",options:["রজব","রমজান","শাবান","শাওয়াল"],ans:1,gold:10},
 ];
+const DATA_EN = [
+{q:"How many years did Quran revelation take?",options:["23 years","20 years","25 years","30 years"],ans:0,gold:10},
+{q:"Which angel brought revelation?",options:["Israfil (A)","Jibrail (A)","Mikail (A)","Azrail (A)"],ans:1,gold:10},
+{q:"What was the first Qibla?",options:["Kaaba","Baitul Muqaddas","Masjid Nabawi","Masjid Quba"],ans:1,gold:10},
+{q:"What does Sawm mean?",options:["Prayer","Fasting","Hajj","Zakat"],ans:1,gold:10},
+{q:"Which Surah has no Bismillah?",options:["Surah Taubah","Surah Fatiha","Surah Nas","Surah Falaq"],ans:0,gold:10},
+{q:"Who is the 2nd Caliph of Islam?",options:["Abu Bakr (R)","Umar (R)","Usman (R)","Ali (R)"],ans:1,gold:10},
+{q:"Which Surah was revealed twice?",options:["Fatiha","Ikhlas","Baqarah","Rahman"],ans:0,gold:10},
+{q:"How many Fard rakah in Jummah?",options:["2 rakah","4 rakah","3 rakah","10 rakah"],ans:0,gold:10},
+{q:"Which Prophet built the Ark?",options:["Musa (A)","Nuh (A)","Ibrahim (A)","Adam (A)"],ans:1,gold:10},
+{q:"In which month is Laylatul Qadr?",options:["Rajab","Ramadan","Shaban","Shawwal"],ans:1,gold:10},
+];
+const LANG_TXT={
+bn:{topTitle:"🕌 ইসলামিক কুইজ লাইভ",login:"আগে Account খুলুন",idleTitle:"ইসলামিক কুইজ<br><span class='text-amber-300'>লাইভ ইভেন্ট</span>",idleDesc:"হোস্ট START করলে শুরু হবে<br>১০ টি প্রশ্ন • প্রতিটিতে ১০ Gold",liveTag:"🔴 Live • উত্তর দিলে Gold Account এ জমা হবে",qLabel:"প্রশ্ন",block:"⏱️ সময় শেষ",waiting:"পরবর্তী প্রশ্ন শুরু হচ্ছে, অপেক্ষা করুন...",starting:"কুইজ শুরু!",correct:"সঠিক! {gold} Gold যোগ হয়েছে",wrong:"ভুল উত্তর!",already:"এই প্রশ্নের Gold পেয়ে গেছেন",timeup:"সময় শেষ!"},
+en:{topTitle:"🕌 ISLAMIC QUIZ LIVE",login:"Please Create Account First",idleTitle:"ISLAMIC QUIZ<br><span class='text-amber-300'>LIVE EVENT</span>",idleDesc:"Host will START the quiz<br>10 Questions • 10 Gold each",liveTag:"🔴 Live • Gold will be added to Account",qLabel:"Question",block:"⏱️ Time Over",waiting:"Next question is starting, please wait...",starting:"Quiz Starting!",correct:"Correct! {gold} Gold added",wrong:"Wrong Answer!",already:"You already got Gold for this question",timeup:"Time Over!"}
+};
 
+let curLang=localStorage.getItem('quiz_lang')||'bn';
 let currentQIndex=-1, lastStateQ=-99, answerLocked=false, correctShuffledIndex=-1, shuffledOptions=[];
-let a2z_userId = localStorage.getItem('a2z_userId');
-let a2z_name = localStorage.getItem('a2z_name');
+let a2z_userId=localStorage.getItem('a2z_userId');
+let audioCtx;
+function initAudio(){ if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)(); }
+function playTone(f,type,d,v=0.35){ initAudio(); const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type=type; o.frequency.value=f; o.connect(g); g.connect(audioCtx.destination); g.gain.setValueAtTime(v,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+d); o.start(); o.stop(audioCtx.currentTime+d); }
+function soundClick(){ playTone(600,'sine',0.12,0.4); }
+function soundCorrect(){ playTone(700,'sine',0.15,0.5); setTimeout(()=>playTone(1000,'sine',0.2,0.5),120); }
+function soundWrong(){ playTone(200,'sawtooth',0.3,0.5); }
+function soundStart(){ playTone(400,'sine',0.15,0.5); setTimeout(()=>playTone(600,'sine',0.15,0.5),150); setTimeout(()=>playTone(900,'sine',0.3,0.5),300); }
+function soundNext(){ playTone(800,'sine',0.1,0.4); setTimeout(()=>playTone(1200,'sine',0.15,0.4),100); }
 
-// --- Account Check ---
+function setLang(l){
+curLang=l; localStorage.setItem('quiz_lang',l);
+document.getElementById('btnBN').className=l==='bn'?"px-3 py-1.5 rounded-full text-[11px] font-black bg-white text-black":"px-3 py-1.5 rounded-full text-[11px] font-black bg-white/15 text-white";
+document.getElementById('btnEN').className=l==='en'?"px-3 py-1.5 rounded-full text-[11px] font-black bg-white text-black":"px-3 py-1.5 rounded-full text-[11px] font-black bg-white/15 text-white";
+const t=LANG_TXT[l];
+document.getElementById('t_topTitle').innerText=t.topTitle;
+document.getElementById('t_login').innerText=t.login;
+document.getElementById('t_idleTitle').innerHTML=t.idleTitle;
+document.getElementById('t_idleDesc').innerHTML=t.idleDesc;
+document.getElementById('t_liveTag').innerText=t.liveTag;
+document.getElementById('t_qLabel').innerText=t.qLabel;
+document.getElementById('t_block').innerText=t.block;
+document.getElementById('t_waiting').innerText=t.waiting;
+document.getElementById('t_starting').innerText=t.starting;
+if(currentQIndex>=0) showQuestion(currentQIndex);
+}
+setLang(curLang);
+
+function showToast(msg, ok=true){
+const el=document.getElementById('toast');
+el.innerHTML=(ok?'✅ ':'❌ ')+msg;
+el.style.background= ok? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'linear-gradient(135deg,#ef4444,#dc2626)';
+el.style.color='white';
+el.classList.add('show');
+playTone(ok?900:200, ok?'sine':'sawtooth',0.25,0.4);
+setTimeout(()=>el.classList.remove('show'),2500);
+}
+
+function getData(){ return curLang==='bn'?DATA_BN:DATA_EN; }
+
 function checkLogin(){
-  a2z_userId = localStorage.getItem('a2z_userId');
-  if(!a2z_userId){
-    document.getElementById('loginNeeded').classList.remove('hidden');
-    document.getElementById('welcomeBar').classList.add('hidden');
-    return false;
-  } else {
-    document.getElementById('loginNeeded').classList.add('hidden');
-    document.getElementById('welcomeBar').classList.remove('hidden');
-    document.getElementById('userIdShow').innerText = a2z_userId;
-    document.getElementById('userNameShow').innerText = localStorage.getItem('a2z_name') || a2z_userId;
-    refreshGold();
-    return true;
-  }
+a2z_userId=localStorage.getItem('a2z_userId');
+if(!a2z_userId){ document.getElementById('loginNeeded').classList.remove('hidden'); document.getElementById('welcomeBar').classList.add('hidden'); return false; }
+else{ document.getElementById('loginNeeded').classList.add('hidden'); document.getElementById('welcomeBar').classList.remove('hidden'); document.getElementById('userNameShow').innerText=localStorage.getItem('a2z_name')||a2z_userId; refreshGold(); return true; }
 }
-function refreshGold(){
-  fetch(`${GOLD_API}?action=getUserData&userId=${a2z_userId}`).then(r=>r.json()).then(d=>{
-    document.getElementById('myGold').innerText = `💰 ${d.gold||0} Gold`;
-  });
+async function refreshGold(){
+try{ let r=await fetch(GOLD_API+"?action=getGold&userId="+a2z_userId).then(x=>x.json()); document.getElementById('myGold').innerText="💰 "+(r.gold||0)+" Gold"; }catch{}
 }
-
-function verifyCode(){ if(document.getElementById('codeInput').value=="112233"){ document.getElementById('controlPanel').classList.remove('hidden'); document.getElementById('verifyBtn').classList.add('hidden'); } else alert("Wrong code"); }
-function controlAction(type){
-  if(type=="start"){ fetch(QUIZ_API, {method:"POST", mode:"no-cors", body:JSON.stringify({action:"control", key:"started", value:"1"})}); setTimeout(()=>{ fetch(QUIZ_API, {method:"POST", mode:"no-cors", body:JSON.stringify({action:"control", key:"currentQ", value:"0"})}); }, 500); }
-  if(type=="next"){ let next=currentQIndex+1; if(next>=10){alert("শেষ!"); return;} fetch(QUIZ_API, {method:"POST", mode:"no-cors", body:JSON.stringify({action:"control", key:"currentQ", value:String(next)})}); }
-  if(type=="reset"){ fetch(QUIZ_API, {method:"POST", mode:"no-cors", body:JSON.stringify({action:"control", key:"currentQ", value:"-1"})}); fetch(QUIZ_API, {method:"POST", mode:"no-cors", body:JSON.stringify({action:"control", key:"started", value:"0"})}); }
-}
-function sendBroadcast(){ let msg=document.getElementById('broadcastInput').value.trim(); if(!msg)return; fetch(QUIZ_API, {method:"POST", mode:"no-cors", body:JSON.stringify({action:"control", key:"broadcastMsg", value:msg})}); }
-function clearBroadcast(){ fetch(QUIZ_API, {method:"POST", mode:"no-cors", body:JSON.stringify({action:"control", key:"broadcastMsg", value:""})}); document.getElementById('broadcastBar').classList.add('hidden'); }
-
 async function pollState(){
-  try{
-    let res=await fetch(QUIZ_API+"?action=getState&t="+Date.now()).then(r=>r.json());
-    let q=parseInt(res.currentQ??"-1"); let started=res.started=="1";
-    if(res.broadcastMsg && res.broadcastMsg!=""){ document.getElementById('broadcastBar').classList.remove('hidden'); document.getElementById('broadcastText').innerText=res.broadcastMsg; } else if(res.broadcastMsg==="") document.getElementById('broadcastBar').classList.add('hidden');
-    if(!started) return;
-    if(q!=lastStateQ && q>=0){ lastStateQ=q; startQuestionFlow(q); }
-  }catch(e){}
+try{
+let res=await fetch(QUIZ_API+"?action=getState&t="+Date.now()).then(r=>r.json());
+let q=parseInt(res.currentQ??"-1"); let started=res.started=="1";
+if(res.broadcastMsg && res.broadcastMsg!=""){ document.getElementById('broadcastBar').classList.remove('hidden'); document.getElementById('broadcastText').innerText=res.broadcastMsg; } else if(res.broadcastMsg==="") document.getElementById('broadcastBar').classList.add('hidden');
+if(!started && lastStateQ!=-99){ lastStateQ=-99; document.getElementById('idleView').classList.remove('hidden'); document.getElementById('questionView').classList.add('hidden'); document.getElementById('waitingView').classList.add('hidden'); document.getElementById('startingView').classList.add('hidden'); return; }
+if(!started) return;
+if(q!=lastStateQ && q>=0){
+  lastStateQ=q;
+  if(q!=0){ document.getElementById('questionView').classList.add('hidden'); document.getElementById('waitingView').classList.remove('hidden'); soundNext(); setTimeout(()=>{ document.getElementById('waitingView').classList.add('hidden'); startQuestionFlow(q); }, 2000); }
+  else startQuestionFlow(q);
 }
-function startQuestionFlow(qIndex){ currentQIndex=qIndex; document.getElementById('idleView').classList.add('hidden'); document.getElementById('startingView').classList.remove('hidden'); document.getElementById('questionView').classList.add('hidden'); setTimeout(()=>{ document.getElementById('startingView').classList.add('hidden'); showQuestion(qIndex); }, 1000); }
+}catch(e){}
+}
+function startQuestionFlow(qIndex){
+currentQIndex=qIndex; document.getElementById('idleView').classList.add('hidden'); document.getElementById('waitingView').classList.add('hidden'); document.getElementById('startingView').classList.remove('hidden'); document.getElementById('questionView').classList.add('hidden'); soundStart();
+setTimeout(()=>{ document.getElementById('startingView').classList.add('hidden'); showQuestion(qIndex); }, 1000);
+}
 function shuffleArray(arr){ let a=[...arr]; for(let i=a.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-
 function showQuestion(idx){
-  let qObj=DATA_BN[idx];
-  document.getElementById('idleView').classList.add('hidden'); document.getElementById('startingView').classList.add('hidden'); document.getElementById('questionView').classList.remove('hidden');
-  document.getElementById('qNo').innerText=idx+1; document.getElementById('qText').innerText=qObj.q;
-  let optsWithIndex=qObj.options.map((text,i)=>({text, originalIndex:i}));
-  shuffledOptions=shuffleArray(optsWithIndex);
-  correctShuffledIndex=shuffledOptions.findIndex(o=>o.originalIndex==qObj.ans);
-  let box=document.getElementById('optionsBox'); box.innerHTML=""; answerLocked=false;
-  document.getElementById('blockMsg').classList.add('hidden');
-  shuffledOptions.forEach((o,i)=>{
-    let label=["A","B","C","D"][i];
-    let div=document.createElement('div');
-    div.className="gorilla-glass rounded-[16px] p-3.5 flex justify-between items-center cursor-pointer active:scale-[0.98]";
-    div.id="opt-"+i;
-    div.innerHTML=`<span class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-white text-black font-black flex items-center justify-center text-[12px]">${label}</span><span class="font-bold text-[14px]">${o.text}</span></span>`;
-    div.onclick=()=>selectOption(i);
-    box.appendChild(div);
-  });
-  let timeLeft=10; document.getElementById('timer').innerText=timeLeft+"s";
-  let timer=setInterval(()=>{ timeLeft--; document.getElementById('timer').innerText=timeLeft+"s"; if(timeLeft==5){ answerLocked=true; document.getElementById('blockMsg').classList.remove('hidden'); } if(timeLeft<=0){ clearInterval(timer); revealAnswer(); } },1000);
+let qObj=getData()[idx];
+document.getElementById('idleView').classList.add('hidden'); document.getElementById('startingView').classList.add('hidden'); document.getElementById('waitingView').classList.add('hidden'); document.getElementById('questionView').classList.remove('hidden');
+document.getElementById('qNo').innerText=idx+1; document.getElementById('qText').innerText=qObj.q;
+let optsWithIndex=qObj.options.map((text,i)=>({text, originalIndex:i}));
+shuffledOptions=shuffleArray(optsWithIndex);
+correctShuffledIndex=shuffledOptions.findIndex(o=>o.originalIndex==qObj.ans);
+let box=document.getElementById('optionsBox'); box.innerHTML=""; answerLocked=false;
+document.getElementById('blockMsg').classList.add('hidden');
+shuffledOptions.forEach((o,i)=>{
+let label=["A","B","C","D"][i];
+let div=document.createElement('div');
+div.className="gorilla-glass rounded-[16px] p-3.5 flex justify-between items-center cursor-pointer active:scale-[0.98]";
+div.id="opt-"+i;
+div.innerHTML=`<span class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-white text-black font-black flex items-center justify-center text-[12px]">${label}</span><span class="font-bold text-[14px]">${o.text}</span></span>`;
+div.onclick=()=>selectOption(i);
+box.appendChild(div);
+});
+let timeLeft=10; document.getElementById('timer').innerText=timeLeft+"s";
+let timer=setInterval(()=>{ timeLeft--; document.getElementById('timer').innerText=timeLeft+"s"; if(timeLeft==5){ answerLocked=true; document.getElementById('blockMsg').classList.remove('hidden'); } if(timeLeft<=0){ clearInterval(timer); revealAnswer(); } },1000);
 }
 function selectOption(shuffledIdx){
-  if(answerLocked) return;
-  if(!checkLogin()) return;
-  let isCorrect=(shuffledIdx==correctShuffledIndex);
-  let qObj=DATA_BN[currentQIndex];
-
-  // চিটিং বন্ধ - একই প্রশ্নে ২ বার Gold নিতে পারবে না
-  let key = `gold_${a2z_userId}_${currentQIndex}`;
-  if(localStorage.getItem(key)) { alert("এই প্রশ্নের Gold আপনি পেয়ে গেছেন"); return; }
-
-  document.getElementById('opt-'+shuffledIdx).style.outline="3px solid #facc15";
-  answerLocked=true;
-
-  if(isCorrect){
-    // --- REAL GOLD ADD TO ACCOUNT ---
-    fetch(`${GOLD_API}?action=addEventGold&userId=${a2z_userId}&amount=${qObj.gold}`)
-   .then(r=>r.json()).then(d=>{
-      if(d.ok){
-        alert(`সঠিক! ${qObj.gold} Gold আপনার Account এ যোগ হয়েছে`);
-        localStorage.setItem(key, "done");
-        refreshGold();
-      }
-    });
-  } else {
-    alert("ভুল উত্তর!");
-  }
-  // Answer পাঠানো (পুরানো সিস্টেমের জন্য রাখলাম, চাইলে বাদ দিতে পারেন)
-  fetch(QUIZ_API, {method:"POST", mode:"no-cors", body:JSON.stringify({action:"answer", deviceId:a2z_userId, name:a2z_name, qno:String(currentQIndex), option:String(shuffledIdx), isCorrect})});
+if(answerLocked) return; if(!checkLogin()) return; soundClick();
+let isCorrect=(shuffledIdx==correctShuffledIndex);
+let qObj=getData()[idx=currentQIndex];
+let key=`gold_${a2z_userId}_${curLang}_${currentQIndex}`;
+if(localStorage.getItem(key)){ showToast(LANG_TXT[curLang].already,false); return; }
+document.getElementById('opt-'+shuffledIdx).style.outline="3px solid #facc15";
+answerLocked=true;
+if(isCorrect){
+fetch(`${GOLD_API}?action=addEventGold&userId=${a2z_userId}&amount=${qObj.gold}`).then(r=>r.json()).then(d=>{
+if(d.ok){ showToast(LANG_TXT[curLang].correct.replace('{gold}',qObj.gold),true); localStorage.setItem(key,"done"); refreshGold(); soundCorrect(); }
+});
+} else { showToast(LANG_TXT[curLang].wrong,false); soundWrong(); }
+fetch(QUIZ_API, {method:"POST", mode:"no-cors", body:JSON.stringify({action:"answer", deviceId:a2z_userId, name:localStorage.getItem('a2z_name'), qno:String(currentQIndex), option:String(shuffledIdx), isCorrect})});
 }
 function revealAnswer(){
-  shuffledOptions.forEach((_,i)=>{
-    let el=document.getElementById('opt-'+i);
-    if(i==correctShuffledIndex) el.style.background="#22c55e"; else el.style.background="rgba(239,68,68,0.5)";
-  });
+shuffledOptions.forEach((_,i)=>{
+let el=document.getElementById('opt-'+i);
+if(i==correctShuffledIndex) el.style.background="#22c55e"; else el.style.background="rgba(239,68,68,0.5)";
+});
 }
-
 document.getElementById('controlBtn').onclick=()=>{ document.getElementById('controlModal').classList.remove('hidden'); };
+function verifyCode(){ if(document.getElementById('codeInput').value==='1234'){ document.getElementById('controlPanel').classList.remove('hidden'); document.getElementById('verifyBtn').classList.add('hidden'); } else showToast('Wrong Code',false); }
+function controlAction(a){ fetch(QUIZ_API,{method:"POST",mode:"no-cors",body:JSON.stringify({action:a})}); showToast(a.toUpperCase()+" Sent",true); }
 checkLogin();
-setInterval(pollState, 1500);
+setInterval(pollState,1500);
 pollState();
 </script>
 </body>
