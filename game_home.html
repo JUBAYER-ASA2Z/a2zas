@@ -3,142 +3,95 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="google" content="notranslate">
-<meta http-equiv="Content-Language" content="bn">
 <title>Game Home - A-S A2Z</title>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@600;700;900&family=Orbitron:wght@800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@600;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-*{font-family:'Hind Siliguri'; -webkit-tap-highlight-color:transparent; box-sizing:border-box}
-html{translate:no}
-body{margin:0; display:flex; justify-content:center; background:#fff; top:0!important}
-.app{width:100%; max-width:480px; min-height:100vh; position:relative; background: linear-gradient(180deg,#ffffff 0%,#fef9f0 12%,#fdf2f8 32%,#f3e8ff 62%,#ffffff 100%); overflow-x:hidden}
-.glass-top{backdrop-filter:blur(16px); background:rgba(255,255,255,0.95); border-bottom:1px solid rgba(0,0,0,0.06); position:sticky; top:0; z-index:50}
-.lang-btn{border:1.5px solid #e2e8f0; border-radius:999px; padding:5px 14px; font-size:11px; font-weight:900; font-family:'Orbitron'; cursor:pointer; transition:0.2s; background:white; color:#64748b}
-.lang-btn.active{background:#0f172a; color:white; border-color:#0f172a; box-shadow:0 4px 12px rgba(0,0,0,0.2)}
-.game-card{border-radius:22px; padding:14px 10px; text-align:center; cursor:pointer; position:relative; transition:0.2s; border:2px solid transparent; box-shadow:0 8px 20px rgba(0,0,0,0.06);}
+*{font-family:'Hind Siliguri'; box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+body{margin:0; display:flex; justify-content:center; background:#f8f8f8}
+.app{width:100%; max-width:480px; min-height:100vh; background:#fff; position:relative}
+
+/* Gorilla Glass - 360 এর মতো */
+.gorilla-glass{
+background: linear-gradient(135deg, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0.15) 100%);
+backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+border:1.5px solid rgba(255,255,255,0.7);
+box-shadow:0 8px 25px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.9), 0 0 18px rgba(0,200,255,0.35);
+position:relative; overflow:hidden;
+}
+.gorilla-glass::before{
+content:''; position:absolute; top:0; left:-60%; width:60%; height:100%;
+background: linear-gradient(120deg, transparent, rgba(255,255,255,0.9), transparent);
+animation:shine 2.2s infinite;
+}
+@keyframes shine{0%{transform:translateX(-100%)}100%{transform:translateX(260%)}}
+.gorilla-icon{background:linear-gradient(135deg,#00d2ff 0%,#3a7bd5 100%); box-shadow:0 4px 12px rgba(0,210,255,0.5)}
+
+.game-card{border-radius:18px; padding:12px 8px; text-align:center; cursor:pointer; position:relative; transition:transform 0.12s; background:white; border:1.5px solid #f1f5f9; box-shadow:0 4px 15px rgba(0,0,0,0.04)}
 .game-card:active{transform:scale(0.94)}
-.game-card.active{background:white; border-color:#f59e0b; box-shadow:0 12px 28px rgba(245,158,11,0.25);}
-.game-card.locked{background:#f8fafc; border-color:#e2e8f0; opacity:0.65; cursor:not-allowed; box-shadow:none}
-.icon-box{width:52px; height:52px; border-radius:16px; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; font-size:26px;}
-.badge-new{position:absolute; top:-8px; right:-6px; background: linear-gradient(145deg,#f59e0b,#ef4444); color:white; font-size:8px; font-weight:900; padding:3px 7px; border-radius:999px; font-family:'Orbitron'; box-shadow:0 4px 10px rgba(239,68,68,0.4)}
-/* Google Translate 100% Hide */
-#google_translate_element,.goog-te-banner-frame,.goog-te-banner-frame.skiptranslate,.goog-te-gadget,.skiptranslate,.goog-tooltip,#goog-gt-tt{display:none!important; visibility:hidden!important}
-body >.skiptranslate{display:none!important}
-.goog-text-highlight{background:none!important; box-shadow:none!important}
+.game-card.locked{background:#f8fafc; opacity:0.6}
+.icon-box{width:48px; height:48px; border-radius:13px; margin:0 auto 7px; display:flex; align-items:center; justify-content:center; font-size:22px; position:relative}
 </style>
 </head>
-<body class="notranslate" translate="no">
-<div class="app notranslate" translate="no">
-
-  <!-- Header 100% Fixed -->
-  <div class="glass-top px-4 py-3 flex justify-between items-center">
+<body>
+<div class="app">
+  <div class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b px-4 py-3 flex justify-between items-center">
     <div class="flex items-center gap-2.5">
-      <button onclick="goHome()" class="w-10 h-10 bg-zinc-900 text-white rounded-full font-black text-[20px] flex items-center justify-center shadow-md active:scale-90 transition">‹</button>
-      <div>
-        <p id="t_headerTitle" class="font-black text-[16px] leading-none text-zinc-900">গেম জোন</p>
-        <p class="text-[9px] font-bold text-zinc-400 tracking-[1.5px] mt-1 font-[Orbitron]">A-S A2Z</p>
-      </div>
+      <button onclick="location.href='./index.html'" class="w-10 h-10 bg-black text-white rounded-full font-black">‹</button>
+      <div><p id="t_headerTitle" class="font-black text-[16px] text-black">গেম জোন</p><p class="text-[9px] text-zinc-400">A-S A2Z</p></div>
     </div>
     <div class="flex gap-1.5">
-      <div id="btnBN" onclick="setLang('bn')" class="lang-btn active">BN</div>
-      <div id="btnEN" onclick="setLang('en')" class="lang-btn">EN</div>
+      <button id="btnBN" onclick="setLang('bn')" class="px-3 py-1.5 rounded-full text-[11px] font-black bg-black text-white">BN</button>
+      <button id="btnEN" onclick="setLang('en')" class="px-3 py-1.5 rounded-full text-[11px] font-black bg-white border text-zinc-500">EN</button>
     </div>
   </div>
 
-  <!-- Hero -->
   <div class="px-4 pt-4">
-    <div class="rounded-[26px] p-[1.5px] bg-gradient-to-br from-amber-200 via-pink-200 to-purple-200">
-      <div class="rounded-[24px] bg-white p-4 flex items-center gap-3.5">
-        <div class="w-14 h-14 rounded-[18px] bg-gradient-to-br from-amber-400 to-pink-400 flex items-center justify-center text-[28px] shadow-md">🎮</div>
-        <div class="flex-1">
-           </div>
-        <div class="bg-zinc-900 text-white text-[9px] font-black px-2.5 py-1 rounded-full font-[Orbitron]">PRO</div>
-      </div>
+    <div class="rounded-[20px] border bg-white p-4 flex items-center gap-3">
+      <div class="w-12 h-12 rounded-[14px] bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-[24px]">🎮</div>
+      <div class="flex-1"><p id="t_heroTitle" class="font-black text-[14px]">new game</p><p id="t_heroDesc" class="text-[11px] text-zinc-500">হালাল-হারাম চিনুন, মজা করে শিখুন</p></div>
+      <div class="bg-black text-white text-[8px] font-black px-2 py-1 rounded-full">PRO</div>
     </div>
   </div>
 
-  <!-- 4 per line grid -->
-  <div class="px-3 pt-4 pb-24">
+  <div class="px-3 pt-5 pb-24">
     <div class="grid grid-cols-4 gap-2.5">
-      <!-- 1 ACTIVE -->
-      <div onclick="openGame('./halal_haram_pro.html')" class="game-card active">
-        <div class="badge-new">LIVE</div>
-        <div class="icon-box bg-gradient-to-br from-cyan-50 to-blue-50 border border-blue-100">👁️</div>
-        <p id="t_g1" class="font-black text-[11px] leading-[12px] text-zinc-900">হালাল<br>হারাম</p>
+      <div onclick="location.href='./halal_haram_pro.html'" class="game-card gorilla-glass">
+        <div class="icon-box gorilla-icon text-white">👁️</div>
+        <p id="t_g1" class="font-black text-[11px] leading-[11px] text-white" style="text-shadow:0 1px 4px #000">হালাল<br>হারাম</p>
+        <span class="absolute -top-1.5 -right-1.5 bg-black text-white text-[7px] font-black px-1.5 py-0.5 rounded-full">LIVE</span>
       </div>
-      <div class="game-card locked"><div class="icon-box bg-white border">💧</div><p id="t_g2" class="font-bold text-[10px] text-zinc-400">অজু<br>গেম</p></div>
-      <div class="game-card locked"><div class="icon-box bg-white border">📚</div><p id="t_g3" class="font-bold text-[10px] text-zinc-400">কুইজ<br>গেম</p></div>
-      <div class="game-card locked"><div class="icon-box bg-white border">🧠</div><p id="t_g4" class="font-bold text-[10px] text-zinc-400">স্মৃতি<br>গেম</p></div>
+      <div class="game-card locked"><div class="icon-box bg-zinc-100">💧</div><p id="t_g2" class="font-bold text-[10px] text-zinc-500">অজু<br>গেম</p></div>
+      <div class="game-card locked"><div class="icon-box bg-zinc-100">📚</div><p id="t_g3" class="font-bold text-[10px] text-zinc-500">কুইজ<br>গেম</p></div>
+      <div class="game-card locked"><div class="icon-box bg-zinc-100">🧠</div><p id="t_g4" class="font-bold text-[10px] text-zinc-500">স্মৃতি<br>গেম</p></div>
 
-      <div class="game-card locked"><div class="icon-box bg-white border">📿</div><p id="t_g6" class="font-bold text-[10px] text-zinc-400">তসবিহ<br>গেম</p></div>
-      <div class="game-card locked"><div class="icon-box bg-white border">🌙</div><p id="t_g7" class="font-bold text-[10px] text-zinc-400">রমজান<br>গেম</p></div>
-      <div class="game-card locked"><div class="icon-box bg-white border">🔤</div><p id="t_g8" class="font-bold text-[10px] text-zinc-400">আরবি<br>গেম</p></div>
+            <div class="game-card locked"><div class="icon-box bg-zinc-100">📿</div><p id="t_g6" class="font-bold text-[10px] text-zinc-500">তসবিহ<br>গেম</p></div>
+      <div class="game-card locked"><div class="icon-box bg-zinc-100">🌙</div><p id="t_g7" class="font-bold text-[10px] text-zinc-500">রমজান<br>গেম</p></div>
+      <div class="game-card locked"><div class="icon-box bg-zinc-100">🔤</div><p id="t_g8" class="font-bold text-[10px] text-zinc-500">আরবি<br>গেম</p></div>
 
-      <div class="game-card locked"><div class="icon-box bg-white border">🎯</div><p class="font-bold text-[10px] text-zinc-400">টার্গেট</p></div>
-      <div class="game-card locked"><div class="icon-box bg-white border">🏆</div><p class="font-bold text-[10px] text-zinc-400">চ্যাম্প</p></div>
-      <div class="game-card locked"><div class="icon-box bg-white border">🧩</div><p class="font-bold text-[10px] text-zinc-400">পাজল</p></div>
-      <div class="game-card locked"><div class="icon-box bg-white border">✨</div><p class="font-bold text-[10px] text-zinc-400">আরো</p></div>
-    </div>
-    <div class="mt-10 text-center">
-      <p class="text-[9px] font-black tracking-[2px] text-zinc-400 font-[Orbitron]">DEVELOPED BY JUBAYER AHMED</p>
+      <div class="game-card locked"><div class="icon-box bg-zinc-100">🎯</div><p id="t_g9" class="font-bold text-[10px] text-zinc-500">টার্গেট</p></div>
+      <div class="game-card locked"><div class="icon-box bg-zinc-100">🏆</div><p id="t_g10" class="font-bold text-[10px] text-zinc-500">চ্যাম্প</p></div>
+      <div class="game-card locked"><div class="icon-box bg-zinc-100">🧩</div><p id="t_g11" class="font-bold text-[10px] text-zinc-500">পাজল</p></div>
+      <div class="game-card locked"><div class="icon-box bg-zinc-100">✨</div><p id="t_g12" class="font-bold text-[10px] text-zinc-500">আরো</p></div>
     </div>
   </div>
-
-  <div class="absolute bottom-0 left-0 w-full h-[180px] pointer-events-none opacity-30" style="background: radial-gradient(500px at 10% 100%, #fde68a 0%, transparent 60%), radial-gradient(500px at 90% 100%, #f9a8d4 0%, transparent 60%), radial-gradient(400px at 50% 100%, #c4b5fd 0%, transparent 60%);"></div>
 </div>
 
 <script>
-// ===== 100% FIXED HOME BUTTON =====
-function goHome(){
-  const HOME_PAGE = './index.html'; // আপনার হোম ফাইল - চাইলে './islamic.html' করে দিন
-  try {
-    if (history.length > 1 && document.referrer) {
-      history.back();
-      setTimeout(()=>{
-        // যদি back কাজ না করে, ফোর্স হোম
-        if (location.pathname.includes('game_home')) {
-          location.href = HOME_PAGE;
-        }
-      }, 700);
-    } else {
-      location.href = HOME_PAGE;
-    }
-  } catch(e){
-    location.href = HOME_PAGE;
-  }
-}
-function openGame(url){ location.href = url; }
-
-// ===== GOOGLE POPUP 100% BLOCK =====
-(function(){
-  const kill = () => {
-    document.querySelectorAll('.goog-te-banner-frame,.skiptranslate, #goog-gt-tt,.goog-tooltip').forEach(el=>el.remove());
-    document.body.style.top='0px';
-    document.documentElement.style.top='0px';
-  };
-  setInterval(kill, 400);
-  window.addEventListener('load', kill);
-})();
-
-// ===== BN/EN SYSTEM =====
-const T = {
-  bn: { headerTitle:'গেম জোন', heroTitle:'ইসলামিক গেমস', heroDesc:'হালাল-হারাম চিনুন, মজা করে শিখুন', g1:'হালাল<br>হারাম', g2:'অজু<br>গেম', g3:'কুইজ<br>গেম', g4:'স্মৃতি<br>গেম', g5:'হজ্জ<br>গেম', g6:'তসবিহ<br>গেম', g7:'রমজান<br>গেম', g8:'আরবি<br>গেম' },
-  en: { headerTitle:'GAME ZONE', heroTitle:'ISLAMIC GAMES', heroDesc:'Learn Halal-Haram with fun', g1:'HALAL<br>HARAM', g2:'WUDU<br>GAME', g3:'QUIZ<br>GAME', g4:'MEMORY<br>GAME', g5:'HAJJ<br>GAME', g6:'TASBIH<br>GAME', g7:'RAMADAN<br>GAME', g8:'ARABIC<br>GAME' }
+const T={
+bn:{headerTitle:'গেম জোন',heroTitle:'ইসলামিক গেমস',heroDesc:'হালাল-হারাম চিনুন, মজা করে শিখুন',g1:'হালাল<br>হারাম',g2:'অজু<br>গেম',g3:'কুইজ<br>গেম',g4:'স্মৃতি<br>গেম',g5:'হজ্জ<br>গেম',g6:'তসবিহ<br>গেম',g7:'রমজান<br>গেম',g8:'আরবি<br>গেম',g9:'টার্গেট',g10:'চ্যাম্প',g11:'পাজল',g12:'আরো'},
+en:{headerTitle:'GAME ZONE',heroTitle:'ISLAMIC GAMES',heroDesc:'Learn Halal-Haram with fun',g1:'HALAL<br>HARAM',g2:'WUDU<br>GAME',g3:'QUIZ<br>GAME',g4:'MEMORY<br>GAME',g5:'HAJJ<br>GAME',g6:'TASBIH<br>GAME',g7:'RAMADAN<br>GAME',g8:'ARABIC<br>GAME',g9:'TARGET',g10:'CHAMP',g11:'PUZZLE',g12:'MORE'}
 };
-let cur = localStorage.getItem('halal_lang') || 'bn';
+let cur=localStorage.getItem('halal_lang')||'bn';
 function setLang(l){
-  cur=l; localStorage.setItem('halal_lang',l);
-  document.getElementById('btnBN').classList.toggle('active', l==='bn');
-  document.getElementById('btnEN').classList.toggle('active', l==='en');
-  const t=T[l];
-  document.getElementById('t_headerTitle').innerText=t.headerTitle;
-  document.getElementById('t_heroTitle').innerText=t.heroTitle;
-  document.getElementById('t_heroDesc').innerText=t.heroDesc;
-  document.getElementById('t_g1').innerHTML=t.g1; document.getElementById('t_g2').innerHTML=t.g2;
-  document.getElementById('t_g3').innerHTML=t.g3; document.getElementById('t_g4').innerHTML=t.g4;
-  document.getElementById('t_g5').innerHTML=t.g5; document.getElementById('t_g6').innerHTML=t.g6;
-  document.getElementById('t_g7').innerHTML=t.g7; document.getElementById('t_g8').innerHTML=t.g8;
+cur=l; localStorage.setItem('halal_lang',l);
+document.getElementById('btnBN').className=l==='bn'?"px-3 py-1.5 rounded-full text-[11px] font-black bg-black text-white":"px-3 py-1.5 rounded-full text-[11px] font-black bg-white border text-zinc-500";
+document.getElementById('btnEN').className=l==='en'?"px-3 py-1.5 rounded-full text-[11px] font-black bg-black text-white":"px-3 py-1.5 rounded-full text-[11px] font-black bg-white border text-zinc-500";
+const t=T[l];
+document.getElementById('t_headerTitle').innerText=t.headerTitle;
+document.getElementById('t_heroTitle').innerText=t.heroTitle;
+document.getElementById('t_heroDesc').innerText=t.heroDesc;
+for(let i=1;i<=12;i++){document.getElementById('t_g'+i).innerHTML=t['g'+i];}
 }
 setLang(cur);
 </script>
