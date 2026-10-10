@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Halal Basket Pro</title>
+<title>Halal Basket Pro - 40 Items</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
@@ -12,45 +12,34 @@ body{margin:0;background:#0b1120;display:flex;justify-content:center;overflow:hi
 .app{width:100%;max-width:480px;height:100vh;background:radial-gradient(circle at 50% 0%,#1e293b,#020617 70%);position:relative;overflow:hidden;touch-action:none}
 .lang-btn{border:1.5px solid rgba(255,255,255,0.3);border-radius:999px;padding:5px 14px;font-size:11px;font-weight:900;cursor:pointer}
 .lang-btn.active{background:white;color:black}
-.basket{
-position:absolute;bottom:20px;width:110px;height:58px;
-background:linear-gradient(180deg,#fde68a,#f59e0b);
-border:3px solid #fff; border-radius:12px 12px 26px 26px;
-display:flex;align-items:center;justify-content:center;font-size:28px;
-box-shadow:0 10px 25px rgba(0,0,0,0.5);z-index:20;
-}
-.item{position:absolute;width:50px;height:50px;background:rgba(255,255,255,0.95);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 6px 15px rgba(0,0,0,0.3);z-index:10}
+.basket{position:absolute;bottom:20px;width:110px;height:58px;background:linear-gradient(180deg,#fde68a,#f59e0b);border:3px solid #fff;border-radius:12px 12px 26px 26px;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 10px 25px rgba(0,0,0,0.5);z-index:20}
+.item{position:absolute;width:52px;height:52px;background:rgba(255,255,255,0.96);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 6px 15px rgba(0,0,0,0.3);z-index:10}
 .plus{position:absolute;font-weight:900;font-size:22px;animation:pop 0.8s forwards;pointer-events:none;z-index:30}
 @keyframes pop{0%{transform:translateY(0) scale(0.5);opacity:1}100%{transform:translateY(-70px) scale(1.3);opacity:0}}
 </style>
 </head>
 <body>
 <div class="app" id="gameArea">
-
-  <!-- Top -->
   <div class="absolute top-0 w-full z-20 px-4 py-3 flex justify-between items-center bg-black/40 backdrop-blur">
     <button onclick="location.href='./game_home.html'" class="w-8 h-8 bg-white/20 rounded-full text-white">‹</button>
     <div class="bg-white text-black font-black px-4 py-1 rounded-full text-[13px]">🪙 <span id="score">0</span></div>
     <div class="bg-red-500/20 border border-red-400/30 px-3 py-1 rounded-full text-[11px] text-white font-bold">❌ <span id="haramCount">0</span>/4</div>
   </div>
-
-  <!-- Basket -->
   <div id="basket" class="basket" style="left:50%; transform:translateX(-50%)">🧺</div>
 
-  <!-- Start Screen -->
   <div id="startScreen" class="absolute inset-0 z-30 bg-[#020617]/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center">
     <div class="flex gap-2 mb-4">
       <div id="btnBN" onclick="setLang('bn')" class="lang-btn active text-white">BN</div>
       <div id="btnEN" onclick="setLang('en')" class="lang-btn text-white">EN</div>
     </div>
     <div class="w-20 h-20 rounded-[24px] bg-white flex items-center justify-center text-[40px]">🧺</div>
-    <p id="t_title" class="text-white font-black text-[24px] mt-4">HALAL BASKET <span class="text-cyan-400">PRO</span></p>
-    <p id="t_desc" class="text-zinc-400 text-[12px] mt-2">বাটি টেনে হালাল ধরো, হারাম এড়িয়ে চলো</p>
+    <p id="t_title" class="text-white font-black text-[22px] mt-4">HALAL BASKET <span class="text-cyan-400">PRO</span></p>
+    <p id="t_desc" class="text-zinc-400 text-[12px] mt-2">বাটি টেনে হালাল ধরো • ৪০ টি আইটেম</p>
     <div id="t_rule" class="mt-4 bg-amber-500/10 border border-amber-500/30 text-amber-300 rounded-xl px-4 py-2 text-[11px] font-bold">🧺 ৪ টা হারাম বাটিতে ঢুকলে গেম শেষ</div>
     <button id="t_startBtn" onclick="startGame()" class="mt-6 w-full bg-white text-black font-black py-3.5 rounded-full">START ▶️</button>
+    <p class="text-[8px] text-zinc-500 mt-4 tracking-widest">40 ITEMS • DEVELOPED BY JUBAYER</p>
   </div>
 
-  <!-- Over -->
   <div id="overScreen" class="hidden absolute inset-0 z-30 bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center">
     <div class="text-[60px]">💀</div>
     <p id="t_overTitle" class="text-white font-black text-[22px] mt-2">GAME OVER</p>
@@ -62,8 +51,8 @@ box-shadow:0 10px 25px rgba(0,0,0,0.5);z-index:20;
 
 <script>
 const T={
-bn:{title:'HALAL BASKET <span class="text-cyan-400">PRO</span>',desc:'বাটি আঙুল দিয়ে টেনে হালাল ধরো, হারাম এড়িয়ে চলো',rule:'🧺 ৪ টা হারাম বাটিতে ঢুকলে গেম শেষ',startBtn:'শুরু করো ▶️',overTitle:'গেম শেষ!',retryBtn:'আবার খেলো 🔄',overReason:'মাশাআল্লাহ! স্কোর: '},
-en:{title:'HALAL BASKET <span class="text-cyan-400">PRO</span>',desc:'Drag basket to catch Halal, avoid Haram',rule:'🧺 4 Haram in basket = Game Over',startBtn:'START ▶️',overTitle:'GAME OVER!',retryBtn:'RETRY 🔄',overReason:'Score: '}
+bn:{title:'HALAL BASKET <span class="text-cyan-400">PRO</span>',desc:'বাটি আঙুল দিয়ে টেনে হালাল ধরো • মোট ৪০ টি আইটেম',rule:'🧺 ৪ টা হারাম বাটিতে ঢুকলে গেম শেষ',startBtn:'শুরু করো ▶️',overTitle:'গেম শেষ!',retryBtn:'আবার খেলো 🔄',overReason:'মাশাআল্লাহ! স্কোর: '},
+en:{title:'HALAL BASKET <span class="text-cyan-400">PRO</span>',desc:'Drag basket to catch Halal • Total 40 Items',rule:'🧺 4 Haram in basket = Game Over',startBtn:'START ▶️',overTitle:'GAME OVER!',retryBtn:'RETRY 🔄',overReason:'Score: '}
 };
 let lang=localStorage.getItem('halal_lang')||'bn';
 function setLang(l){
@@ -79,21 +68,18 @@ document.getElementById('t_retryBtn').innerText=T[l].retryBtn;
 }
 setLang(lang);
 
-const HALAL=['🥛','🍎','🐟','🍯','🥚','🍇','🥖','🍌'];
-const HARAM=['🍺','🍷','🐖','🚬','🥓','🍸'];
+// === মোট ৪০ টা আইটেম ===
+const HALAL = [
+'🥛','🍎','🐟','🍯','🥚','🍇','🥖','🍌','🥜','🍉',
+'🥭','🍊','🍋','🍐','🍓','🥝','🍅','🥕','🌽','🍚',
+'🍗','🥩','🫒','🥒','🥬'
+]; // 25 টা হালাল
+const HARAM = [
+'🍺','🍷','🐖','🚬','🥓','🍸','💊','🎰','🍾','🥃',
+'🐷','🍻','🍹','💉','🚬'
+]; // 15 টা হারাম = মোট 40
 
-  const HALAL=['🥛','🍎','🐟','🍯','🥚','🍇','🥖','🍌','🥜','🍉','🥭','🍊','🍋','🍐','🍓','🥝','🍅','🥕','🌽','🍚','🍗','🥩','🫒','🍯','🥛'];
-const HARAM=['🍺','🍷','🐖','🚬','🥓','🍸','💊','🎰','🍾','🥃','🚬','🍷','🐷','🍻','🍹'];
-
-
-  <script>
-const HALAL=['🥛','🍎','🐟','🍯','🥚','🍇','🥖','🍌','🥜','🍉','🥭','🍊','🍋','🍐','🍓','🥝','🍅','🥕','🌽','🍚','🍗','🥩','🫒','🥒','🥬'];
-const HARAM=['🍺','🍷','🐖','🚬','🥓','🍸','💊','🎰','🍾','🥃','🐷','🍻','🍹','🚬','💉'];
-// বাকি সব আগের মতোই
-</script>
-  
-let score=0, haram=0, game=false, speed=1.2, spawnInt, moveInt, items=[], basketX=0, audioCtx;
-
+let score=0, haram=0, game=false, speed=1.3, spawnInt, moveInt, items=[], basketX=0, audioCtx;
 function initAudio(){ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }
 function tone(f,t,d,v=0.3){ initAudio(); const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type=t; o.frequency.value=f; o.connect(g); g.connect(audioCtx.destination); g.gain.setValueAtTime(v,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+d); o.start(); o.stop(audioCtx.currentTime+d); }
 function playHalal(){ tone(800,'sine',0.15,0.4); setTimeout(()=>tone(1200,'sine',0.2,0.4),100); }
@@ -103,79 +89,51 @@ const basket=document.getElementById('basket');
 const area=document.getElementById('gameArea');
 
 function startGame(){
-score=0; haram=0; speed=1.2; items.forEach(i=>i.el.remove()); items=[];
+score=0; haram=0; speed=1.3; items.forEach(i=>i.el.remove()); items=[];
 document.getElementById('score').innerText=0; document.getElementById('haramCount').innerText=0;
 document.getElementById('startScreen').classList.add('hidden'); document.getElementById('overScreen').classList.add('hidden');
 game=true; basketX=area.clientWidth/2 - 55; basket.style.left=basketX+'px';
 clearInterval(spawnInt); clearInterval(moveInt);
-spawnInt=setInterval(spawnItem, 800);
+spawnInt=setInterval(spawnItem, 650);
 moveInt=setInterval(gameLoop, 16);
 initAudio();
-// speed বাড়বে
-setInterval(()=>{ if(game) speed+=0.08; }, 3000);
+setInterval(()=>{ if(game) speed+=0.07; }, 3000);
 }
-
 function spawnItem(){
 if(!game) return;
 const isHalal=Math.random()>0.35;
-const emoji=(isHalal?HALAL:HARAM)[Math.floor(Math.random()*(isHalal?HALAL.length:HARAM.length))];
+const pool=isHalal?HALAL:HARAM;
+const emoji=pool[Math.floor(Math.random()*pool.length)];
 const el=document.createElement('div'); el.className='item'; el.innerText=emoji;
-const x=Math.random()*(area.clientWidth-50);
+const x=Math.random()*(area.clientWidth-52);
 el.style.left=x+'px'; el.style.top='-60px';
 area.appendChild(el);
 items.push({el,x,y:-60,type:isHalal?'halal':'haram'});
 }
-
 function gameLoop(){
 if(!game) return;
 for(let i=items.length-1;i>=0;i--){
-let it=items[i];
-it.y+=speed;
-it.el.style.top=it.y+'px';
-// basket collision
-const bRect=basket.getBoundingClientRect();
-const iRect=it.el.getBoundingClientRect();
-if(iRect.bottom>=bRect.top && iRect.top<=bRect.bottom && iRect.left>=bRect.left-20 && iRect.right<=bRect.right+20){
-  // caught
-  if(it.type==='halal'){ score+=15; playHalal(); showPlus(it.x,it.y,'+15','#22d3ee'); }
-  else { haram++; playHaram(); showPlus(it.x,it.y,'-15','#f87171'); document.getElementById('haramCount').innerText=haram; if(haram>=4){ endGame(); return; } }
-  document.getElementById('score').innerText=score;
-  it.el.remove(); items.splice(i,1);
-}else if(it.y>area.clientHeight){
-  it.el.remove(); items.splice(i,1);
+let it=items[i]; it.y+=speed; it.el.style.top=it.y+'px';
+const bRect=basket.getBoundingClientRect(); const iRect=it.el.getBoundingClientRect();
+if(iRect.bottom>=bRect.top && iRect.top<=bRect.bottom && iRect.left>=bRect.left-10 && iRect.right<=bRect.right+10){
+if(it.type==='halal'){ score+=15; playHalal(); showPlus(it.x,it.y,'+15','#22d3ee'); }
+else { haram++; playHaram(); showPlus(it.x,it.y,'-15','#f87171'); document.getElementById('haramCount').innerText=haram; if(haram>=4){ endGame(); return; } }
+document.getElementById('score').innerText=score;
+it.el.remove(); items.splice(i,1);
+}else if(it.y>area.clientHeight){ it.el.remove(); items.splice(i,1); }
 }
 }
-}
+function showPlus(x,y,txt,color){ const p=document.createElement('div'); p.className='plus'; p.style.left=x+'px'; p.style.top=y+'px'; p.style.color=color; p.innerText=txt; area.appendChild(p); setTimeout(()=>p.remove(),800); }
+function endGame(){ game=false; clearInterval(spawnInt); clearInterval(moveInt); document.getElementById('finalScore').innerText=score; document.getElementById('t_overReason').innerText=T[lang].overReason+score; document.getElementById('overScreen').classList.remove('hidden'); }
 
-function showPlus(x,y,txt,color){
-const p=document.createElement('div'); p.className='plus'; p.style.left=x+'px'; p.style.top=y+'px'; p.style.color=color; p.innerText=txt; area.appendChild(p); setTimeout(()=>p.remove(),800);
-}
-
-function endGame(){
-game=false; clearInterval(spawnInt); clearInterval(moveInt);
-document.getElementById('finalScore').innerText=score;
-document.getElementById('t_overReason').innerText=T[lang].overReason+score;
-document.getElementById('overScreen').classList.remove('hidden');
-}
-
-// Drag basket
 let dragging=false, startX=0, startBasketX=0;
 function getX(e){ return e.touches?e.touches[0].clientX:e.clientX; }
 basket.addEventListener('touchstart', (e)=>{ dragging=true; startX=getX(e); startBasketX=basketX; });
 basket.addEventListener('mousedown', (e)=>{ dragging=true; startX=getX(e); startBasketX=basketX; });
-window.addEventListener('touchmove', (e)=>{
-if(!dragging||!game) return; e.preventDefault();
-let dx=getX(e)-startX; basketX=Math.max(0, Math.min(area.clientWidth-110, startBasketX+dx)); basket.style.left=basketX+'px';
-},{passive:false});
-window.addEventListener('mousemove', (e)=>{
-if(!dragging||!game) return; let dx=getX(e)-startX; basketX=Math.max(0, Math.min(area.clientWidth-110, startBasketX+dx)); basket.style.left=basketX+'px';
-});
+window.addEventListener('touchmove', (e)=>{ if(!dragging||!game) return; e.preventDefault(); let dx=getX(e)-startX; basketX=Math.max(0, Math.min(area.clientWidth-110, startBasketX+dx)); basket.style.left=basketX+'px'; },{passive:false});
+window.addEventListener('mousemove', (e)=>{ if(!dragging||!game) return; let dx=getX(e)-startX; basketX=Math.max(0, Math.min(area.clientWidth-110, startBasketX+dx)); basket.style.left=basketX+'px'; });
 window.addEventListener('touchend', ()=>dragging=false);
 window.addEventListener('mouseup', ()=>dragging=false);
-// whole area drag also moves basket
-area.addEventListener('touchstart',(e)=>{
-if(e.target===area){ dragging=true; startX=getX(e); startBasketX=basketX; }
-});
 </script>
 </body>
 </html>
