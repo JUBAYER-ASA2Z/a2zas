@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="bn" translate="no" class="notranslate">
+<head>
+<meta charset="UTF-8"><meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Prayer Live Premium</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{font-family:'Hind Siliguri'}.goog-te-banner-frame,.skiptranslate,iframe{display:none!important} body{top:0!important}
+.mosque-bg{background:linear-gradient(180deg,rgba(10,61,31,0.6),rgba(10,61,31,0.9)),url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=1000');background-size:cover;background-position:center}
+</style>
+</head>
+<body class="bg-[#f0fdf4]">
+<div class="max-w-[480px] mx-auto min-h-screen bg-white shadow-2xl relative">
+
+<!-- HEADER WITH MOSQUE BG -->
+<div class="mosque-bg p-4 text-white rounded-b-[32px] relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-emerald-900/80 to-green-700/60"></div>
+<div class="relative z-10">
+<div class="flex justify-between items-center">
+<button onclick="history.back()" class="w-9 h-9 bg-white/20 backdrop-blur rounded-full flex items-center justify-center">←</button>
+<div class="flex gap-1.5"><button onclick="setLang('bn')" id="lb" class="px-3 py-1 rounded-full text-[10px] font-black bg-white text-black">বাংলা</button><button onclick="setLang('en')" id="le" class="px-3 py-1 rounded-full text-[10px] font-black bg-white/20">EN</button></div>
+</div>
+
+<div class="mt-4 flex justify-between items-center">
+<button onclick="setCountry('BD')" id="cBD" class="px-5 py-2 rounded-full text-[12px] font-black bg-yellow-400 text-black shadow">🇧🇩 Dhaka</button>
+<div class="text-center"><div id="clock" class="text-[30px] font-black leading-none tracking-wide">00:00:00 AM</div><div id="clockZone" class="text-[10px] bg-black/30 px-2 py-0.5 rounded-full mt-1 inline-block">BD Time • LIVE</div></div>
+<button onclick="setCountry('UK')" id="cUK" class="px-5 py-2 rounded-full text-[12px] font-black bg-white/20">🇬🇧 London</button>
+</div>
+
+<div class="mt-4 bg-white/10 backdrop-blur border border-white/20 rounded-[20px] p-3 text-center">
+<div id="dateNow" class="text-[12px] font-bold"></div>
+<div id="hijri" class="text-[11px] text-yellow-200"></div>
+<div class="mt-2 flex justify-center items-center gap-2">
+<span id="nextLabel" class="text-[11px] opacity-80">পরবর্তী:</span><span id="nextName" class="bg-yellow-400 text-black px-3 py-1 rounded-full text-[12px] font-black">-</span>
+<span id="remain" class="bg-black text-white px-3 py-1 rounded-full text-[10px] font-bold">--:--:--</span>
+</div>
+</div>
+
+<div class="mt-3 flex gap-2">
+<input id="dInput" type="date" class="flex-1 rounded-full px-4 py-2.5 text-[13px] font-bold text-black outline-none">
+<button onclick="searchD()" class="bg-white text-black px-5 rounded-full font-black text-[11px]">দেখুন</button>
+<button onclick="today()" class="bg-black/40 backdrop-blur px-4 rounded-full font-black text-[10px]">আজ</button>
+</div>
+</div>
+</div>
+
+<div id="list" class="p-3 space-y-2.5 mt-2"></div>
+
+<div class="p-3 pb-6">
+<div class="bg-gradient-to-r from-orange-50 to-yellow-50 border rounded-[18px] p-3.5 flex justify-between">
+<div class="flex gap-2 items-center"><span class="w-8 h-8 bg-orange-200 rounded-full flex items-center justify-center">🌅</span><div><div id="srL" class="text-[10px] opacity-60">সূর্যোদয়</div><div id="sr" class="font-black text-[13px]">--:-- AM</div></div></div>
+<div class="w-px bg-orange-200"></div>
+<div class="flex gap-2 items-center"><div class="text-right"><div id="ssL" class="text-[10px] opacity-60">সূর্যাস্ত</div><div id="ss" class="font-black text-[13px]">--:-- PM</div></div><span class="w-8 h-8 bg-orange-200 rounded-full flex items-center justify-center">🌇</span></div>
+</div>
+<div class="text-[8px] text-center opacity-30 mt-3">BD: Asia/Dhaka • UK: Europe/London • Auto update • No translate popup</div>
+</div>
+</div>
+
+<script>
+let lang='bn',country='BD',sel=new Date(),_t=null;
+const T={bn:{next:'পরবর্তী:',sr:'সূর্যোদয়',ss:'সূর্যাস্ত',p:{Fajr:'ফজর',Sunrise:'সূর্যোদয়',Dhuhr:'যোহর',Asr:'আসর',Maghrib:'মাগরিব',Isha:'ইশা'}},en:{next:'Next:',sr:'Sunrise',ss:'Sunset',p:{Fajr:'Fajr',Sunrise:'Sunrise',Dhuhr:'Dhuhr',Asr:'Asr',Maghrib:'Maghrib',Isha:'Isha'}}};
+function fmt12(t){let [h,m]=t.split(':').map(Number);let ap=h>=12?'PM':'AM';h=h%12||12;return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')} ${ap}`;}
+function setLang(l){lang=l;document.getElementById('lb').className=l=='bn'?'px-3 py-1 rounded-full bg-white text-black font-black text-[10px]':'px-3 py-1 rounded-full bg-white/20 font-black text-[10px]';document.getElementById('le').className=l=='en'?'px-3 py-1 rounded-full bg-white text-black font-black text-[10px]':'px-3 py-1 rounded-full bg-white/20 font-black text-[10px]';apply();}
+function apply(){document.getElementById('nextLabel').innerText=T[lang].next;document.getElementById('srL').innerText=T[lang].sr;document.getElementById('ssL').innerText=T[lang].ss;load();}
+function setCountry(c){country=c;document.getElementById('cBD').className=c=='BD'?'px-5 py-2 rounded-full bg-yellow-400 text-black font-black text-[12px] shadow':'px-5 py-2 rounded-full bg-white/20 font-black text-[12px]';document.getElementById('cUK').className=c=='UK'?'px-5 py-2 rounded-full bg-yellow-400 text-black font-black text-[12px] shadow':'px-5 py-2 rounded-full bg-white/20 font-black text-[12px]';load();tick();}
+function searchD(){let v=document.getElementById('dInput').value;if(v)sel=new Date(v);load();} function today(){sel=new Date();document.getElementById('dInput').valueAsDate=sel;load();}
+function zoneName(){return country==='BD'?'Asia/Dhaka':'Europe/London';}
+function zonedNow(zone=zoneName()){const parts=new Intl.DateTimeFormat('en-GB',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(new Date());const v={};parts.forEach(p=>v[p.type]=p.value);return new Date(+v.year,+v.month-1,+v.day,+v.hour,+v.minute,+v.second);}
+
+async function load(){
+ const el=document.getElementById('list');
+ const dd=String(sel.getDate()).padStart(2,'0'), mm=String(sel.getMonth()+1).padStart(2,'0'), yy=sel.getFullYear();
+ el.innerHTML='<div class="text-center p-6 text-sm">নামাজের সময়সূচি লোড হচ্ছে…</div>';
+ try {
+  const city=country==='BD'?'Dhaka':'London';
+  const nation=country==='BD'?'Bangladesh':'United Kingdom';
+  const method=country==='BD'?1:3;
+  const url=`https://api.aladhan.com/v1/timingsByCity/${dd}-${mm}-${yy}?city=${encodeURIComponent(city)}&country=${encodeURIComponent(nation)}&method=${method}`;
+  const response=await fetch(url);
+  if(!response.ok) throw new Error('Prayer-time service unavailable');
+  const r=await response.json();
+  if(r.code!==200 || !r.data?.timings) throw new Error('No timings returned');
+  const a=r.data.timings;
+  _t={Fajr:a.Fajr,Sunrise:a.Sunrise,Dhuhr:a.Dhuhr,Asr:a.Asr,Maghrib:a.Maghrib||a.Magrib,Isha:a.Isha,readable:r.data.date.readable,hijri:r.data.date.hijri};
+  document.getElementById('dateNow').innerText=`${_t.readable} - ${city}, ${nation}`;
+  document.getElementById('hijri').innerText=`${_t.hijri.day} ${_t.hijri.month.en} ${_t.hijri.year} AH`;
+  document.getElementById('sr').innerText=fmt12(_t.Sunrise);
+  document.getElementById('ss').innerText=fmt12(_t.Maghrib);
+  render();tick();
+ } catch(e) {
+  _t=null;
+  document.getElementById('dateNow').innerText=`${dd}/${mm}/${yy} - ${country==='BD'?'Dhaka, Bangladesh':'London, UK'}`;
+  document.getElementById('hijri').innerText='ইন্টারনেট সংযোগ বা সার্ভার সমস্যা';
+  document.getElementById('sr').innerText='--:--';
+  document.getElementById('ss').innerText='--:--';
+  document.getElementById('nextName').innerText='--';
+  document.getElementById('remain').innerText='--:--:--';
+  el.innerHTML='<div class="text-center p-6 text-sm text-red-600">সঠিক নামাজের সময় আনতে পারেনি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার দেশ/তারিখ নির্বাচন করুন।</div>';
+ }
+}
+function render(){if(!_t)return;let order=['Fajr','Sunrise','Dhuhr','Asr','Maghrib','Isha'],icons={Fajr:'🌙',Sunrise:'🌅',Dhuhr:'☀️',Asr:'🌤️',Maghrib:'🌇',Isha:'🌃'},now=zonedNow(),next=null;for(let k of ['Fajr','Dhuhr','Asr','Maghrib','Isha']){let [h,m]=_t[k].split(':');let pt=new Date();pt.setHours(+h,+m,0);if(pt>now){next=k;break;}}if(!next)next='Fajr';let html='';order.forEach(k=>{let isNext=k==next&&k!='Sunrise';html+=`<div class="flex justify-between items-center rounded-[16px] p-3.5 border ${isNext?'bg-[#16a34a] text-white border-[#16a34a] shadow-lg scale-[1.02]':'bg-white border-zinc-100'}"><div class="flex gap-3 items-center"><span class="w-10 h-10 rounded-full ${isNext?'bg-white/20':'bg-emerald-50'} flex items-center justify-center">${icons[k]}</span><div><div class="font-black text-[15px]">${T[lang].p[k]}</div><div class="text-[10px] ${isNext?'text-white/70':'opacity-50'}">${k}${isNext?' • NEXT':''}</div></div></div><div class="text-right"><div class="font-black text-[14px]">${fmt12(_t[k])}</div><div class="text-[9px] ${isNext?'bg-yellow-400 text-black px-2 py-0.5 rounded-full font-black':'opacity-40'}">${isNext?'পরবর্তী নামাজ':''}</div></div></div>`});document.getElementById('list').innerHTML=html;document.getElementById('nextName').innerText=T[lang].p[next];}
+function tick(){
+ const nowReal=new Date(), zone=zoneName();
+ const parts=new Intl.DateTimeFormat('en-GB',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(nowReal),v={};
+ parts.forEach(p=>v[p.type]=p.value);
+ let h=+v.hour,m=+v.minute,sec=+v.second,ap=h>=12?'PM':'AM';h=h%12||12;
+ document.getElementById('clock').innerText=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')} ${ap}`;
+ document.getElementById('clockZone').innerText=country==='BD'?'Bangladesh Time • LIVE':'London Time • LIVE';
+ if(!_t)return;
+ const now=zonedNow(zone);let next=null;
+ for(const k of ['Fajr','Dhuhr','Asr','Maghrib','Isha']){const [hh,mm]=_t[k].split(':');const pt=new Date(now);pt.setHours(+hh,+mm,0,0);if(pt>now){next=k;break;}}
+ if(!next)next='Fajr';
+ const [hh,mm]=_t[next].split(':');const nt=new Date(now);nt.setHours(+hh,+mm,0,0);let diff=nt-now;if(diff<0)diff+=86400000;
+ const h2=Math.floor(diff/3600000),m2=Math.floor(diff%3600000/60000),s2=Math.floor(diff%60000/1000);
+ document.getElementById('remain').innerText=`${String(h2).padStart(2,'0')}:${String(m2).padStart(2,'0')}:${String(s2).padStart(2,'0')}`;
+}
+setInterval(()=>{tick();render();},1000);document.getElementById('dInput').valueAsDate=sel;apply();tick();
+</script>
+</body>
+</html>
