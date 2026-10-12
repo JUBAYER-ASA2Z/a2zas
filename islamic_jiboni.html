@@ -1,148 +1,24 @@
 <!DOCTYPE html>
-<html lang="bn" translate="no" class="notranslate">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Islamic Jiboni - A-S A2Z</title>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-*{font-family:'Hind Siliguri'}
-.bg-pro{background:radial-gradient(circle at 20% 20%,rgba(255,215,0,0.18),transparent 50%),radial-gradient(circle at 80% 80%,rgba(16,185,129,0.18),transparent 50%),linear-gradient(135deg,#064e3b 0%,#0a3d1f 50%,#14532d 100%)}
-.glass{backdrop-filter:blur(14px);background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2)}
-.word{display:inline-block;margin:1.5px;padding:2px 4px;border-radius:7px;transition:0.25s}
-.word.active{background:#facc15!important;color:#000!important;font-weight:900;box-shadow:0 3px 12px rgba(250,204,21,0.7);transform:scale(1.08)}
-.watermark{position:fixed;bottom:60px;right:-30px;transform:rotate(-35deg);font-size:48px;font-weight:900;color:rgba(255,255,255,0.04);pointer-events:none;z-index:0;letter-spacing:4px}
-</style>
-</head>
-<body class="bg-pro min-h-screen relative overflow-hidden">
-<div class="watermark">A-S A2Z</div>
-<div class="max-w-[480px] mx-auto min-h-screen flex flex-col bg-white/[0.03] relative z-10">
+<html lang="bn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Jiboni List</title><script src="https://cdn.tailwindcss.com"></script><link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet"><style>*{font-family:'Hind Siliguri'}</style></head>
+<body class="bg-gradient-to-br from-emerald-900 to-green-950 min-h-screen">
+<div class="max-w-[480px] mx-auto p-3 space-y-3 pt-6">
+<h1 class="text-white font-black text-[18px] text-center">ইসলামিক জীবনী - ১০০+ পর্ব</h1>
 
-<!-- HEADER -->
-<div class="p-4 flex justify-between items-center sticky top-0 z-20 glass">
-<button onclick="location.href='./islamic.html'" class="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center font-black shadow">←</button>
-<div class="text-center"><h1 class="font-black text-white text-[16px] tracking-wide">ইসলামিক জীবনী</h1><p class="text-white/60 text-[8px] tracking-[3px]">PREMIUM AUDIO • A-S A2Z</p></div>
-<button id="langBtn" onclick="toggleLang()" class="px-4 py-1.5 rounded-full bg-white text-[11px] font-black text-green-800 shadow">EN</button>
+<div onclick="location.href='./jiboni-umar.html'" class="bg-white rounded-[20px] p-4 flex gap-3 cursor-pointer active:scale-95">
+<div class="w-12 h-12 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-black">১</div>
+<div><h3 class="font-black text-[14px]">হযরত উমর ও বুড়িমা</h3><p class="text-[10px] text-zinc-500">পার্ট ১ • Premium Voice</p></div><span class="ml-auto">▶</span>
 </div>
 
-<!-- LIST -->
-<div id="listView" class="p-3 space-y-3 mt-2">
-<div onclick="openStory(1)" class="bg-white rounded-[22px] p-4 flex gap-3 shadow-[0_10px_30px_rgba(0,0,0,0.25)] border-l-[6px] border-emerald-600 active:scale-[0.97] transition cursor-pointer">
-<div class="w-12 h-12 rounded-[14px] bg-gradient-to-br from-emerald-600 to-green-900 flex items-center justify-center text-white font-black text-[18px]">1</div>
-<div class="flex-1"><h3 class="font-black text-[14px] text-black">হযরত উমর (রাঃ) ও বুড়িমার ঘটনা</h3><p class="text-[10px] text-zinc-500 mt-1">ন্যায়বিচার ও বিনয়ের অনন্য দৃষ্টান্ত</p><div class="mt-2 flex gap-2"><span class="bg-yellow-400 text-black text-[8px] font-black px-2.5 py-1 rounded-full">🎧 PREMIUM VOICE</span><span class="bg-emerald-100 text-emerald-700 text-[8px] font-black px-2 py-1 rounded-full">LIVE SYNC</span></div></div><span class="text-zinc-300 font-black">→</span>
+<div onclick="location.href='./jiboni-abubakar.html'" class="bg-white rounded-[20px] p-4 flex gap-3 cursor-pointer active:scale-95">
+<div class="w-12 h-12 rounded-xl bg-amber-600 text-white flex items-center justify-center font-black">২</div>
+<div><h3 class="font-black text-[14px]">হযরত আবু বকর (রাঃ)</h3><p class="text-[10px] text-zinc-500">পার্ট ২ • Premium Voice</p></div><span class="ml-auto">▶</span>
 </div>
 
-<div onclick="openStory(2)" class="bg-white rounded-[22px] p-4 flex gap-3 shadow-[0_10px_30px_rgba(0,0,0,0.25)] border-l-[6px] border-amber-500 active:scale-[0.97] transition cursor-pointer">
-<div class="w-12 h-12 rounded-[14px] bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-black text-[18px]">2</div>
-<div class="flex-1"><h3 class="font-black text-[14px] text-black">হযরত আবু বকর (রাঃ) এর জীবনী</h3><p class="text-[10px] text-zinc-500 mt-1">সিদ্দিকে আকবর - প্রথম খলিফা</p><div class="mt-2 flex gap-2"><span class="bg-yellow-400 text-black text-[8px] font-black px-2.5 py-1 rounded-full">🎧 PREMIUM VOICE</span></div></div><span class="text-zinc-300 font-black">→</span>
-</div>
-</div>
-
-<!-- STORY VIEW -->
-<div id="storyView" class="hidden flex-col min-h-screen bg-[#fffef9] relative">
-<div class="bg-gradient-to-r from-emerald-900 via-green-800 to-emerald-700 p-4 text-white sticky top-0 z-10 shadow-xl">
-<div class="flex justify-between items-center"><button onclick="backList()" class="w-9 h-9 bg-white/20 backdrop-blur rounded-full flex items-center justify-center">←</button><div id="stitle" class="font-black text-[13px] flex-1 text-center px-2 tracking-wide"></div><button onclick="toggleAudio()" id="playBtn" class="w-12 h-12 bg-yellow-400 text-black rounded-full flex items-center justify-center font-black text-[20px] shadow-[0_4px_15px_rgba(250,204,21,0.5)] active:scale-90 transition">▶</button></div>
-<audio id="audioPlayer" preload="auto" playsinline></audio>
-<div class="mt-4 flex items-center gap-3"><div class="flex-1 h-2 bg-white/20 rounded-full overflow-hidden"><div id="bar" class="h-full bg-yellow-400 w-0 transition-all duration-200"></div></div><span id="pct" class="text-[10px] font-black min-w-[32px] text-right">0%</span></div>
-<div class="flex justify-between mt-1.5 text-[10px] font-bold opacity-80"><span id="cur">00:00</span><span id="dur">00:00</span></div>
+<div onclick="location.href='./jiboni-usman.html'" class="bg-white/20 backdrop-blur rounded-[20px] p-4 flex gap-3 cursor-pointer border border-white/20">
+<div class="w-12 h-12 rounded-xl bg-white/20 text-white flex items-center justify-center font-black">৩</div>
+<div><h3 class="font-black text-[14px] text-white">হযরত উসমান (রাঃ) - আসছে</h3><p class="text-[10px] text-white/60">পার্ট ৩</p></div>
 </div>
 
-<div id="storyText" class="p-6 text-[18px] leading-[38px] text-zinc-800 font-medium relative z-10"></div>
-
-<div class="mt-auto p-4 space-y-3 pb-8">
-<div class="bg-gradient-to-r from-emerald-50 to-yellow-50 border border-emerald-100 rounded-[16px] p-3 text-center">
-<p class="text-[9px] tracking-[2px] text-zinc-400 font-black">DEVELOPER</p>
-<p class="font-black text-[13px] text-emerald-900 mt-1">Qari MD Jubayer Ahmed Siyam</p>
-<p class="text-[8px] text-zinc-500 mt-1">A-S A2Z • Islamic Hub Premium</p>
+<p class="text-center text-white/30 text-[9px] mt-6 tracking-widest">DEVELOPER • Qari MD Jubayer Ahmed Siyam</p>
 </div>
-<button onclick="backList()" class="w-full py-3.5 bg-zinc-900 text-white rounded-full font-black text-[13px] shadow-xl active:scale-95 transition">← তালিকায় ফিরুন</button>
-</div>
-<div class="absolute bottom-[120px] right-4 opacity-[0.03] text-[60px] font-black rotate-[-20deg] pointer-events-none select-none">الله</div>
-</div>
-
-<!-- FOOTER WATERMARK -->
-<div id="footerMark" class="text-center py-5">
-<p class="text-white/40 text-[9px] tracking-[3px] font-black">DEVELOPER</p>
-<p class="font-black text-white text-[12px] mt-1">Qari MD Jubayer Ahmed Siyam</p>
-<p class="text-white/30 text-[8px] mt-1">A-S A2Z • Premium Audio Jiboni</p>
-</div>
-
-</div>
-
-<script>
-let lang='bn',curId=1,isPlay=false,timer=null;
-const audio=document.getElementById('audioPlayer');
-
-// রুটে ফাইল - EN না থাকলে BN বাজবে
-const audioFiles={
- 1:{bn:'umar-burima-bn.mp3', en:'umar-burima-bn.mp3'},
- 2:{bn:'abubakar-bn.mp3', en:'abubakar-bn.mp3'}
-};
-
-const stories={
-1:{
- bn:`হযরত উমর (রাঃ) একদিন তিনি হেঁটে কোথাও যাচ্ছিলেন। কিছুদূর যাওয়ার পরেই দেখলেন এক বৃদ্ধাকে। বৃদ্ধা কি যেন বিড়বিড় করছে। হযরত উমর তার কাছে গেলেন। তার খোঁজখবর নিলেন। জিজ্ঞেস করলেন, "আচ্ছা বুড়িমা, খলিফা উমর সম্পর্কে তোমার ধারণা কি?" বুড়ি হযরত উমরকে আগে কখনো দেখেনি, তাই তাকে সে চিনতে পারেনি।
-
-বুড়ি হযরত উমরের কথা শুনে কিছুটা বিরক্ত হলো। বললো, "উমর-টুমর দিয়ে আমি কি করব? আমার কি এমন ঠেকা পড়ল যে আমার তার খবর নিতে হবে? নিজের চিন্তায় বাঁচি না!" বুড়ির কথায় ছিল রাগ আর অসন্তোষের ছাপ।
-
-হযরত উমর আবার তাকে জিজ্ঞাসা করলেন, "বুড়িমা, উমরের ওপর তোমার এতো রাগ কেন?" বুড়ি চেঁচিয়ে জবাব দেয়, "রাগ হবে না কেন? এই যে সে খলিফা হয়েছে, তো আমায় কি একটা পয়সাও দিয়েছে? নাকি কোনোদিন আমার খোঁজখবর নিয়েছে, যে আমি কি হালে আছি? ও মানুষ না!"
-
-হযরত উমর বুড়ির কথা শুনে বড়ই চিন্তিত হলেন। "ঠিকই তো, আমি তো তার তেমন খোঁজখবর নিতে পারিনি।" তিনি কিছুটা নরম হয়ে বুড়িকে আবার জিজ্ঞাসা করলেন, "আচ্ছা, তুমি কি অবস্থায় আছো উমর কি করে জানবে? তুমি গিয়ে উমরকে সব জানিয়ে আসলেই তো পারতে।"
-
-বুড়ি জবাব দেয়, "কেন? আমি জানাতে যাব কেন? উমরই তো আমিরুল মুমিনীন, সেই তো সবার খোঁজখবর নেবে আর এই জন্যই রাষ্ট্রের দায়িত্ব গ্রহণ করেছে।"
-
-হযরত উমর শান্তভাবে আবারও বললেন, "আচ্ছা, উমর খলিফা হওয়ার পর তুমি যে কষ্ট পেয়েছো, সেই কষ্টের বিনিময়ে তুমি কত টাকা পেলে উমরকে মাফ করে দেবে?"
-
-বৃদ্ধার সাথে এসব কথা চলছে, এমন সময় হযরত আলী এবং আব্দুল্লাহ ইবনে মাসুদ (রাঃ) তারা এসে হাজির হলেন। তারা এসে সালাম দিলেন: "আসসালামু আলাইকুম ইয়া আমিরুল মুমিনীন।"
-
-আগন্তুক দুই ব্যক্তির মুখে 'আমিরুল মুমিনীন' শব্দ শুনে বুড়ি তাজ্জব হয়ে গেল। সে ভয়ে কাঁপতে লাগলো। হযরত উমর বৃদ্ধাকে সান্ত্বনা দিলেন এবং বৃদ্ধার হাতে পঁচিশটি স্বর্ণমুদ্রা দিয়ে বললেন, "বুড়িমা, তুমি এই চামড়ায় লিখে দাও যে, কিয়ামতের দিন উমরের কাছে আমার কোনো দাবি নেই।"
-
-হযরত উমর (রাঃ) তালি লাগানো জামা পরতেন। যখন তিনি বায়তুল মুকাদ্দাস জয় করার জন্য বের হচ্ছিলেন, সেই সময় তার পরিহিত জামায় ১৭টি তালি লাগানো ছিল। সাহাবারা বললেন ভালো কাপড় পরতে। হযরত আয়েশা (রাঃ) তাকে ডেকে বললেন ভালো জামা পরতে।
-
-খলিফা কেঁদে ফেললেন। বললেন, "আম্মা! আপনি কি আমাকে রাসূলুল্লাহ (সাঃ) থেকে দূরে সরিয়ে রাখতে চাচ্ছেন? আপনার কি মনে নেই যে দিনের পর দিন নবীজি (সাঃ) উপবাস থেকেছেন, তিন দিন পর্যন্ত চুলায় আগুন জ্বলেনি। নবীজি (সাঃ) তালিযুক্ত কাপড় পরিধান করেছেন?"
-
-সিরাতের কিতাবে আছে, খলিফা যখন রাসূলের অসহায়ত্বের কথা বলছিলেন, তখন হযরত আয়েশা এবং হাফসা দুজনেই অঝোরে কাঁদছিলেন।
-
-অতঃপর তিনি তালিযুক্ত কাপড় পরেই বায়তুল মুকাদ্দাস জয়ের জন্য বের হলেন। জেরুজালেমের দ্বারপ্রান্তে ২২ লক্ষ বর্গমাইলের খলিফার হাতে উটের রশি, উটের উপর বসে আছে খাদেম। সেনাপতি আবু উবায়দা বললেন ভালো পোশাক পরতে।
-
-হযরত উমর রেগে গিয়ে বললেন, "আমি হচ্ছি সেই জাতি, যাদের মহান আল্লাহ ইসলাম দ্বারা সম্মানিত করেছেন। আমরা যদি ইসলাম ছাড়া অন্য কোনো উপায়ে সম্মান খুঁজি, তাহলে আল্লাহ আমাদের অসম্মানিত করবেন।"`,
- en:`Hazrat Umar (RA) was walking one day. After going some distance, he saw an old woman muttering to herself. Hazrat Umar went to her and asked, "Old mother, what do you think about Khalifa Umar?" The old woman had never seen him before, so she did not recognize him. The old woman became annoyed and said, "What will I do with Umar? I can barely survive with my own worries!" Umar asked again, "Why are you so angry with Umar?" She shouted, "Why wouldn't I be angry? He became Khalifa, but did he give me a single coin? Did he ever check how I am living? He is not a human!" Hearing this, Umar became very concerned. He softly asked, "How would Umar know your condition? You could have gone and told him." She replied, "Why should I go? Umar is Amirul Muminin, he should check on everyone." Umar calmly said, "How much money would you take to forgive Umar for the hardship you faced?" While they were talking, Hazrat Ali and Abdullah ibn Masud (RA) arrived and said, "Assalamu Alaikum Ya Amirul Muminin." Hearing 'Amirul Muminin', the old woman was shocked and trembled with fear. Hazrat Umar consoled her and gave her twenty-five gold coins and said, "Write on this leather that on the Day of Judgment, I have no claim against Umar." Hazrat Umar used to wear patched clothes. When he went to conquer Baitul Muqaddas, his dress had 17 patches. The companions requested him to wear better clothes. Hazrat Ayesha (RA) called him and said, "Amirul Muminin, please change this patched shirt." The Khalifa started crying and said, "Mother! Do you want to distance me from Rasulullah (SAW)? Don't you remember the days when the Prophet (SAW) remained hungry for days? The taste Umar feels in this torn patched clothing cannot be explained." Then he went to conquer Baitul Muqaddas wearing the patched clothes. At the gate of Jerusalem, the Khalifa of 2.2 million square miles was holding the camel's rope, while his servant was sitting on the camel. Commander Abu Ubaida said to wear better clothes. Hazrat Umar became angry and said, "We are the nation whom Allah has honored with Islam. If we seek honor through anything other than Islam, Allah will dishonor us."`
-},
-2:{bn:`হযরত আবু বকর (রাঃ) - ইসলামের প্রথম খলিফা।`,en:`Hazrat Abu Bakr (RA) - First Khalifa of Islam, Siddiq-e-Akbar. The closest companion of Rasulullah (SAW).`}
-};
-
-function toggleLang(){lang=lang==='bn'?'en':'bn';document.getElementById('langBtn').innerText=lang==='bn'?'EN':'BN';if(!document.getElementById('storyView').classList.contains('hidden')){renderText();loadAudio();}}
-function openStory(id){curId=id;document.getElementById('listView').classList.add('hidden');document.getElementById('footerMark').classList.add('hidden');let v=document.getElementById('storyView');v.classList.remove('hidden');v.classList.add('flex');document.getElementById('stitle').innerText=id==1?(lang==='bn'?'উমর ও বুড়িমা':'Umar & Old Woman'):'আবু বকর';renderText();loadAudio();}
-function renderText(){let t=stories[curId][lang];let parts=t.split(/(\s+)/);let html='';parts.forEach((w,i)=>{if(w.trim()&&w!=='\n'){html+=`<span id="w${i}" class="word">${w}</span> `}else html+=w.includes('\n')?'<br><br>':w;});document.getElementById('storyText').innerHTML=html;}
-
-function loadAudio(){
- let file=audioFiles[curId][lang] || audioFiles[curId]['bn'];
- audio.src='./'+file;
- audio.load();
-}
-
-function toggleAudio(){
- if(isPlay){audio.pause();isPlay=false;document.getElementById('playBtn').innerText='▶';clearInterval(timer);return;}
- audio.play().then(()=>{
-   isPlay=true;document.getElementById('playBtn').innerText='⏸';
-   timer=setInterval(()=>{
-     let cur=audio.currentTime||0,dur=audio.duration||1;
-     if(isNaN(dur)||dur===0) dur=1;
-     let idx=Math.floor(cur/0.45);
-     document.querySelectorAll('.word').forEach(w=>w.classList.remove('active'));
-     let el=document.getElementById('w'+idx);
-     if(el){el.classList.add('active');el.scrollIntoView({behavior:'smooth',block:'center'});}
-     document.getElementById('bar').style.width=(cur/dur*100)+'%';
-     document.getElementById('cur').innerText=fmt(cur);
-     document.getElementById('dur').innerText=fmt(dur);
-     document.getElementById('pct').innerText=Math.floor(cur/dur*100)+'%';
-   },150);
- }).catch(()=>{});
-}
-
-audio.addEventListener('ended',()=>{isPlay=false;document.getElementById('playBtn').innerText='▶';clearInterval(timer);document.querySelectorAll('.word').forEach(w=>w.classList.remove('active'));});
-function fmt(s){if(isNaN(s))return'00:00';let m=Math.floor(s/60),sc=Math.floor(s%60);return String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0');}
-function backList(){audio.pause();isPlay=false;clearInterval(timer);document.getElementById('playBtn').innerText='▶';document.getElementById('storyView').classList.add('hidden');document.getElementById('storyView').classList.remove('flex');document.getElementById('listView').classList.remove('hidden');document.getElementById('footerMark').classList.remove('hidden');}
-</script>
-</body>
-</html>
+</body></html>
