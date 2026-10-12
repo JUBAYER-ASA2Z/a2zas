@@ -4,32 +4,39 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>01 - ওমর ও বুড়িমা - A-S A2Z</title>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-*{font-family:'Hind Siliguri';box-sizing:border-box;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+*{font-family:'Hind Siliguri','Inter',sans-serif;box-sizing:border-box;-webkit-touch-callout:none}
 .bg-pro{background:radial-gradient(circle at 10% 10%, rgba(255,255,255,0.15) 0%, transparent 40%), linear-gradient(135deg, #065f46 0%, #022c22 100%)}
 .bg-night{background:#0a0a0a!important}
-.glass{backdrop-filter:blur(12px);background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2)}
-.word{display:inline-block;margin:1.5px;padding:3px 5px;border-radius:7px;transition:0.15s;line-height:32px}
+.glass{backdrop-filter:blur(16px);background:rgba(255,255,255,0.12);border-bottom:1px solid rgba(255,255,255,0.15)}
+.word{display:inline-block;margin:1.5px;padding:3px 5px;border-radius:7px;transition:0.15s;line-height:34px}
 .word.read{background:rgba(250,204,21,0.35)!important;color:#000!important;font-weight:700}
 .word.active{background:#facc15!important;color:#000!important;font-weight:900!important;box-shadow:0 4px 15px rgba(250,204,21,0.8);transform:scale(1.12);z-index:2}
 </style>
 </head>
 <body id="body" class="bg-pro min-h-screen">
-<div class="max-w-[480px] mx-auto min-h-screen flex flex-col bg-white/[0.03]">
+<div class="max-w-[480px] mx-auto min-h-screen flex flex-col h-screen bg-white/[0.03]">
 
-<div class="flex items-center justify-between p-3 sticky top-0 z-20 glass">
+<!-- FIXED TOP AREA - নড়বে না -->
+<div class="sticky top-0 z-30">
+<!-- HEADER -->
+<div class="flex items-center justify-between p-3 glass">
 <button onclick="location.href='islamic_jiboni.html'" class="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center font-black">←</button>
-<div class="text-center"><h1 class="font-black text-white text-[13px]">০১. ওমর ও বুড়িমা</h1><p class="text-white/60 text-[8px]">jibone-01-omar-burima.html</p></div>
+<div class="text-center"><h1 id="topTitle" class="font-black text-white text-[13px]">০১. ওমর ও বুড়িমা</h1><p class="text-white/60 text-[8px]">jibone-01-omar-burima.html</p></div>
+<div class="flex gap-2">
+<button onclick="toggleLang()" id="langBtn" class="px-4 h-10 rounded-full bg-yellow-400 text-black flex items-center justify-center font-black text-[11px]">EN</button>
 <button onclick="toggleNight()" id="nightBtn" class="w-10 h-10 rounded-full bg-zinc-900 text-yellow-400 flex items-center justify-center font-black">🌙</button>
 </div>
+</div>
 
+<!-- PLAYER FIXED -->
 <div class="mx-3 mt-3 glass rounded-[20px] p-4">
 <div class="flex items-center justify-between">
 <div class="flex items-center gap-3">
 <div class="w-12 h-12 rounded-[12px] bg-white flex items-center justify-center text-[20px]">🎧</div>
-<div><p class="font-black text-white text-[12px]">অডিও সিঙ্ক</p><p class="text-white/60 text-[9px]">omar-burima.mp3 • Speed Fixed</p></div>
+<div><p id="audioLabel" class="font-black text-white text-[12px]">অডিও সিঙ্ক</p><p class="text-white/60 text-[9px]">omar-burima.mp3</p></div>
 </div>
 <button id="playBtn" onclick="toggleAudio()" class="w-14 h-14 rounded-full bg-yellow-400 text-black flex items-center justify-center font-black text-[24px] shadow active:scale-90">▶</button>
 </div>
@@ -38,7 +45,7 @@
 <div class="flex justify-between mt-1"><span id="cur" class="text-white/80 text-[10px] font-bold">00:00</span><span id="pct" class="text-yellow-400 text-[10px] font-black">0%</span><span id="dur" class="text-white/60 text-[10px]">00:00</span></div></div>
 
 <div class="mt-3 flex items-center gap-2">
-<span class="text-white/60 text-[9px] font-black">SPEED:</span>
+<span id="speedLabel" class="text-white/60 text-[9px] font-black">SPEED:</span>
 <div class="flex gap-1.5">
 <button onclick="setSpeed(0.75)" class="speedBtn px-3 py-1 rounded-full bg-white/20 text-white text-[10px] font-black" data-s="0.75">0.75x</button>
 <button onclick="setSpeed(1)" class="speedBtn px-3 py-1 rounded-full bg-yellow-400 text-black text-[10px] font-black" data-s="1">1x</button>
@@ -48,24 +55,61 @@
 </div>
 </div>
 </div>
+</div>
 
+<!-- SCROLLABLE TEXT ONLY -->
+<div class="flex-1 overflow-y-auto">
 <div id="storyBox" class="mx-3 mt-4 bg-[#fffef5] rounded-[20px] p-5 shadow-xl">
 <div id="storyText" class="text-[18px] leading-[40px] text-zinc-800 font-medium"></div>
 </div>
 
 <div class="mt-6 text-center pb-8">
-<p class="text-white/40 text-[9px] tracking-[4px] font-black">DEVELOPER</p>
+<p id="devLabel" class="text-white/40 text-[9px] tracking-[4px] font-black">DEVELOPER</p>
 <p class="font-black text-white text-[13px] mt-1">Qari MD Jubayer Ahmed Siyam</p>
-<p class="text-white/30 text-[8px] mt-1">File: jibone-01-omar-burima.html • Speed Sync Fixed</p>
+<p class="text-white/30 text-[8px] mt-1">File: jibone-01-omar-burima.html • BN/EN Fixed Player</p>
+</div>
 </div>
 
 </div>
 
 <script>
-const fullStory = `হযরত উমর (রাঃ) একদিন তিনি হেঁটে কোথাও যাচ্ছিলেন। কিছুদূর যাওয়ার পরেই দেখলেন এক বৃদ্ধাকে। বৃদ্ধা কি যেন বিড়বিড় করছে। হযরত উমর তার কাছে গেলেন। তার খোঁজখবর নিলেন। জিজ্ঞেস করলেন, "আচ্ছা বুড়িমা, খলিফা উমর সম্পর্কে তোমার ধারণা কি?" বুড়ি হযরত উমরকে আগে কখনো দেখেনি, তাই তাকে সে চিনতে পারেনি। বুড়ি হযরত উমরের কথা শুনে কিছুটা বিরক্ত হলো। বললো, "উমর-টুমর দিয়ে আমি কি করব? আমার কি এমন ঠেকা পড়ল যে আমার তার খবর নিতে হবে? নিজের চিন্তায় বাঁচি না!" হযরত উমর আবার তাকে জিজ্ঞাসা করলেন, "বুড়িমা, উমরের ওপর তোমার এতো রাগ কেন?" বুড়ি চেঁচিয়ে জবাব দেয়, "রাগ হবে না কেন? এই যে সে খলিফা হয়েছে, তো আমায় কি একটা পয়সাও দিয়েছে? নাকি কোনোদিন আমার খোঁজখবর নিয়েছে? ও মানুষ না!" হযরত উমর বুড়ির কথা শুনে বড়ই চিন্তিত হলেন। তিনি নরম হয়ে জিজ্ঞাসা করলেন, "তুমি কি অবস্থায় আছো উমর কি করে জানবে?" বুড়ি জবাব দেয়, "কেন? আমি জানাতে যাব কেন? উমরই তো আমিরুল মুমিনীন, সেই তো সবার খোঁজখবর নেবে।" হযরত উমর শান্তভাবে বললেন, "আচ্ছা, তুমি কত টাকা পেলে উমরকে মাফ করে দেবে?" এমন সময় হযরত আলী এবং আব্দুল্লাহ ইবনে মাসুদ (রাঃ) এসে হাজির হলেন। তারা সালাম দিলেন: "আসসালামু আলাইকুম ইয়া আমিরুল মুমিনীন।" 'আমিরুল মুমিনীন' শব্দ শুনে বুড়ি তাজ্জব হয়ে গেল। সে ভয়ে কাঁপতে লাগলো। হযরত উমর বৃদ্ধাকে সান্ত্বনা দিলেন এবং পঁচিশটি স্বর্ণমুদ্রা দিয়ে বললেন, "বুড়িমা, তুমি এই চামড়ায় লিখে দাও যে, কিয়ামতের দিন উমরের কাছে আমার কোনো দাবি নেই।" হযরত উমর তালি লাগানো জামা পরতেন। যখন তিনি বায়তুল মুকাদ্দাস জয় করতে বের হচ্ছিলেন, তার জামায় ১৭টি তালি ছিল। সাহাবারা বললেন ভালো কাপড় পরতে। হযরত আয়েশা (রাঃ) তাকে ডেকে বললেন ভালো জামা পরতে। খলিফা কেঁদে ফেললেন। বললেন, "আম্মা! আপনি কি আমাকে রাসূলুল্লাহ (সাঃ) থেকে দূরে সরাতে চাচ্ছেন? আপনার কি মনে নেই নবীজি (সাঃ) দিনের পর দিন উপবাস থেকেছেন, তিন দিন চুলায় আগুন জ্বলেনি।" সিরাতের কিতাবে আছে, খলিফা যখন রাসূলের অসহায়ত্বের কথা বলছিলেন, তখন আয়েশা এবং হাফসা দুজনেই অঝোরে কাঁদছিলেন। অতঃপর তিনি তালিযুক্ত কাপড় পরেই বায়তুল মুকাদ্দাস জয়ের জন্য বের হলেন। জেরুজালেমের দ্বারে ২২ লক্ষ বর্গমাইলের খলিফার হাতে উটের রশি, উটের উপর খাদেম। সেনাপতি আবু উবায়দা বললেন ভালো পোশাক পরতে। হযরত উমর রেগে বললেন, "আমরা সেই জাতি, যাদের আল্লাহ ইসলাম দ্বারা সম্মানিত করেছেন। আমরা যদি ইসলাম ছাড়া অন্য উপায়ে সম্মান খুঁজি, আল্লাহ আমাদের অসম্মানিত করবেন।"`;
+let lang='bn';
+const stories={
+bn:`হযরত উমর (রাঃ) একদিন তিনি হেঁটে কোথাও যাচ্ছিলেন। কিছুদূর যাওয়ার পরেই দেখলেন এক বৃদ্ধাকে। বৃদ্ধা কি যেন বিড়বিড় করছে। হযরত উমর তার কাছে গেলেন। তার খোঁজখবর নিলেন। জিজ্ঞেস করলেন, "আচ্ছা বুড়িমা, খলিফা উমর সম্পর্কে তোমার ধারণা কি?" বুড়ি হযরত উমরকে আগে কখনো দেখেনি, তাই তাকে সে চিনতে পারেনি। বুড়ি হযরত উমরের কথা শুনে কিছুটা বিরক্ত হলো। বললো, "উমর-টুমর দিয়ে আমি কি করব? আমার কি এমন ঠেকা পড়ল যে আমার তার খবর নিতে হবে? নিজের চিন্তায় বাঁচি না!" হযরত উমর আবার তাকে জিজ্ঞাসা করলেন, "বুড়িমা, উমরের ওপর তোমার এতো রাগ কেন?" বুড়ি চেঁচিয়ে জবাব দেয়, "রাগ হবে না কেন? এই যে সে খলিফা হয়েছে, তো আমায় কি একটা পয়সাও দিয়েছে? নাকি কোনোদিন আমার খোঁজখবর নিয়েছে? ও মানুষ না!" হযরত উমর বুড়ির কথা শুনে বড়ই চিন্তিত হলেন। তিনি নরম হয়ে জিজ্ঞাসা করলেন, "তুমি কি অবস্থায় আছো উমর কি করে জানবে?" বুড়ি জবাব দেয়, "কেন? আমি জানাতে যাব কেন? উমরই তো আমিরুল মুমিনীন, সেই তো সবার খোঁজখবর নেবে।" হযরত উমর শান্তভাবে বললেন, "আচ্ছা, তুমি কত টাকা পেলে উমরকে মাফ করে দেবে?" এমন সময় হযরত আলী এবং আব্দুল্লাহ ইবনে মাসুদ (রাঃ) এসে হাজির হলেন। তারা সালাম দিলেন: "আসসালামু আলাইকুম ইয়া আমিরুল মুমিনীন।" 'আমিরুল মুমিনীন' শব্দ শুনে বুড়ি তাজ্জব হয়ে গেল। সে ভয়ে কাঁপতে লাগলো। হযরত উমর বৃদ্ধাকে সান্ত্বনা দিলেন এবং পঁচিশটি স্বর্ণমুদ্রা দিয়ে বললেন, "বুড়িমা, তুমি এই চামড়ায় লিখে দাও যে, কিয়ামতের দিন উমরের কাছে আমার কোনো দাবি নেই।" হযরত উমর তালি লাগানো জামা পরতেন। যখন তিনি বায়তুল মুকাদ্দাস জয় করতে বের হচ্ছিলেন, তার জামায় ১৭টি তালি ছিল। সাহাবারা বললেন ভালো কাপড় পরতে। হযরত আয়েশা (রাঃ) তাকে ডেকে বললেন ভালো জামা পরতে। খলিফা কেঁদে ফেললেন। বললেন, "আম্মা! আপনি কি আমাকে রাসূলুল্লাহ (সাঃ) থেকে দূরে সরাতে চাচ্ছেন? আপনার কি মনে নেই নবীজি (সাঃ) দিনের পর দিন উপবাস থেকেছেন, তিন দিন চুলায় আগুন জ্বলেনি।" সিরাতের কিতাবে আছে, খলিফা যখন রাসূলের অসহায়ত্বের কথা বলছিলেন, তখন আয়েশা এবং হাফসা দুজনেই অঝোরে কাঁদছিলেন। অতঃপর তিনি তালিযুক্ত কাপড় পরেই বায়তুল মুকাদ্দাস জয়ের জন্য বের হলেন। জেরুজালেমের দ্বারে ২২ লক্ষ বর্গমাইলের খলিফার হাতে উটের রশি, উটের উপর খাদেম। সেনাপতি আবু উবায়দা বললেন ভালো পোশাক পরতে। হযরত উমর রেগে বললেন, "আমরা সেই জাতি, যাদের আল্লাহ ইসলাম দ্বারা সম্মানিত করেছেন। আমরা যদি ইসলাম ছাড়া অন্য উপায়ে সম্মান খুঁজি, আল্লাহ আমাদের অসম্মানিত করবেন।"`,
+en:`Hazrat Umar (RA) was walking one day. After a while, he saw an old woman muttering something. Hazrat Umar went to her and asked about her condition. He asked, "Old mother, what is your opinion about Khalifa Umar?" The old woman had never seen Hazrat Umar before, so she could not recognize him. Hearing this, she became a little annoyed. She said, "What will I do with Umar? Why should I need to know about him? I can barely survive my own worries!" Hazrat Umar asked again, "Why are you so angry with Umar?" The old woman shouted, "Why wouldn't I be angry? Since he became Khalifa, has he ever given me a single penny? Has he ever asked about me? He is not a human!" Hearing this, Hazrat Umar became very worried. He softly asked, "How would Umar know what condition you are in?" The old woman replied, "Why should I go and inform him? Umar himself is Amirul Muminin, he should take care of everyone." Hazrat Umar calmly said, "Okay, how much money would it take for you to forgive Umar?" At that moment, Hazrat Ali and Abdullah ibn Masud (RA) arrived. They said Salam: "Assalamu Alaikum Ya Amirul Muminin." Hearing 'Amirul Muminin', the old woman was shocked. She started trembling with fear. Hazrat Umar consoled her and gave her twenty-five gold coins and said, "Old mother, please write on this leather that you have no claim against Umar on the Day of Judgment." Hazrat Umar used to wear patched clothes. When he was going to conquer Baitul Muqaddas, his dress had 17 patches. The Sahaba told him to wear better clothes. Hazrat Ayesha (RA) also called him and told him to wear good clothes. The Khalifa started crying. He said, "Mother! Do you want to take me away from Rasulullah (SAW)? Don't you remember that the Prophet (SAW) remained hungry day after day, no fire was lit in his house for three days." In Seerat books, it is written that when Khalifa was describing the helplessness of Rasul, both Ayesha and Hafsa cried profusely. Then he set out to conquer Baitul Muqaddas wearing patched clothes. At the gate of Jerusalem, the Khalifa of 2.2 million square miles had the camel rope in his hand, and the servant was on the camel. Commander Abu Ubaidah told him to wear better clothes. Hazrat Umar angrily said, "We are the people whom Allah has honored through Islam. If we seek honor through other than Islam, Allah will disgrace us."`
+};
 
-let parts=fullStory.split(/(\s+)/);
-document.getElementById('storyText').innerHTML=parts.map((w,i)=>w.trim() && w!=='\n'?`<span id="w${i}" class="word">${w}</span> `:w.includes('\n')?'<br><br>':w).join('');
+const ui={
+bn:{title:'০১. ওমর ও বুড়িমা',audio:'অডিও সিঙ্ক',speed:'SPEED:',dev:'DEVELOPER',btn:'EN'},
+en:{title:'01. Umar & Old Woman',audio:'Audio Sync',speed:'SPEED:',dev:'DEVELOPER',btn:'BN'}
+};
+
+function renderStory(){
+ let text=stories[lang];
+ let parts=text.split(/(\s+)/);
+ document.getElementById('storyText').innerHTML=parts.map((w,i)=>w.trim() && w!=='\n'?`<span id="w${i}" class="word">${w}</span> `:w.includes('\n')?'<br><br>':w).join('');
+ document.getElementById('topTitle').innerText=ui[lang].title;
+ document.getElementById('audioLabel').innerText=ui[lang].audio;
+ document.getElementById('speedLabel').innerText=ui[lang].speed;
+ document.getElementById('devLabel').innerText=ui[lang].dev;
+ document.getElementById('langBtn').innerText=ui[lang].btn;
+ lastIdx=-1;
+}
+function toggleLang(){
+ // অডিও চলতে থাকলেও ভাষা চেঞ্জ হবে, অডিও থামবে না
+ let wasPlaying=isPlay;
+ let curTime=audio.currentTime;
+ lang=lang==='bn'?'en':'bn';
+ renderStory();
+ if(wasPlaying){
+   // একই জায়গা থেকে কন্টিনিউ
+   setTimeout(()=>{
+     let totalWords=document.querySelectorAll('.word').length;
+     lastIdx=Math.floor((curTime/baseSpeed));
+   },100);
+ }
+}
+renderStory();
 
 const audio=document.getElementById('audioPlayer');
 let isPlay=false,timer=null,lastIdx=-1,night=false;
@@ -79,23 +123,19 @@ function toggleAudio(){
    let cur=audio.currentTime||0,dur=audio.duration||1; if(isNaN(dur)) dur=1;
    let idx=Math.floor(cur / baseSpeed);
    if(idx!==lastIdx){
-    if(lastIdx>=0){let prev=document.getElementById('w'+lastIdx); if(prev){prev.classList.remove('active'); prev.classList.add('read');}}
+    let prev=document.getElementById('w'+lastIdx); if(prev){prev.classList.remove('active'); prev.classList.add('read');}
     let el=document.getElementById('w'+idx);
     if(el){el.classList.add('active'); el.scrollIntoView({behavior:'smooth',block:'center'});}
     lastIdx=idx;
    }
    bar.style.width=(cur/dur*100)+'%'; curEl.innerText=fmt(cur); durEl.innerText=fmt(dur); pct.innerText=Math.floor(cur/dur*100)+'%';
   },50);
- }).catch(()=>alert('omar-burima.mp3 পাওয়া যায়নি! রুটে আপলোড করুন'));
+ }).catch(()=>alert('omar-burima.mp3 not found!'));
 }
 function fmt(s){if(isNaN(s))return'00:00';let m=Math.floor(s/60),sc=Math.floor(s%60);return String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0');}
 function setSpeed(v){
  audio.playbackRate=v;
- if(v==0.75) baseSpeed=0.26;
- if(v==1) baseSpeed=0.19;
- if(v==1.25) baseSpeed=0.15;
- if(v==1.5) baseSpeed=0.12;
- if(v==2) baseSpeed=0.09;
+ if(v==0.75) baseSpeed=0.26; if(v==1) baseSpeed=0.19; if(v==1.25) baseSpeed=0.15; if(v==1.5) baseSpeed=0.12; if(v==2) baseSpeed=0.09;
  document.querySelectorAll('.speedBtn').forEach(b=>{
   b.className='speedBtn px-3 py-1 rounded-full bg-white/20 text-white text-[10px] font-black';
   if(parseFloat(b.dataset.s)==v) b.className='speedBtn px-3 py-1 rounded-full bg-yellow-400 text-black text-[10px] font-black';
@@ -106,4 +146,4 @@ const curEl=document.getElementById('cur'), durEl=document.getElementById('dur')
 audio.addEventListener('ended',()=>{isPlay=false;playBtn.innerText='▶';clearInterval(timer);});
 </script>
 </body>
-</html>
+</html
