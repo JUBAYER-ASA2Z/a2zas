@@ -2,71 +2,66 @@
 <html lang="bn" translate="no" class="notranslate">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Islamic Jiboni - A-S A2Z Premium</title>
+<title>Islamic Jiboni - A-S A2Z</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 *{font-family:'Hind Siliguri'}
 .hero-bg{background:url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=800&auto=format&fit=crop') center/cover no-repeat}
 .glass{backdrop-filter:blur(16px);background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.25)}
-.gold-grad{background:linear-gradient(135deg,#fde047 0%,#eab308 50%,#a16207 100%)}
 .green-grad{background:linear-gradient(135deg,#065f46 0%,#022c22 100%)}
-.water{position:fixed;bottom:80px;right:-35px;transform:rotate(-32deg);font-size:55px;font-weight:900;color:rgba(255,255,255,0.05);pointer-events:none;z-index:0;letter-spacing:5px}
 </style>
 </head>
-<body class="bg-[#fffbf0] min-h-screen relative">
-<div class="water">A-S A2Z</div>
+<body class="bg-[#fffbf0] min-h-screen">
+<div class="max-w-[480px] mx-auto min-h-screen flex flex-col">
 
-<div class="max-w-[480px] mx-auto min-h-screen relative z-10 flex flex-col">
-
-<!-- TOP BAR -->
+<!-- TOP BAR - CLEAN -->
 <div class="flex justify-between items-center p-4">
 <button onclick="location.href='./islamic.html'" class="w-10 h-10 rounded-full bg-zinc-900 text-white flex items-center justify-center font-black shadow-lg">←</button>
-<div class="gold-grad px-4 py-1.5 rounded-full shadow-md"><p class="text-[9px] font-black tracking-[2px] text-black">PREMIUM • A-S A2Z</p></div>
+<div class="px-4 py-1.5 rounded-full bg-zinc-900 shadow-md"><p class="text-[10px] font-black tracking-[2px] text-white">A-S A2Z</p></div>
 <button id="langBtn" onclick="toggleLang()" class="px-5 py-2 rounded-full bg-zinc-900 text-white text-[11px] font-black shadow-lg active:scale-90 transition">EN</button>
 </div>
 
-<!-- ISLAMIC HERO THEME -->
+<!-- ISLAMIC HERO - NO YELLOW WATERMARK -->
 <div class="mx-3 rounded-[28px] overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] relative">
 <div class="hero-bg h-[185px] relative">
 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-emerald-900/20"></div>
 <div class="absolute top-3 left-3 glass px-3 py-1 rounded-full flex items-center gap-2"><span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span><span class="text-white text-[9px] font-black tracking-widest">ISLAMIC HERITAGE</span></div>
 <div class="absolute bottom-0 p-5 w-full">
-<h1 id="heroTitle" class="font-black text-white text-[22px] leading-[26px] drop-shadow">ইসলামিক<br><span class="text-yellow-300">জীবনী সমগ্র</span></h1>
-<p id="heroSub" class="text-white/70 text-[11px] mt-1.5 font-bold">সাহাবাদের ঈমানদীপ্ত জীবনের ১০০+ পর্ব • অডিও সিঙ্ক সহ</p>
-<div class="mt-3 flex gap-2"><span class="bg-white text-black text-[8px] font-black px-3 py-1 rounded-full">🕌 মসজিদ</span><span class="bg-yellow-400 text-black text-[8px] font-black px-3 py-1 rounded-full">⚔️ বিজয়</span><span class="bg-emerald-600 text-white text-[8px] font-black px-3 py-1 rounded-full">📖 শিক্ষা</span></div>
+<h1 id="heroTitle" class="font-black text-white text-[22px] leading-[26px] drop-shadow">ইসলামিক<br><span class="text-emerald-300">জীবনী সমগ্র</span></h1>
+<p id="heroSub" class="text-white/80 text-[11px] mt-1.5 font-bold">সাহাবাদের ঈমানদীপ্ত জীবনের ১০০+ পর্ব • অডিও সহ</p>
+<div class="mt-3 flex gap-2"><span class="bg-white text-black text-[8px] font-black px-3 py-1 rounded-full">🕌 মসজিদ</span><span class="bg-emerald-600 text-white text-[8px] font-black px-3 py-1 rounded-full">⚔️ বিজয়</span><span class="bg-zinc-900 text-white text-[8px] font-black px-3 py-1 rounded-full">📖 শিক্ষা</span></div>
 </div>
 </div>
-<div class="bg-white p-3 flex justify-between items-center"><p id="countText" class="text-[11px] font-black text-zinc-700">মোট পর্ব: ১ টি লাইভ • বাকি আসছে</p><div class="flex -space-x-2"><div class="w-6 h-6 rounded-full bg-emerald-700 border-2 border-white"></div><div class="w-6 h-6 rounded-full bg-yellow-400 border-2 border-white"></div><div class="w-6 h-6 rounded-full bg-zinc-800 border-2 border-white"></div></div></div>
+<div class="bg-white p-3 flex justify-between items-center"><p id="countText" class="text-[11px] font-black text-zinc-700">মোট পর্ব: ১ টি লাইভ</p><div class="flex -space-x-2"><div class="w-6 h-6 rounded-full bg-emerald-700 border-2 border-white"></div><div class="w-6 h-6 rounded-full bg-zinc-800 border-2 border-white"></div></div></div>
 </div>
 
-<!-- SERIAL LIST -->
+<!-- SERIAL LIST - CORRECT LINK -->
 <div class="p-3 space-y-3.5 mt-2 flex-1">
 
-<div onclick="location.href='./jibone-omar-burima.html'" class="group bg-white rounded-[22px] p-[3px] shadow-[0_12px_30px_rgba(0,0,0,0.12)] cursor-pointer active:scale-[0.98] transition-all">
-<div class="bg-gradient-to-r from-[#fffef5] to-white rounded-[19px] p-4 flex gap-4 items-center border border-yellow-100 relative overflow-hidden">
-<div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-yellow-200/30 to-transparent rounded-bl-[30px]"></div>
+<div onclick="location.href='./jiboni-01-omar-burima.html'" class="group bg-white rounded-[22px] p-[3px] shadow-[0_12px_30px_rgba(0,0,0,0.12)] cursor-pointer active:scale-[0.98] transition-all border border-emerald-100">
+<div class="bg-white rounded-[19px] p-4 flex gap-4 items-center relative overflow-hidden">
 <div class="w-[56px] h-[56px] rounded-[16px] green-grad flex flex-col items-center justify-center text-white shadow-lg shrink-0"><span class="text-[10px] opacity-70 font-bold">PART</span><span class="text-[20px] font-black -mt-1">০১</span></div>
-<div class="flex-1 relative z-10"><h3 id="t1" class="font-black text-[15px] text-zinc-900">হযরত উমর (রাঃ) ও বুড়িমার ঘটনা</h3><p id="d1" class="text-[10px] text-zinc-500 mt-1">ন্যায়বিচার, বিনয় ও তাকওয়ার অনন্য দৃষ্টান্ত</p><div class="mt-2.5 flex items-center gap-2"><span class="gold-grad text-black text-[8px] font-black px-3 py-1 rounded-full shadow">▶ PLAY NOW</span><span class="text-[8px] text-emerald-700 font-black">● PREMIUM AUDIO</span></div></div>
+<div class="flex-1"><h3 id="t1" class="font-black text-[15px] text-zinc-900">হযরত উমর (রাঃ) ও বুড়িমার ঘটনা</h3><p id="d1" class="text-[10px] text-zinc-500 mt-1">ন্যায়বিচার, বিনয় ও তাকওয়ার অনন্য দৃষ্টান্ত</p><div class="mt-2.5 flex items-center gap-2"><span class="bg-zinc-900 text-white text-[8px] font-black px-3 py-1 rounded-full shadow">▶ শুনুন</span><span class="text-[8px] text-emerald-700 font-black">● অডিও</span></div></div>
 <div class="w-9 h-9 rounded-full bg-zinc-900 text-white flex items-center justify-center font-black group-active:rotate-90 transition">→</div>
 </div>
 </div>
 
-<!-- PLACEHOLDER FOR NEXT -->
+<!-- PLACEHOLDER -->
 <div class="bg-white/60 border-2 border-dashed border-zinc-200 rounded-[20px] p-4 flex items-center gap-3 opacity-60">
 <div class="w-12 h-12 rounded-xl bg-zinc-100 flex items-center justify-center font-black text-zinc-400">০২</div>
-<div><h3 id="comingText" class="font-black text-[13px] text-zinc-500">পরবর্তী পর্ব শীঘ্রই আসছে</h3><p class="text-[10px] text-zinc-400">আপনি এখানে ২,৩,৪ যোগ করবেন</p></div>
+<div><h3 id="comingText" class="font-black text-[13px] text-zinc-500">পরবর্তী পর্ব শীঘ্রই আসছে</h3><p class="text-[10px] text-zinc-400">এখানে ২,৩,৪ যোগ করবেন</p></div>
 </div>
 
 </div>
 
-<!-- DEVELOPER WATERMARK FOOTER -->
+<!-- DEVELOPER FOOTER - NO PREMIUM -->
 <div class="mt-auto">
 <div class="mx-3 mb-3 bg-zinc-900 rounded-[18px] p-4 flex items-center justify-between shadow-xl">
-<div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full gold-grad flex items-center justify-center font-black text-black">Q</div><div><p class="text-white font-black text-[12px]">Qari MD Jubayer Ahmed Siyam</p><p id="devText" class="text-white/50 text-[9px] tracking-widest">DEVELOPER • A-S A2Z</p></div></div>
-<div class="text-right"><p class="text-yellow-400 font-black text-[10px]">PREMIUM</p><p class="text-white/40 text-[8px]">2026</p></div>
+<div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-white flex items-center justify-center font-black text-black">Q</div><div><p class="text-white font-black text-[12px]">Qari MD Jubayer Ahmed Siyam</p><p id="devText" class="text-white/50 text-[9px] tracking-widest">DEVELOPER • A-S A2Z</p></div></div>
+<div class="text-right"><p class="text-white/40 text-[8px]">2026</p></div>
 </div>
-<p class="text-center text-zinc-400 text-[8px] pb-5 tracking-[3px]">ISLAMIC JIBONI • GOLD WHITE GREEN EDITION</p>
+<p class="text-center text-zinc-400 text-[8px] pb-5 tracking-[3px]">ISLAMIC JIBONI</p>
 </div>
 
 </div>
@@ -74,8 +69,8 @@
 <script>
 let lang='bn';
 const dict={
- bn:{heroTitle:'ইসলামিক<br><span class="text-yellow-300">জীবনী সমগ্র</span>',heroSub:'সাহাবাদের ঈমানদীপ্ত জীবনের ১০০+ পর্ব • অডিও সিঙ্ক সহ',count:'মোট পর্ব: ১ টি লাইভ • বাকি আসছে',t1:'হযরত উমর (রাঃ) ও বুড়িমার ঘটনা',d1:'ন্যায়বিচার, বিনয় ও তাকওয়ার অনন্য দৃষ্টান্ত',coming:'পরবর্তী পর্ব শীঘ্রই আসছে',dev:'DEVELOPER • A-S A2Z',btn:'EN'},
- en:{heroTitle:'Islamic<br><span class="text-yellow-300">Biography Series</span>',heroSub:'100+ Episodes of Sahaba Life • Premium Audio Sync',count:'Total: 1 Live • More Coming',t1:'Hazrat Umar (RA) & The Old Woman',d1:'An example of justice, humility and taqwa',coming:'Next episode coming soon',dev:'DEVELOPER • A-S A2Z',btn:'BN'}
+ bn:{heroTitle:'ইসলামিক<br><span class="text-emerald-300">জীবনী সমগ্র</span>',heroSub:'সাহাবাদের ঈমানদীপ্ত জীবনের ১০০+ পর্ব • অডিও সহ',count:'মোট পর্ব: ১ টি লাইভ',t1:'হযরত উমর (রাঃ) ও বুড়িমার ঘটনা',d1:'ন্যায়বিচার, বিনয় ও তাকওয়ার অনন্য দৃষ্টান্ত',coming:'পরবর্তী পর্ব শীঘ্রই আসছে',dev:'DEVELOPER • A-S A2Z',btn:'EN'},
+ en:{heroTitle:'Islamic<br><span class="text-emerald-300">Biography Series</span>',heroSub:'100+ Episodes of Sahaba Life • With Audio',count:'Total: 1 Live',t1:'Hazrat Umar (RA) & The Old Woman',d1:'An example of justice, humility and taqwa',coming:'Next episode coming soon',dev:'DEVELOPER • A-S A2Z',btn:'BN'}
 };
 function toggleLang(){
  lang=lang==='bn'?'en':'bn';
