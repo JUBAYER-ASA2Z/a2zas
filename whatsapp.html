@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>A-S A2Z WhatsApp</title>
+<title>Free Call Chat - A-S A2Z</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/peerjs@1.5.3/dist/peerjs.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&display=swap" rel="stylesheet">
@@ -11,144 +11,162 @@
 </head>
 <body class="bg-[#111]">
 
-<!-- MAIN CONTAINER LIKE WHATSAPP APP -->
 <div class="max-w-[430px] mx-auto bg-white min-h-screen flex flex-col shadow-2xl relative">
 
-<!-- TOP BAR -->
-<div class="bg-[#075E54] text-white p-3 flex items-center justify-between sticky top-0 z-20">
-  <div class="flex items-center gap-3">
-    <button onclick="history.back()" class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">←</button>
+<!-- ========== TOP BAR LIKE WHATSAPP ========== -->
+<div class="bg-[#075E54] text-white h-[58px] flex items-center justify-between px-2 sticky top-0 z-20">
+  <div class="flex items-center gap-1">
+    <button onclick="history.back()" class="w-8 h-8 rounded-full flex items-center justify-center">←</button>
+    <div id="headerProfile" class="w-8 h-8 rounded-full bg-white text-[#075E54] flex items-center justify-center font-black text-[13px]">A</div>
     <div>
-      <p class="font-black text-[15px]">A-S A2Z WhatsApp</p>
-      <p id="myIdShow" class="text-[10px] opacity-80">লগইন করুন</p>
+      <p id="headerName" class="font-black text-[14px] leading-[14px]">Free Call Chat</p>
+      <p id="headerSub" class="text-[10px] opacity-80 leading-[10px]">Online</p>
     </div>
   </div>
-  <div class="flex gap-4 text-[18px]"><span>🔍</span><span>⋮</span></div>
+  <div class="flex items-center gap-4 text-[20px]">
+    <!-- WhatsApp style call buttons -->
+    <button id="audioCallBtn" onclick="makeCall('audio')" class="hidden">📞</button>
+    <button id="videoCallBtn" onclick="makeCall('video')" class="hidden">🎥</button>
+    <button onclick="toggleMenu()" class="text-[22px] px-2">⋮</button>
+  </div>
 </div>
 
-<!-- ========== LOGIN / REGISTER SCREEN (First Time) ========== -->
+<!-- 3 DOT MENU -->
+<div id="dotMenu" class="hidden absolute top-[58px] right-2 bg-white rounded-[12px] shadow-2xl z-30 w-[200px] border overflow-hidden">
+  <button onclick="viewProfile()" class="w-full text-left px-4 py-3 text-[13px] font-bold hover:bg-zinc-50">👤 আমার প্রোফাইল</button>
+  <button onclick="showSavedContacts()" class="w-full text-left px-4 py-3 text-[13px] font-bold hover:bg-zinc-50">💾 সেভ করা ID</button>
+  <button onclick="clearChat()" class="w-full text-left px-4 py-3 text-[13px] font-bold hover:bg-zinc-50">🗑️ চ্যাট ক্লিয়ার</button>
+  <button onclick="doLogout()" class="w-full text-left px-4 py-3 text-[13px] font-bold text-red-600 hover:bg-zinc-50">🚪 লগআউট</button>
+</div>
+
+<!-- ========== AUTH BOX ========== -->
 <div id="authBox" class="flex-1 flex flex-col justify-center p-6 bg-[#f0f2f5]">
   <center>
     <div class="w-20 h-20 rounded-full bg-[#25D366] flex items-center justify-center text-[36px]">💬</div>
-    <h2 class="mt-4 font-black text-[22px]">WhatsApp এ স্বাগতম</h2>
-    <p class="text-[12px] text-zinc-500 mt-1">আপনার আগের A-S A2Z একাউন্ট দিয়েই লগইন করুন<br>অথবা নতুন একাউন্ট তৈরি করুন</p>
+    <h2 class="mt-4 font-black text-[22px]">Free Call Chat</h2>
+    <p class="text-[11px] text-zinc-500 mt-1">আপনার A-S A2Z একাউন্ট দিয়েই লগইন করুন</p>
   </center>
-
   <div class="mt-8 bg-white rounded-[16px] p-5 shadow">
     <div id="loginForm">
-      <input id="loginId" placeholder="User ID (যেমন jubayer01)" class="w-full px-4 py-3 rounded-full border-2 border-zinc-900 text-[13px] font-bold">
+      <input id="loginId" placeholder="User ID" class="w-full px-4 py-3 rounded-full border-2 border-zinc-900 text-[13px] font-bold">
       <input id="loginPass" type="password" placeholder="Password" class="w-full mt-3 px-4 py-3 rounded-full border text-[13px] font-bold">
-      <button onclick="doLogin()" class="mt-4 w-full py-3 rounded-full bg-[#25D366] text-white font-black text-[14px]">🔐 লগইন করুন</button>
-      <p class="text-center text-[12px] mt-4">একাউন্ট নেই? <span onclick="showReg()" class="text-blue-600 font-black cursor-pointer">নতুন রেজিস্ট্রেশন</span></p>
+      <button onclick="doLogin()" class="mt-4 w-full py-3 rounded-full bg-[#25D366] text-white font-black">লগইন করুন</button>
+      <p class="text-center text-[12px] mt-4">একাউন্ট নেই? <span onclick="showReg()" class="text-blue-600 font-black">রেজিস্ট্রেশন</span></p>
     </div>
-
     <div id="regForm" class="hidden">
-      <input id="regId" placeholder="নতুন User ID (6 অক্ষর a-z 0-9)" class="w-full px-4 py-3 rounded-full border-2 border-zinc-900 text-[13px] font-bold">
+      <input id="regId" placeholder="User ID (6 অক্ষর)" class="w-full px-4 py-3 rounded-full border-2 border-zinc-900 text-[13px] font-bold">
       <input id="regName" placeholder="আপনার নাম" class="w-full mt-3 px-4 py-3 rounded-full border text-[13px] font-bold">
       <input id="regPass" type="password" placeholder="Password" class="w-full mt-3 px-4 py-3 rounded-full border text-[13px] font-bold">
-      <button onclick="doReg()" class="mt-4 w-full py-3 rounded-full bg-zinc-900 text-white font-black text-[14px]">✨ একাউন্ট তৈরি করুন</button>
-      <p class="text-center text-[12px] mt-4"><span onclick="showLogin()" class="text-blue-600 font-black cursor-pointer">লগইন করুন</span></p>
+      <button onclick="doReg()" class="mt-4 w-full py-3 rounded-full bg-zinc-900 text-white font-black">একাউন্ট তৈরি</button>
+      <p class="text-center text-[12px] mt-4"><span onclick="showLogin()" class="text-blue-600 font-black">লগইন করুন</span></p>
     </div>
-
     <p id="authMsg" class="mt-3 text-center text-[11px] font-bold"></p>
   </div>
 </div>
 
-<!-- ========== WHATSAPP MAIN SCREEN (After Login) ========== -->
+<!-- ========== MAIN WHATSAPP ========== -->
 <div id="waMain" class="hidden flex-1 flex flex-col">
 
-  <!-- Search / New Chat -->
-  <div class="p-3 bg-[#f0f2f5] flex gap-2 border-b">
-    <input id="friendId" placeholder="যাকে মেসেজ দেবেন তার User ID লিখুন" class="flex-1 px-4 py-2 rounded-full border bg-white text-[12px] font-bold">
-    <button onclick="openChat()" class="px-5 py-2 rounded-full bg-[#25D366] text-white font-black text-[12px]">Chat</button>
+  <!-- Search -->
+  <div class="p-2 bg-[#f0f2f5] flex gap-2 border-b">
+    <input id="friendId" placeholder="User ID লিখুন (যেমন jubayer01)" class="flex-1 px-4 py-2.5 rounded-full border bg-white text-[12px] font-bold">
+    <button onclick="searchUser()" class="px-5 py-2 rounded-full bg-[#075E54] text-white font-black text-[12px]">Search</button>
   </div>
 
-  <!-- Chat Messages -->
-  <div id="messages" class="wa-bg flex-1 p-3 space-y-2 overflow-y-auto h-[65vh] scroll-hide"></div>
+  <!-- User Detail Card (Gold, Name দেখাবে) -->
+  <div id="userDetailBox" class="hidden p-3 bg-white border-b">
+    <!-- JS দিয়ে ভরবে -->
+  </div>
 
-  <!-- Message Input -->
+  <!-- Messages -->
+  <div id="messages" class="wa-bg flex-1 p-3 space-y-2 overflow-y-auto h-[62vh] scroll-hide"></div>
+
+  <!-- Input -->
   <div class="p-2 bg-[#F0F0F0] flex items-center gap-2 border-t">
-    <span class="text-xl">😊</span>
-    <input id="msgInput" placeholder="মেসেজ..." class="flex-1 px-4 py-3 rounded-full border bg-white text-[13px]">
+    <input id="msgInput" placeholder="মেসেজ লিখুন..." class="flex-1 px-4 py-3 rounded-full border bg-white text-[13px]">
     <button onclick="sendMsg()" class="w-11 h-11 rounded-full bg-[#25D366] text-white text-[18px] flex items-center justify-center">➤</button>
   </div>
 
-  <!-- Call Buttons -->
-  <div class="p-2 bg-white border-t grid grid-cols-3 gap-2">
-    <button onclick="makeCall('audio')" class="py-2 rounded-full bg-zinc-900 text-white font-black text-[11px]">🎙️ অডিও</button>
-    <button onclick="makeCall('video')" class="py-2 rounded-full bg-blue-600 text-white font-black text-[11px]">🎥 ভিডিও</button>
-    <button onclick="doLogout()" class="py-2 rounded-full bg-zinc-100 text-zinc-700 font-black text-[11px]">Logout</button>
+</div>
+</div>
+
+<!-- CALL SCREEN - WhatsApp Style -->
+<div id="callBox" class="hidden fixed inset-0 bg-[#111] z-50 flex flex-col max-w-[430px] mx-auto">
+  <div class="flex-1 relative">
+    <video id="remoteVideo" autoplay playsinline class="w-full h-full bg-black object-cover"></video>
+    <video id="localVideo" autoplay muted playsinline class="w-[90px] h-[120px] absolute top-4 right-4 rounded-[12px] border-2 border-white bg-zinc-800 object-cover"></video>
+    <div class="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/60 to-transparent text-white">
+      <p id="callName" class="font-black text-[18px]">Calling...</p>
+      <p id="callStatus" class="text-[11px] opacity-80">Ringing...</p>
+    </div>
+  </div>
+  <div class="p-6 flex justify-center gap-6 bg-[#202c33]">
+    <button class="w-12 h-12 rounded-full bg-[#2a3942] text-white">🎙️</button>
+    <button onclick="endCall()" class="w-14 h-14 rounded-full bg-red-500 text-white text-2xl">📞</button>
+    <button class="w-12 h-12 rounded-full bg-[#2a3942] text-white">🎥</button>
   </div>
 </div>
 
-</div>
-
-<!-- CALL FULLSCREEN -->
-<div id="callBox" class="hidden fixed inset-0 bg-zinc-900 z-50 flex flex-col max-w-[430px] mx-auto">
-  <video id="remoteVideo" autoplay playsinline class="flex-1 bg-black object-cover"></video>
-  <video id="localVideo" autoplay muted playsinline class="w-[90px] h-[120px] absolute top-4 right-4 rounded-[12px] border-2 border-white bg-zinc-800 object-cover"></video>
-  <p id="callStatus" class="absolute top-4 left-4 bg-white/90 px-3 py-1 rounded-full text-[11px] font-black">Calling...</p>
-  <div class="p-6 flex justify-center gap-4 bg-black/60"><button onclick="endCall()" class="w-16 h-16 rounded-full bg-red-500 text-white text-2xl">❌</button></div>
-</div>
-
 <script>
-const ACCOUNT_API = "https://script.google.com/macros/s/AKfycbw_oRlZS8lwB9JnkZQeUCQOfn-BVrMSPtEyqVvBuKUjH9KMAyMABT0PER46gTqB4P4J/exec";
-const CHAT_API = "https://script.google.com/macros/s/AKfycbwbQwhPdP-QZz1Mp_MeUfeh9yNXyy_ObS5ffPvT6A2Rq-lx9GXsy0o5hFDfboLchKw75w/exec";
+const API = "https://script.google.com/macros/s/AKfycbxEOTS0WcIA92yhFEsc2mqKU7ic8-57n_kFOKcNH-aUCOjuHkMCsVh0ZBhO9X39QdoUdQ/exec";
+let peer, myId, friendId, myName;
 
-let peer, myId, friendId, currentCall;
-let isValidId = (id)=> /^[a-zA-Z0-9]{6,}$/.test(id);
-
-function showReg(){ document.getElementById('loginForm').classList.add('hidden'); document.getElementById('regForm').classList.remove('hidden'); }
-function showLogin(){ document.getElementById('regForm').classList.add('hidden'); document.getElementById('loginForm').classList.remove('hidden'); }
+function toggleMenu(){ document.getElementById('dotMenu').classList.toggle('hidden'); }
+function showReg(){ loginForm.classList.add('hidden'); regForm.classList.remove('hidden'); }
+function showLogin(){ regForm.classList.add('hidden'); loginForm.classList.remove('hidden'); }
+function msg(t,c){ authMsg.innerText=t; authMsg.style.color=c; }
 
 function doLogin(){
-  const u = document.getElementById('loginId').value.trim().toLowerCase();
-  const p = document.getElementById('loginPass').value.trim();
-  if(!u||!p) return msg("সব ঘর পূরণ করুন", "red");
+  const u = loginId.value.trim().toLowerCase();
+  const p = loginPass.value.trim();
   msg("অপেক্ষা করুন...","blue");
-  fetch(`${ACCOUNT_API}?action=login&userId=${u}&pass=${encodeURIComponent(p)}`).then(r=>r.json()).then(d=>{
+  fetch(`${API}?action=login&userId=${u}&pass=${encodeURIComponent(p)}`).then(r=>r.json()).then(d=>{
     if(d.error){ msg("ভুল ID/Password","red"); }
     else{
       localStorage.setItem('a2z_userId', d.userId);
       localStorage.setItem('a2z_name', d.name);
-      msg("✅ Login সফল!","green");
-      setTimeout(()=> afterAuth(d.userId), 600);
+      afterAuth(d.userId, d.name);
     }
   });
 }
-
 function doReg(){
-  const u = document.getElementById('regId').value.trim().toLowerCase();
-  const n = document.getElementById('regName').value.trim();
-  const p = document.getElementById('regPass').value.trim();
-  if(!isValidId(u)){ msg("ID 6 অক্ষরের হতে হবে a-z 0-9","red"); return; }
-  if(!n||!p){ msg("সব ঘর পূরণ করুন","red"); return; }
-  msg("অপেক্ষা করুন...","blue");
-  fetch(`${ACCOUNT_API}?action=register&userId=${u}&name=${encodeURIComponent(n)}&pass=${encodeURIComponent(p)}`).then(r=>r.json()).then(d=>{
-    if(d.error){ msg(d.error=="Exists"?"এই ID আগেই আছে":"Error","red"); }
+  const u = regId.value.trim().toLowerCase();
+  const n = regName.value.trim();
+  const p = regPass.value.trim();
+  if(!/^[a-z0-9]{6,}$/.test(u)){ msg("ID 6 অক্ষরের হতে হবে","red"); return; }
+  fetch(`${API}?action=register&userId=${u}&name=${encodeURIComponent(n)}&pass=${encodeURIComponent(p)}`).then(r=>r.json()).then(d=>{
+    if(d.error){ msg("এই ID আগেই আছে","red"); }
     else{
       localStorage.setItem('a2z_userId', d.userId);
       localStorage.setItem('a2z_name', n);
-      msg("🎉 একাউন্ট তৈরি হয়েছে!","green");
-      setTimeout(()=> afterAuth(d.userId), 800);
+      afterAuth(d.userId, n);
     }
   });
 }
 
-function msg(t,c){ const el=document.getElementById('authMsg'); el.innerText=t; el.style.color=c; }
-
-function afterAuth(id){
-  myId = id;
-  document.getElementById('authBox').classList.add('hidden');
-  document.getElementById('waMain').classList.remove('hidden');
-  document.getElementById('myIdShow').innerText = 'ID: '+myId+' | Online - 24h Save';
+function afterAuth(id, name){
+  myId = id; myName = name;
+  authBox.classList.add('hidden');
+  waMain.classList.remove('hidden');
+  headerName.innerText = name;
+  headerSub.innerText = "ID: "+id+" • Gold দেখতে ID সার্চ করুন";
+  headerProfile.innerText = name.charAt(0).toUpperCase();
   initPeer();
+  loadSavedContacts();
+  // URL থেকে user এসেছে কিনা (Index notification থেকে)
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('user')||params.get('call')){
+    friendId = (params.get('user')||params.get('call')).toLowerCase();
+    friendId_input.value = friendId;
+    searchUser();
+    if(params.get('call')) setTimeout(()=>makeCall('audio'), 1500);
+  }
 }
 
 function initPeer(){
   peer = new Peer(myId, {config:{iceServers:[{urls:"stun:stun.l.google.com:19302"}]}});
-  peer.on('open', ()=> console.log("Peer Online:", myId));
   peer.on('call', async call=>{
+    // কল আসলে WhatsApp এর মতো
     if(confirm(call.peer+" আপনাকে কল দিচ্ছে। রিসিভ করবেন?")){
       const s = await navigator.mediaDevices.getUserMedia({video:true,audio:true});
       call.answer(s); handleCall(call);
@@ -156,43 +174,76 @@ function initPeer(){
   });
 }
 
-// Chat
-function getChatId(){ return [myId, friendId].sort().join('_'); }
-function openChat(){
+// ========== SEARCH USER + SHOW GOLD, NAME, SAVE PERMANENT ==========
+async function searchUser(){
   friendId = document.getElementById('friendId').value.trim().toLowerCase();
   if(!friendId) return alert("User ID লিখুন");
-  // check user exists via account api
-  fetch(`${ACCOUNT_API}?action=getUserData&userId=${friendId}`).then(r=>r.json()).then(d=>{
-    if(d.error ||!d.userId){ alert("এই User ID পাওয়া যায়নি"); return; }
-    loadMsgs();
-    setInterval(loadMsgs, 3500);
-  });
-}
-async function sendMsg(){
-  const text = document.getElementById('msgInput').value.trim();
-  if(!text ||!friendId) return alert("মেসেজ ও User ID লিখুন");
-  document.getElementById('msgInput').value='';
-  await fetch(CHAT_API, {method:'POST', mode:'no-cors', body: JSON.stringify({chatId:getChatId(), fromId:myId, toId:friendId, message:text})});
-  setTimeout(loadMsgs, 1000);
-}
-async function loadMsgs(){
-  if(!friendId) return;
-  try{
-    const res = await fetch(CHAT_API+'?chatId='+getChatId());
-    const data = await res.json();
-    const box = document.getElementById('messages');
-    box.innerHTML='';
-    data.forEach(m=>{
-      const isMe = m.fromId===myId;
-      box.innerHTML+=`<div class="${isMe?'ml-auto bg-[#DCF8C6]':'mr-auto bg-white'} max-w-[75%] px-3 py-2 rounded-[14px] shadow text-[13px]">${m.message}<br><span class="text-[8px] text-zinc-400 float-right">${new Date(Number(m.timestamp)).toLocaleTimeString()} • 24h</span></div><div class="clear-both"></div>`;
-    });
-    box.scrollTop = box.scrollHeight;
-  }catch(e){}
+  const res = await fetch(`${API}?action=getUserDetail&userId=${friendId}`).then(r=>r.json());
+  if(res.error){ alert("User ID পাওয়া যায়নি"); return; }
+
+  // Detail Box দেখাও
+  const box = document.getElementById('userDetailBox');
+  box.classList.remove('hidden');
+  box.innerHTML = `
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-full bg-[#075E54] text-white flex items-center justify-center font-black text-[18px]">${res.name.charAt(0).toUpperCase()}</div>
+      <div class="flex-1">
+        <p class="font-black text-[15px]">${res.name}</p>
+        <p class="text-[11px] text-zinc-500 font-bold">ID: ${res.userId}</p>
+        <p class="text-[13px] font-black text-amber-600">💰 ${res.gold||0} Gold</p>
+      </div>
+      <div class="flex flex-col gap-2">
+        <button onclick="saveContact()" class="px-3 py-1 rounded-full bg-zinc-900 text-white text-[10px] font-black">💾 Save</button>
+        <button onclick="markRead()" class="px-3 py-1 rounded-full bg-zinc-100 text-[10px] font-bold">Seen</button>
+      </div>
+    </div>
+  `;
+
+  // WhatsApp header এও দেখাও + কল বাটন চালু
+  headerName.innerText = res.name;
+  headerSub.innerText = "ID: "+res.userId+" • 💰 "+(res.gold||0);
+  document.getElementById('audioCallBtn').classList.remove('hidden');
+  document.getElementById('videoCallBtn').classList.remove('hidden');
+
+  // Permanent Save
+  await fetch(API, {method:'POST', mode:'no-cors', body: JSON.stringify({action:'saveContact', ownerId:myId, contactId:friendId})});
+
+  loadMsgs();
+  setInterval(loadMsgs, 3500);
 }
 
-// Call
+async function saveContact(){
+  await fetch(API, {method:'POST', mode:'no-cors', body: JSON.stringify({action:'saveContact', ownerId:myId, contactId:friendId})});
+  alert("✅ "+friendId+" পার্মানেন্ট সেভ হয়ে গেছে। কখনো ডিলিট হবে না");
+}
+
+function getChatId(){ return [myId, friendId].sort().join('_'); }
+
+async function sendMsg(){
+  const text = document.getElementById('msgInput').value.trim();
+  if(!text||!friendId) return;
+  msgInput.value='';
+  await fetch(API, {method:'POST', mode:'no-cors', body: JSON.stringify({action:'sendMessage', chatId:getChatId(), fromId:myId, toId:friendId, message:text})});
+  setTimeout(loadMsgs, 800);
+}
+
+async function loadMsgs(){
+  if(!friendId) return;
+  const data = await fetch(`${API}?action=getMessages&chatId=${getChatId()}`).then(r=>r.json());
+  const box = document.getElementById('messages');
+  box.innerHTML='';
+  data.forEach(m=>{
+    const isMe = m.fromId===myId;
+    box.innerHTML+=`<div class="${isMe?'ml-auto bg-[#DCF8C6]':'mr-auto bg-white'} max-w-[75%] px-3 py-2 rounded-[14px] shadow text-[13px]">${m.message}<br><span class="text-[8px] text-zinc-400 float-right">${new Date(Number(m.timestamp)).toLocaleTimeString()}</span></div><div class="clear-both"></div>`;
+  });
+  box.scrollTop = box.scrollHeight;
+}
+
+// ========== CALL LIKE WHATSAPP ==========
 async function makeCall(type){
-  if(!friendId) return alert("আগে User ID দিয়ে Chat Open করুন");
+  if(!friendId) return alert("আগে User ID Search করুন");
+  // Notification পাঠাও
+  await fetch(API, {method:'POST', mode:'no-cors', body: JSON.stringify({action:'sendCall', fromId:myId, toId:friendId, callType:type})});
   try{
     const stream = await navigator.mediaDevices.getUserMedia({video:type==='video', audio:true});
     const call = peer.call(friendId, stream);
@@ -200,19 +251,46 @@ async function makeCall(type){
   }catch{ alert("Camera/Mic Permission দিন"); }
 }
 function handleCall(call){
-  currentCall = call;
   document.getElementById('callBox').classList.remove('hidden');
-  document.getElementById('callStatus').innerText = 'Calling: '+call.peer;
-  call.on('stream', s=>{ document.getElementById('remoteVideo').srcObject=s; });
-  navigator.mediaDevices.getUserMedia({video:true,audio:true}).then(s=> document.getElementById('localVideo').srcObject=s);
+  document.getElementById('callName').innerText = call.peer;
+  document.getElementById('callStatus').innerText = "Connected...";
+  call.on('stream', s=>{ remoteVideo.srcObject=s; });
+  navigator.mediaDevices.getUserMedia({video:true,audio:true}).then(s=> localVideo.srcObject=s);
+  call.on('close', ()=> endCall());
+  window._currentCall = call;
 }
-function endCall(){ if(currentCall) currentCall.close(); document.getElementById('callBox').classList.add('hidden'); }
-function doLogout(){ localStorage.removeItem('a2z_userId'); location.reload(); }
+function endCall(){ if(window._currentCall) window._currentCall.close(); document.getElementById('callBox').classList.add('hidden'); }
 
-// Auto Login if already logged in account
+async function loadSavedContacts(){
+  const my = localStorage.getItem('a2z_userId');
+  if(!my) return;
+  const list = await fetch(`${API}?action=getContacts&userId=${my}`).then(r=>r.json());
+  if(list.length>0){
+    console.log("Saved contacts:", list);
+  }
+}
+function showSavedContacts(){
+  toggleMenu();
+  const my = localStorage.getItem('a2z_userId');
+  fetch(`${API}?action=getContacts&userId=${my}`).then(r=>r.json()).then(list=>{
+    alert("আপনার সেভ করা ID গুলো:\n"+list.join("\n"));
+  });
+}
+function viewProfile(){
+  toggleMenu();
+  alert("আপনার ID: "+myId+"\nনাম: "+myName);
+}
+function clearChat(){ toggleMenu(); document.getElementById('messages').innerHTML=''; }
+function doLogout(){ localStorage.removeItem('a2z_userId'); localStorage.removeItem('a2z_name'); location.reload(); }
+async function markRead(){
+  await fetch(API, {method:'POST', mode:'no-cors', body: JSON.stringify({action:'markRead', toId:myId, fromId:friendId})});
+  alert("Seen Done");
+}
+
 window.onload=()=>{
   const saved = localStorage.getItem('a2z_userId');
-  if(saved){ afterAuth(saved); }
+  const savedName = localStorage.getItem('a2z_name');
+  if(saved){ afterAuth(saved, savedName||saved); }
 }
 </script>
 </body>
