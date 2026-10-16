@@ -95,7 +95,22 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 <div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./memo.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#fef9c3] flex items-center justify-center text-[20px]">📝</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]" data-bn="ব্যবসায়িক মেমো" data-en="Business Memo">ব্যবসায়িক মেমো</p></div>
 </div>
 <div class="mt-6 space-y-3">
-<a href="group-chat.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center">💬</div><div><p class="font-black text-[13px] text-black" data-bn="লাইভ গ্রুপ চ্যাট" data-en="Live Group Chat">লাইভ গ্রুপ চ্যাট</p><p class="text-[10px] text-zinc-500" data-bn="সবার সাথে সরাসরি কথা বলুন" data-en="Chat live with everyone">সবার সাথে সরাসরি কথা বলুন</p></div></div><span class="bg-green-500 text-[8px] font-black px-2 py-1 rounded-full text-white animate-pulse">LIVE</span></a>
+
+<!-- ✅ নতুন ফ্রি কল চ্যাট বাটন - গ্রুপ চ্যাট এর জায়গায় -->
+<a href="whatsapp.html" class="flex items-center justify-between bg-white border border-green-200 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)] relative overflow-hidden">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white shadow">📞</div>
+<div>
+<p class="font-black text-[13px] text-black" data-bn="ফ্রি কল চ্যাট" data-en="Free Call Chat">ফ্রি কল চ্যাট</p>
+<p class="text-[10px] text-zinc-500" data-bn="User ID দিয়ে ফ্রি কল ও মেসেজ" data-en="Free Call & Message with User ID">User ID দিয়ে ফ্রি কল ও মেসেজ</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="bg-[#25D366] text-[8px] font-black px-2 py-1 rounded-full text-white animate-pulse">FREE</span>
+<span>➤</span>
+</div>
+</a>
+
 <a href="notebook.html" class="flex items-center justify-between bg-white border border-pink-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-yellow-400 flex items-center justify-center text-[18px]">📔</div><div><p class="font-black text-[13px] text-black" data-bn="কবিতার নোটবুক PRO" data-en="Poetry Notebook PRO">কবিতার নোটবুক PRO</p><p class="text-[10px] text-zinc-500">15 Designs • 20 Fonts</p></div></div><span class="bg-pink-500 text-white text-[9px] font-black px-2.5 py-1 rounded-full">NEW</span></a>
 <a href="ukti.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white">💬</div><div><p class="font-black text-[13px] text-black" data-bn="১০০+ সেরা উক্তি" data-en="100+ Best Quotes">১০০+ সেরা উক্তি</p></div></div><span>➤</span></a>
 <a href="number.html" class="flex items-center justify-between bg-white border border-zinc-100 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)]"><div class="flex gap-3 items-center"><div class="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center text-white">📞</div><div><p class="font-black text-[13px] text-black" data-bn="জরুরি নাম্বার" data-en="Emergency Numbers">জরুরি নাম্বার</p></div></div><span>➤</span></a>
@@ -107,7 +122,6 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 </div>
 <div id="yellowBar" class="fixed bottom-0 left-0 right-0 z-[90] border-t-2 border-black py-[14px] px-2 flex items-center justify-center" style="background:#2563eb"><div class="w-full max-w-[480px] flex items-center"><div class="bg-black text-white text-[9px] font-black px-3 py-1 rounded-full shrink-0">NOTICE</div><div class="flex-1 overflow-hidden ml-3"><p id="yellowText" class="marquee font-bold text-[13px] text-white">লোড হচ্ছে...</p></div></div></div>
 
-<!-- PWA BUILDER APK BANNER - শুধু ব্রাউজারে দেখাবে, APK তে দেখাবে না -->
 <div id="apkBanner" style="display:none; position:fixed; bottom:82px; left:50%; transform:translateX(-50%); width:92%; max-width:400px; background:#111; border:1.5px solid #fcd34d; border-radius:20px; padding:14px; z-index:9999; box-shadow:0 10px 30px rgba(0,0,0,0.6);">
   <div style="display:flex; align-items:center; gap:12px;">
     <div style="width:48px; height:48px; background:#fbbf24; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px;">📲</div>
@@ -147,8 +161,6 @@ function getDeviceId2(){ let id=localStorage.getItem("as_a2z_device_id_total"); 
 function getEmoji2(deviceId){ let h=0; for(let i=0;i<deviceId.length;i++){ h=(h*31+deviceId.charCodeAt(i))%1000; } return EMOJI_LIST2[h%EMOJI_LIST2.length]; }
 function getDeviceName2(){ const ua=navigator.userAgent; if(/Android/i.test(ua)) return "Android"; if(/iPhone/i.test(ua)) return "iPhone"; if(/Windows/i.test(ua)) return "Windows PC"; return "Other"; }
 async function trackTotalVisit(){ const deviceId=getDeviceId2(); const emoji=getEmoji2(deviceId); const deviceName=getDeviceName2(); let country="Unknown", ip="Unknown"; try{ const r=await fetch("https://ipapi.co/json/").then(x=>x.json()); country=r.country_name; ip=r.ip; }catch(e){} const now=new Date(); const payload={ date:now.toLocaleDateString("en-GB"), time:now.toLocaleTimeString("en-GB"), deviceName, country, deviceId, emoji, ip }; fetch(TOTAL_VISIT_URL,{method:"POST", mode:"no-cors", body:JSON.stringify(payload)}); }
-
-// PWA Builder APK Detection - NEW
 async function isPWABuilderApp() {
   if (document.referrer.startsWith('android-app://')) return true;
   if (window.matchMedia('(display-mode: standalone)').matches) return true;
@@ -180,7 +192,6 @@ function closeApkBanner() {
   document.getElementById('apkBanner').style.display = 'none';
   localStorage.setItem('apk_banner_closed_time', Date.now().toString());
 }
-
 window.addEventListener('load',()=>{
   document.getElementById('langToggle').addEventListener('click', toggleLang);
   document.getElementById('langToggle').innerText=currentLang==='bn'?'EN':'BN';
