@@ -21,11 +21,10 @@ html{translate:no} body{overscroll-behavior:none}
 </head>
 <body translate="no" class="notranslate bg-[#111]">
 <div id="toast" class="toast"></div>
-<div id="recBar" class="hidden fixed top-[56px] left-0 right-0 bg-red-600 text-white text-center py-2 text-[12px] font-black z-40"><span class="rec-dot mr-2"></span> Recording... <span id="recTime">0s</span> - ছেড়ে দিন পাঠাতে</div>
+<div id="recBar" class="hidden fixed top-[56px] left-0 right-0 bg-red-600 text-white text-center py-2 text-[12px] font-black z-40"><span class="rec-dot mr-2"></span> Recording... <span id="recTime">0s</span> /20s</div>
 <audio id="ringtone" loop preload="auto"><source src="https://cdn.pixabay.com/audio/2022/03/10/audio_c8c8a650cd.mp3" type="audio/mpeg"></audio>
 
 <div class="max-w-[430px] mx-auto bg-white min-h-screen flex flex-col shadow-2xl relative">
-
 <div class="bg-[#075E54] text-white h-[56px] flex items-center justify-between px-2 sticky top-0 z-20">
   <div class="flex items-center gap-2 flex-1">
     <button id="backBtn" onclick="goBack()" class="hidden w-8 h-8 rounded-full flex items-center justify-center">←</button>
@@ -69,10 +68,10 @@ html{translate:no} body{overscroll-behavior:none}
   <div class="p-2 bg-[#F0F0F0] flex items-center gap-2">
     <button onclick="openVoiceChanger()" class="w-9 h-9 rounded-full bg-white border flex items-center justify-center">🎙️</button>
     <input id="msgInput" placeholder="Message" class="flex-1 px-4 py-2.5 rounded-full border bg-white text-[13px] outline-none">
-    <button id="voiceHoldBtn" class="w-11 h-11 rounded-full bg-white border-2 border-zinc-300 flex items-center justify-center text-[18px] active:bg-red-500 active:text-white active:border-red-500">🎤</button>
+    <button id="voiceHoldBtn" class="w-11 h-11 rounded-full bg-white border-2 border-zinc-300 flex items-center justify-center text-[18px]">🎤</button>
     <button onclick="sendMsg()" class="w-10 h-10 rounded-full bg-[#075E54] text-white">➤</button>
   </div>
-  <p class="text-[9px] text-center text-zinc-500 bg-[#F0F0F0] pb-1">Hold 🎤 for voice • <span id="voiceModeText" class="font-black">Normal</span> • Tap 🎙️ to change voice</p>
+  <p class="text-[9px] text-center text-zinc-500 bg-[#F0F0F0] pb-1">Hold 🎤 for voice • <span id="voiceModeText" class="font-black">Normal</span></p>
 </div>
 </div>
 
@@ -85,14 +84,13 @@ html{translate:no} body{overscroll-behavior:none}
 </div>
 
 <div id="userModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-end justify-center"><div class="bg-white rounded-t-[24px] w-full max-w-[430px] p-6"><div class="w-12 h-1 bg-zinc-300 rounded-full mx-auto mb-4"></div><div id="modalContent"></div><div id="modalActions" class="grid grid-cols-2 gap-3 mt-6"></div><button onclick="closeUserInfo()" class="mt-3 w-full py-2 rounded-full bg-zinc-100 font-bold text-[12px]">Close</button></div></div>
-<div id="voiceModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-end justify-center"><div class="bg-white rounded-t-[24px] w-full max-w-[430px] p-6"><p class="font-black text-[14px]">🎙️ ভয়েস চেঞ্জার</p><div class="grid grid-cols-3 gap-2 mt-4"><button onclick="setVoice('normal')" class="voiceOpt py-3 rounded-[12px] bg-zinc-900 text-white font-bold text-[12px]">🗣️ Normal</button><button onclick="setVoice('male')" class="voiceOpt py-3 rounded-[12px] bg-zinc-100 font-bold text-[12px]">👨 Male</button><button onclick="setVoice('female')" class="voiceOpt py-3 rounded-[12px] bg-zinc-100 font-bold text-[12px]">👩 Female</button></div><button onclick="closeVoice()" class="mt-4 w-full py-2.5 rounded-full bg-zinc-100 font-black text-[12px]">Close</button></div></div>
+<div id="voiceModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-end justify-center"><div class="bg-white rounded-t-[24px] w-full max-w-[430px] p-6"><p class="font-black text-[14px]">🎙️ ভয়েস চেঞ্জার</p><div class="grid grid-cols-3 gap-2 mt-4"><button onclick="setVoice('normal')" class="py-3 rounded-[12px] bg-zinc-900 text-white font-bold text-[12px]">🗣️ Normal</button><button onclick="setVoice('male')" class="py-3 rounded-[12px] bg-zinc-100 font-bold text-[12px]">👨 Male</button><button onclick="setVoice('female')" class="py-3 rounded-[12px] bg-zinc-100 font-bold text-[12px]">👩 Female</button></div><button onclick="closeVoice()" class="mt-4 w-full py-2.5 rounded-full bg-zinc-100 font-black text-[12px]">Close</button></div></div>
 
 <div id="audioCallBox" class="hidden fixed inset-0 bg-[#111] z-50 flex flex-col max-w-[430px] mx-auto"><div class="flex-1 flex flex-col items-center justify-center text-white p-6"><div id="audioAvatar" class="w-28 h-28 rounded-full bg-[#075E54] flex items-center justify-center text-[40px] font-black">A</div><p id="audioName" class="font-black text-[22px] mt-4">...</p><p id="audioStatus" class="text-[13px] opacity-70">Calling...</p></div><div class="p-8 bg-[#202c33] rounded-t-[24px]"><div class="flex justify-center gap-6 mb-6"><button onclick="toggleMute()" class="w-12 h-12 rounded-full bg-[#2a3942] text-white">🎙️</button><button onclick="toggleSpeaker()" class="w-12 h-12 rounded-full bg-[#2a3942] text-white">🔊</button></div><center><button onclick="endCall()" class="w-14 h-14 rounded-full bg-red-500 text-white text-xl">✕</button></center></div></div>
-<div id="videoCallBox" class="hidden fixed inset-0 bg-black z-50 flex flex-col max-w-[430px] mx-auto"><div class="flex-1 relative"><video id="remoteVideo" autoplay playsinline class="w-full h-full object-cover"></video><video id="localVideo" autoplay muted playsinline class="w-[90px] h-[120px] absolute top-4 right-4 rounded-[12px] border-2 border-white bg-zinc-800 object-cover"></video><div class="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/60 to-transparent text-white"><p id="videoName" class="font-black">...</p><p id="videoStatus" class="text-[11px]">...</p></div></div><div class="p-6 bg-[#202c33] flex justify-center gap-6"><button onclick="toggleMute()" class="w-12 h-12 rounded-full bg-[#2a3942] text-white">🎙️</button><button onclick="endCall()" class="w-14 h-14 rounded-full bg-red-500 text-white">✕</button><button onclick="toggleCam()" class="w-12 h-12 rounded-full bg-[#2a3942] text-white">🎥</button></div></div>
+<div id="videoCallBox" class="hidden fixed inset-0 bg-black z-50 flex flex-col max-w-[430px] mx-auto"><div class="flex-1 relative"><video id="remoteVideo" autoplay playsinline class="w-full h-full object-cover"></video><video id="localVideo" autoplay muted playsinline class="w-[90px] h-[120px] absolute top-4 right-4 rounded-[12px] border-2 border-white bg-zinc-800 object-cover hidden"></video><div class="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/60 to-transparent text-white"><p id="videoName" class="font-black">...</p><p id="videoStatus" class="text-[11px]">...</p></div></div><div class="p-6 bg-[#202c33] flex justify-center gap-6"><button onclick="toggleMute()" class="w-12 h-12 rounded-full bg-[#2a3942] text-white">🎙️</button><button onclick="endCall()" class="w-14 h-14 rounded-full bg-red-500 text-white">✕</button><button onclick="toggleCam()" class="w-12 h-12 rounded-full bg-[#2a3942] text-white">🎥</button></div></div>
 
 <script>
 document.addEventListener('contextmenu', e=>e.preventDefault());
-
 const API = "https://script.google.com/macros/s/AKfycbxEOTS0WcIA92yhFEsc2mqKU7ic8-57n_kFOKcNH-aUCOjuHkMCsVh0ZBhO9X39QdoUdQ/exec";
 const ACCOUNT_API = "https://script.google.com/macros/s/AKfycbw_oRlZS8lwB9JnkZQeUCQOfn-BVrMSPtEyqVvBuKUjH9KMAyMABT0PER46gTqB4P4J/exec";
 let peer, myId, friendId, myName, currentUserData=null, currentCall=null, localStream=null, isMuted=false, isCamOff=false;
@@ -103,10 +101,8 @@ function toast(m){ const t=document.getElementById('toast'); t.innerText=m; t.st
 function toggleMenu(){ dotMenu.classList.toggle('hidden'); }
 function showReg(){ loginForm.classList.add('hidden'); regForm.classList.remove('hidden'); }
 function showLogin(){ regForm.classList.add('hidden'); loginForm.classList.remove('hidden'); }
-
 function doLogin(){
-  const u=loginId.value.trim().toLowerCase(), p=loginPass.value.trim();
-  if(!u) return toast("ID লিখুন");
+  const u=loginId.value.trim().toLowerCase(), p=loginPass.value.trim(); if(!u) return toast("ID লিখুন");
   fetch(`${API}?action=login&userId=${u}&pass=${encodeURIComponent(p)}`).then(r=>r.json()).then(d=>{
     if(d.error){ fetch(`${ACCOUNT_API}?action=getUserData&userId=${u}`).then(r=>r.json()).then(dd=>{ if(dd.userId) afterAuth(dd.userId, dd.name||dd.userId); else toast("ভুল ID"); }); }
     else afterAuth(d.userId,d.name);
@@ -114,31 +110,26 @@ function doLogin(){
 }
 function doReg(){
   const u=regId.value.trim().toLowerCase(), n=regName.value.trim(), p=regPass.value.trim();
-  if(u.length<3) return toast("ID 3 অক্ষর+"); if(u==='asa2z') return toast("এটা Official ID");
+  if(u.length<3) return toast("ID 3 অক্ষর+"); if(u==='asa2z') return toast("Official ID");
   fetch(`${API}?action=register&userId=${u}&name=${encodeURIComponent(n)}&pass=${encodeURIComponent(p)}`).then(r=>r.json()).then(d=>{ if(d.error) toast("ID আছে"); else afterAuth(d.userId,n); });
 }
-
 function afterAuth(id,name){
   myId=id; myName=name; localStorage.setItem('a2z_userId',id); localStorage.setItem('a2z_name',name);
   authBox.classList.add('hidden'); searchScreen.classList.remove('hidden');
-  headerName.innerHTML=name+(id.toLowerCase()==='asa2z'?' <span class="verify">✓</span>':''); headerSub.innerText="ID: "+id; headerProfile.innerText=name.charAt(0).toUpperCase();
+  headerName.innerHTML=name; headerSub.innerText="ID: "+id; headerProfile.innerText=name.charAt(0).toUpperCase();
   initPeer(); fastLoadSaved(); startNotifPoll();
   const params=new URLSearchParams(location.search);
   if(params.get('user')||params.get('call')){ friendId=(params.get('user')||params.get('call')).toLowerCase(); searchUser(true); }
 }
-
 function initPeer(){
   peer=new Peer(myId,{config:{iceServers:[{urls:"stun:stun.l.google.com:19302"}]}});
   peer.on('call', call=>{
     currentCall=call; incomingPeerId=call.peer; incomingType=call.metadata?.type||'audio';
     document.getElementById('ringtone').currentTime=0; document.getElementById('ringtone').play().catch(()=>{});
-    document.getElementById('incomingId').innerHTML=call.peer.toUpperCase()+(call.peer.toLowerCase()==='asa2z'?' <span class="verify">✓</span>':'');
-    document.getElementById('incomingType').innerText= incomingType==='video'?'Video call...':'Audio call...';
+    document.getElementById('incomingId').innerText=call.peer.toUpperCase(); document.getElementById('incomingType').innerText= incomingType==='video'?'Video call...':'Audio call...';
     document.getElementById('incomingBox').classList.remove('hidden');
   });
 }
-
-// NOTIFICATION POLL - কল আসলে Peer ছাড়াও দেখাবে
 function startNotifPoll(){ setInterval(async ()=>{
   if(!myId) return;
   try{
@@ -148,10 +139,8 @@ function startNotifPoll(){ setInterval(async ()=>{
       if(callNoti && (Date.now()-Number(callNoti.timestamp))<60000 && document.getElementById('incomingBox').classList.contains('hidden')){
         incomingPeerId=callNoti.fromId; incomingType=callNoti.callType||'audio';
         document.getElementById('ringtone').currentTime=0; document.getElementById('ringtone').play().catch(()=>{});
-        document.getElementById('incomingId').innerHTML=callNoti.fromId.toUpperCase();
-        document.getElementById('incomingType').innerText= incomingType==='video'?'Video call...':'Audio call...';
+        document.getElementById('incomingId').innerText=callNoti.fromId.toUpperCase(); document.getElementById('incomingType').innerText= incomingType==='video'?'Video...':'Audio...';
         document.getElementById('incomingBox').classList.remove('hidden');
-        // যদি peer call না আসে তাও রিসিভ করলে peer call হবে
       }
     }
   }catch(e){}
@@ -165,32 +154,34 @@ function fastLoadSaved(){
     listDiv.innerHTML=h; listDiv.querySelectorAll('.saved-card').forEach(el=> el.addEventListener('click', ()=> enterChat(el.dataset.id)) );
   }
   fetch(`${API}?action=getContacts&userId=${myId}`).then(r=>r.json()).then(async list=>{
-    if(!Array.isArray(list)) return;
-    let uniq=[...new Set(list.map(x=>x.toLowerCase()))].filter(x=>x!=='asa2z');
-    let toSave=[], html='';
-    for(let id of uniq){ let d=null; try{ d=await fetch(`${API}?action=getUserDetail&userId=${id}`).then(r=>r.json()); if(d.error) d=null; }catch(e){} if(!d){ try{ d=await fetch(`${ACCOUNT_API}?action=getUserData&userId=${id}`).then(r=>r.json()); }catch(e){} } if(!d||!d.userId) continue; toSave.push({userId:d.userId,name:d.name||d.userId}); html+=`<div class="saved-card bg-white rounded-[12px] p-3 flex items-center gap-2 cursor-pointer" data-id="${d.userId}"><div class="w-10 h-10 rounded-full bg-zinc-900 text-white flex items-center justify-center font-black">${(d.name||'U').charAt(0).toUpperCase()}</div><div><p class="font-bold text-[12px]">${d.name}</p><p class="text-[10px] text-zinc-500">${d.userId}</p></div></div>`; }
+    if(!Array.isArray(list)) return; let uniq=[...new Set(list.map(x=>x.toLowerCase()))].filter(x=>x!=='asa2z');
+    let toSave=[], html=''; for(let id of uniq){ let d=null; try{ d=await fetch(`${API}?action=getUserDetail&userId=${id}`).then(r=>r.json()); if(d.error) d=null; }catch(e){} if(!d){ try{ d=await fetch(`${ACCOUNT_API}?action=getUserData&userId=${id}`).then(r=>r.json()); }catch(e){} } if(!d||!d.userId) continue; toSave.push({userId:d.userId,name:d.name||d.userId}); html+=`<div class="saved-card bg-white rounded-[12px] p-3 flex items-center gap-2 cursor-pointer" data-id="${d.userId}"><div class="w-10 h-10 rounded-full bg-zinc-900 text-white flex items-center justify-center font-black">${(d.name||'U').charAt(0).toUpperCase()}</div><div><p class="font-bold text-[12px]">${d.name}</p><p class="text-[10px] text-zinc-500">${d.userId}</p></div></div>`; }
     if(toSave.length>0) localStorage.setItem('a2z_contacts_'+myId, JSON.stringify(toSave));
     if(html){ listDiv.innerHTML=html; listDiv.querySelectorAll('.saved-card').forEach(el=> el.addEventListener('click', ()=> enterChat(el.dataset.id)) ); }
   });
 }
 function saveContactLocal(data){ let local=JSON.parse(localStorage.getItem('a2z_contacts_'+myId)||'[]'); if(local.find(x=>x.userId.toLowerCase()===data.userId.toLowerCase())) return; if(data.userId.toLowerCase()==='asa2z') return; local.unshift(data); localStorage.setItem('a2z_contacts_'+myId, JSON.stringify(local)); fastLoadSaved(); }
 
+// WhatsApp এর মতো - ওর কাছেও আপনার ID যাবে
+function saveReverseContact(){
+  if(!myId || !friendId) return; if(friendId==='asa2z') return;
+  fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'saveContact',ownerId:friendId,contactId:myId})});
+  fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'saveContact',ownerId:myId,contactId:friendId})});
+}
+
 async function searchUser(auto=false){
   const inp=document.getElementById('friendId').value.trim().toLowerCase() || friendId;
   if(!inp) return toast("ID লিখুন"); if(inp==='asa2z'){ currentUserData={userId:'ASA2Z',name:'ASA2Z Official',gold:0,official:true}; enterChat('asa2z'); return; }
-  friendId=inp; toast("খুঁজছি...");
-  let res=null; try{ res=await fetch(`${API}?action=getUserDetail&userId=${friendId}`).then(r=>r.json()); if(res.error) res=null; }catch(e){} if(!res){ try{ res=await fetch(`${ACCOUNT_API}?action=getUserData&userId=${friendId}`).then(r=>r.json()); if(!res.userId) res=null; }catch(e){} }
+  friendId=inp; toast("খুঁজছি..."); let res=null; try{ res=await fetch(`${API}?action=getUserDetail&userId=${friendId}`).then(r=>r.json()); if(res.error) res=null; }catch(e){} if(!res){ try{ res=await fetch(`${ACCOUNT_API}?action=getUserData&userId=${friendId}`).then(r=>r.json()); if(!res.userId) res=null; }catch(e){} }
   if(!res){ toast("User পাওয়া যায়নি"); document.getElementById('searchResultArea').innerHTML=`<p class="text-center text-[12px] text-red-500 mt-4">❌ ${friendId} পাওয়া যায়নি</p>`; return; }
   currentUserData={userId:res.userId,name:res.name||res.userId,gold:res.gold||0};
   if(auto){ enterChat(res.userId); return; }
   const area=document.getElementById('searchResultArea');
   area.innerHTML=`<div class="bg-white rounded-[16px] p-4 flex items-center gap-3 border"><div class="w-12 h-12 rounded-full bg-[#075E54] text-white flex items-center justify-center font-black">${(res.name||'U').charAt(0).toUpperCase()}</div><div class="flex-1"><p class="font-bold text-[14px]">${res.name||res.userId}</p><p class="text-[11px] text-zinc-500">ID: ${res.userId}</p></div><button id="chatBtn" class="px-4 py-2 rounded-full bg-[#075E54] text-white font-black text-[11px]">Chat</button></div>`;
   document.getElementById('chatBtn').addEventListener('click', ()=>{ enterChat(res.userId); saveContactLocal({userId:res.userId,name:res.name||res.userId}); });
-  saveContactLocal({userId:res.userId,name:res.name||res.userId});
-  try{ await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'saveContact',ownerId:myId,contactId:friendId})}); }catch(e){}
+  saveContactLocal({userId:res.userId,name:res.name||res.userId}); saveReverseContact();
   toast("পাওয়া গেছে ✓");
 }
-
 function enterChat(id){
   if(id) friendId=id.toLowerCase();
   if(friendId==='asa2z'){ currentUserData={userId:'ASA2Z',name:'ASA2Z Official',gold:0,official:true}; }
@@ -206,7 +197,7 @@ function enterChat(id){
 function goBack(){ chatScreen.classList.add('hidden'); searchScreen.classList.remove('hidden'); backBtn.classList.add('hidden'); homeBack.classList.remove('hidden'); callActions.classList.add('hidden'); menuBtn.classList.remove('hidden'); headerName.innerHTML=myName; headerSub.innerText="ID: "+myId; if(window.msgInt) clearInterval(window.msgInt); }
 function openUserInfo(){
   if(!currentUserData) return; const isOff=currentUserData.userId.toLowerCase()==='asa2z';
-  modalContent.innerHTML=`<center><div class="w-20 h-20 rounded-full bg-[#075E54] text-white flex items-center justify-center text-[28px] font-black">${currentUserData.name.charAt(0).toUpperCase()}</div><p class="font-black text-[18px] mt-3">${currentUserData.name} ${isOff?'<span class="verify">✓</span>':''}</p><p class="text-[12px] text-zinc-500">ID: ${currentUserData.userId}</p>${isOff?'':`<p class="mt-2 bg-amber-100 text-amber-700 font-black px-4 py-1 rounded-full text-[13px] inline-block">💰 ${currentUserData.gold||0}</p>`}</center>`;
+  modalContent.innerHTML=`<center><div class="w-20 h-20 rounded-full bg-[#075E54] text-white flex items-center justify-center text-[28px] font-black">${currentUserData.name.charAt(0).toUpperCase()}</div><p class="font-black text-[18px] mt-3">${currentUserData.name} ${isOff?'<span class="verify">✓</span>':''}</p><p class="text-[12px] text-zinc-500">ID: ${currentUserData.userId}</p></center>`;
   if(isOff){ modalActions.innerHTML=`<button onclick="closeUserInfo()" class="col-span-2 py-3 rounded-full bg-zinc-100 font-black">Close</button>`; }
   else{ modalActions.innerHTML=`<button onclick="makeCall('audio')" class="py-3 rounded-full bg-[#075E54] text-white font-black">📞 Audio</button><button onclick="makeCall('video')" class="py-3 rounded-full bg-[#25D366] text-white font-black">🎥 Video</button>`; }
   userModal.classList.remove('hidden');
@@ -216,7 +207,7 @@ function getChatId(){ return [myId,friendId].sort().join('_'); }
 async function sendMsg(){
   let text=msgInput.value.trim(); if(!text) return; msgInput.value='';
   await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'sendMessage',chatId:getChatId(),fromId:myId,toId:friendId,message:text})});
-  toast("Sent ✓"); setTimeout(loadMsgs,400);
+  saveReverseContact(); toast("Sent ✓"); setTimeout(loadMsgs,300);
 }
 async function loadMsgs(){
   if(!friendId) return; try{
@@ -224,11 +215,13 @@ async function loadMsgs(){
     messages.innerHTML=''; data.forEach(m=>{
       const isMe=m.fromId===myId;
       if(m.message.startsWith('VOICE:')){
-        const parts=m.message.split('|'); const url=parts[1]; const voice=parts[2]||'normal';
-        const rate=voice==='male'?0.7:voice==='female'?1.4:1;
-        messages.innerHTML+=`<div class="${isMe?'ml-auto bg-[#DCF8C6]':'mr-auto bg-white'} max-w-[75%] px-3 py-2 rounded-[14px]"><audio controls src="${url}" style="width:160px" onplay="this.playbackRate=${rate}"></audio><p class="text-[8px] text-zinc-500">${voice}</p></div>`;
+        const parts=m.message.split('|'); let url=parts[1]; let voice=parts[2]||'normal';
+        // FIX: base64 এ যদি data: না থাকে, যোগ করো
+        if(!url.startsWith('data:')) url='data:audio/webm;base64,'+url;
+        const rate=voice==='male'?0.75:voice==='female'?1.35:1;
+        messages.innerHTML+=`<div class="${isMe?'ml-auto bg-[#DCF8C6]':'mr-auto bg-white'} max-w-[75%] px-3 py-2 rounded-[14px] shadow"><audio controls preload="metadata" src="${url}" style="width:170px" onplay="this.playbackRate=${rate}"></audio><p class="text-[8px] text-zinc-500">${voice} • tap play</p></div>`;
       }else{
-        messages.innerHTML+=`<div class="${isMe?'ml-auto bg-[#DCF8C6]':'mr-auto bg-white'} max-w-[75%] px-3 py-2 rounded-[14px] text-[13px]">${m.message}</div>`;
+        messages.innerHTML+=`<div class="${isMe?'ml-auto bg-[#DCF8C6]':'mr-auto bg-white'} max-w-[75%] px-3 py-2 rounded-[14px] text-[13px] shadow">${m.message}</div>`;
       }
     }); messages.scrollTop=messages.scrollHeight;
   }catch(e){}
@@ -241,7 +234,7 @@ function setVoice(v){ currentVoice=v; document.getElementById('voiceModeText').i
 const holdBtn=document.getElementById('voiceHoldBtn');
 holdBtn.addEventListener('pointerdown', e=>{ e.preventDefault(); startRecord(); });
 holdBtn.addEventListener('pointerup', e=>{ e.preventDefault(); stopRecord(); });
-holdBtn.addEventListener('pointerleave', e=>{ if(recording){ e.preventDefault(); stopRecord(); }});
+holdBtn.addEventListener('pointerleave', e=>{ if(recording) stopRecord(); });
 holdBtn.addEventListener('touchstart', e=>{ e.preventDefault(); startRecord(); }, {passive:false});
 holdBtn.addEventListener('touchend', e=>{ e.preventDefault(); stopRecord(); }, {passive:false});
 
@@ -249,81 +242,81 @@ async function startRecord(){
   if(recording) return;
   try{
     const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-    mediaRecorder=new MediaRecorder(stream); audioChunks=[]; recording=true; recSec=0;
-    document.getElementById('recBar').classList.remove('hidden');
-    holdBtn.classList.add('bg-red-500','text-white','border-red-500');
-    recTimer=setInterval(()=>{ recSec++; document.getElementById('recTime').innerText=recSec+'s'; },1000);
-    mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);
+    mediaRecorder=new MediaRecorder(stream,{mimeType:'audio/webm'}); audioChunks=[]; recording=true; recSec=0;
+    document.getElementById('recBar').classList.remove('hidden'); holdBtn.classList.add('bg-red-500','text-white');
+    recTimer=setInterval(()=>{ recSec++; document.getElementById('recTime').innerText=recSec+'s'; if(recSec>=20) stopRecord(); },1000);
+    mediaRecorder.ondataavailable=e=>{ if(e.data.size>0) audioChunks.push(e.data); };
     mediaRecorder.onstop=async ()=>{
-      clearInterval(recTimer); document.getElementById('recBar').classList.add('hidden'); holdBtn.classList.remove('bg-red-500','text-white','border-red-500');
+      clearInterval(recTimer); document.getElementById('recBar').classList.add('hidden'); holdBtn.classList.remove('bg-red-500','text-white');
       const blob=new Blob(audioChunks,{type:'audio/webm'});
-      if(blob.size<1000){ toast("Too short"); return; }
+      if(blob.size<800){ toast("Too short"); return; }
       const reader=new FileReader();
       reader.onloadend=async ()=>{
         const base64=reader.result;
         await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'sendMessage',chatId:getChatId(),fromId:myId,toId:friendId,message:`VOICE:${base64}|${currentVoice}`})});
-        toast("Voice sent • "+currentVoice); loadMsgs();
+        saveReverseContact(); toast("Voice sent ✓"); loadMsgs();
       }; reader.readAsDataURL(blob);
       stream.getTracks().forEach(t=>t.stop());
     };
-    mediaRecorder.start();
+    mediaRecorder.start(100);
   }catch(e){ toast("Mic দিন"); }
 }
-function stopRecord(){ if(mediaRecorder && recording){ mediaRecorder.stop(); recording=false; clearInterval(recTimer); } }
+function stopRecord(){ if(mediaRecorder && recording){ mediaRecorder.stop(); recording=false; } }
 
-// CALL - FIXED
+// CALL FIXED - AUDIO ONLY AUDIO
 async function makeCall(type){
   if(friendId==='asa2z') return toast("Official এ কল হয় না");
   closeUserInfo(); toast(type==="video"?"Video calling...":"Audio calling...");
-  // 1. Send notification via API - fast
   try{ await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'sendCall',fromId:myId,toId:friendId,callType:type})}); }catch(e){}
+  saveReverseContact();
   try{
-    const stream=await navigator.mediaDevices.getUserMedia({video:type==='video',audio:true});
+    const constraints = type==='video' ? {video:true,audio:true} : {video:false,audio:true};
+    const stream=await navigator.mediaDevices.getUserMedia(constraints);
     localStream=stream;
-    // call with metadata
     const call=peer.call(friendId,stream,{metadata:{type:type}});
-    if(type==='audio') showAudioCall(currentUserData.name||friendId); else showVideoCall(currentUserData.name||friendId);
+    if(type==='audio'){ showAudioCall(currentUserData.name||friendId); document.getElementById('localVideo').classList.add('hidden'); }
+    else{ showVideoCall(currentUserData.name||friendId); document.getElementById('localVideo').classList.remove('hidden'); }
     handleCall(call,type);
-  }catch(err){ toast("Camera/Mic দিন"); console.log(err); }
+  }catch(err){ toast("Mic/Camera দিন"); }
 }
-function showAudioCall(name){ audioCallBox.classList.remove('hidden'); audioName.innerText=name; audioStatus.innerText='Calling...'; audioAvatar.innerText=name.charAt(0).toUpperCase(); }
-function showVideoCall(name){ videoCallBox.classList.remove('hidden'); videoName.innerText=name; videoStatus.innerText='Calling...'; }
+function showAudioCall(name){ audioCallBox.classList.remove('hidden'); videoCallBox.classList.add('hidden'); audioName.innerText=name; audioStatus.innerText='Calling...'; audioAvatar.innerText=name.charAt(0).toUpperCase(); }
+function showVideoCall(name){ videoCallBox.classList.remove('hidden'); audioCallBox.classList.add('hidden'); videoName.innerText=name; videoStatus.innerText='Calling...'; }
 function handleCall(call,type){
   currentCall=call;
-  call.on('stream',s=>{ if(type==='audio'){ const a=document.createElement('audio'); a.srcObject=s; a.autoplay=true; a.play().catch(()=>{}); } else remoteVideo.srcObject=s; });
-  call.on('close',()=>endCall()); call.on('error',()=>endCall());
-  if(localStream) localVideo.srcObject=localStream;
+  call.on('stream',s=>{
+    if(type==='audio'){
+      const a=document.createElement('audio'); a.id='remoteAudio'; a.srcObject=s; a.autoplay=true; document.body.appendChild(a); a.play().catch(()=>{});
+    }else{
+      remoteVideo.srcObject=s; localVideo.srcObject=localStream;
+    }
+  });
+  call.on('close',()=>endCall());
+  if(localStream && type==='video') localVideo.srcObject=localStream;
 }
 function acceptIncoming(){
   document.getElementById('ringtone').pause(); document.getElementById('incomingBox').classList.add('hidden');
-  const targetId=incomingPeerId||friendId;
-  const type=incomingType;
-  navigator.mediaDevices.getUserMedia({video:type==='video',audio:true}).then(stream=>{
+  const targetId=incomingPeerId||friendId; const type=incomingType;
+  const constraints = type==='video' ? {video:true,audio:true} : {video:false,audio:true};
+  navigator.mediaDevices.getUserMedia(constraints).then(stream=>{
     localStream=stream;
-    if(currentCall){ currentCall.answer(stream); if(type==='video'){ showVideoCall(currentCall.peer); handleCall(currentCall,'video'); } else { showAudioCall(currentCall.peer); handleCall(currentCall,'audio'); } }
-    else{
-      // যদি peer call না থাকে, নিজে কল ব্যাক করো
+    if(currentCall){
+      currentCall.answer(stream);
+      if(type==='audio'){ showAudioCall(currentCall.peer); document.getElementById('localVideo').classList.add('hidden'); handleCall(currentCall,'audio'); }
+      else{ showVideoCall(currentCall.peer); document.getElementById('localVideo').classList.remove('hidden'); handleCall(currentCall,'video'); }
+    }else{
       const call=peer.call(targetId,stream,{metadata:{type:type}});
-      if(type==='video') showVideoCall(targetId); else showAudioCall(targetId);
+      if(type==='audio') showAudioCall(targetId); else showVideoCall(targetId);
       handleCall(call,type);
     }
-    // clear noti
     try{ fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'clearNotifications',userId:myId})}); }catch(e){}
-  }).catch(async ()=>{
-    try{
-      const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-      localStream=stream;
-      if(currentCall){ currentCall.answer(stream); showAudioCall(currentCall.peer); handleCall(currentCall,'audio'); }
-      else{ const call=peer.call(targetId,stream,{metadata:{type:'audio'}}); showAudioCall(targetId); handleCall(call,'audio'); }
-    }catch(e){ toast("Mic দিন"); }
-  });
+  }).catch(e=>{ toast("Mic দিন"); });
 }
-function rejectIncoming(){
-  document.getElementById('ringtone').pause(); document.getElementById('incomingBox').classList.add('hidden');
-  if(currentCall) currentCall.close();
-  try{ fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'clearNotifications',userId:myId})}); }catch(e){}
+function rejectIncoming(){ document.getElementById('ringtone').pause(); document.getElementById('incomingBox').classList.add('hidden'); if(currentCall) currentCall.close(); try{ fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'clearNotifications',userId:myId})}); }catch(e){} }
+function endCall(){
+  document.getElementById('ringtone').pause(); incomingBox.classList.add('hidden'); audioCallBox.classList.add('hidden'); videoCallBox.classList.add('hidden');
+  const ra=document.getElementById('remoteAudio'); if(ra) ra.remove();
+  if(currentCall) currentCall.close(); if(localStream) localStream.getTracks().forEach(t=>t.stop()); toast("Call Ended");
 }
-function endCall(){ document.getElementById('ringtone').pause(); incomingBox.classList.add('hidden'); audioCallBox.classList.add('hidden'); videoCallBox.classList.add('hidden'); if(currentCall) currentCall.close(); if(localStream) localStream.getTracks().forEach(t=>t.stop()); toast("Call Ended"); }
 function toggleMute(){ if(!localStream) return; isMuted=!isMuted; localStream.getAudioTracks().forEach(t=>t.enabled=!isMuted); toast(isMuted?"Muted":"Unmuted"); }
 function toggleSpeaker(){ toast("Speaker"); }
 function toggleCam(){ if(!localStream) return; isCamOff=!isCamOff; localStream.getVideoTracks().forEach(t=>t.enabled=!isCamOff); toast(isCamOff?"Off":"On"); }
