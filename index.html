@@ -29,20 +29,15 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 .marquee{animation:marquee 15s linear infinite;white-space:nowrap}
 .date-pill{background:rgba(255,255,255,0.92); color:#1e3a8a; font-size:11px; font-weight:900; padding:4px 11px; border-radius:9px; line-height:14px; width:fit-content; box-shadow:0 3px 10px rgba(0,0,0,0.12); border:1px solid rgba(255,255,255,0.8); white-space:nowrap;}
 .logo-3d{background:linear-gradient(180deg,#ffffff 0%, #f5f7ff 50%, #e8ecff 100%); padding:6px 18px; border-radius:14px; font-family:'Poppins'; font-weight:900; font-size:20px; color:#0046ff; box-shadow:0 4px 15px rgba(0,0,0,0.15); position:relative; overflow:hidden; cursor:pointer;}
-.logo-3d::before{content:'';position:absolute;top:0; left:-30%; width:60%; height:100%; background:linear-gradient(120deg,transparent 0%, rgba(255,255,255,0.8) 50%, transparent 100%); animation:shine 2.5s infinite;}
-@keyframes shine{0%{transform:translateX(-100%)} 100%{transform:translateX(250%)}}
-.marble-name-btn,.digital-edu-btn,.shop-btn,.gorilla-360{position:relative; overflow:hidden;}
-.gorilla-360{background: linear-gradient(135deg, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0.15) 100%); backdrop-filter: blur(18px); border: 1.5px solid rgba(255,255,255,0.7); box-shadow: 0 8px 25px rgba(0,0,0,0.2);}
-.gorilla-360-icon{ background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);}
 @keyframes ringShake{0%,100%{transform:rotate(0)} 25%{transform:rotate(-12deg)} 75%{transform:rotate(12deg)}}
 .ring-anim{animation:ringShake 0.4s infinite}
 .verify{width:14px;height:14px;background:#1D9BF0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:white;font-size:8px;margin-left:4px}
 </style>
 </head>
 <body>
-<div id="offlineBadge" class="hidden fixed top-2 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] font-black px-4 py-1.5 rounded-full z-[100]">📴 Offline Mode</div>
+<div id="offlineBadge" class="hidden fixed top-2 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] font-black px-4 py-1.5 rounded-full z-[100]">📴 Offline</div>
 
-<!-- INCOMING CALL - FIXED -->
+<!-- INCOMING CALL -->
 <div id="incomingCallBox" class="hidden fixed inset-0 z-[99999] bg-black/80 backdrop-blur flex items-center justify-center p-6">
   <div class="bg-white rounded-[24px] p-6 w-full max-w-[320px] text-center shadow-2xl">
     <div class="w-20 h-20 mx-auto rounded-full bg-[#25D366] flex items-center justify-center text-[36px] ring-anim">📞</div>
@@ -56,7 +51,7 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
   </div>
 </div>
 
-<!-- CALL SCREEN ON INDEX - FIXED -->
+<!-- CALL SCREEN ON INDEX -->
 <div id="callBoxIndex" class="hidden fixed inset-0 bg-[#111] z-[99998] flex flex-col max-w-[480px] mx-auto">
   <div class="flex-1 relative flex flex-col items-center justify-center">
     <video id="remoteVideoIndex" autoplay playsinline class="w-full h-full bg-black object-cover hidden"></video>
@@ -114,14 +109,10 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 <div class="bg-white border rounded-[18px] p-3 text-center" onclick="location.href='./medical_final.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#fee2e2] flex items-center justify-center">🩺</div><p class="text-[11px] font-bold mt-2">মেডিকেল</p></div>
 <div class="bg-white border rounded-[18px] p-3 text-center" onclick="location.href='./calc.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-zinc-900 text-white flex items-center justify-center">🧮</div><p class="text-[11px] font-bold mt-2">ক্যালকুলেটর</p></div>
 </div>
-
 <div class="mt-6 space-y-3">
-<a href="whatsapp.html" class="flex items-center justify-between bg-white border border-green-200 rounded-[16px] p-4 shadow">
-<div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white">📞</div><div><p class="font-black text-[13px]">ফ্রি কল চ্যাট</p><p class="text-[10px] text-zinc-500">User ID দিয়ে ফ্রি কল ও মেসেজ</p></div></div><span class="bg-[#25D366] text-[8px] font-black px-2 py-1 rounded-full text-white animate-pulse">FREE</span>
-</a>
+<a href="whatsapp.html" class="flex items-center justify-between bg-white border border-green-200 rounded-[16px] p-4 shadow"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white">📞</div><div><p class="font-black text-[13px]">ফ্রি কল চ্যাট</p><p class="text-[10px] text-zinc-500">User ID দিয়ে ফ্রি কল ও মেসেজ</p></div></div><span class="bg-[#25D366] text-[8px] font-black px-2 py-1 rounded-full text-white animate-pulse">FREE</span></a>
 </div>
 </div>
-
 <div id="yellowBar" class="fixed bottom-0 left-0 right-0 z-[90] border-t-2 border-black py-[14px] px-2 flex items-center justify-center" style="background:#2563eb"><div class="w-full max-w-[480px] flex items-center"><div class="bg-black text-white text-[9px] font-black px-3 py-1 rounded-full shrink-0">NOTICE</div><div class="flex-1 overflow-hidden ml-3"><p id="yellowText" class="marquee font-bold text-[13px] text-white">লোড হচ্ছে...</p></div></div></div>
 </div>
 
@@ -129,6 +120,7 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 const API_URL="https://script.google.com/macros/s/AKfycbyt07t35S4oRxDY4Ai-wYXlaejv70wQ1-N6Rotz_4-WKZoM9QqGSC0Q8JArx7C6xvw0/exec";
 const CHAT_API="https://script.google.com/macros/s/AKfycbxEOTS0WcIA92yhFEsc2mqKU7ic8-57n_kFOKcNH-aUCOjuHkMCsVh0ZBhO9X39QdoUdQ/exec";
 let peerIndex, currentCallIndex, localStreamIndex, isMutedIndex=false;
+let lastCallTimestamp = 0; // FIX: অটো কল বন্ধ করার জন্য
 
 function openNotif(){ document.getElementById('notifPanel').classList.remove('hidden'); }
 function closeNotif(){ document.getElementById('notifPanel').classList.add('hidden'); }
@@ -149,18 +141,31 @@ async function checkNotif(){
       countEl.classList.remove('hidden'); countEl.innerText = res.length;
       let html=''; res.forEach(n=>{
         const isOff = n.fromId.toLowerCase()==='asa2z';
-        html+=`<div onclick="location.href='whatsapp.html?user=${n.fromId}'" class="p-3 bg-zinc-50 rounded-[12px] border flex justify-between items-center cursor-pointer"><div><p class="font-black text-[13px] flex items-center">${n.fromId} ${isOff?'<span class="verify">✓</span>':''} ${n.type=='call'?'📞':'💬'}</p><p class="text-[11px] text-zinc-600">${n.text}</p><p class="text-[9px] text-zinc-400">${new Date(Number(n.timestamp)).toLocaleString()}</p></div><span>➤</span></div>`;
+        html+=`<div onclick="clearNotifAndGo('${n.fromId}')" class="p-3 bg-zinc-50 rounded-[12px] border flex justify-between items-center cursor-pointer"><div><p class="font-black text-[13px] flex items-center">${n.fromId} ${isOff?'<span class="verify">✓</span>':''} ${n.type=='call'?'📞':'💬'}</p><p class="text-[11px] text-zinc-600">${n.text}</p><p class="text-[9px] text-zinc-400">${new Date(Number(n.timestamp)).toLocaleString()}</p></div><span>➤</span></div>`;
       });
       listEl.innerHTML=html;
-      const callNotif = res.find(x=>x.type=='call');
-      if(callNotif && document.getElementById('incomingCallBox').classList.contains('hidden')){
-        showIncomingCall(callNotif.fromId);
+
+      // FIX: শুধু 60 সেকেন্ডের ভিতরের নতুন কল হলেই রিং বাজবে
+      const now = Date.now();
+      const freshCalls = res.filter(x=>x.type=='call' && (now - Number(x.timestamp)) < 60000);
+      const newestCall = freshCalls.sort((a,b)=>Number(b.timestamp)-Number(a.timestamp))[0];
+
+      if(newestCall && document.getElementById('incomingCallBox').classList.contains('hidden')){
+        if(lastCallTimestamp !== Number(newestCall.timestamp)){
+          lastCallTimestamp = Number(newestCall.timestamp);
+          showIncomingCall(newestCall.fromId);
+        }
       }
     }else{
       countEl.classList.add('hidden');
       listEl.innerHTML='<p class="text-[12px] text-zinc-400 text-center">কোন নোটিফিকেশন নেই</p>';
     }
   }catch(e){}
+}
+
+function clearNotifAndGo(fromId){
+  fetch(CHAT_API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'markRead',toId:localStorage.getItem('a2z_userId'),fromId:fromId})});
+  location.href='whatsapp.html?user='+fromId;
 }
 
 function showIncomingCall(fromId){
@@ -176,14 +181,16 @@ function showIncomingCall(fromId){
 function rejectCall(){
   document.getElementById('ringSound').pause();
   document.getElementById('incomingCallBox').classList.add('hidden');
+  const fromId = document.getElementById('incomingName').innerText.replace('✓','').trim().toLowerCase();
+  fetch(CHAT_API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'markRead',toId:localStorage.getItem('a2z_userId'),fromId:fromId})});
   if(currentCallIndex) currentCallIndex.close();
+  lastCallTimestamp = 0;
 }
 
 function acceptCallIndex(){
   document.getElementById('ringSound').pause();
   document.getElementById('incomingCallBox').classList.add('hidden');
   const fromId=document.getElementById('incomingName').innerText.replace('✓','').trim();
-  // Direct receive on index
   if(currentCallIndex){
     navigator.mediaDevices.getUserMedia({video:true,audio:true}).then(stream=>{
       localStreamIndex=stream;
@@ -191,7 +198,7 @@ function acceptCallIndex(){
       currentCallIndex.answer(stream);
       document.getElementById('callBoxIndex').classList.remove('hidden');
       currentCallIndex.on('stream', s=>{
-        if(s.getVideoTracks().length>0){
+        if(s.getVideoTracks().length>0 && s.getVideoTracks()[0].enabled){
           document.getElementById('remoteVideoIndex').classList.remove('hidden');
           document.getElementById('remoteVideoIndex').srcObject=s;
           document.getElementById('audioCallUI').classList.add('hidden');
@@ -215,7 +222,7 @@ function initPeerIndex(){
   peerIndex=new Peer(myId,{config:{iceServers:[{urls:"stun:stun.l.google.com:19302"}]}});
   peerIndex.on('call', call=>{
     currentCallIndex=call;
-    showIncomingCall(call.peer);
+    // Peer কল আসলে Notification system এর মাধ্যমে show হবে, তাই এখানে direct show না
     call.on('close',()=>endCallIndex());
   });
 }
@@ -228,6 +235,7 @@ function endCallIndex(){
   document.getElementById('audioCallUI').classList.remove('hidden');
   if(currentCallIndex) currentCallIndex.close();
   if(localStreamIndex) localStreamIndex.getTracks().forEach(t=>t.stop());
+  lastCallTimestamp = 0;
 }
 
 function toggleMuteIndex(){
@@ -238,7 +246,6 @@ function toggleMuteIndex(){
 function toggleSpeakerIndex(){}
 
 window.addEventListener('load',()=>{
-  document.getElementById('langToggle').addEventListener('click',()=>{});
   updateDates(); loadHomeData();
   initPeerIndex();
   checkNotif();
