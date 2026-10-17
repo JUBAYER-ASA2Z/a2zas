@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="bn" translate="no" class="notranslate">
 <head>
 <meta charset="UTF-8">
+<meta name="google" content="notranslate">
+<meta name="robots" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Free Call Chat</title>
 <script src="https://cdn.tailwindcss.com"></script>
@@ -10,52 +12,44 @@
 <style>
 *{font-family:'Hind Siliguri'}
 .wa-bg{background:#E5DDD5 url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')}
-.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 18px;border-radius:24px;font-size:12px;font-weight:800;z-index:99999;box-shadow:0 8px 25px rgba(0,0,0,0.4);display:none;animation:slideDown 0.3s}
-@keyframes slideDown{0%{transform:translate(-50%,-20px);opacity:0}100%{transform:translate(-50%,0);opacity:1}}
+.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 18px;border-radius:24px;font-size:12px;font-weight:800;z-index:99999;display:none}
 .verify{width:14px;height:14px;background:#1D9BF0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:white;font-size:8px;margin-left:4px}
 .scroll-hide::-webkit-scrollbar{display:none}
 </style>
 </head>
-<body class="bg-[#111]">
+<body translate="no" class="notranslate bg-[#111]">
 <div id="toast" class="toast"></div>
-<audio id="ringtone" loop preload="auto" src="https://actions.google.com/sounds/v1/alarms/phone_tone.ogg"></audio>
+<audio id="ringtone" loop preload="auto"><source src="https://cdn.pixabay.com/audio/2022/03/10/audio_c8c8a650cd.mp3" type="audio/mpeg"></audio>
 
 <div class="max-w-[430px] mx-auto bg-white min-h-screen flex flex-col shadow-2xl relative">
 
-<!-- TOP BAR - FIXED -->
+<!-- TOP BAR -->
 <div class="bg-[#075E54] text-white h-[56px] flex items-center justify-between px-2 sticky top-0 z-20">
   <div class="flex items-center gap-2 flex-1">
     <button id="backBtn" onclick="goBack()" class="hidden w-8 h-8 rounded-full flex items-center justify-center">←</button>
     <button id="homeBack" onclick="location.href='index.html'" class="w-8 h-8 rounded-full flex items-center justify-center">←</button>
     <div id="headerProfile" class="w-9 h-9 rounded-full bg-white text-[#075E54] flex items-center justify-center font-black text-[14px]">A</div>
     <div class="flex-1 overflow-hidden" onclick="openUserInfo()">
-      <p id="headerName" class="font-bold text-[15px] leading-[15px] flex items-center truncate">Free Call Chat</p>
-      <p id="headerSub" class="text-[11px] opacity-80 leading-[11px] truncate">Tap to search ID</p>
+      <p id="headerName" class="font-bold text-[15px] flex items-center truncate">Free Call Chat</p>
+      <p id="headerSub" class="text-[11px] opacity-80 truncate">Tap to search ID</p>
     </div>
   </div>
-  <!-- AUDIO + VIDEO ICON SEPARATE -->
   <div id="callActions" class="hidden flex items-center gap-1 pr-1">
-    <button onclick="makeCall('audio')" class="w-9 h-9 rounded-full flex items-center justify-center active:bg-white/20" title="Audio Call">
-      <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2c-2.83-1.35-5.14-3.66-6.49-6.49l2.2-2.2c.28-.28.36-.67.25-1.02A11.36 11.36 0 018.59 3.99c0-.55-.45-1-1-1H4.08c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg>
-    </button>
-    <button onclick="makeCall('video')" class="w-9 h-9 rounded-full flex items-center justify-center active:bg-white/20" title="Video Call">
-      <svg width="22" height="22" fill="white" viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
-    </button>
-    <button onclick="toggleMenu()" class="w-8 h-8 flex items-center justify-center text-[20px] ml-1">⋮</button>
+    <button id="audioBtn" onclick="makeCall('audio')" class="w-9 h-9 rounded-full flex items-center justify-center">📞</button>
+    <button id="videoBtn" onclick="makeCall('video')" class="w-9 h-9 rounded-full flex items-center justify-center">🎥</button>
+    <button onclick="toggleMenu()" class="w-8 h-8 flex items-center justify-center text-[20px]">⋮</button>
   </div>
-  <div id="menuBtn" class="flex items-center"><button onclick="toggleMenu()" class="text-[22px] px-2">⋮</button></div>
+  <div id="menuBtn"><button onclick="toggleMenu()" class="text-[22px] px-2">⋮</button></div>
 </div>
 
 <div id="dotMenu" class="hidden absolute top-[56px] right-2 bg-white rounded-[12px] shadow-2xl z-30 w-[200px] border overflow-hidden">
-  <button onclick="viewProfile()" class="w-full text-left px-4 py-3 text-[13px] font-bold hover:bg-zinc-50">👤 আমার প্রোফাইল</button>
-  <button onclick="showSavedContacts()" class="w-full text-left px-4 py-3 text-[13px] font-bold hover:bg-zinc-50">💾 সেভ করা ID</button>
-  <button onclick="doLogout()" class="w-full text-left px-4 py-3 text-[13px] font-bold text-red-600 hover:bg-zinc-50">🚪 লগআউট</button>
+  <button onclick="viewProfile()" class="w-full text-left px-4 py-3 text-[13px] font-bold">👤 আমার প্রোফাইল</button>
+  <button onclick="doLogout()" class="w-full text-left px-4 py-3 text-[13px] font-bold text-red-600">🚪 লগআউট</button>
 </div>
 
 <!-- AUTH -->
 <div id="authBox" class="flex-1 flex flex-col justify-center p-6 bg-[#f0f2f5]">
-  <center><div class="w-16 h-16 rounded-full bg-[#075E54] flex items-center justify-center text-[30px] text-white">💬</div>
-  <h2 class="mt-3 font-black text-[18px]">Free Call Chat</h2></center>
+  <center><div class="w-16 h-16 rounded-full bg-[#075E54] flex items-center justify-center text-[30px] text-white">💬</div><h2 class="mt-3 font-black text-[18px]">Free Call Chat</h2></center>
   <div class="mt-6 bg-white rounded-[16px] p-5 shadow">
     <div id="loginForm"><input id="loginId" placeholder="User ID" class="w-full px-4 py-3 rounded-full border-2 border-zinc-900 text-[13px] font-bold"><input id="loginPass" type="password" placeholder="Password" class="w-full mt-3 px-4 py-3 rounded-full border text-[13px] font-bold"><button onclick="doLogin()" class="mt-4 w-full py-3 rounded-full bg-[#075E54] text-white font-black">লগইন</button><p class="text-center text-[12px] mt-4">নতুন? <span onclick="showReg()" class="text-[#075E54] font-black">রেজিস্ট্রেশন</span></p></div>
     <div id="regForm" class="hidden"><input id="regId" placeholder="User ID" class="w-full px-4 py-3 rounded-full border-2 border-zinc-900 text-[13px] font-bold"><input id="regName" placeholder="আপনার নাম" class="w-full mt-3 px-4 py-3 rounded-full border text-[13px] font-bold"><input id="regPass" type="password" placeholder="Password" class="w-full mt-3 px-4 py-3 rounded-full border text-[13px] font-bold"><button onclick="doReg()" class="mt-4 w-full py-3 rounded-full bg-zinc-900 text-white font-black">তৈরি করুন</button><p class="text-center text-[12px] mt-4"><span onclick="showLogin()" class="text-[#075E54] font-black">লগইন</span></p></div>
@@ -65,27 +59,32 @@
 
 <!-- SEARCH -->
 <div id="searchScreen" class="hidden flex-1 flex flex-col bg-[#f0f2f5]">
-  <div class="p-3 bg-white flex gap-2 border-b"><input id="friendId" placeholder="User ID লিখুন (ASA2Z)" class="flex-1 px-4 py-2.5 rounded-full bg-[#f0f2f5] text-[13px] font-bold outline-none"><button onclick="searchUser()" class="w-10 h-10 rounded-full bg-[#075E54] text-white">🔍</button></div>
+  <div class="p-3 bg-white flex gap-2 border-b"><input id="friendId" placeholder="User ID লিখুন..." class="flex-1 px-4 py-2.5 rounded-full bg-[#f0f2f5] text-[13px] font-bold outline-none"><button onclick="searchUser()" class="w-10 h-10 rounded-full bg-[#075E54] text-white">🔍</button></div>
   <div id="searchResults" class="flex-1 p-2 space-y-2 overflow-y-auto">
-    <!-- FIXED OFFICIAL ID -->
-    <div id="fixedOfficial" onclick="searchFixed()" class="bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-[16px] p-4 flex items-center gap-3 cursor-pointer">
+    <div id="fixedOfficial" class="bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-[16px] p-4 flex items-center gap-3 cursor-pointer" onclick="enterChat('asa2z')">
       <div class="w-12 h-12 rounded-full bg-[#075E54] text-white flex items-center justify-center font-black text-[18px]">A</div>
-      <div class="flex-1"><p class="font-black text-[14px] flex items-center">ASA2Z <span class="verify">✓</span></p><p class="text-[11px] text-zinc-600">Official Support • Tap to chat</p></div><span class="text-blue-500 font-black text-[12px]">VERIFIED</span>
+      <div class="flex-1"><p class="font-black text-[14px] flex items-center">ASA2Z <span class="verify">✓</span></p><p class="text-[11px] text-zinc-600">Official • Message Only</p></div><span class="text-blue-500 font-black text-[11px]">OFFICIAL</span>
     </div>
-    <div id="savedList" class="space-y-2 mt-3"></div>
+    <div id="savedList" class="space-y-2 mt-2"></div>
+    <div id="searchResultArea" class="space-y-2"></div>
   </div>
 </div>
 
 <!-- CHAT -->
 <div id="chatScreen" class="hidden flex-1 flex flex-col">
   <div id="userInfoBar" class="hidden bg-white p-3 border-b flex items-center gap-3 cursor-pointer" onclick="openUserInfo()"></div>
-  <div id="messages" class="wa-bg flex-1 p-3 space-y-1 overflow-y-auto h-[70vh] scroll-hide"></div>
-  <div class="p-2 bg-[#F0F0F0] flex items-center gap-2"><input id="msgInput" placeholder="Message" class="flex-1 px-4 py-2.5 rounded-full border bg-white text-[13px] outline-none"><button onclick="sendMsg()" class="w-10 h-10 rounded-full bg-[#075E54] text-white">➤</button></div>
+  <div id="messages" class="wa-bg flex-1 p-3 space-y-1 overflow-y-auto h-[65vh] scroll-hide"></div>
+  <div class="p-2 bg-[#F0F0F0] flex items-center gap-1">
+    <button onclick="openVoiceChanger()" class="w-9 h-9 rounded-full bg-white border flex items-center justify-center">🎙️</button>
+    <input id="msgInput" placeholder="Message" class="flex-1 px-4 py-2.5 rounded-full border bg-white text-[13px] outline-none">
+    <button id="voiceBtn" onmousedown="startRecord()" onmouseup="stopRecord()" ontouchstart="startRecord()" ontouchend="stopRecord()" class="w-9 h-9 rounded-full bg-white border flex items-center justify-center">🎤</button>
+    <button onclick="sendMsg()" class="w-10 h-10 rounded-full bg-[#075E54] text-white">➤</button>
+  </div>
+  <p class="text-[9px] text-center text-zinc-400 bg-[#F0F0F0] pb-1">Hold 🎤 for voice</p>
+</div>
 </div>
 
-</div>
-
-<!-- INCOMING CALL POPUP WITH RING -->
+<!-- INCOMING CALL -->
 <div id="incomingBox" class="hidden fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-6">
   <div class="bg-white rounded-[24px] p-6 w-full max-w-[300px] text-center">
     <div class="w-20 h-20 mx-auto rounded-full bg-[#075E54] flex items-center justify-center text-white text-[30px] animate-pulse">📞</div>
@@ -103,37 +102,46 @@
   <div class="bg-white rounded-t-[24px] w-full max-w-[430px] p-6">
     <div class="w-12 h-1 bg-zinc-300 rounded-full mx-auto mb-4"></div>
     <div id="modalContent"></div>
-    <div class="grid grid-cols-2 gap-3 mt-6">
-      <button onclick="makeCall('audio')" class="py-3 rounded-full bg-[#075E54] text-white font-black text-[13px]">📞 Audio Call</button>
-      <button onclick="makeCall('video')" class="py-3 rounded-full bg-[#25D366] text-white font-black text-[13px]">🎥 Video Call</button>
-    </div>
+    <div id="modalActions" class="grid grid-cols-2 gap-3 mt-6"></div>
   </div>
 </div>
 
-<!-- AUDIO CALL SCREEN - NO VIDEO -->
+<!-- VOICE CHANGER MODAL -->
+<div id="voiceModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-end justify-center">
+  <div class="bg-white rounded-t-[24px] w-full max-w-[430px] p-6">
+    <p class="font-black text-[14px]">🎙️ ভয়েস চেঞ্জার</p>
+    <div class="grid grid-cols-3 gap-2 mt-4">
+      <button onclick="setVoice('normal')" class="voiceOpt py-3 rounded-[12px] bg-zinc-900 text-white font-bold text-[12px]">🗣️ Normal</button>
+      <button onclick="setVoice('male')" class="voiceOpt py-3 rounded-[12px] bg-zinc-100 font-bold text-[12px]">👨 Male</button>
+      <button onclick="setVoice('female')" class="voiceOpt py-3 rounded-[12px] bg-zinc-100 font-bold text-[12px]">👩 Female</button>
+    </div>
+    <p class="text-[10px] text-zinc-500 mt-3">সিলেক্ট করে ভয়েস রেকর্ড করুন, অন্য পাশে ওই কণ্ঠে শুনবে</p>
+    <button onclick="closeVoice()" class="mt-4 w-full py-2.5 rounded-full bg-zinc-100 font-black text-[12px]">Close</button>
+  </div>
+</div>
+
+<!-- AUDIO CALL -->
 <div id="audioCallBox" class="hidden fixed inset-0 bg-[#111] z-50 flex flex-col max-w-[430px] mx-auto">
   <div class="flex-1 flex flex-col items-center justify-center text-white p-6">
     <div id="audioAvatar" class="w-28 h-28 rounded-full bg-[#075E54] flex items-center justify-center text-[40px] font-black">A</div>
-    <p id="audioName" class="font-black text-[22px] mt-4">ASA2Z</p>
-    <p id="audioStatus" class="text-[13px] opacity-70 mt-1">Calling...</p>
+    <p id="audioName" class="font-black text-[22px] mt-4">...</p>
+    <p id="audioStatus" class="text-[13px] opacity-70">Calling...</p>
   </div>
   <div class="p-8 bg-[#202c33] rounded-t-[24px]">
     <div class="flex justify-center gap-6 mb-6">
       <button id="muteBtn" onclick="toggleMute()" class="w-12 h-12 rounded-full bg-[#2a3942] text-white">🎙️</button>
-      <button id="speakerBtn" onclick="toggleSpeaker()" class="w-12 h-12 rounded-full bg-[#2a3942] text-white">🔊</button>
+      <button onclick="toggleSpeaker()" class="w-12 h-12 rounded-full bg-[#2a3942] text-white">🔊</button>
     </div>
     <center><button onclick="endCall()" class="w-14 h-14 rounded-full bg-red-500 text-white text-xl">✕</button></center>
   </div>
 </div>
 
-<!-- VIDEO CALL SCREEN -->
+<!-- VIDEO CALL -->
 <div id="videoCallBox" class="hidden fixed inset-0 bg-black z-50 flex flex-col max-w-[430px] mx-auto">
   <div class="flex-1 relative">
     <video id="remoteVideo" autoplay playsinline class="w-full h-full object-cover"></video>
     <video id="localVideo" autoplay muted playsinline class="w-[90px] h-[120px] absolute top-4 right-4 rounded-[12px] border-2 border-white bg-zinc-800 object-cover"></video>
-    <div class="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/60 to-transparent text-white">
-      <p id="videoName" class="font-black text-[16px]">...</p><p id="videoStatus" class="text-[11px]">...</p>
-    </div>
+    <div class="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/60 to-transparent text-white"><p id="videoName" class="font-black">...</p><p id="videoStatus" class="text-[11px]">...</p></div>
   </div>
   <div class="p-6 bg-[#202c33] flex justify-center gap-6">
     <button id="vmuteBtn" onclick="toggleMute()" class="w-12 h-12 rounded-full bg-[#2a3942] text-white">🎙️</button>
@@ -145,99 +153,130 @@
 <script>
 const API = "https://script.google.com/macros/s/AKfycbxEOTS0WcIA92yhFEsc2mqKU7ic8-57n_kFOKcNH-aUCOjuHkMCsVh0ZBhO9X39QdoUdQ/exec";
 const ACCOUNT_API = "https://script.google.com/macros/s/AKfycbw_oRlZS8lwB9JnkZQeUCQOfn-BVrMSPtEyqVvBuKUjH9KMAyMABT0PER46gTqB4P4J/exec";
-let peer, myId, friendId, myName, currentUserData=null, currentCall=null, localStream=null, isMuted=false, isCamOff=false, isSpeaker=false;
+let peer, myId, friendId, myName, currentUserData=null, currentCall=null, localStream=null, isMuted=false, isCamOff=false;
+let currentVoice='normal', mediaRecorder, audioChunks=[], recording=false;
 
-function toast(msg){
-  const t=document.getElementById('toast'); t.innerText=msg; t.style.display='block';
-  clearTimeout(t._tm); t._tm=setTimeout(()=>t.style.display='none',3000);
-}
+function toast(m){ const t=document.getElementById('toast'); t.innerText=m; t.style.display='block'; clearTimeout(t._t); t._t=setTimeout(()=>t.style.display='none',2500); }
 function toggleMenu(){ dotMenu.classList.toggle('hidden'); }
 function showReg(){ loginForm.classList.add('hidden'); regForm.classList.remove('hidden'); }
 function showLogin(){ regForm.classList.add('hidden'); loginForm.classList.remove('hidden'); }
 
 function doLogin(){
   const u=loginId.value.trim().toLowerCase(), p=loginPass.value.trim();
+  if(!u) return toast("ID লিখুন");
   fetch(`${API}?action=login&userId=${u}&pass=${encodeURIComponent(p)}`).then(r=>r.json()).then(d=>{
-    if(d.error){
-      fetch(`${ACCOUNT_API}?action=getUserData&userId=${u}`).then(r=>r.json()).then(dd=>{
-        if(dd.userId) afterAuth(dd.userId, dd.name||dd.userId); else toast("ভুল ID/Password");
-      });
-    }else afterAuth(d.userId,d.name);
+    if(d.error){ fetch(`${ACCOUNT_API}?action=getUserData&userId=${u}`).then(r=>r.json()).then(dd=>{ if(dd.userId) afterAuth(dd.userId, dd.name||dd.userId); else toast("ভুল ID"); }); }
+    else afterAuth(d.userId,d.name);
   });
 }
 function doReg(){
   const u=regId.value.trim().toLowerCase(), n=regName.value.trim(), p=regPass.value.trim();
-  fetch(`${API}?action=register&userId=${u}&name=${encodeURIComponent(n)}&pass=${encodeURIComponent(p)}`).then(r=>r.json()).then(d=>{
-    if(d.error) toast("এই ID আগেই আছে"); else afterAuth(d.userId,n);
-  });
+  if(u.length<3) return toast("ID 3 অক্ষর+");
+  if(u==='asa2z') return toast("এটা Official ID");
+  fetch(`${API}?action=register&userId=${u}&name=${encodeURIComponent(n)}&pass=${encodeURIComponent(p)}`).then(r=>r.json()).then(d=>{ if(d.error) toast("ID আছে"); else afterAuth(d.userId,n); });
 }
 
 function afterAuth(id,name){
   myId=id; myName=name; localStorage.setItem('a2z_userId',id); localStorage.setItem('a2z_name',name);
   authBox.classList.add('hidden'); searchScreen.classList.remove('hidden');
-  const v = id.toLowerCase()==='asa2z' ? ' <span class="verify">✓</span>' : '';
+  const v=id.toLowerCase()==='asa2z'?' <span class="verify">✓</span>':'';
   headerName.innerHTML=name+v; headerSub.innerText="ID: "+id; headerProfile.innerText=name.charAt(0).toUpperCase();
   homeBack.classList.add('hidden'); backBtn.classList.add('hidden');
-  initPeer(); loadSavedContacts();
+  initPeer(); fastLoadSaved();
   const params=new URLSearchParams(location.search);
   if(params.get('user')||params.get('call')){ friendId=(params.get('user')||params.get('call')).toLowerCase(); searchUser(true); }
 }
 
 function initPeer(){
   peer=new Peer(myId,{config:{iceServers:[{urls:"stun:stun.l.google.com:19302"}]}});
-  peer.on('call', async call=>{
-    // RING START
-    document.getElementById('ringtone').play().catch(()=>{});
-    document.getElementById('incomingId').innerHTML=call.peer.toUpperCase() + (call.peer.toLowerCase()==='asa2z' ? ' <span class="verify">✓</span>' : '');
+  peer.on('call', call=>{
+    currentCall=call;
+    document.getElementById('ringtone').currentTime=0; document.getElementById('ringtone').play().catch(()=>{});
+    document.getElementById('incomingId').innerHTML=call.peer.toUpperCase()+(call.peer.toLowerCase()==='asa2z'?' <span class="verify">✓</span>':'');
     document.getElementById('incomingBox').classList.remove('hidden');
-    currentCall=call; window._incomingType='audio'; // default, will detect
-
-    // Try to detect video
-    call.on('close',()=>{ endCall(); });
   });
 }
 
-function searchFixed(){
-  friendId='asa2z';
-  currentUserData={userId:'ASA2Z', name:'ASA2Z Official', gold:9999};
-  enterChat('asa2z');
+// FAST LOAD - Local First
+function fastLoadSaved(){
+  const local = JSON.parse(localStorage.getItem('a2z_contacts_'+myId) || '[]');
+  const listDiv=document.getElementById('savedList');
+  if(local.length>0){
+    let h='';
+    local.forEach(c=>{
+      if(c.userId.toLowerCase()==='asa2z') return;
+      h+=`<div onclick="enterChat('${c.userId}')" class="bg-white rounded-[12px] p-3 flex items-center gap-2 cursor-pointer active:scale-[0.98]"><div class="w-10 h-10 rounded-full bg-zinc-900 text-white flex items-center justify-center font-black">${(c.name||'U').charAt(0).toUpperCase()}</div><div><p class="font-bold text-[12px]">${c.name}</p><p class="text-[10px] text-zinc-500">${c.userId}</p></div></div>`;
+    });
+    listDiv.innerHTML=h;
+  }
+  // then sync from server in background
+  fetch(`${API}?action=getContacts&userId=${myId}`).then(r=>r.json()).then(async list=>{
+    if(!Array.isArray(list)) return;
+    // remove duplicates & asa2z
+    let uniq=[...new Set(list.map(x=>x.toLowerCase()))].filter(x=>x!=='asa2z');
+    let toSave=[];
+    let html='';
+    for(let id of uniq){
+      let d=null; try{ d=await fetch(`${API}?action=getUserDetail&userId=${id}`).then(r=>r.json()); if(d.error) d=null; }catch(e){}
+      if(!d){ try{ d=await fetch(`${ACCOUNT_API}?action=getUserData&userId=${id}`).then(r=>r.json()); }catch(e){} }
+      if(!d||!d.userId) continue;
+      toSave.push({userId:d.userId,name:d.name||d.userId});
+      html+=`<div onclick="enterChat('${d.userId}')" class="bg-white rounded-[12px] p-3 flex items-center gap-2 cursor-pointer"><div class="w-10 h-10 rounded-full bg-zinc-900 text-white flex items-center justify-center font-black">${(d.name||'U').charAt(0).toUpperCase()}</div><div><p class="font-bold text-[12px]">${d.name}</p><p class="text-[10px] text-zinc-500">${d.userId}</p></div></div>`;
+    }
+    localStorage.setItem('a2z_contacts_'+myId, JSON.stringify(toSave));
+    if(html) listDiv.innerHTML=html;
+  });
 }
 
-async function searchUser(autoClick=false){
-  const input=document.getElementById('friendId').value.trim().toLowerCase() || friendId;
-  if(!input) return toast("ID লিখুন");
-  friendId=input;
+function saveContactLocal(data){
+  let local=JSON.parse(localStorage.getItem('a2z_contacts_'+myId)||'[]');
+  if(local.find(x=>x.userId.toLowerCase()===data.userId.toLowerCase())) return; // no duplicate
+  if(data.userId.toLowerCase()==='asa2z') return;
+  local.unshift(data);
+  localStorage.setItem('a2z_contacts_'+myId, JSON.stringify(local));
+  fastLoadSaved();
+}
+
+async function searchUser(auto=false){
+  const inp=document.getElementById('friendId').value.trim().toLowerCase() || friendId;
+  if(!inp) return toast("ID লিখুন");
+  if(inp==='asa2z'){ currentUserData={userId:'ASA2Z',name:'ASA2Z Official',gold:0,official:true}; enterChat('asa2z'); return; }
+  friendId=inp;
   let res=null;
   try{ res=await fetch(`${API}?action=getUserDetail&userId=${friendId}`).then(r=>r.json()); if(res.error) res=null; }catch(e){}
   if(!res){ try{ res=await fetch(`${ACCOUNT_API}?action=getUserData&userId=${friendId}`).then(r=>r.json()); if(!res.userId) res=null; }catch(e){} }
-  if(!res){ toast("User পাওয়া যায়নি"); return; }
-  currentUserData=res;
-  const card=`<div onclick="enterChat('${res.userId}')" class="bg-white rounded-[16px] p-4 flex items-center gap-3 cursor-pointer border active:scale-[0.98]"><div class="w-12 h-12 rounded-full bg-[#075E54] text-white flex items-center justify-center font-black">${(res.name||'U').charAt(0).toUpperCase()}</div><div class="flex-1"><p class="font-bold text-[14px] flex items-center">${res.name||res.userId} ${res.userId.toLowerCase()==='asa2z'?'<span class="verify">✓</span>':''}</p><p class="text-[11px] text-zinc-500">ID: ${res.userId} • 💰 ${res.gold||0}</p></div><span>›</span></div>`;
-  document.getElementById('searchResults').innerHTML=card + document.getElementById('searchResults').innerHTML;
+  if(!res){ toast("User পাওয়া যায়নি"); document.getElementById('searchResultArea').innerHTML=`<p class="text-center text-[12px] text-red-500 mt-4">❌ ${friendId} পাওয়া যায়নি</p>`; return; }
+  currentUserData={userId:res.userId,name:res.name||res.userId,gold:res.gold||0};
+  if(auto){ enterChat(res.userId); return; }
+  const area=document.getElementById('searchResultArea');
+  area.innerHTML=`<div class="bg-white rounded-[16px] p-4 flex items-center gap-3 border"><div class="w-12 h-12 rounded-full bg-[#075E54] text-white flex items-center justify-center font-black">${(res.name||'U').charAt(0).toUpperCase()}</div><div class="flex-1"><p class="font-bold text-[14px]">${res.name}</p><p class="text-[11px] text-zinc-500">ID: ${res.userId} • 💰 ${res.gold||0}</p></div><button onclick="enterChat('${res.userId}'); saveContactLocal({userId:'${res.userId}',name:'${res.name}'})" class="px-4 py-2 rounded-full bg-[#075E54] text-white font-black text-[11px]">Chat</button></div>`;
+  saveContactLocal({userId:res.userId,name:res.name||res.userId});
   try{ await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'saveContact',ownerId:myId,contactId:friendId})}); }catch(e){}
-  if(autoClick) enterChat(res.userId); else toast("কার্ডে ক্লিক করুন");
 }
 
-function enterChat(clickedId){
-  if(clickedId) friendId=clickedId.toLowerCase();
+function enterChat(id){
+  if(id) friendId=id.toLowerCase();
+  if(friendId==='asa2z'){ currentUserData={userId:'ASA2Z',name:'ASA2Z Official',gold:0,official:true}; }
   if(!currentUserData) return;
   searchScreen.classList.add('hidden'); chatScreen.classList.remove('hidden');
-  backBtn.classList.remove('hidden'); homeBack.classList.add('hidden');
-  callActions.classList.remove('hidden'); menuBtn.classList.add('hidden');
-  const isOff = currentUserData.userId.toLowerCase()==='asa2z';
+  backBtn.classList.remove('hidden'); homeBack.classList.add('hidden'); callActions.classList.remove('hidden'); menuBtn.classList.add('hidden');
+  const isOff=currentUserData.userId.toLowerCase()==='asa2z';
   headerName.innerHTML=(currentUserData.name||currentUserData.userId)+(isOff?' <span class="verify">✓</span>':'');
-  headerSub.innerText="ID: "+currentUserData.userId+" • 💰 "+(currentUserData.gold||0);
+  headerSub.innerText=isOff?'Official • Message Only':'ID: '+currentUserData.userId;
+  if(isOff){ audioBtn.classList.add('hidden'); videoBtn.classList.add('hidden'); } else { audioBtn.classList.remove('hidden'); videoBtn.classList.remove('hidden'); }
   userInfoBar.classList.remove('hidden');
-  userInfoBar.innerHTML=`<div class="w-8 h-8 rounded-full bg-[#075E54] text-white flex items-center justify-center font-black">${(currentUserData.name||'U').charAt(0).toUpperCase()}</div><div><p class="font-bold text-[13px] flex items-center">${currentUserData.name} ${isOff?'<span class="verify">✓</span>':''}</p><p class="text-[10px] text-zinc-500">Tap for info</p></div>`;
-  loadMsgs(); setInterval(loadMsgs,3000);
+  userInfoBar.innerHTML=`<div class="w-8 h-8 rounded-full bg-[#075E54] text-white flex items-center justify-center font-black">${(currentUserData.name||'U').charAt(0).toUpperCase()}</div><div><p class="font-bold text-[13px] flex items-center">${currentUserData.name} ${isOff?'<span class="verify">✓</span>':''}</p><p class="text-[10px] text-zinc-500">${isOff?'Official':'Tap for info'}</p></div>`;
+  loadMsgs(); if(window.msgInt) clearInterval(window.msgInt); window.msgInt=setInterval(loadMsgs,2500);
 }
 
-function goBack(){ chatScreen.classList.add('hidden'); searchScreen.classList.remove('hidden'); backBtn.classList.add('hidden'); homeBack.classList.remove('hidden'); callActions.classList.add('hidden'); menuBtn.classList.remove('hidden'); headerName.innerHTML=myName+(myId.toLowerCase()==='asa2z'?' <span class="verify">✓</span>':''); headerSub.innerText="ID: "+myId; }
+function goBack(){ chatScreen.classList.add('hidden'); searchScreen.classList.remove('hidden'); backBtn.classList.add('hidden'); homeBack.classList.remove('hidden'); callActions.classList.add('hidden'); menuBtn.classList.remove('hidden'); headerName.innerHTML=myName+(myId.toLowerCase()==='asa2z'?' <span class="verify">✓</span>':''); headerSub.innerText="ID: "+myId; if(window.msgInt) clearInterval(window.msgInt); }
 
 function openUserInfo(){
   if(!currentUserData) return;
   const isOff=currentUserData.userId.toLowerCase()==='asa2z';
-  modalContent.innerHTML=`<center><div class="w-20 h-20 rounded-full bg-[#075E54] text-white flex items-center justify-center text-[28px] font-black">${currentUserData.name.charAt(0).toUpperCase()}</div><p class="font-black text-[18px] mt-3 flex items-center justify-center gap-1">${currentUserData.name} ${isOff?'<span class="verify">✓</span>':''}</p><p class="text-[12px] text-zinc-500">ID: ${currentUserData.userId}</p><p class="mt-2 bg-amber-100 text-amber-700 font-black px-4 py-1 rounded-full text-[13px] inline-block">💰 ${currentUserData.gold||0} Gold</p></center>`;
+  modalContent.innerHTML=`<center><div class="w-20 h-20 rounded-full bg-[#075E54] text-white flex items-center justify-center text-[28px] font-black">${currentUserData.name.charAt(0).toUpperCase()}</div><p class="font-black text-[18px] mt-3 flex items-center justify-center gap-1">${currentUserData.name} ${isOff?'<span class="verify">✓</span>':''}</p><p class="text-[12px] text-zinc-500">ID: ${currentUserData.userId}</p>${isOff?'':`<p class="mt-2 bg-amber-100 text-amber-700 font-black px-4 py-1 rounded-full text-[13px] inline-block">💰 ${currentUserData.gold||0} Gold</p>`}</center>`;
+  if(isOff){ modalActions.innerHTML=`<button onclick="closeUserInfo()" class="col-span-2 py-3 rounded-full bg-zinc-100 font-black text-[13px]">Close</button>`; }
+  else{ modalActions.innerHTML=`<button onclick="makeCall('audio')" class="py-3 rounded-full bg-[#075E54] text-white font-black text-[13px]">📞 Audio</button><button onclick="makeCall('video')" class="py-3 rounded-full bg-[#25D366] text-white font-black text-[13px]">🎥 Video</button>`; }
   userModal.classList.remove('hidden');
 }
 function closeUserInfo(){ userModal.classList.add('hidden'); }
@@ -245,129 +284,95 @@ function closeUserInfo(){ userModal.classList.add('hidden'); }
 function getChatId(){ return [myId,friendId].sort().join('_'); }
 
 async function sendMsg(){
-  const text=msgInput.value.trim(); if(!text) return; msgInput.value='';
+  let text=msgInput.value.trim(); if(!text) return; msgInput.value='';
   await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'sendMessage',chatId:getChatId(),fromId:myId,toId:friendId,message:text})});
-  toast("Sent ✓"); setTimeout(loadMsgs,500);
+  toast("Sent ✓"); setTimeout(loadMsgs,400);
 }
+
 async function loadMsgs(){
   try{
     const data=await fetch(`${API}?action=getMessages&chatId=${getChatId()}`).then(r=>r.json());
-    messages.innerHTML=''; data.forEach(m=>{ const isMe=m.fromId===myId; messages.innerHTML+=`<div class="${isMe?'ml-auto bg-[#DCF8C6]':'mr-auto bg-white'} max-w-[75%] px-3 py-2 rounded-[14px] text-[13px]">${m.message}</div>`; }); messages.scrollTop=messages.scrollHeight;
+    messages.innerHTML=''; data.forEach(m=>{
+      const isMe=m.fromId===myId;
+      if(m.message.startsWith('VOICE:')){
+        const parts=m.message.split('|'); const url=parts[1]; const voice=parts[2]||'normal';
+        messages.innerHTML+=`<div class="${isMe?'ml-auto bg-[#DCF8C6]':'mr-auto bg-white'} max-w-[75%] px-3 py-2 rounded-[14px] text-[13px]"><audio controls src="${url}" style="width:150px" onplay="this.playbackRate=${voice==='male'?0.7:voice==='female'?1.4:1}"></audio><p class="text-[9px]">${voice}</p></div>`;
+      }else{
+        messages.innerHTML+=`<div class="${isMe?'ml-auto bg-[#DCF8C6]':'mr-auto bg-white'} max-w-[75%] px-3 py-2 rounded-[14px] text-[13px]">${m.message}</div>`;
+      }
+    }); messages.scrollTop=messages.scrollHeight;
   }catch(e){}
 }
 
-// CALL LOGIC
+// VOICE
+function openVoiceChanger(){ voiceModal.classList.remove('hidden'); }
+function closeVoice(){ voiceModal.classList.add('hidden'); }
+function setVoice(v){ currentVoice=v; document.querySelectorAll('.voiceOpt').forEach(b=>b.className='voiceOpt py-3 rounded-[12px] bg-zinc-100 font-bold text-[12px]'); event.target.className='voiceOpt py-3 rounded-[12px] bg-zinc-900 text-white font-bold text-[12px]'; toast(v+" voice selected"); }
+
+async function startRecord(){
+  if(recording) return;
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    mediaRecorder=new MediaRecorder(stream); audioChunks=[]; recording=true; toast("Recording... release to send");
+    mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);
+    mediaRecorder.onstop=async ()=>{
+      const blob=new Blob(audioChunks,{type:'audio/webm'});
+      const reader=new FileReader();
+      reader.onloadend=async ()=>{
+        const base64=reader.result;
+        await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'sendMessage',chatId:getChatId(),fromId:myId,toId:friendId,message:`VOICE:${base64}|${currentVoice}`})});
+        toast("Voice sent • "+currentVoice); loadMsgs();
+      }; reader.readAsDataURL(blob);
+      stream.getTracks().forEach(t=>t.stop());
+    };
+    mediaRecorder.start();
+  }catch(e){ toast("Mic permission দিন"); }
+}
+function stopRecord(){ if(mediaRecorder && recording){ mediaRecorder.stop(); recording=false; } }
+
+// CALL
 async function makeCall(type){
+  if(friendId==='asa2z') return toast("Official ID তে কল করা যায় না");
   closeUserInfo();
   try{ await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'sendCall',fromId:myId,toId:friendId,callType:type})}); }catch(e){}
   try{
     const stream=await navigator.mediaDevices.getUserMedia({video:type==='video',audio:true});
-    localStream=stream;
-    const call=peer.call(friendId,stream);
-    if(type==='audio') showAudioCall(currentUserData.name||friendId);
-    else showVideoCall(currentUserData.name||friendId);
+    localStream=stream; const call=peer.call(friendId,stream);
+    if(type==='audio') showAudioCall(currentUserData.name||friendId); else showVideoCall(currentUserData.name||friendId);
     handleCall(call,type);
-  }catch{ toast("Camera/Mic Permission দিন"); }
+  }catch{ toast("Camera/Mic দিন"); }
 }
-
-function showAudioCall(name){
-  audioCallBox.classList.remove('hidden');
-  audioName.innerHTML=name+(name.toLowerCase()==='asa2z'?' <span class="verify">✓</span>':'');
-  audioStatus.innerText='Calling...'; audioAvatar.innerText=name.charAt(0).toUpperCase();
-}
-function showVideoCall(name){
-  videoCallBox.classList.remove('hidden');
-  videoName.innerHTML=name+(name.toLowerCase()==='asa2z'?' <span class="verify">✓</span>':'');
-  videoStatus.innerText='Calling...';
-}
-
+function showAudioCall(name){ audioCallBox.classList.remove('hidden'); audioName.innerText=name; audioStatus.innerText='Calling...'; audioAvatar.innerText=name.charAt(0).toUpperCase(); }
+function showVideoCall(name){ videoCallBox.classList.remove('hidden'); videoName.innerText=name; videoStatus.innerText='Calling...'; }
 function handleCall(call,type){
   currentCall=call;
   call.on('stream',s=>{
-    if(type==='audio' || call.metadata?.type==='audio'){
-      // audio only - play via audio element
-      const audio=document.createElement('audio'); audio.srcObject=s; audio.autoplay=true; audio.play();
-    }else{
-      remoteVideo.srcObject=s;
-    }
+    if(type==='audio'){ const a=document.createElement('audio'); a.srcObject=s; a.autoplay=true; a.play(); }
+    else remoteVideo.srcObject=s;
   });
   call.on('close',()=>endCall());
-  // for incoming, set local video
   if(localStream) localVideo.srcObject=localStream;
 }
-
 function acceptIncoming(){
-  document.getElementById('ringtone').pause();
-  document.getElementById('incomingBox').classList.add('hidden');
+  document.getElementById('ringtone').pause(); incomingBox.classList.add('hidden');
+  const isVideo = currentCall.metadata?.type==='video' || true;
   navigator.mediaDevices.getUserMedia({video:true,audio:true}).then(stream=>{
-    localStream=stream;
-    currentCall.answer(stream);
-    // detect type
-    const isVideo = currentCall.metadata?.type==='video' || true; // assume video if caller video
-    if(isVideo){ showVideoCall(currentCall.peer); handleCall(currentCall,'video'); }
+    localStream=stream; currentCall.answer(stream);
+    if(stream.getVideoTracks().length>0){ showVideoCall(currentCall.peer); handleCall(currentCall,'video'); }
     else{ showAudioCall(currentCall.peer); handleCall(currentCall,'audio'); }
   }).catch(async ()=>{
     const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-    localStream=stream; currentCall.answer(stream);
-    showAudioCall(currentCall.peer); handleCall(currentCall,'audio');
+    localStream=stream; currentCall.answer(stream); showAudioCall(currentCall.peer); handleCall(currentCall,'audio');
   });
 }
-
-function rejectIncoming(){
-  document.getElementById('ringtone').pause();
-  document.getElementById('incomingBox').classList.add('hidden');
-  if(currentCall) currentCall.close();
-}
-
+function rejectIncoming(){ document.getElementById('ringtone').pause(); incomingBox.classList.add('hidden'); if(currentCall) currentCall.close(); }
 function endCall(){
-  document.getElementById('ringtone').pause();
-  incomingBox.classList.add('hidden');
-  audioCallBox.classList.add('hidden');
-  videoCallBox.classList.add('hidden');
-  if(currentCall) currentCall.close();
-  if(localStream){ localStream.getTracks().forEach(t=>t.stop()); }
-  toast("Call Ended");
+  document.getElementById('ringtone').pause(); incomingBox.classList.add('hidden'); audioCallBox.classList.add('hidden'); videoCallBox.classList.add('hidden');
+  if(currentCall) currentCall.close(); if(localStream) localStream.getTracks().forEach(t=>t.stop()); toast("Call Ended");
 }
-
-function toggleMute(){
-  if(!localStream) return;
-  isMuted=!isMuted;
-  localStream.getAudioTracks().forEach(t=>t.enabled=!isMuted);
-  muteBtn.style.background=isMuted?'white':'#2a3942';
-  muteBtn.style.color=isMuted?'black':'white';
-  vmuteBtn.style.background=isMuted?'white':'#2a3942';
-  toast(isMuted?"Muted":"Unmuted");
-}
-function toggleSpeaker(){
-  isSpeaker=!isSpeaker;
-  speakerBtn.style.background=isSpeaker?'white':'#2a3942';
-  speakerBtn.style.color=isSpeaker?'black':'white';
-  toast(isSpeaker?"Speaker On":"Speaker Off");
-}
-function toggleCam(){
-  if(!localStream) return;
-  isCamOff=!isCamOff;
-  localStream.getVideoTracks().forEach(t=>t.enabled=!isCamOff);
-  vcamBtn.style.background=isCamOff?'white':'#2a3942';
-  toast(isCamOff?"Camera Off":"Camera On");
-}
-
-async function loadSavedContacts(){
-  try{
-    const list=await fetch(`${API}?action=getContacts&userId=${myId}`).then(r=>r.json());
-    const div=savedList; div.innerHTML='';
-    // Ensure ASA2Z always fixed
-    if(!list.includes('asa2z')) list.unshift('asa2z');
-    for(let id of list){
-      let d=null; try{ d=await fetch(`${API}?action=getUserDetail&userId=${id}`).then(r=>r.json()); if(d.error) d=null; }catch(e){}
-      if(!d){ try{ d=await fetch(`${ACCOUNT_API}?action=getUserData&userId=${id}`).then(r=>r.json()); }catch(e){} }
-      if(!d||!d.userId) continue;
-      const isOff=d.userId.toLowerCase()==='asa2z';
-      div.innerHTML+=`<div onclick="currentUserData={userId:'${d.userId}',name:'${(d.name||d.userId).replace(/'/g,'')}',gold:${d.gold||0}}; enterChat('${d.userId}')" class="bg-white rounded-[12px] p-3 flex items-center gap-2 cursor-pointer"><div class="w-10 h-10 rounded-full bg-zinc-900 text-white flex items-center justify-center font-black">${(d.name||'U').charAt(0).toUpperCase()}</div><div><p class="font-bold text-[12px] flex items-center">${d.name||d.userId} ${isOff?'<span class=&quot;verify&quot;>✓</span>':''}</p><p class="text-[10px] text-zinc-500">${d.userId}</p></div></div>`;
-    }
-  }catch(e){}
-}
-function showSavedContacts(){ toggleMenu(); toast("নিচে সেভ করা ID"); }
+function toggleMute(){ if(!localStream) return; isMuted=!isMuted; localStream.getAudioTracks().forEach(t=>t.enabled=!isMuted); toast(isMuted?"Muted":"Unmuted"); }
+function toggleSpeaker(){ toast("Speaker"); }
+function toggleCam(){ if(!localStream) return; isCamOff=!isCamOff; localStream.getVideoTracks().forEach(t=>t.enabled=!isCamOff); toast(isCamOff?"Camera Off":"Camera On"); }
 function viewProfile(){ toggleMenu(); toast("ID: "+myId); }
 function doLogout(){ localStorage.clear(); location.reload(); }
 
