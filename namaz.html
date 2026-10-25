@@ -1,55 +1,63 @@
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>নামাজ কর্মসূচি FINAL - A-S A2Z</title>
+<title>নামাজ কর্মসূচি - Final Fixed</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 *{font-family:'Hind Siliguri'}
-body{background: linear-gradient(135deg, #fef9c3 0%, #f0fdf4 25%, #dbeafe 50%, #fce7f3 75%, #e0e7ff 100%); background-attachment: fixed;}
+body{background: linear-gradient(135deg, #fef9c3 0%, #f0fdf4 50%, #dbeafe 100%); background-attachment: fixed;}
 .glass{backdrop-filter: blur(16px); background: rgba(255,255,255,0.88);}
-.video-bg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.35;}
-.watermark{position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:480px; background:rgba(0,0,0,0.85); color:white; text-align:center; font-size:9px; padding:6px; z-index:999; letter-spacing:0.5px}
+.header-fixed{position: sticky; top:0; z-index:40; overflow:hidden; border-bottom:1.5px solid rgba(255,255,255,0.6); box-shadow:0 12px 35px rgba(0,0,0,0.18); height:260px;}
+.header-fixed video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;}
+.header-fixed .overlay{position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(16,185,129,0.4) 50%, rgba(0,0,0,0.5) 100%); z-index:1;}
+.header-fixed .content{position:relative; z-index:3; height:100%;}
+.watermark{position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:480px; background:rgba(0,0,0,0.85); color:white; text-align:center; font-size:9px; padding:6px; z-index:999;}
+.shine{position:absolute; top:0; left:-50%; width:65%; height:100%; background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.9) 45%, rgba(255,255,255,0.5) 50%, transparent 65%); transform: skewX(-18deg); animation: glassShine 3.8s infinite; pointer-events:none; z-index:2;}
+@keyframes glassShine{0%{transform: translateX(-180%) skewX(-18deg);} 60%{transform: translateX(-180%) skewX(-18deg);} 100%{transform: translateX(350%) skewX(-18deg);}}
 </style>
 </head>
 <body>
-<div class="max-w-[480px] mx-auto bg-white/80 min-h-screen shadow-2xl pb-[100px] relative overflow-hidden">
+<div class="max-w-[480px] mx-auto bg-white/80 min-h-screen shadow-2xl pb-[100px] relative">
 
-<!-- ✅ হলুদ ব্যাকগ্রাউন্ড ব্যানার - উপরে -->
-<div class="bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-300 text-black p-3 text-center relative z-30 border-b-2 border-amber-500">
-<p class="font-black text-[11px] leading-[14px]">🕌 সব থেকে বেশি নামাজ পড়েছে তাদের জন্য আল্লাহর কাছ থেকে উত্তম ও উচ্চ পরিষ্কার জান্নাত রয়েছে। আমাদের অ্যাপের পক্ষ থেকে স্পেশাল পুরস্কার রয়েছে প্রতি এক বছর পর অনুষ্ঠানের মাধ্যমে এ পুরস্কার বিতরণ করা হবে ইনশাল্লাহ ✨</p>
+<!-- ✅ হলুদ ব্যানার -->
+<div class="bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-300 text-black p-3 text-center relative z-50 border-b-2 border-amber-500">
+<p class="font-black text-[11px] leading-[14px]">🕌 সব থেকে বেশি নামাজ পড়েছে তাদের জন্য আল্লাহর কাছ থেকে উত্তম ও উচ্চ পরিষ্কার জান্নাত রয়েছে। আমাদের অ্যাপের পক্ষ থেকে স্পেশাল পুরস্কার রয়েছে প্রতি বছর অনুষ্ঠানের মাধ্যমে বিতরণ করা হবে ইনশাল্লাহ ✨</p>
 </div>
 
-<!-- ✅ HEADER WITH VIDEO - লম্বা -->
-<div class="relative h-[260px] overflow-hidden">
-<video autoplay muted loop playsinline class="video-bg">
-<source src="https://cdn.pixabay.com/video/2020/04/08/35810-406515242_large.mp4" type="video/mp4">
+<!-- ✅ ফিক্সড সবুজ হেডার + ভিডিও -->
+<div class="header-fixed rounded-b-[36px]">
+<video id="headerVideo" autoplay muted loop playsinline preload="auto">
+  <!-- আপনি গিটহাবে যে ভিডিও দিবেন সেটা এখানে চলবে -->
+  <source src="./namaz-bg.mp4" type="video/mp4">
+  <source src="./header.mp4" type="video/mp4">
 </video>
-<div class="absolute inset-0 bg-gradient-to-br from-emerald-700/90 via-green-600/85 to-teal-800/90"></div>
-<div class="relative z-10 p-5 h-full flex flex-col justify-between text-white">
+<div class="overlay"></div>
+<div class="shine"></div>
+<div class="content p-5 flex flex-col justify-between text-white">
 <div class="flex justify-between items-center">
-<button onclick="location.href='index.html'" class="w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center font-black">←</button>
-<div class="flex items-center gap-2"><span id="syncStatus" class="text-[9px] bg-white/20 px-3 py-1.5 rounded-full backdrop-blur border-white/20">☁️ Connected</span></div>
+<button onclick="location.href='index.html'" class="w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center font-black border border-white/30">←</button>
+<span id="syncStatus" class="text-[9px] bg-white/20 px-3 py-1.5 rounded-full backdrop-blur border border-white/20">☁️ Connected</span>
 </div>
 <div>
-<p class="font-black text-[22px] leading-[22px]">🕌 নামাজ কর্মসূচি</p>
-<p class="text-[11px] opacity-90 mt-1">আল্লাহর সন্তুষ্টির জন্য</p>
-<p id="todayDate" class="text-[10px] opacity-70 mt-1"></p>
+<p class="font-black text-[22px]">🕌 নামাজ কর্মসূচি</p>
+<p id="todayDate" class="text-[11px] opacity-90 mt-1"></p>
 <div class="mt-4 grid grid-cols-3 gap-2.5">
-<div class="bg-white/20 backdrop-blur rounded-[16px] p-3 text-center border border-white/20 shadow"><p class="text-[9px] opacity-80">মোট নামাজ</p><p id="totalTop" class="font-black text-[20px]">0</p><p class="text-[8px] opacity-70">ওয়াক্ত</p></div>
-<div class="bg-white/20 backdrop-blur rounded-[16px] p-3 text-center border border-white/20 shadow"><p class="text-[9px] opacity-80">মোট মসজিদ</p><p id="mosqueTop" class="font-black text-[20px]">0</p><p class="text-[8px] opacity-70">টি</p></div>
-<div class="bg-white/20 backdrop-blur rounded-[16px] p-3 text-center border border-white/20 shadow"><p class="text-[9px] opacity-80">আজ</p><p id="todayCount" class="font-black text-[20px]">0/9</p><p class="text-[8px] opacity-70">পড়েছেন</p></div>
+<div class="bg-white/20 backdrop-blur rounded-[16px] p-3 text-center border border-white/20"><p class="text-[9px] opacity-80">মোট নামাজ</p><p id="totalTop" class="font-black text-[20px]">0</p></div>
+<div class="bg-white/20 backdrop-blur rounded-[16px] p-3 text-center border border-white/20"><p class="text-[9px] opacity-80">মসজিদ</p><p id="mosqueTop" class="font-black text-[20px]">0</p></div>
+<div class="bg-white/20 backdrop-blur rounded-[16px] p-3 text-center border border-white/20"><p class="text-[9px] opacity-80">আজ</p><p id="todayCount" class="font-black text-[20px]">0/9</p></div>
 </div>
 </div>
 </div>
 </div>
 
 <!-- SEARCH -->
-<div class="p-4 -mt-8 relative z-20">
+<div class="p-4">
 <div class="glass rounded-[20px] p-3.5 shadow-xl border flex items-center gap-2">
-<input id="searchEmail" type="email" placeholder="🔍 Gmail দিয়ে অন্যের টোটাল দেখুন" class="flex-1 bg-zinc-50 border border-zinc-200 rounded-full px-4 py-2.5 text-[11px] outline-none focus:border-emerald-500">
+<input id="searchEmail" type="email" placeholder="🔍 Gmail দিয়ে টোটাল দেখুন" class="flex-1 bg-zinc-50 border border-zinc-200 rounded-full px-4 py-2.5 text-[11px] outline-none focus:border-emerald-500">
 <button onclick="searchByEmail()" class="bg-emerald-600 text-white px-5 py-2.5 rounded-full font-black text-[11px] shadow">Search</button>
 </div>
 </div>
@@ -59,22 +67,21 @@ body{background: linear-gradient(135deg, #fef9c3 0%, #f0fdf4 25%, #dbeafe 50%, #
 <div class="glass rounded-[28px] p-7 text-center border shadow-xl">
 <div class="w-20 h-20 mx-auto bg-gradient-to-br from-emerald-500 to-green-700 rounded-full flex items-center justify-center text-[34px] shadow-lg">🕌</div>
 <p class="font-black text-[20px] mt-4">আপনার আমল শুরু করুন</p>
-<p class="text-[11px] text-zinc-500">আপনার নামাজ Google Sheet এ সুরক্ষিত থাকবে</p>
-<input id="emailInput" type="email" placeholder="✉️ আপনার Gmail দিন" class="mt-6 w-full border-2 border-emerald-100 bg-white rounded-full p-4 text-[13px] text-center outline-none focus:border-emerald-500">
-<input id="nameInput" type="text" placeholder="👤 আপনার নাম" class="mt-3 w-full border-2 border-emerald-100 bg-white rounded-full p-4 text-[13px] text-center outline-none">
-<button onclick="simpleLogin()" class="mt-5 w-full py-4 rounded-full bg-gradient-to-r from-emerald-600 to-green-600 text-white font-black text-[14px] shadow-lg active:scale-95">✅ লগইন করুন</button>
+<input id="emailInput" type="email" placeholder="✉️ Gmail দিন" class="mt-6 w-full border-2 border-emerald-100 bg-white rounded-full p-4 text-[13px] text-center outline-none focus:border-emerald-500">
+<input id="nameInput" type="text" placeholder="👤 নাম" class="mt-3 w-full border-2 border-emerald-100 bg-white rounded-full p-4 text-[13px] text-center outline-none">
+<button onclick="simpleLogin()" class="mt-5 w-full py-4 rounded-full bg-gradient-to-r from-emerald-600 to-green-600 text-white font-black text-[14px] shadow-lg">✅ লগইন</button>
 </div>
 </div>
 
 <!-- MAIN -->
 <div id="mainPage" class="hidden p-4">
-<p class="font-black text-[14px]">📅 আজকের ৯ ওয়াক্ত - টিক দিন</p>
-<p class="text-[10px] text-zinc-500">একবার টিক দিলে আর মোছা যাবে না</p>
+<p class="font-black text-[14px]">📅 আজকের ৯ ওয়াক্ত - ১ দিনে ১ বার</p>
+<p class="text-[10px] text-red-500 font-bold">⚠️ একবার টিক দিলে আজ আর বদলানো যাবে না</p>
 <div id="namazList" class="mt-3 space-y-2.5"></div>
 
 <div class="mt-8">
 <div class="flex justify-between items-center">
-<p class="font-black text-[14px]">📊 রিয়েল টোটাল (Sheet থেকে)</p>
+<p class="font-black text-[14px]">📊 রিয়েল টোটাল</p>
 <button onclick="sharePoster()" class="bg-zinc-900 text-white text-[10px] font-black px-4 py-2 rounded-full shadow">📤 পোস্টার শেয়ার</button>
 </div>
 <div id="totalGrid" class="mt-3 grid grid-cols-3 gap-2.5"></div>
@@ -88,8 +95,7 @@ body{background: linear-gradient(135deg, #fef9c3 0%, #f0fdf4 25%, #dbeafe 50%, #
 <div class="mt-8 text-center"><button onclick="logout()" class="text-[11px] text-red-500 font-bold bg-red-50 px-5 py-2.5 rounded-full">🚪 লগআউট</button></div>
 </div>
 
-<!-- WATERMARK - নিচে -->
-<div class="watermark">© A-S A2Z Official App • Namaz Tracker • Allah Kabul Korun • Version 2.0</div>
+<div class="watermark">© A-S A2Z Official App • Namaz Tracker • Fixed Header + Video BG</div>
 </div>
 
 <canvas id="posterCanvas" width="1080" height="1350" class="hidden"></canvas>
@@ -97,11 +103,10 @@ body{background: linear-gradient(135deg, #fef9c3 0%, #f0fdf4 25%, #dbeafe 50%, #
 <div id="mosqueModal" class="fixed inset-0 bg-black/70 z-[99] hidden flex items-center justify-center p-6 backdrop-blur-sm">
 <div class="bg-white rounded-[24px] p-6 w-full max-w-[360px] shadow-2xl">
 <p class="font-black text-[15px]">🕌 কোন মসজিদে পড়েছেন?</p>
-<p class="text-[10px] text-zinc-500 mt-1">যেমন: ভ্রমণ মসজিদ, বায়তুল মোকাররম, নিজ বাসা</p>
-<input id="mosqueInput" placeholder="মসজিদের নাম লিখুন" class="mt-4 w-full border-2 border-zinc-200 rounded-[14px] p-4 text-[13px] outline-none focus:border-emerald-500">
+<input id="mosqueInput" placeholder="মসজিদের নাম" class="mt-4 w-full border-2 border-zinc-200 rounded-[14px] p-4 text-[13px] outline-none focus:border-emerald-500">
 <div class="grid grid-cols-2 gap-3 mt-5">
 <button onclick="closeMosque()" class="py-3 rounded-full bg-zinc-100 font-bold text-[12px]">বাতিল</button>
-<button onclick="saveToSheet()" class="py-3 rounded-full bg-emerald-600 text-white font-bold text-[12px] shadow">✅ সেভ করুন</button>
+<button onclick="saveToSheet()" class="py-3 rounded-full bg-emerald-600 text-white font-bold text-[12px] shadow">✅ সেভ</button>
 </div>
 </div>
 </div>
@@ -114,33 +119,36 @@ const PRAYERS=[
 {id:'asr',name:'আসর',icon:'🌤️',time:'বিকাল'},
 {id:'maghrib',name:'মাগরিব',icon:'🌇',time:'সন্ধ্যা'},
 {id:'isha',name:'এশা',icon:'🌙',time:'রাত'},
-{id:'jummah',name:'জুম্মা',icon:'🕌',time:'জুম্মা - শুক্রবার'},
+{id:'jummah',name:'জুম্মা',icon:'🕌',time:'জুম্মা'},
 {id:'tahajjud',name:'তাহাজ্জুদ',icon:'✨',time:'গভীর রাত'},
 {id:'janaza',name:'জানাজা',icon:'🤲',time:'জানাজা'},
 {id:'nafal',name:'নফল',icon:'💎',time:'নফল'},
 ];
-let user=null, pending=null, todayData={}, currentTotals={};
+let user=null, pending=null, todayData={}, currentTotals={}, saving=false;
 
 function simpleLogin(){
   const email=document.getElementById('emailInput').value.trim();
   const name=document.getElementById('nameInput').value.trim();
-  if(!email || !email.includes('@')){ alert('সঠিক Gmail দিন'); return; }
+  if(!email.includes('@')){ alert('সঠিক Gmail দিন'); return; }
   user={email, name:name||email.split('@')[0]};
-  localStorage.setItem('namaz_user_sheet_final', JSON.stringify(user));
+  localStorage.setItem('namaz_user_final_fixed', JSON.stringify(user));
   initApp();
 }
-function logout(){ localStorage.removeItem('namaz_user_sheet_final'); location.reload(); }
+function logout(){ localStorage.removeItem('namaz_user_final_fixed'); location.reload(); }
 
 function initApp(){
-  user=JSON.parse(localStorage.getItem('namaz_user_sheet_final')||'null');
+  user=JSON.parse(localStorage.getItem('namaz_user_final_fixed')||'null');
   if(!user){ document.getElementById('loginPage').classList.remove('hidden'); document.getElementById('mainPage').classList.add('hidden'); return; }
   document.getElementById('loginPage').classList.add('hidden'); document.getElementById('mainPage').classList.remove('hidden');
   document.getElementById('todayDate').innerText=new Date().toLocaleDateString('bn-BD',{weekday:'long', day:'numeric', month:'long', year:'numeric'});
   loadFromSheet(user.email);
+  // Video autoplay fix
+  const v=document.getElementById('headerVideo');
+  if(v){ v.muted=true; v.playsInline=true; v.play().catch(()=>{}); }
 }
 function searchByEmail(){
   const email=document.getElementById('searchEmail').value.trim();
-  if(!email.includes('@')){ alert('সঠিক Gmail দিন'); return; }
+  if(!email.includes('@')){ alert('Gmail দিন'); return; }
   loadFromSheet(email);
   document.getElementById('mainPage').classList.remove('hidden');
   document.getElementById('loginPage').classList.add('hidden');
@@ -161,33 +169,39 @@ function render(){
   let html='';
   PRAYERS.forEach(p=>{
     const done=todayData[p.id];
-    const isJummah = p.id==='jummah' && new Date().getDay()!==5;
-    html+=`<div class="glass border ${done?'border-emerald-300 bg-emerald-50/80':'bg-white/80'} ${isJummah?'opacity-70':''} rounded-[18px] p-3.5 flex justify-between items-center shadow-sm">
-    <div class="flex gap-3 items-center"><div class="w-11 h-11 rounded-full ${done?'bg-emerald-600 text-white shadow':'bg-white shadow'} flex items-center justify-center text-[18px]">${p.icon}</div>
-    <div><p class="font-black text-[13px]">${p.name}</p><p class="text-[10px] text-zinc-500">${done?'🕌 '+done.mosque : p.time}</p></div></div>
-    ${done?'<div class="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow">✓</div>':`<button onclick="openMosque('${p.id}')" class="w-9 h-9 rounded-full bg-zinc-900 text-white flex items-center justify-center active:scale-90 shadow">✓</button>`}</div>`;
+    const isLocked = !!done; // ✅ একবার ক্লিক হলে লক
+    html+=`<div class="glass border ${done?'border-emerald-300 bg-emerald-50/80':'bg-white/80'} rounded-[18px] p-3.5 flex justify-between items-center shadow-sm ${isLocked?'opacity-90':''}">
+    <div class="flex gap-3 items-center"><div class="w-11 h-11 rounded-full ${done?'bg-emerald-600 text-white':'bg-white shadow'} flex items-center justify-center text-[18px]">${p.icon}</div>
+    <div><p class="font-black text-[13px]">${p.name} ${isLocked?'<span class=text-[9px] text-emerald-600>(আজ পড়েছেন)</span>':''}</p><p class="text-[10px] text-zinc-500">${done?'🕌 '+done.mosque+' • 🔒 লক' : p.time+' • একবার ক্লিক'}</p></div></div>
+    ${done?'<div class="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow text-[12px]">✓ 🔒</div>':`<button onclick="openMosque('${p.id}')" class="w-9 h-9 rounded-full bg-zinc-900 text-white flex items-center justify-center active:scale-90 shadow">✓</button>`}</div>`;
   });
   document.getElementById('namazList').innerHTML=html;
   document.getElementById('todayCount').innerText=Object.keys(todayData).length+'/'+PRAYERS.length;
 }
-function openMosque(id){ pending=id; document.getElementById('mosqueModal').classList.remove('hidden'); }
+function openMosque(id){ 
+  if(todayData[id]){ alert('এই নামাজ আজ একবার পড়েছেন, আজ আর হবে না। কাল আবার পারবেন।'); return; }
+  pending=id; document.getElementById('mosqueModal').classList.remove('hidden'); 
+}
 function closeMosque(){ document.getElementById('mosqueModal').classList.add('hidden'); pending=null; }
 
 async function saveToSheet(){
+  if(saving) return;
+  if(!pending) return;
+  if(todayData[pending]){ alert('আজ already সেভ আছে'); closeMosque(); return; }
   const mosque=document.getElementById('mosqueInput').value.trim()||'নিজ বাসা';
-  if(todayData[pending]){ alert('আজ পড়েছেন'); closeMosque(); return; }
+  saving=true;
   document.getElementById('syncStatus').innerText='☁️ Saving...';
-  const email = user ? user.email : document.getElementById('searchEmail').value.trim() || 'unknown@gmail.com';
+  const email = user ? user.email : document.getElementById('searchEmail').value.trim();
   const name = user ? user.name : email;
-  const payload={date:getToday(), userEmail:email, userName:name, prayer:pending, mosque, timestamp:new Date().toLocaleString('bn-BD'), deviceId:'web'};
+  const payload={date:getToday(), userEmail:email, userName:name, prayer:pending, mosque, timestamp:new Date().toLocaleString('bn-BD'), deviceId:'web_fixed'};
   try{
     const res=await fetch(API_URL,{method:'POST', body:JSON.stringify(payload)});
     const j=await res.json();
-    if(j.status==='duplicate'){ alert('এই নামাজ আজ already সেভ আছে'); }
+    if(j.status==='duplicate'){ alert('⛔ এই নামাজ আজ একবারই হবে, আপনি already পড়েছেন'); }
     todayData[pending]={mosque}; render(); loadTotals(email);
-    document.getElementById('syncStatus').innerText='✅ Saved to Sheet';
-    if(navigator.vibrate) navigator.vibrate(50);
-  }catch(e){ document.getElementById('syncStatus').innerText='❌ Failed'; }
+    document.getElementById('syncStatus').innerText='✅ Saved - আজ আর হবে না';
+  }catch(e){ document.getElementById('syncStatus').innerText='❌ Failed'; alert('Net Error'); }
+  saving=false;
   closeMosque(); document.getElementById('mosqueInput').value='';
 }
 
@@ -200,15 +214,14 @@ async function loadTotals(email){
     document.getElementById('mosqueTop').innerText=t.totalMosque||0;
     let html='';
     PRAYERS.forEach(p=>{
-      const count = t[p.id]||0;
-      html+=`<div class="glass border bg-white/90 rounded-[16px] p-3 text-center shadow"><p class="text-[9px] text-zinc-500 font-black">${p.name}</p><p class="font-black text-[22px] text-emerald-600">${count}</p><p class="text-[8px] text-zinc-400">ওয়াক্ত</p></div>`;
+      html+=`<div class="glass border bg-white/90 rounded-[16px] p-3 text-center shadow"><p class="text-[9px] text-zinc-500 font-black">${p.name}</p><p class="font-black text-[22px] text-emerald-600">${t[p.id]||0}</p></div>`;
     });
-    html+=`<div class="bg-gradient-to-br from-zinc-900 to-zinc-800 text-white rounded-[16px] p-3 text-center shadow-lg border"><p class="text-[9px] opacity-70">সর্বমোট</p><p class="font-black text-[22px]">${t.total||0}</p><p class="text-[8px] opacity-60">ওয়াক্ত</p></div>`;
+    html+=`<div class="bg-zinc-900 text-white rounded-[16px] p-3 text-center shadow-lg"><p class="text-[9px] opacity-70">সর্বমোট</p><p class="font-black text-[22px]">${t.total||0}</p></div>`;
     document.getElementById('totalGrid').innerHTML=html;
     let mHtml=Object.entries(t.mosques||{}).map(([n,c])=>`<div class="flex justify-between bg-white/90 border rounded-full px-4 py-2.5 shadow-sm"><span>🕌 ${n}</span><span class="font-black bg-emerald-100 text-emerald-700 px-3 rounded-full">${c} বার</span></div>`).join('');
-    document.getElementById('mosqueList').innerHTML=mHtml||'<p class="text-zinc-400 text-center py-3">কোন মসজিদ এখনো অ্যাড হয়নি</p>';
-    document.getElementById('syncStatus').innerText='✅ Synced';
-  }catch(e){ document.getElementById('syncStatus').innerText='❌ Offline'; }
+    document.getElementById('mosqueList').innerHTML=mHtml||'<p class="text-zinc-400 text-center py-3">নেই</p>';
+    document.getElementById('syncStatus').innerText='✅ Synced - একদিনে একবার লক';
+  }catch(e){}
 }
 
 async function sharePoster(){
@@ -216,30 +229,18 @@ async function sharePoster(){
   const canvas=document.getElementById('posterCanvas');
   const ctx=canvas.getContext('2d');
   const grad=ctx.createLinearGradient(0,0,1080,1350);
-  grad.addColorStop(0,'#facc15'); grad.addColorStop(0.3,'#eab308'); grad.addColorStop(0.7,'#059669'); grad.addColorStop(1,'#047857');
+  grad.addColorStop(0,'#facc15'); grad.addColorStop(1,'#059669');
   ctx.fillStyle=grad; ctx.fillRect(0,0,1080,1350);
-  
   ctx.fillStyle='black'; ctx.fillRect(0,0,1080,110);
-  ctx.fillStyle='#facc15'; ctx.font='900 22px Hind Siliguri'; 
-  ctx.fillText('🕌 সব থেকে বেশি নামাজ পড়েছে তাদের জন্য আল্লাহর কাছ থেকে উত্তম ও উচ্চ পরিষ্কার জান্নাত রয়েছে।', 20, 35);
-  ctx.font='700 18px Hind Siliguri';
-  ctx.fillText('আমাদের অ্যাপের পক্ষ থেকে স্পেশাল পুরস্কার রয়েছে প্রতি বছর অনুষ্ঠানের মাধ্যমে বিতরণ করা হবে ইনশাল্লাহ', 20, 70);
-
-  ctx.fillStyle='white'; ctx.font='900 52px Hind Siliguri'; ctx.fillText('🕌 আমার নামাজ কর্মসূচি', 60, 190);
-  ctx.font='700 26px Hind Siliguri'; ctx.fillText(`Gmail: ${user?user.email:'user'}`, 60, 240);
+  ctx.fillStyle='#facc15'; ctx.font='900 20px Hind Siliguri'; 
+  ctx.fillText('🕌 সব থেকে বেশি নামাজ পড়েছে তাদের জন্য জান্নাত রয়েছে।', 20, 35);
+  ctx.fillStyle='white'; ctx.font='900 52px Hind Siliguri'; ctx.fillText('🕌 আমার নামাজ', 60, 190);
   ctx.font='900 68px Hind Siliguri'; ctx.fillText(`মোট: ${currentTotals.total} ওয়াক্ত`, 60, 340);
-  
   let y=420;
-  PRAYERS.forEach(p=>{
-    ctx.font='700 32px Hind Siliguri'; ctx.fillText(`${p.icon} ${p.name}: ${currentTotals[p.id]||0} ওয়াক্ত`, 60, y); y+=58;
-  });
-  ctx.font='700 28px Hind Siliguri'; ctx.fillText(`🕌 মোট মসজিদ: ${currentTotals.totalMosque||0} টি`, 60, y+30);
-  ctx.font='900 20px Hind Siliguri'; ctx.fillText('© A-S A2Z Official App • আল্লাহ কবুল করুন', 60, 1300);
-
+  PRAYERS.forEach(p=>{ ctx.font='700 32px Hind Siliguri'; ctx.fillText(`${p.icon} ${p.name}: ${currentTotals[p.id]||0}`, 60, y); y+=58; });
   const url=canvas.toDataURL('image/png');
-  const a=document.createElement('a'); a.href=url; a.download=`namaz_poster_${currentTotals.total}.png`; a.click();
+  const a=document.createElement('a'); a.href=url; a.download=`namaz.png`; a.click();
 }
-
 window.addEventListener('load', initApp);
 </script>
 </body>
