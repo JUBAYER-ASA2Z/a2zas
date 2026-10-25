@@ -11,9 +11,9 @@
 *{font-family:'Hind Siliguri'}
 body{background: linear-gradient(135deg, #fef9c3 0%, #f0fdf4 50%, #dbeafe 100%); background-attachment: fixed;}
 .glass{backdrop-filter: blur(16px); background: rgba(255,255,255,0.88);}
-.header-fixed{position: sticky; top:0; z-index:40; overflow:hidden; border-bottom:1.5px solid rgba(255,255,255,0.6); box-shadow:0 12px 35px rgba(0,0,0,0.18); height:260px;}
+.header-fixed{position: sticky; top:0; z-index:40; overflow:hidden; border-bottom:1.5px solid rgba(255,255,255,0.6); box-shadow:0 12px 35px rgba(0,0,0,0.18); height:280px;}
 .header-fixed video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;}
-.header-fixed .overlay{position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(16,185,129,0.4) 50%, rgba(0,0,0,0.5) 100%); z-index:1;}
+.header-fixed .overlay{position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(16,185,129,0.45) 50%, rgba(0,0,0,0.55) 100%); z-index:1;}
 .header-fixed .content{position:relative; z-index:3; height:100%;}
 .watermark{position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:480px; background:rgba(0,0,0,0.85); color:white; text-align:center; font-size:9px; padding:6px; z-index:999;}
 .shine{position:absolute; top:0; left:-50%; width:65%; height:100%; background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.9) 45%, rgba(255,255,255,0.5) 50%, transparent 65%); transform: skewX(-18deg); animation: glassShine 3.8s infinite; pointer-events:none; z-index:2;}
@@ -23,15 +23,9 @@ body{background: linear-gradient(135deg, #fef9c3 0%, #f0fdf4 50%, #dbeafe 100%);
 <body>
 <div class="max-w-[480px] mx-auto bg-white/80 min-h-screen shadow-2xl pb-[100px] relative">
 
-<!-- ✅ হলুদ ব্যানার -->
-<div class="bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-300 text-black p-3 text-center relative z-50 border-b-2 border-amber-500">
-<p class="font-black text-[11px] leading-[14px]">🕌 সব থেকে বেশি নামাজ পড়েছে তাদের জন্য আল্লাহর কাছ থেকে উত্তম ও উচ্চ পরিষ্কার জান্নাত রয়েছে। আমাদের অ্যাপের পক্ষ থেকে স্পেশাল পুরস্কার রয়েছে প্রতি বছর অনুষ্ঠানের মাধ্যমে বিতরণ করা হবে ইনশাল্লাহ ✨</p>
-</div>
-
-<!-- ✅ ফিক্সড সবুজ হেডার + ভিডিও -->
+<!-- ✅ ফিক্সড সবুজ হেডার + ভিডিও - এখন আর নড়বে না -->
 <div class="header-fixed rounded-b-[36px]">
 <video id="headerVideo" autoplay muted loop playsinline preload="auto">
-  <!-- আপনি গিটহাবে যে ভিডিও দিবেন সেটা এখানে চলবে -->
   <source src="./namaz-bg.mp4" type="video/mp4">
   <source src="./header.mp4" type="video/mp4">
 </video>
@@ -39,11 +33,14 @@ body{background: linear-gradient(135deg, #fef9c3 0%, #f0fdf4 50%, #dbeafe 100%);
 <div class="shine"></div>
 <div class="content p-5 flex flex-col justify-between text-white">
 <div class="flex justify-between items-center">
+<div class="flex gap-2">
 <button onclick="location.href='index.html'" class="w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center font-black border border-white/30">←</button>
+<button onclick="location.href='index.html'" class="px-3 py-1.5 rounded-full bg-white/90 text-emerald-700 font-black text-[10px] shadow">🏠 HOME</button>
+</div>
 <span id="syncStatus" class="text-[9px] bg-white/20 px-3 py-1.5 rounded-full backdrop-blur border border-white/20">☁️ Connected</span>
 </div>
 <div>
-<p class="font-black text-[22px]">🕌 নামাজ কর্মসূচি</p>
+<p class="font-black text-[23px] drop-shadow">🕌 নামাজ কর্মসূচি</p>
 <p id="todayDate" class="text-[11px] opacity-90 mt-1"></p>
 <div class="mt-4 grid grid-cols-3 gap-2.5">
 <div class="bg-white/20 backdrop-blur rounded-[16px] p-3 text-center border border-white/20"><p class="text-[9px] opacity-80">মোট নামাজ</p><p id="totalTop" class="font-black text-[20px]">0</p></div>
@@ -52,6 +49,11 @@ body{background: linear-gradient(135deg, #fef9c3 0%, #f0fdf4 50%, #dbeafe 100%);
 </div>
 </div>
 </div>
+</div>
+
+<!-- ✅ হলুদ ব্যানার - এখন শিরোনামের মতো নিচে -->
+<div class="mx-3 mt-3 bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-300 text-black p-3 text-center rounded-[16px] border-2 border-amber-500 shadow">
+<p class="font-black text-[11px] leading-[14px]">🕌 সব থেকে বেশি নামাজ পড়েছে তাদের জন্য আল্লাহর কাছ থেকে উত্তম ও উচ্চ পরিষ্কার জান্নাত রয়েছে। আমাদের অ্যাপের পক্ষ থেকে স্পেশাল পুরস্কার রয়েছে প্রতি বছর অনুষ্ঠানের মাধ্যমে বিতরণ করা হবে ইনশাল্লাহ ✨</p>
 </div>
 
 <!-- SEARCH -->
@@ -75,8 +77,8 @@ body{background: linear-gradient(135deg, #fef9c3 0%, #f0fdf4 50%, #dbeafe 100%);
 
 <!-- MAIN -->
 <div id="mainPage" class="hidden p-4">
-<p class="font-black text-[14px]">📅 আজকের ৯ ওয়াক্ত - ১ দিনে ১ বার</p>
-<p class="text-[10px] text-red-500 font-bold">⚠️ একবার টিক দিলে আজ আর বদলানো যাবে না</p>
+<p class="font-black text-[14px]">📅 আজকের ৯ ওয়াক্ত - ১ দিনে ১ বার লক</p>
+<p class="text-[10px] text-red-500 font-black">⚠️ একবার টিক দিলে আজ আর বদলানো যাবে না, কাল আবার পারবেন</p>
 <div id="namazList" class="mt-3 space-y-2.5"></div>
 
 <div class="mt-8">
@@ -114,11 +116,11 @@ body{background: linear-gradient(135deg, #fef9c3 0%, #f0fdf4 50%, #dbeafe 100%);
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbwXVeiy11EXfRggok5FxTXfP1FOISZmPfI16PowxkWSqwkAQKmEibkbNjpTqubWkEfw/exec";
 const PRAYERS=[
-{id:'fajr',name:'ফজর',icon:'🌅',time:'ভোর'},
-{id:'dhuhr',name:'যোহর',icon:'☀️',time:'দুপুর'},
-{id:'asr',name:'আসর',icon:'🌤️',time:'বিকাল'},
-{id:'maghrib',name:'মাগরিব',icon:'🌇',time:'সন্ধ্যা'},
-{id:'isha',name:'এশা',icon:'🌙',time:'রাত'},
+{id:'fajr',name:'ফজর',icon:'🌅',time:'ভোর - একবার'},
+{id:'dhuhr',name:'যোহর',icon:'☀️',time:'দুপুর - একবার'},
+{id:'asr',name:'আসর',icon:'🌤️',time:'বিকাল - একবার'},
+{id:'maghrib',name:'মাগরিব',icon:'🌇',time:'সন্ধ্যা - একবার'},
+{id:'isha',name:'এশা',icon:'🌙',time:'রাত - একবার'},
 {id:'jummah',name:'জুম্মা',icon:'🕌',time:'জুম্মা'},
 {id:'tahajjud',name:'তাহাজ্জুদ',icon:'✨',time:'গভীর রাত'},
 {id:'janaza',name:'জানাজা',icon:'🤲',time:'জানাজা'},
@@ -142,9 +144,8 @@ function initApp(){
   document.getElementById('loginPage').classList.add('hidden'); document.getElementById('mainPage').classList.remove('hidden');
   document.getElementById('todayDate').innerText=new Date().toLocaleDateString('bn-BD',{weekday:'long', day:'numeric', month:'long', year:'numeric'});
   loadFromSheet(user.email);
-  // Video autoplay fix
   const v=document.getElementById('headerVideo');
-  if(v){ v.muted=true; v.playsInline=true; v.play().catch(()=>{}); }
+  if(v){ v.muted=true; v.playsInline=true; v.loop=true; v.preload='auto'; const play=()=>v.play().catch(()=>{}); play(); v.addEventListener('canplay', play); document.addEventListener('touchstart', play, {once:true}); }
 }
 function searchByEmail(){
   const email=document.getElementById('searchEmail').value.trim();
@@ -169,17 +170,16 @@ function render(){
   let html='';
   PRAYERS.forEach(p=>{
     const done=todayData[p.id];
-    const isLocked = !!done; // ✅ একবার ক্লিক হলে লক
-    html+=`<div class="glass border ${done?'border-emerald-300 bg-emerald-50/80':'bg-white/80'} rounded-[18px] p-3.5 flex justify-between items-center shadow-sm ${isLocked?'opacity-90':''}">
+    html+=`<div class="glass border ${done?'border-emerald-300 bg-emerald-50/80':'bg-white/80'} rounded-[18px] p-3.5 flex justify-between items-center shadow-sm">
     <div class="flex gap-3 items-center"><div class="w-11 h-11 rounded-full ${done?'bg-emerald-600 text-white':'bg-white shadow'} flex items-center justify-center text-[18px]">${p.icon}</div>
-    <div><p class="font-black text-[13px]">${p.name} ${isLocked?'<span class=text-[9px] text-emerald-600>(আজ পড়েছেন)</span>':''}</p><p class="text-[10px] text-zinc-500">${done?'🕌 '+done.mosque+' • 🔒 লক' : p.time+' • একবার ক্লিক'}</p></div></div>
-    ${done?'<div class="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow text-[12px]">✓ 🔒</div>':`<button onclick="openMosque('${p.id}')" class="w-9 h-9 rounded-full bg-zinc-900 text-white flex items-center justify-center active:scale-90 shadow">✓</button>`}</div>`;
+    <div><p class="font-black text-[13px]">${p.name} ${done?'<span class=text-[9px] text-emerald-700> (আজ লক)</span>':''}</p><p class="text-[10px] ${done?'text-emerald-600 font-bold':'text-zinc-500'}">${done?'🕌 '+done.mosque+' • 🔒 আজ আর হবে না' : p.time}</p></div></div>
+    ${done?'<div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow text-[11px] font-black">🔒</div>':`<button onclick="openMosque('${p.id}')" class="w-10 h-10 rounded-full bg-zinc-900 text-white flex items-center justify-center active:scale-90 shadow font-black">✓</button>`}</div>`;
   });
   document.getElementById('namazList').innerHTML=html;
   document.getElementById('todayCount').innerText=Object.keys(todayData).length+'/'+PRAYERS.length;
 }
 function openMosque(id){ 
-  if(todayData[id]){ alert('এই নামাজ আজ একবার পড়েছেন, আজ আর হবে না। কাল আবার পারবেন।'); return; }
+  if(todayData[id]){ alert('⛔ এই নামাজ আজ একবার পড়েছেন, কাল আবার পারবেন। এক তারিখে একবারই হবে।'); return; }
   pending=id; document.getElementById('mosqueModal').classList.remove('hidden'); 
 }
 function closeMosque(){ document.getElementById('mosqueModal').classList.add('hidden'); pending=null; }
@@ -199,8 +199,8 @@ async function saveToSheet(){
     const j=await res.json();
     if(j.status==='duplicate'){ alert('⛔ এই নামাজ আজ একবারই হবে, আপনি already পড়েছেন'); }
     todayData[pending]={mosque}; render(); loadTotals(email);
-    document.getElementById('syncStatus').innerText='✅ Saved - আজ আর হবে না';
-  }catch(e){ document.getElementById('syncStatus').innerText='❌ Failed'; alert('Net Error'); }
+    document.getElementById('syncStatus').innerText='✅ Saved - লক';
+  }catch(e){ document.getElementById('syncStatus').innerText='❌ Failed'; }
   saving=false;
   closeMosque(); document.getElementById('mosqueInput').value='';
 }
@@ -220,10 +220,9 @@ async function loadTotals(email){
     document.getElementById('totalGrid').innerHTML=html;
     let mHtml=Object.entries(t.mosques||{}).map(([n,c])=>`<div class="flex justify-between bg-white/90 border rounded-full px-4 py-2.5 shadow-sm"><span>🕌 ${n}</span><span class="font-black bg-emerald-100 text-emerald-700 px-3 rounded-full">${c} বার</span></div>`).join('');
     document.getElementById('mosqueList').innerHTML=mHtml||'<p class="text-zinc-400 text-center py-3">নেই</p>';
-    document.getElementById('syncStatus').innerText='✅ Synced - একদিনে একবার লক';
+    document.getElementById('syncStatus').innerText='✅ Synced';
   }catch(e){}
 }
-
 async function sharePoster(){
   if(!currentTotals.total){ alert('আগে নামাজ পড়ুন'); return; }
   const canvas=document.getElementById('posterCanvas');
@@ -231,9 +230,6 @@ async function sharePoster(){
   const grad=ctx.createLinearGradient(0,0,1080,1350);
   grad.addColorStop(0,'#facc15'); grad.addColorStop(1,'#059669');
   ctx.fillStyle=grad; ctx.fillRect(0,0,1080,1350);
-  ctx.fillStyle='black'; ctx.fillRect(0,0,1080,110);
-  ctx.fillStyle='#facc15'; ctx.font='900 20px Hind Siliguri'; 
-  ctx.fillText('🕌 সব থেকে বেশি নামাজ পড়েছে তাদের জন্য জান্নাত রয়েছে।', 20, 35);
   ctx.fillStyle='white'; ctx.font='900 52px Hind Siliguri'; ctx.fillText('🕌 আমার নামাজ', 60, 190);
   ctx.font='900 68px Hind Siliguri'; ctx.fillText(`মোট: ${currentTotals.total} ওয়াক্ত`, 60, 340);
   let y=420;
