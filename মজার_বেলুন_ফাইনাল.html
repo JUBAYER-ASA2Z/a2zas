@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#38bdf8">
+<meta name="description" content="মজার বেলুন - শিশুদের জন্য নিরাপদ ও আনন্দের বেলুন পপিং গেম">
+<title>মজার বেলুন — Kids Balloon Game</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --sky1:#38bdf8; --sky2:#a5f3fc; --cream:#fef9c3;
+  --ink:#172033; --glass:rgba(255,255,255,.88);
+}
+*{box-sizing:border-box;font-family:'Hind Siliguri',sans-serif;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;margin:0}
+body{
+  overflow:hidden;color:var(--ink);
+  background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 45%,var(--cream) 100%);
+}
+button{touch-action:manipulation}
+#app{height:100dvh;min-height:100vh;display:flex;flex-direction:column}
+.glass{background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.game-shell{
+  position:relative;overflow:hidden;isolation:isolate;
+  border:3px solid rgba(255,255,255,.78);
+  background:linear-gradient(180deg,rgba(186,230,253,.50),rgba(255,255,255,.08));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 12px 30px rgba(14,116,144,.12);
+}
+.game-shell:before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;
+  background:radial-gradient(circle at 15% 10%,rgba(255,255,255,.45),transparent 25%),
+             radial-gradient(circle at 90% 70%,rgba(255,255,255,.3),transparent 30%);
+}
+.balloon{
+  position:absolute;cursor:pointer;z-index:5;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;color:white;text-shadow:0 2px 5px rgba(0,0,0,.28);
+  border-radius:50% 50% 50% 50% / 55% 55% 45% 45%;
+  box-shadow:inset -8px -10px 0 rgba(255,255,255,.22),inset 6px 7px 0 rgba(255,255,255,.12),0 7px 14px rgba(15,23,42,.12);
+  animation:floatUp linear forwards;
+  user-select:none;
+}
+.balloon:before{
+  content:"";position:absolute;width:25%;height:18%;left:18%;top:12%;
+  border-radius:50%;background:rgba(255,255,255,.48);transform:rotate(-28deg);
+}
+.balloon:after{
+  content:"";position:absolute;bottom:-14px;left:50%;
+  width:2px;height:16px;background:#64748b;transform:translateX(-50%);
+}
+.balloon-burst{animation:pop .18s forwards!important}
+@keyframes floatUp{from{transform:translateY(115vh) scale(.86)}to{transform:translateY(-150px) scale(1.05)}}
+@keyframes pop{0%{transform:scale(1);opacity:1}55%{transform:scale(1.38);opacity:1}100%{transform:scale(.05);opacity:0}}
+@keyframes cloudMove{from{transform:translateX(-30vw)}to{transform:translateX(130vw)}}
+.cloud{position:absolute;background:#fff;border-radius:999px;opacity:.72;animation:cloudMove linear infinite;filter:blur(.2px)}
+.cloud:before,.cloud:after{content:"";position:absolute;background:#fff;border-radius:50%}
+.cloud:before{width:55%;height:140%;left:16%;bottom:25%}
+.cloud:after{width:45%;height:120%;right:10%;bottom:20%}
+.heart-pulse{animation:heartBeat 1s infinite}
+@keyframes heartBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.16)}}
+.float-score{position:absolute;z-index:30;pointer-events:none;font-size:21px;font-weight:900;color:#047857;text-shadow:0 1px 0 white;animation:floatScore .65s ease-out forwards}
+@keyframes floatScore{0%{opacity:0;transform:translateY(10px) scale(.8)}20%{opacity:1}100%{opacity:0;transform:translateY(-45px) scale(1.1)}}
+.shake{animation:shake .25s ease}
+@keyframes shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+.safe-bottom{padding-bottom:max(12px,env(safe-area-inset-bottom))}
+
+@media (max-width: 600px){
+  body{padding:8px;overflow:auto}
+  #app{
+    width:100%;
+    height:calc(100dvh - 16px);
+    min-height:0;
+    margin:0 auto;
+    border-radius:24px;
+  }
+}
+@media (max-height: 700px) and (max-width: 600px){
+  #app{height:calc(100dvh - 12px)}
+  header{padding-top:8px}
+}
+@media (min-width: 601px){
+  #app{max-width:560px}
+}
+</style>
+</head>
+
+<body>
+<div id="app">
+
+  <!-- Header -->
+  <header class="px-3 pt-3 relative z-20">
+    <div class="flex items-center justify-between gap-2">
+      <div class="glass flex items-center gap-2 px-3 py-2 rounded-full shadow-lg">
+        <span class="text-[22px]">🎈</span>
+        <div class="leading-tight">
+          <div class="font-black text-[14px]">মজার বেলুন</div>
+          <div class="text-[9px] font-bold text-slate-500">KIDS BALLOON GAME</div>
+        </div>
+        <span class="bg-yellow-400 text-[9px] px-2 py-0.5 rounded-full font-black">KIDS</span>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="toggleSound()" id="soundBtn" aria-label="শব্দ চালু বা বন্ধ" class="w-10 h-10 bg-white rounded-full shadow-lg text-[18px] active:scale-90 transition">🔊</button>
+        <button onclick="showHelp()" aria-label="সহায়তা" class="w-10 h-10 bg-white rounded-full shadow-lg text-[18px] active:scale-90 transition">❓</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Score -->
+  <section class="px-3 mt-3 grid grid-cols-3 gap-2 relative z-20">
+    <div class="glass rounded-2xl p-2.5 text-center shadow">
+      <div class="text-[10px] text-slate-500 font-bold">স্কোর</div>
+      <div id="score" class="font-black text-[21px] leading-none text-emerald-600">0</div>
+    </div>
+    <div class="glass rounded-2xl p-2.5 text-center shadow">
+      <div class="text-[10px] text-slate-500 font-bold">সেরা স্কোর</div>
+      <div id="best" class="font-black text-[21px] leading-none">0</div>
+    </div>
+    <div class="glass rounded-2xl p-2.5 text-center shadow">
+      <div class="text-[10px] text-slate-500 font-bold">জীবন</div>
+      <div id="lives" class="font-black text-[16px] leading-none heart-pulse">❤️❤️❤️</div>
+    </div>
+  </section>
+
+  <!-- Level -->
+  <section class="px-3 mt-2 relative z-20">
+    <div class="glass rounded-full p-1.5 flex items-center gap-2 shadow">
+      <div id="levelLabel" class="bg-violet-600 text-white text-[10px] font-black px-3 py-1.5 rounded-full whitespace-nowrap">লেভেল ১</div>
+      <div class="flex-1 h-3 bg-slate-100/90 rounded-full overflow-hidden">
+        <div id="progress" class="h-full bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-300 rounded-full transition-all duration-300" style="width:0%"></div>
+      </div>
+      <div id="timer" class="text-[11px] font-black bg-yellow-100 px-2.5 py-1 rounded-full min-w-[43px] text-center">60s</div>
+    </div>
+  </section>
+
+  <!-- Game -->
+  <main id="gameArea" class="game-shell flex-1 min-h-0 mt-2 mx-2 rounded-[26px]">
+    <div class="cloud w-20 h-8 top-[10%]" style="animation-duration:28s"></div>
+    <div class="cloud w-28 h-10 top-[26%]" style="animation-duration:38s;animation-delay:-10s"></div>
+    <div class="cloud w-16 h-6 top-[48%]" style="animation-duration:32s;animation-delay:-5s"></div>
+    <div class="cloud w-24 h-8 top-[72%]" style="animation-duration:42s;animation-delay:-18s"></div>
+
+    <div id="centerMsg" class="absolute inset-0 flex flex-col items-center justify-center text-center z-10 pointer-events-none px-6">
+      <div class="text-[50px] leading-none">🎈🎈🎈</div>
+      <div class="font-black text-[25px] text-white drop-shadow-lg mt-2">বেলুন ফাটাও!</div>
+      <div class="text-[11px] font-bold text-white/95 bg-slate-900/30 px-3 py-1 rounded-full mt-1">
+        রঙিন বেলুনে ট্যাপ করো • 💣 এড়িয়ে চলো
+      </div>
+    </div>
+  </main>
+
+  <!-- Controls -->
+  <section class="px-3 pt-3 relative z-20">
+    <div class="grid grid-cols-2 gap-2">
+      <button id="startBtn" onclick="startGame()" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black py-3.5 rounded-full shadow-lg text-[14px] active:scale-95 transition">
+        ▶️ খেলা শুরু করো
+      </button>
+      <button onclick="showPrize()" class="bg-gradient-to-r from-amber-400 to-orange-400 text-white font-black py-3.5 rounded-full shadow-lg text-[14px] active:scale-95 transition">
+        🏆 পুরস্কার
+      </button>
+    </div>
+    <div class="pt-2 pb-2 flex flex-wrap gap-1.5 justify-center text-[9px] font-bold text-slate-600">
+      <span class="bg-white/80 px-2 py-1 rounded-full">🎈 রঙিন = +১০</span>
+      <span class="bg-white/80 px-2 py-1 rounded-full">⭐ তারা = +২০</span>
+      <span class="bg-white/80 px-2 py-1 rounded-full">💣 বোমা = জীবন -১</span>
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div id="modal" class="hidden fixed inset-0 z-50 bg-slate-950/55 backdrop-blur-[2px] items-center justify-center p-4">
+    <div class="bg-white rounded-[26px] p-5 w-full max-w-[340px] text-center shadow-2xl">
+      <div id="modalEmoji" class="text-[55px] leading-none">🎉</div>
+      <div id="modalTitle" class="font-black text-[21px] mt-2">দারুণ!</div>
+      <div id="modalText" class="text-[13px] text-slate-500 mt-1 leading-relaxed"></div>
+      <button onclick="closeModal()" class="w-full mt-4 bg-slate-900 text-white py-3 rounded-full font-bold active:scale-95 transition">ঠিক আছে</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+'use strict';
+
+const $ = id => document.getElementById(id);
+const BEST_KEY = 'balloon_best_v2';
+
+let score = 0;
+let best = Number(localStorage.getItem(BEST_KEY) || 0);
+let lives = 3;
+let playing = false;
+let timeLeft = 60;
+let level = 1;
+let timerInt = null;
+let spawnInt = null;
+let soundOn = true;
+let audioCtx = null;
+
+$('best').textContent = best;
+
+function getAudio(){
+  if(!soundOn) return null;
+  try{
+    audioCtx ||= new (window.AudioContext || window.webkitAudioContext)();
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }catch(e){ return null; }
+}
+
+function tone(type='good'){
+  const ctx = getAudio();
+  if(!ctx) return;
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.type = type === 'bad' ? 'sawtooth' : 'sine';
+  const start = ctx.currentTime;
+  o.frequency.setValueAtTime(type === 'bad' ? 190 : 520, start);
+  o.frequency.exponentialRampToValueAtTime(type === 'bad' ? 80 : 980, start + (type === 'bad' ? .18 : .09));
+  g.gain.setValueAtTime(type === 'bad' ? .12 : .18, start);
+  g.gain.exponentialRampToValueAtTime(.001, start + (type === 'bad' ? .2 : .14));
+  o.connect(g); g.connect(ctx.destination);
+  o.start(start); o.stop(start + (type === 'bad' ? .2 : .14));
+}
+
+function toggleSound(){
+  soundOn = !soundOn;
+  $('soundBtn').textContent = soundOn ? '🔊' : '🔇';
+  if(soundOn) tone('good');
+}
+
+function setModal(emoji,title,text){
+  $('modalEmoji').textContent = emoji;
+  $('modalTitle').textContent = title;
+  $('modalText').textContent = text;
+  $('modal').classList.remove('hidden');
+  $('modal').classList.add('flex');
+}
+function closeModal(){
+  $('modal').classList.add('hidden');
+  $('modal').classList.remove('flex');
+}
+function showHelp(){
+  setModal('🎈','কিভাবে খেলবে?','রঙিন বেলুনে ট্যাপ করে পয়েন্ট নাও। ⭐ তারায় বেশি পয়েন্ট। 💣 বোমায় ট্যাপ করলে একটি জীবন কমবে। বেলুন মিস করলেও জীবন কমবে। ৬০ সেকেন্ডে যত বেশি পারো স্কোর করো!');
+}
+function showPrize(){
+  let msg = `তোমার সেরা স্কোর: ${best} পয়েন্ট।`;
+  if(best >= 200) msg += ' তুমি সুপারস্টার! 👑';
+  else if(best >= 100) msg += ' তুমি চ্যাম্পিয়ন! 🏆';
+  else msg += ' ১০০ পয়েন্টে চ্যাম্পিয়ন, ২০০ পয়েন্টে সুপারস্টার!';
+  setModal('🏆','পুরস্কার',msg);
+}
+
+function resetGameArea(){
+  document.querySelectorAll('.balloon,.float-score').forEach(el => el.remove());
+}
+
+function updateUI(){
+  $('score').textContent = score;
+  $('best').textContent = best;
+  $('lives').textContent = '❤️'.repeat(Math.max(0,lives)) + (lives <= 0 ? '💔' : '');
+  $('progress').style.width = Math.min(100,(score/200)*100) + '%';
+  $('timer').textContent = timeLeft + 's';
+}
+
+function updateLevel(){
+  if(timeLeft <= 20) level = 3;
+  else if(timeLeft <= 40) level = 2;
+  else level = 1;
+
+  $('levelLabel').textContent = level === 3 ? 'লেভেল ৩ • সুপার ফাস্ট!' : `লেভেল ${level}`;
+  $('timer').classList.toggle('bg-red-200', timeLeft <= 10);
+}
+
+function startGame(){
+  if(playing) return;
+
+  closeModal();
+  resetGameArea();
+  score = 0; lives = 3; timeLeft = 60; level = 1; playing = true;
+  updateUI(); updateLevel();
+
+  $('centerMsg').style.display = 'none';
+  $('startBtn').textContent = '⏸️ খেলছো...';
+  $('startBtn').disabled = true;
+  $('startBtn').classList.add('opacity-70');
+
+  tone('good');
+
+  timerInt = setInterval(() => {
+    if(!playing) return;
+    timeLeft--;
+    updateLevel();
+    updateUI();
+    if(timeLeft <= 0) endGame('time');
+  },1000);
+
+  spawnInt = setInterval(spawnBalloon, 720);
+  // প্রথম বেলুন দ্রুত দেখানো
+  setTimeout(() => { if(playing) spawnBalloon(); }, 180);
+}
+
+function spawnBalloon(){
+  if(!playing) return;
+
+  const area = $('gameArea');
+  const isBomb = Math.random() < 0.17;
+  const isStar = !isBomb && Math.random() < 0.16;
+  const colors = isBomb ? ['#ef4444'] : ['#22c55e','#3b82f6','#f59e0b','#ec4899','#8b5cf6','#06b6d4'];
+  const color = colors[Math.floor(Math.random()*colors.length)];
+
+  const size = 50 + Math.random()*22;
+  const b = document.createElement('div');
+  b.className = 'balloon';
+  b.style.left = (4 + Math.random()*84) + '%';
+  b.style.width = size + 'px';
+  b.style.height = (size+12) + 'px';
+  b.style.background = color;
+
+  const speedBase = level === 3 ? 3.0 : level === 2 ? 3.8 : 4.6;
+  const duration = speedBase + Math.random()*1.0;
+  b.style.animationDuration = duration + 's';
+  b.innerHTML = isBomb ? '💣' : isStar ? '⭐' : ['🐰','🐥','🍎','🍓','🦋'][Math.floor(Math.random()*5)];
+  b.style.fontSize = '20px';
+
+  b.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    popBalloon(b,isBomb,isStar);
+  }, {passive:false});
+
+  area.appendChild(b);
+
+  // Only remove/penalize if it naturally reaches the top.
+  setTimeout(() => {
+    if(!b.isConnected) return;
+    b.remove();
+    if(!isBomb && playing) loseLife();
+  }, duration*1000 + 250);
+}
+
+function popBalloon(el,isBomb,isStar){
+  if(!playing || !el.isConnected) return;
+
+  if(isBomb){
+    tone('bad');
+    loseLife();
+    el.textContent = '💥';
+    el.classList.add('balloon-burst');
+    setTimeout(() => el.remove(),190);
+    return;
+  }
+
+  tone('good');
+  let pts = isStar ? 20 : 10;
+  if(level === 3) pts += 5;
+  score += pts;
+
+  if(score > best){
+    best = score;
+    localStorage.setItem(BEST_KEY,String(best));
+  }
+  updateUI();
+
+  const rect = el.getBoundingClientRect();
+  const areaRect = $('gameArea').getBoundingClientRect();
+  const float = document.createElement('div');
+  float.className = 'float-score';
+  float.textContent = '+' + pts;
+  float.style.left = (rect.left - areaRect.left + rect.width/2 - 12) + 'px';
+  float.style.top = (rect.top - areaRect.top + 5) + 'px';
+  $('gameArea').appendChild(float);
+  setTimeout(() => float.remove(),650);
+
+  el.classList.add('balloon-burst');
+  setTimeout(() => el.remove(),190);
+
+  if(score === 100 || (score > 100 && score-pts < 100)) showMini('🎉 ১০০ পয়েন্ট! চ্যাম্পিয়ন!');
+  if(score === 200 || (score > 200 && score-pts < 200)) showMini('👑 ২০০ পয়েন্ট! সুপারস্টার!');
+}
+
+function loseLife(){
+  if(!playing) return;
+  lives--;
+  $('lives').classList.remove('shake');
+  void $('lives').offsetWidth;
+  $('lives').classList.add('shake');
+  updateUI();
+  if(lives <= 0) endGame('lives');
+}
+
+function showMini(text){
+  const d = document.createElement('div');
+  d.className = 'fixed top-[20%] left-1/2 -translate-x-1/2 bg-yellow-300 text-slate-900 font-black px-4 py-2 rounded-full shadow-xl z-[60] text-[13px] whitespace-nowrap';
+  d.textContent = text;
+  document.body.appendChild(d);
+  setTimeout(() => d.remove(),1800);
+}
+
+function endGame(reason='time'){
+  if(!playing) return;
+  playing = false;
+  clearInterval(timerInt); clearInterval(spawnInt);
+  timerInt = spawnInt = null;
+  resetGameArea();
+
+  $('startBtn').disabled = false;
+  $('startBtn').classList.remove('opacity-70');
+  $('startBtn').textContent = '▶️ আবার খেলো';
+  $('centerMsg').style.display = 'flex';
+  timeLeft = 60;
+  $('timer').classList.remove('bg-red-200');
+  updateUI();
+
+  let emoji='🎉', title='দারুণ খেলেছো!', text=`তুমি পেয়েছো ${score} পয়েন্ট। সেরা স্কোর: ${best}।`;
+  if(score >= 200){
+    emoji='👑'; title='তুমি সুপারস্টার!'; text=`অসাধারণ! ${score} পয়েন্ট! তোমার স্কোর দুর্দান্ত!`;
+  }else if(score >= 100){
+    emoji='🏆'; title='তুমি চ্যাম্পিয়ন!'; text=`অভিনন্দন! তুমি ${score} পয়েন্ট পেয়েছো।`;
+  }else if(reason === 'lives'){
+    emoji='💪'; title='জীবন শেষ!'; text=`তোমার স্কোর ${score}। আবার চেষ্টা করো—আরও ভালো করতে পারবে!`;
+  }else if(score < 30){
+    emoji='🌟'; title='আবার চেষ্টা করো!'; text=`তোমার স্কোর ${score}। একটু দ্রুত ট্যাপ করলেই আরও বেশি পয়েন্ট হবে!`;
+  }
+  setModal(emoji,title,text);
+}
+
+window.addEventListener('resize', () => {
+  // Prevent layout issues on mobile browser address-bar changes.
+  document.body.style.setProperty('--vh', window.innerHeight + 'px');
+});
+</script>
+</body>
+</html>
