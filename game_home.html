@@ -1,27 +1,53 @@
 <!DOCTYPE html>
 <html lang="en" class="notranslate" translate="no">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
 
 <title>Game Zone - A-S A2Z</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800;900&display=swap"
+  rel="stylesheet"
+>
+
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
+
+/* =========================
+   GLOBAL
+========================= */
+
 *{
   font-family:'Inter',sans-serif;
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
 }
 
+html,
 body{
   margin:0;
+  padding:0;
+  min-height:100%;
+}
+
+body{
   display:flex;
   justify-content:center;
   background:#f8f8f8;
 }
+
+
+/* =========================
+   APP
+========================= */
 
 .app{
   width:100%;
@@ -31,16 +57,19 @@ body{
   position:relative;
 }
 
+
 /* =========================
    GORILLA GLASS
 ========================= */
 
 .gorilla-glass{
-  background:linear-gradient(
-    135deg,
-    rgba(255,255,255,0.38) 0%,
-    rgba(255,255,255,0.15) 100%
-  );
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.38) 0%,
+      rgba(255,255,255,0.15) 100%
+    );
 
   backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px);
@@ -57,24 +86,30 @@ body{
 }
 
 .gorilla-glass::before{
+
   content:'';
+
   position:absolute;
+
   top:0;
   left:-60%;
+
   width:60%;
   height:100%;
 
-  background:linear-gradient(
-    120deg,
-    transparent,
-    rgba(255,255,255,0.9),
-    transparent
-  );
+  background:
+    linear-gradient(
+      120deg,
+      transparent,
+      rgba(255,255,255,0.9),
+      transparent
+    );
 
   animation:shine 2.2s infinite;
 }
 
 @keyframes shine{
+
   0%{
     transform:translateX(-100%);
   }
@@ -82,27 +117,40 @@ body{
   100%{
     transform:translateX(260%);
   }
+
 }
+
+
+/* =========================
+   HALAL HARAM ICON
+========================= */
 
 .gorilla-icon{
-  background:linear-gradient(
-    135deg,
-    #00d2ff 0%,
-    #3a7bd5 100%
-  );
 
-  box-shadow:0 4px 12px rgba(0,210,255,0.5);
+  background:
+    linear-gradient(
+      135deg,
+      #00d2ff 0%,
+      #3a7bd5 100%
+    );
+
+  box-shadow:
+    0 4px 12px rgba(0,210,255,0.5);
 }
+
 
 /* =========================
    GAME CARD
 ========================= */
 
 .game-card{
+
   border-radius:18px;
+
   padding:12px 8px;
 
   text-align:center;
+
   cursor:pointer;
 
   position:relative;
@@ -111,7 +159,7 @@ body{
     transform .12s,
     box-shadow .12s;
 
-  background:white;
+  background:#fff;
 
   border:1.5px solid #f1f5f9;
 
@@ -120,15 +168,26 @@ body{
 }
 
 .game-card:active{
+
   transform:scale(.94);
+
 }
 
 .game-card.locked{
+
   background:#f8fafc;
+
   opacity:.6;
+
 }
 
+
+/* =========================
+   ICON
+========================= */
+
 .icon-box{
+
   width:48px;
   height:48px;
 
@@ -137,6 +196,7 @@ body{
   margin:0 auto 7px;
 
   display:flex;
+
   align-items:center;
   justify-content:center;
 
@@ -145,11 +205,13 @@ body{
   position:relative;
 }
 
+
 /* =========================
-   BALLOON BLAST CARD
+   BALLOON BLAST
 ========================= */
 
 .balloon-card{
+
   background:
     linear-gradient(
       135deg,
@@ -160,13 +222,17 @@ body{
   border:1.5px solid rgba(255,255,255,.85);
 
   box-shadow:
+
     0 8px 22px rgba(99,102,241,.28),
+
     inset 0 1px 0 rgba(255,255,255,.75);
 
   color:white;
+
 }
 
 .balloon-icon{
+
   background:
     linear-gradient(
       135deg,
@@ -176,17 +242,22 @@ body{
 
   box-shadow:
     0 5px 15px rgba(56,189,248,.45);
+
 }
 
 .play-badge{
+
   position:absolute;
+
   top:-6px;
   right:-6px;
 
   background:#10b981;
+
   color:white;
 
   font-size:7px;
+
   font-weight:900;
 
   padding:3px 7px;
@@ -195,20 +266,27 @@ body{
 
   box-shadow:
     0 3px 8px rgba(16,185,129,.35);
+
 }
+
 
 /* =========================
    HEADER
 ========================= */
 
 .header{
+
   position:sticky;
+
   top:0;
+
   z-index:50;
 
-  background:rgba(255,255,255,.96);
+  background:
+    rgba(255,255,255,.96);
 
   backdrop-filter:blur(12px);
+
   -webkit-backdrop-filter:blur(12px);
 
   border-bottom:1px solid #e5e7eb;
@@ -216,60 +294,105 @@ body{
   padding:12px 16px;
 
   display:flex;
+
   justify-content:space-between;
+
   align-items:center;
+
 }
 
+
+/* =========================
+   BACK BUTTON
+========================= */
+
 .back-button{
+
   width:40px;
   height:40px;
 
   background:#000;
+
   color:#fff;
 
   border-radius:50%;
 
   font-size:25px;
+
   font-weight:900;
 
   display:flex;
+
   align-items:center;
   justify-content:center;
 
   border:none;
+
+  cursor:pointer;
+
 }
 
+.back-button:active{
+
+  transform:scale(.92);
+
+}
+
+
+/* =========================
+   HEADER TEXT
+========================= */
+
 .header-title{
+
   font-size:16px;
+
   font-weight:900;
+
   color:#000;
+
 }
 
 .header-subtitle{
+
   font-size:9px;
+
   color:#a1a1aa;
+
   font-weight:700;
+
 }
 
+
+/* =========================
+   ENGLISH BADGE
+========================= */
+
 .english-badge{
+
   padding:7px 11px;
 
   border-radius:999px;
 
   background:#000;
+
   color:white;
 
   font-size:9px;
+
   font-weight:900;
 
   letter-spacing:.5px;
+
 }
 
+
 /* =========================
-   TOP HERO
+   HERO
 ========================= */
 
 .hero{
+
   margin:18px 12px 16px;
 
   padding:18px;
@@ -287,15 +410,21 @@ body{
 
   box-shadow:
     0 8px 25px rgba(17,24,39,.18);
+
 }
 
 .hero-title{
+
   font-size:20px;
+
   font-weight:900;
+
   letter-spacing:.5px;
+
 }
 
 .hero-desc{
+
   margin-top:4px;
 
   font-size:10px;
@@ -303,66 +432,96 @@ body{
   color:#d4d4d8;
 
   font-weight:600;
+
 }
 
+
 /* =========================
-   GAME GRID
+   GAME AREA
 ========================= */
 
 .games-area{
-  padding:0 12px 40px;
+
+  padding:
+    0
+    12px
+    40px;
+
 }
 
 .games-grid{
+
   display:grid;
 
   grid-template-columns:
     repeat(4,1fr);
 
   gap:10px;
+
 }
 
+
 /* =========================
-   SMALL SCREEN
+   SMALL DEVICES
 ========================= */
 
 @media(max-width:360px){
 
   .games-grid{
+
     gap:7px;
+
   }
 
   .game-card{
+
     padding:10px 5px;
+
   }
 
   .icon-box{
+
     width:44px;
+
     height:44px;
+
     font-size:20px;
+
   }
 
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="app">
 
-  <!-- HEADER -->
+
+  <!-- =========================
+       HEADER
+  ========================== -->
+
   <div class="header">
 
     <div class="flex items-center gap-2.5">
 
       <button
+        type="button"
         onclick="location.href='./index.html'"
         class="back-button"
+        aria-label="Back"
       >
         ‹
       </button>
 
+
       <div>
+
         <div class="header-title">
           GAME ZONE
         </div>
@@ -370,9 +529,11 @@ body{
         <div class="header-subtitle">
           A-S A2Z
         </div>
+
       </div>
 
     </div>
+
 
     <div class="english-badge">
       ENGLISH
@@ -381,7 +542,11 @@ body{
   </div>
 
 
-  <!-- HERO -->
+
+  <!-- =========================
+       HERO
+  ========================== -->
+
   <div class="hero">
 
     <div class="hero-title">
@@ -395,13 +560,21 @@ body{
   </div>
 
 
-  <!-- GAMES -->
+
+  <!-- =========================
+       GAMES
+  ========================== -->
+
   <div class="games-area">
 
     <div class="games-grid">
 
 
-      <!-- GAME 1 -->
+      <!-- =====================
+           GAME 1
+           HALAL HARAM
+      ====================== -->
+
       <div
         onclick="location.href='./halal_haram_pro.html'"
         class="game-card gorilla-glass"
@@ -428,7 +601,12 @@ body{
       </div>
 
 
-      <!-- GAME 2 - BALLOON BLAST -->
+
+      <!-- =====================
+           GAME 2
+           BALLOON BLAST
+      ====================== -->
+
       <div
         onclick="location.href='./balloon_pop_pro.html'"
         class="game-card balloon-card"
@@ -453,7 +631,12 @@ body{
       </div>
 
 
-      <!-- GAME 3 -->
+
+      <!-- =====================
+           GAME 3
+           QUIZ
+      ====================== -->
+
       <div class="game-card locked">
 
         <div class="icon-box bg-zinc-100">
@@ -468,7 +651,12 @@ body{
       </div>
 
 
-      <!-- GAME 4 -->
+
+      <!-- =====================
+           GAME 4
+           MEMORY
+      ====================== -->
+
       <div class="game-card locked">
 
         <div class="icon-box bg-zinc-100">
@@ -483,7 +671,12 @@ body{
       </div>
 
 
-      <!-- GAME 5 -->
+
+      <!-- =====================
+           GAME 5
+           HAJJ
+      ====================== -->
+
       <div class="game-card locked">
 
         <div class="icon-box bg-zinc-100">
@@ -498,7 +691,12 @@ body{
       </div>
 
 
-      <!-- GAME 6 -->
+
+      <!-- =====================
+           GAME 6
+           TASBIH
+      ====================== -->
+
       <div class="game-card locked">
 
         <div class="icon-box bg-zinc-100">
@@ -513,7 +711,12 @@ body{
       </div>
 
 
-      <!-- GAME 7 -->
+
+      <!-- =====================
+           GAME 7
+           RAMADAN
+      ====================== -->
+
       <div class="game-card locked">
 
         <div class="icon-box bg-zinc-100">
@@ -528,7 +731,12 @@ body{
       </div>
 
 
-      <!-- GAME 8 -->
+
+      <!-- =====================
+           GAME 8
+           ARABIC
+      ====================== -->
+
       <div class="game-card locked">
 
         <div class="icon-box bg-zinc-100">
@@ -543,7 +751,12 @@ body{
       </div>
 
 
-      <!-- GAME 9 -->
+
+      <!-- =====================
+           GAME 9
+           TARGET
+      ====================== -->
+
       <div class="game-card locked">
 
         <div class="icon-box bg-zinc-100">
@@ -557,7 +770,12 @@ body{
       </div>
 
 
-      <!-- GAME 10 -->
+
+      <!-- =====================
+           GAME 10
+           CHAMP
+      ====================== -->
+
       <div class="game-card locked">
 
         <div class="icon-box bg-zinc-100">
@@ -571,7 +789,12 @@ body{
       </div>
 
 
-      <!-- GAME 11 -->
+
+      <!-- =====================
+           GAME 11
+           PUZZLE
+      ====================== -->
+
       <div class="game-card locked">
 
         <div class="icon-box bg-zinc-100">
@@ -585,7 +808,12 @@ body{
       </div>
 
 
-      <!-- GAME 12 -->
+
+      <!-- =====================
+           GAME 12
+           MORE
+      ====================== -->
+
       <div class="game-card locked">
 
         <div class="icon-box bg-zinc-100">
@@ -598,11 +826,15 @@ body{
 
       </div>
 
+
     </div>
 
   </div>
 
+
 </div>
 
+
 </body>
+
 </html>
