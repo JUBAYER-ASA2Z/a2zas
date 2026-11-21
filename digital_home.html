@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="bn" translate="no" class="notranslate">
 <head>
@@ -27,68 +28,58 @@ body{background:#f8fafc; margin:0;}
 .card-premium.open{ box-shadow: 0 20px 40px rgba(16,185,129,0.18), 0 8px 16px rgba(0,0,0,0.06); border-color: #6ee7b7; }
 .icon-box{ box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 8px 16px rgba(0,0,0,0.15); }
 .locked-premium{ background:linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%)!important; }
+.file-tag{background:#0F172A;color:#fff;font-size:8px;font-weight:900;padding:3px 6px;border-radius:999px;display:inline-block;margin-top:6px}
 </style>
 </head>
 <body translate="no" class="notranslate">
-
 <div class="fixed inset-0 -z-10 pro-bg"></div>
-
 <div class="max-w-[480px] mx-auto min-h-screen flex flex-col p-4 pb-24">
-
-  <!-- Header -->
   <div class="flex justify-between items-center">
     <button onclick="location.href='./index.html'" class="w-11 h-11 rounded-full glass-dark text-white flex items-center justify-center font-black text-[18px] active:scale-90">←</button>
     <div class="glass-dark rounded-full px-6 py-2.5 font-black text-[12px] text-white tracking-wide shadow-xl">📚 DIGITAL EDUCATION</div>
     <button id="langBtn" onclick="toggleLang()" class="w-11 h-11 rounded-full bg-slate-900 text-white text-[11px] font-black active:scale-90 shadow-xl">EN</button>
   </div>
-
-  <!-- Title -->
   <div class="mt-5 card-premium open rounded-[22px] p-4 flex items-center gap-3">
     <div class="w-14 h-14 rounded-[16px] bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center text-[26px] text-white icon-box">🎓</div>
     <div class="flex-1">
       <p class="font-black text-[15px] text-slate-900" id="subTitle">ডিজিটাল প্রফেশনাল শিক্ষা</p>
       <p class="text-slate-500 text-[11px] font-bold mt-0.5" id="subDesc">১০টি পর্ব • High Quality</p>
+      <p class="text-emerald-600 text-[10px] font-black mt-1">👤 Qari MD Jubayer Ahmed Siyam</p>
     </div>
     <div class="w-9 h-9 rounded-full bg-emerald-500 flex items-center justify-center text-white font-black text-[12px]">✓</div>
   </div>
-
-  <!-- Grid 3 per row -->
   <div class="mt-6 grid grid-cols-3 gap-3.5" id="eduGrid"></div>
-
-  <!-- Modal -->
   <div id="updateModal" class="hidden fixed inset-0 z-[99] bg-slate-900/60 backdrop-blur-xl flex items-center justify-center p-6">
     <div class="bg-white rounded-[24px] p-7 w-full max-w-[320px] text-center shadow-[0_30px_60px_rgba(0,0,0,0.3)]">
       <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-[36px]">🚧</div>
       <p class="font-black text-[18px] mt-4 text-slate-900" id="modalTitle">আপডেট চলছে</p>
       <p class="text-slate-500 text-[12px] mt-2 font-bold" id="modalDesc">এই পর্বটি শীঘ্রই আসছে ইনশাআল্লাহ</p>
+      <p class="text-[10px] font-black text-emerald-600 mt-3">Qari MD Jubayer Ahmed Siyam</p>
       <button onclick="document.getElementById('updateModal').classList.add('hidden')" class="mt-6 w-full py-3.5 bg-slate-900 text-white rounded-full font-black text-[13px]">ঠিক আছে</button>
     </div>
   </div>
-
-  <!-- Watermark -->
   <div class="mt-auto pt-10 text-center">
     <p class="text-slate-400 text-[10px] tracking-[4px] font-black">QARI & DEVELOPER</p>
     <p class="font-black text-slate-900 text-[14px] mt-1">Qari MD Jubayer Ahmed Siyam</p>
     <p class="text-slate-400 text-[9px] mt-1">A-S A2Z • Premium Quality • 2026</p>
   </div>
-
 </div>
-
 <script>
 let lang = localStorage.getItem('edu_lang') || 'bn';
 const ITEMS=[
-{ id:1, bn:"প্রাথমিক আরবি", en:"Arabic P1", subBn:"হরফ শিক্ষা", subEn:"Horof", icon:"ا", grad:"from-emerald-400 via-emerald-500 to-teal-600", shadow:"shadow-emerald-500/30", open:true, link:"./arabic_part1.html"},
-{ id:2, bn:"২য় পর্ব আরবি", en:"Arabic P2", subBn:"হরকত", subEn:"Harakat", icon:"َ", grad:"from-violet-500 via-purple-500 to-indigo-600", shadow:"shadow-violet-500/30", open:false},
-{ id:3, bn:"৩য় পর্ব আরবি", en:"Arabic P3", subBn:"তানবীন", subEn:"Tanween", icon:"ً", grad:"from-blue-500 via-sky-500 to-cyan-500", shadow:"shadow-blue-500/30", open:false},
-{ id:4, bn:"৪র্থ পর্ব আরবি", en:"Arabic P4", subBn:"সুকুন", subEn:"Sukun", icon:"ْ", grad:"from-orange-400 via-amber-500 to-orange-600", shadow:"shadow-orange-500/30", open:false},
-{ id:5, bn:"৫ম পর্ব আরবি", en:"Arabic P5", subBn:"কলেমা", subEn:"Kalima", icon:"لا", grad:"from-pink-500 via-rose-500 to-red-500", shadow:"shadow-pink-500/30", open:false},
-{ id:6, bn:"১ম পর্ব বাংলা", en:"Bangla P1", subBn:"স্বরবর্ণ", subEn:"Vowel", icon:"অ", grad:"from-amber-400 via-yellow-500 to-orange-500", shadow:"shadow-amber-500/30", open:false},
-{ id:7, bn:"২য় পর্ব বাংলা", en:"Bangla P2", subBn:"ব্যঞ্জনবর্ণ", subEn:"Consonant", icon:"ক", grad:"from-lime-500 via-green-500 to-emerald-600", shadow:"shadow-lime-500/30", open:false},
-{ id:8, bn:"৩য় পর্ব বাংলা", en:"Bangla P3", subBn:"শব্দ", subEn:"Word", icon:"বই", grad:"from-cyan-400 via-sky-500 to-blue-600", shadow:"shadow-cyan-500/30", open:false},
-{ id:9, bn:"৪র্থ পর্ব বাংলা", en:"Bangla P4", subBn:"বাক্য", subEn:"Sentence", icon:"আ", grad:"from-fuchsia-500 via-purple-500 to-violet-600", shadow:"shadow-fuchsia-500/30", open:false},
-{ id:10,bn:"৫ম পর্ব বাংলা", en:"Bangla P5", subBn:"গল্প", subEn:"Story", icon:"📖", grad:"from-teal-400 via-emerald-500 to-green-600", shadow:"shadow-teal-500/30", open:false},
+{ id:1, bn:"প্রাথমিক আরবি", en:"Arabic P1", subBn:"হরফ শিক্ষা", subEn:"Horof", icon:"ا", grad:"from-emerald-400 via-emerald-500 to-teal-600", open:true, link:"./arabic_part1.html", file:"arabic_part1.html", owner:"Qari MD Jubayer Ahmed Siyam"},
+// ✅ 2 NUMBER UNLOCKED
+{ id:2, bn:"২য় পর্ব আরবি", en:"Arabic P2", subBn:"হরকত", subEn:"Harakat", icon:"َ", grad:"from-violet-500 via-purple-500 to-indigo-600", open:true, link:"./arabic_part2.html", file:"arabic_part2.html", owner:"Qari MD Jubayer Ahmed Siyam"},
+// ✅ 3 NUMBER UNLOCKED
+{ id:3, bn:"৩য় পর্ব আরবি", en:"Arabic P3", subBn:"তানবীন", subEn:"Tanween", icon:"ً", grad:"from-blue-500 via-sky-500 to-cyan-500", open:true, link:"./arabic_part3.html", file:"arabic_part3.html", owner:"Qari MD Jubayer Ahmed Siyam"},
+{ id:4, bn:"৪র্থ পর্ব আরবি", en:"Arabic P4", subBn:"সুকুন", subEn:"Sukun", icon:"ْ", grad:"from-orange-400 via-amber-500 to-orange-600", open:false, link:"./arabic_part4.html", file:"arabic_part4.html", owner:"Qari MD Jubayer Ahmed Siyam"},
+{ id:5, bn:"৫ম পর্ব আরবি", en:"Arabic P5", subBn:"কলেমা", subEn:"Kalima", icon:"لا", grad:"from-pink-500 via-rose-500 to-red-500", open:false, link:"./arabic_part5.html", file:"arabic_part5.html", owner:"Qari MD Jubayer Ahmed Siyam"},
+{ id:6, bn:"১ম পর্ব বাংলা", en:"Bangla P1", subBn:"স্বরবর্ণ", subEn:"Vowel", icon:"অ", grad:"from-amber-400 via-yellow-500 to-orange-500", open:false, link:"./bangla_part1.html", file:"bangla_part1.html", owner:"Qari MD Jubayer Ahmed Siyam"},
+{ id:7, bn:"২য় পর্ব বাংলা", en:"Bangla P2", subBn:"ব্যঞ্জনবর্ণ", subEn:"Consonant", icon:"ক", grad:"from-lime-500 via-green-500 to-emerald-600", open:false, link:"./bangla_part2.html", file:"bangla_part2.html", owner:"Qari MD Jubayer Ahmed Siyam"},
+{ id:8, bn:"৩য় পর্ব বাংলা", en:"Bangla P3", subBn:"শব্দ", subEn:"Word", icon:"বই", grad:"from-cyan-400 via-sky-500 to-blue-600", open:false, link:"./bangla_part3.html", file:"bangla_part3.html", owner:"Qari MD Jubayer Ahmed Siyam"},
+{ id:9, bn:"৪র্থ পর্ব বাংলা", en:"Bangla P4", subBn:"বাক্য", subEn:"Sentence", icon:"আ", grad:"from-fuchsia-500 via-purple-500 to-violet-600", open:false, link:"./bangla_part4.html", file:"bangla_part4.html", owner:"Qari MD Jubayer Ahmed Siyam"},
+{ id:10,bn:"৫ম পর্ব বাংলা", en:"Bangla P5", subBn:"গল্প", subEn:"Story", icon:"📖", grad:"from-teal-400 via-emerald-500 to-green-600", open:false, link:"./bangla_part5.html", file:"bangla_part5.html", owner:"Qari MD Jubayer Ahmed Siyam"},
 ];
-
 function renderGrid(){
   document.getElementById('eduGrid').innerHTML = ITEMS.map(it=>`
     <div onclick="openItem(${it.id})" class="card-premium ${it.open?'open':'locked-premium'} rounded-[20px] p-3 text-center cursor-pointer relative">
@@ -98,7 +89,9 @@ function renderGrid(){
       </div>
       <p class="font-black text-[11px] mt-3 leading-[13px] ${it.open?'text-slate-900':'text-slate-600'}">${lang=='bn'?it.bn:it.en}</p>
       <p class="text-[9px] font-bold mt-1 ${it.open?'text-emerald-600':'text-slate-400'}">${lang=='bn'?it.subBn:it.subEn}</p>
-      ${it.open?'<span class="mt-2 inline-block bg-emerald-500 text-white text-[7px] font-black px-2.5 py-1 rounded-full">OPEN</span>':'<span class="mt-2 inline-block bg-slate-200 text-slate-500 text-[7px] font-black px-2.5 py-1 rounded-full">LOCK</span>'}
+      <div><span class="file-tag">${it.file}</span></div>
+      <p class="text-[8px] font-black text-slate-500 mt-1 leading-[10px]">👤 ${it.owner}</p>
+      ${it.open?'<span class="mt-1 inline-block bg-emerald-500 text-white text-[7px] font-black px-2.5 py-1 rounded-full">OPEN</span>':'<span class="mt-1 inline-block bg-slate-200 text-slate-500 text-[7px] font-black px-2.5 py-1 rounded-full">LOCK</span>'}
     </div>
   `).join('');
 }
@@ -107,7 +100,7 @@ function openItem(id){
   if(it.open && it.link) location.href=it.link;
   else{
     document.getElementById('modalTitle').innerText=lang=='bn'?'আপডেট চলছে':'Update Running';
-    document.getElementById('modalDesc').innerText=lang=='bn'?`"${it.bn}" খুব শীঘ্রই আসছে`:`"${it.en}" coming soon`;
+    document.getElementById('modalDesc').innerText=lang=='bn'?`"${it.bn}" — ${it.file} খুব শীঘ্রই আসছে`:`"${it.en}" — ${it.file} coming soon`;
     document.getElementById('updateModal').classList.remove('hidden');
   }
 }
