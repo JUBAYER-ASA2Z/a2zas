@@ -1,136 +1,136 @@
 <!doctype html>
-<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>নূরানী কায়দা - Easy</title>
+<html lang="bn" translate="no" class="notranslate">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Nurani Qaida - Easy</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@600;700;900&family=Scheherazade+New:wght@700&display=swap" rel="stylesheet">
 <style>
-*{font-family:'Hind Siliguri',sans-serif}
+/* ✅ NO COPY / NO LONG-PRESS MENU */
+*{font-family:'Hind Siliguri',sans-serif; -webkit-touch-callout:none!important; -webkit-user-select:none!important; user-select:none!important; -webkit-tap-highlight-color:transparent; box-sizing:border-box}
+html,body{overscroll-behavior:none}
+/* ✅ EYE FRIENDLY - SOFT, NO HARSH COLOR */
+body{background:#F3EFE6}
 .ar{font-family:'Scheherazade New',serif}
-body{background:#FFF7E6}
-.big-card{border-radius:28px;box-shadow:0 8px 25px rgba(0,0,0,.08)}
-.board-letter.selected{outline:5px solid #FFC107;transform:scale(1.12);background:#FFF9C4!important;box-shadow:0 10px 25px rgba(255,193,7,.6)}
-.harakat-btn.active{background:#FFC107!important;color:#000!important}
-#finger{position:fixed;z-index:9999;font-size:58px;cursor:grab;touch-action:none;user-select:none;filter:drop-shadow(0 8px 10px rgba(0,0,0,.3));display:none}
-#finger:active{cursor:grabbing;transform:scale(1.2)}
+.soft-card{background:#FFFEF9;border:1.5px solid #E8E0C8;border-radius:22px;box-shadow:0 4px 14px rgba(90,80,50,.06)}
+.soft-green{background:#EAF2E8}
+.soft-amber{background:#F8F1DC}
+.board-letter.selected{outline:3px solid #8AA87A;transform:scale(1.08);background:#EEF3E6!important;box-shadow:0 6px 14px rgba(90,120,80,.18)}
+.harakat-btn.active{background:#8AA87A!important;color:#fff!important}
+/* ✅ FINGER - UP, BIGGER */
+#finger{position:fixed;z-index:9999;font-size:88px;cursor:grab;touch-action:none;user-select:none;filter:drop-shadow(0 6px 8px rgba(0,0,0,.18));display:none;line-height:1}
+#finger:active{cursor:grabbing;transform:scale(1.15)}
 #menuDrawer{transition:.3s}
-.step-num{width:32px;height:32px;border-radius:999px;background:#FFC107;display:flex;align-items:center;justify-content:center;font-weight:900}
-</style></head>
-<body class="pb-6">
+.harakat-mini{width:100%;padding:6px 0 4px;border-radius:12px;background:#F3EFE6;border:1.5px solid #E8E0C8}
+.harakat-mini:active{transform:scale(.92)}
+/* ✅ BOARD FIXED ON TOP */
+#fixedBoard{position:sticky;top:8px;z-index:40}
+</style>
+</head>
+<body class="pb-6" oncontextmenu="return false">
 
-<!-- 👉 DRAGGABLE FINGER -->
-<div id="finger">👉</div>
+<!-- 👆 FINGER - UP, BIG -->
+<div id="finger">👆</div>
 
-<!-- TOP BAR - EASY -->
 <div class="max-w-[980px] mx-auto px-3 pt-3">
-<div class="bg-white big-card p-3 flex items-center justify-between gap-2 border-2 border-amber-200">
+<!-- TOP BAR -->
+<div class="soft-card p-3 flex items-center justify-between gap-2">
 <div class="flex items-center gap-2">
-<!-- MENU / LAMP BUTTON -->
-<button onclick="toggleMenu(true)" class="w-[58px] h-[58px] bg-amber-400 rounded-2xl text-[26px] shadow active:scale-95 shrink-0" title="মেনু">☰<div class="text-[10px] font-black -mt-1" data-bn="মেনু" data-en="Menu">মেনু</div></button>
+<button onclick="toggleMenu(true)" class="w-[52px] h-[52px] bg-[#EAF2E8] border border-[#D8E2D0] rounded-2xl text-[24px] active:scale-95 shrink-0">☰<div class="text-[10px] font-black -mt-1" data-i18n="menu">মেনু</div></button>
 <div>
-<div class="font-black text-[20px] leading-none text-emerald-900" data-bn="নূরানী কায়দা" data-en="Nurani Qaida">নূরানী কায়দা</div>
-<div class="text-[12px] font-bold text-zinc-500" data-bn="সহজে শিখুন • চাপ দিন • শুনুন" data-en="Learn Easy • Tap • Listen">সহজে শিখুন • চাপ দিন • শুনুন</div>
+<div class="font-black text-[19px] leading-none text-[#2F4430]" data-i18n="title">নূরানী কায়দা</div>
+<div class="text-[12px] font-bold text-[#7A7A68]" data-i18n="subtitle">সহজে শিখুন • চাপ দিন • শুনুন</div>
 </div>
 </div>
 <div class="flex items-center gap-2 shrink-0">
-<!-- LANGUAGE -->
-<button onclick="toggleLang()" class="px-3 py-2 bg-emerald-900 text-white rounded-full font-black text-[13px]">🌐 <span id="langLabel">English</span></button>
-<!-- FINGER SHOW/HIDE -->
-<button onclick="toggleFinger()" id="fingerBtn" class="w-[58px] h-[58px] bg-pink-500 text-white rounded-2xl text-[28px] shadow active:scale-95" title="আঙুল দেখান">👉<div class="text-[9px] font-black -mt-1" data-bn="আঙুল" data-en="Finger">আঙুল</div></button>
-<!-- PROFILE -->
-<button onclick="toggleMenu(true)" class="w-[58px] h-[58px] bg-blue-100 rounded-full text-[30px] overflow-hidden border-2 border-blue-200">👦</button>
+<button onclick="toggleLang()" class="px-3 py-2 bg-[#2F4430] text-white rounded-full font-black text-[12px]">🌐 <span id="langLabel">English</span></button>
+<button onclick="toggleFinger()" id="fingerBtn" class="w-[52px] h-[52px] bg-[#EAF2E8] border border-[#D8E2D0] rounded-2xl text-[36px] leading-none active:scale-95" title="Finger">👆<div class="text-[9px] font-black" data-i18n="finger">আঙুল</div></button>
+<button onclick="toggleMenu(true)" class="w-[52px] h-[52px] bg-[#F8F1DC] rounded-full text-[28px] border border-[#E8E0C8]">👦</button>
 </div>
 </div>
 
-<!-- 3 STEP - EASY TO UNDERSTAND -->
-<div class="grid grid-cols-3 gap-2 mt-3">
-<div class="bg-emerald-600 text-white big-card p-3 text-center"><div class="step-num mx-auto text-black">1</div><div class="font-black text-[14px] mt-1" data-bn="১. হরফ চাপ দিন" data-en="1. Tap Letter">১. হরফ চাপ দিন</div><div class="text-[11px] opacity-90" data-bn="নিচ থেকে যেকোনো হরফ" data-en="Any letter below">নিচ থেকে যেকোনো হরফ</div></div>
-<div class="bg-amber-400 big-card p-3 text-center"><div class="step-num mx-auto">2</div><div class="font-black text-[14px] mt-1" data-bn="২. উপরে সিলেক্ট করুন" data-en="2. Select on Top">২. উপরে সিলেক্ট করুন</div><div class="text-[11px] opacity-80" data-bn="উপরের হরফে চাপ দিন" data-en="Tap letter on board">উপরের হরফে চাপ দিন</div></div>
-<div class="bg-pink-500 text-white big-card p-3 text-center"><div class="step-num mx-auto text-black">3</div><div class="font-black text-[14px] mt-1" data-bn="৩. জবর লাগান" data-en="3. Add Zabar">৩. জবর লাগান</div><div class="text-[11px] opacity-90" data-bn="পাশ থেকে জবর চাপ দিন" data-en="Tap Zabar from side">পাশ থেকে জবর চাপ দিন</div></div>
-</div>
-
-<!-- BOARD -->
-<div class="bg-white big-card p-3 mt-3 border-2 border-amber-200">
+<!-- ✅ BOARD FIXED ON TOP -->
+<div id="fixedBoard" class="soft-card p-3 mt-3">
 <div class="flex justify-between items-center flex-wrap gap-2">
-<div><div class="font-black text-[19px] text-emerald-900">📋 <span data-bn="আমার বোর্ড" data-en="My Board">আমার বোর্ড</span> <span class="text-[12px] bg-emerald-100 px-2 py-0.5 rounded-full" id="boardCount">০ টি</span></div>
-<div class="text-[12px] font-bold text-zinc-500" data-bn="👆 এখানে আপনার হরফ জমা হবে" data-en="👆 Your letters will appear here">👆 এখানে আপনার হরফ জমা হবে</div></div>
+<div><div class="font-black text-[18px] text-[#2F4430]">📋 <span data-i18n="myBoard">আমার বোর্ড</span> <span class="text-[12px] bg-[#EAF2E8] px-2 py-0.5 rounded-full" id="boardCount">০ টি</span></div>
+<div class="text-[12px] font-bold text-[#7A7A68]" data-i18n="boardHint">👆 এখানে আপনার হরফ জমা হবে</div></div>
 <div class="flex gap-2">
-<button onclick="speakBoard()" class="px-4 py-2.5 bg-emerald-900 text-white rounded-full font-black text-[14px]">🔊 <span data-bn="পড়ে শোনান" data-en="Listen">পড়ে শোনান</span></button>
-<button onclick="clearBoard()" class="px-4 py-2.5 bg-red-100 text-red-600 rounded-full font-black text-[14px]">🗑️ <span data-bn="সব মুছুন" data-en="Clear All">সব মুছুন</span></button>
+<button onclick="speakBoard()" class="px-4 py-2 bg-[#2F4430] text-white rounded-full font-black text-[13px]">🔊 <span data-i18n="listen">পড়ে শোনান</span></button>
+<button onclick="clearBoard()" class="px-4 py-2 bg-[#F3E4E4] text-[#8A4A4A] rounded-full font-black text-[13px]">🗑️ <span data-i18n="clearAll">সব মুছুন</span></button>
 </div>
 </div>
-<div id="board" class="min-h-[150px] bg-[#FFFBEB] border-[3px] border-dashed border-amber-300 rounded-[22px] mt-3 p-3 flex flex-wrap gap-2 justify-center items-center" dir="rtl">
-<div class="text-center text-zinc-400 font-bold py-6 text-[15px]" data-bn="👇 নিচ থেকে হরফে চাপ দিন — উপরে চলে আসবে" data-en="👇 Tap a letter below — it will come up here">👇 নিচ থেকে হরফে চাপ দিন — উপরে চলে আসবে</div>
-</div>
-<div class="text-center mt-2 font-bold text-[13px]"><span data-bn="সিলেক্ট করা হরফ:" data-en="Selected Letter:">সিলেক্ট করা হরফ:</span> <span id="selectedInfo" class="ar text-[26px] text-emerald-800">—</span> <span class="text-zinc-400" data-bn="(হলুদ হলে বুঝবেন সিলেক্ট হয়েছে)" data-en="(Yellow = Selected)">(হলুদ হলে বুঝবেন সিলেক্ট হয়েছে)</span></div>
-</div>
+<div id="board" class="min-h-[118px] bg-[#F9F6EC] border-2 border-dashed border-[#DDD5B8] rounded-[18px] mt-2 p-2 flex flex-wrap gap-2 justify-center items-center" dir="rtl"></div>
+<div class="text-center mt-1 font-bold text-[13px]"><span data-i18n="selected">সিলেক্ট করা হরফ:</span> <span id="selectedInfo" class="ar text-[24px] text-[#2F4430]">—</span> <span class="text-[#9A9A88]" data-i18n="selectedHint">(সবুজ হলে বুঝবেন সিলেক্ট হয়েছে)</span></div>
 
-<!-- HARAKAT + KEYBOARD SIDE BY SIDE -->
-<div class="grid grid-cols-1 md:grid-cols-[230px_1fr] gap-3 mt-3">
-<!-- HARAKAT PANEL - CLEAR LABELS -->
-<div class="bg-emerald-900 text-white big-card p-3">
-<div class="font-black text-[17px]">🎯 <span data-bn="জবর / জের / পেশ" data-en="Zabar / Zer / Pesh">জবর / জের / পেশ</span></div>
-<div class="text-[12px] font-bold opacity-70" data-bn="আগে উপরের হরফ সিলেক্ট করুন" data-en="First select a letter on top">আগে উপরের হরফ সিলেক্ট করুন</div>
-<div class="grid grid-cols-2 gap-2 mt-3">
-<button onclick="applyHarakat('zabar')" class="harakat-btn bg-white/10 rounded-2xl py-3"><div class="ar text-[36px] leading-none">بَ</div><div class="font-black text-[14px]">➕ <span data-bn="জবর" data-en="Zabar">জবর</span></div><div class="text-[11px] opacity-70" data-bn="আ-কার" data-en="A sound">আ-কার</div></button>
-<button onclick="applyHarakat('zer')" class="harakat-btn bg-white/10 rounded-2xl py-3"><div class="ar text-[36px] leading-none">بِ</div><div class="font-black text-[14px]">➕ <span data-bn="জের" data-en="Zer">জের</span></div><div class="text-[11px] opacity-70" data-bn="ই-কার" data-en="I sound">ই-কার</div></button>
-<button onclick="applyHarakat('pesh')" class="harakat-btn bg-white/10 rounded-2xl py-3"><div class="ar text-[36px] leading-none">بُ</div><div class="font-black text-[14px]">➕ <span data-bn="পেশ" data-en="Pesh">পেশ</span></div><div class="text-[11px] opacity-70" data-bn="উ-কার" data-en="U sound">উ-কার</div></button>
-<button onclick="applyHarakat('none')" class="harakat-btn bg-red-500 rounded-2xl py-3"><div class="text-[30px] leading-none">ب ❌</div><div class="font-black text-[14px]" data-bn="রিমুভ করুন" data-en="Remove">রিমুভ করুন</div><div class="text-[11px] opacity-80" data-bn="চিহ্ন তুলে ফেলুন" data-en="Remove mark">চিহ্ন তুলে ফেলুন</div></button>
-<button onclick="applyHarakat('tanwin_zabar')" class="harakat-btn bg-white/10 rounded-2xl py-2"><div class="ar text-[30px]">بً</div><div class="font-bold text-[12px]" data-bn="দুই জবর" data-en="Double Zabar">দুই জবর</div></button>
-<button onclick="applyHarakat('tanwin_zer')" class="harakat-btn bg-white/10 rounded-2xl py-2"><div class="ar text-[30px]">بٍ</div><div class="font-bold text-[12px]" data-bn="দুই জের" data-en="Double Zer">দুই জের</div></button>
-<button onclick="applyHarakat('tanwin_pesh')" class="harakat-btn bg-white/10 rounded-2xl py-2"><div class="ar text-[30px]">بٌ</div><div class="font-bold text-[12px]" data-bn="দুই পেশ" data-en="Double Pesh">দুই পেশ</div></button>
-<button onclick="applyHarakat('jozom')" class="harakat-btn bg-white/10 rounded-2xl py-2"><div class="ar text-[30px]">بْ</div><div class="font-bold text-[12px]" data-bn="জজম" data-en="Jozom">জজম</div></button>
-<button onclick="applyHarakat('tashdid_zabar')" class="harakat-btn bg-white/10 rounded-2xl py-2"><div class="ar text-[30px]">بَّ</div><div class="font-bold text-[12px]" data-bn="তাশদীদ+জবর" data-en="Tashdid+Zabar">তাশদীদ+জবর</div></button>
-<button onclick="applyHarakat('khara_zabar')" class="harakat-btn bg-white/10 rounded-2xl py-2"><div class="ar text-[30px]">بٰ</div><div class="font-bold text-[12px]" data-bn="খাড়া জবর" data-en="Khara Zabar">খাড়া জবর</div></button>
+<!-- ✅ HARAKAT - VERY SMALL, ONLY MARK, SOUND ON CLICK -->
+<div class="mt-2 bg-[#F3EFE6] border border-[#E8E0C8] rounded-2xl p-2">
+<div class="flex justify-between items-center px-1"><span class="font-black text-[13px] text-[#2F4430]" data-i18n="harkatTitle">জবর / জের / পেশ লাগান</span><span class="text-[11px] font-bold text-[#7A7A68]" data-i18n="harkatHint">আগে উপরের হরফ সিলেক্ট করুন</span></div>
+<div class="grid grid-cols-5 gap-1.5 mt-2">
+<button onclick="applyHarakat('zabar');speakMark('zabar')" class="harakat-mini"><div class="ar text-[30px] leading-none text-[#2F4430]">َ</div><div class="text-[10px] font-black" data-i18n="zabar">জবর</div></button>
+<button onclick="applyHarakat('zer');speakMark('zer')" class="harakat-mini"><div class="ar text-[30px] leading-none text-[#2F4430]">ِ</div><div class="text-[10px] font-black" data-i18n="zer">জের</div></button>
+<button onclick="applyHarakat('pesh');speakMark('pesh')" class="harakat-mini"><div class="ar text-[30px] leading-none text-[#2F4430]">ُ</div><div class="text-[10px] font-black" data-i18n="pesh">পেশ</div></button>
+<button onclick="applyHarakat('jozom');speakMark('jozom')" class="harakat-mini"><div class="ar text-[30px] leading-none text-[#2F4430]">ْ</div><div class="text-[10px] font-black" data-i18n="jozom">জজম</div></button>
+<button onclick="applyHarakat('none')" class="harakat-mini" style="background:#F3E4E4"><div class="text-[20px] leading-none">❌</div><div class="text-[10px] font-black" data-i18n="remove">রিমুভ</div></button>
+</div>
+<div class="grid grid-cols-4 gap-1.5 mt-1.5">
+<button onclick="applyHarakat('tanwin_zabar');speakMark('tanwin_zabar')" class="harakat-mini"><div class="ar text-[26px] leading-none">ً</div><div class="text-[9px] font-bold" data-i18n="dzabar">দুই জবর</div></button>
+<button onclick="applyHarakat('tanwin_zer');speakMark('tanwin_zer')" class="harakat-mini"><div class="ar text-[26px] leading-none">ٍ</div><div class="text-[9px] font-bold" data-i18n="dzer">দুই জের</div></button>
+<button onclick="applyHarakat('tanwin_pesh');speakMark('tanwin_pesh')" class="harakat-mini"><div class="ar text-[26px] leading-none">ٌ</div><div class="text-[9px] font-bold" data-i18n="dpesh">দুই পেশ</div></button>
+<button onclick="applyHarakat('tashdid_zabar');speakMark('tashdid')" class="harakat-mini"><div class="ar text-[26px] leading-none">ّ</div><div class="text-[9px] font-bold" data-i18n="tashdid">তাশদীদ</div></button>
+</div>
 </div>
 </div>
 
 <!-- 29 LETTERS -->
-<div class="bg-white big-card p-3 border-2 border-amber-200">
-<div class="flex justify-between"><div class="font-black text-[18px] text-emerald-900">ا <span data-bn="২৯ টি হরফ" data-en="29 Letters">২৯ টি হরফ</span></div><div class="text-[12px] font-bold bg-amber-100 px-3 py-1 rounded-full" data-bn="👇 চাপ দিন" data-en="👇 Tap">👇 চাপ দিন</div></div>
+<div class="soft-card p-3 mt-3">
+<div class="flex justify-between"><div class="font-black text-[17px] text-[#2F4430]">ا <span data-i18n="letters29">২৯ টি হরফ</span></div><div class="text-[12px] font-bold bg-[#F8F1DC] px-3 py-1 rounded-full" data-i18n="tapBelow">👇 চাপ দিন</div></div>
 <div id="keyboard" class="grid grid-cols-5 sm:grid-cols-7 gap-2 mt-3" dir="rtl"></div>
 <div class="grid grid-cols-4 gap-2 mt-3">
-<button onclick="loadWord(['ب','ا','ب'])" class="py-2 bg-emerald-50 border rounded-full font-bold text-[13px]">بَاب <span class="text-[11px]">বাব</span></button>
-<button onclick="loadWord(['ق','ل','م'])" class="py-2 bg-emerald-50 border rounded-full font-bold text-[13px]">قَلَم <span class="text-[11px]">কলম</span></button>
-<button onclick="loadWord(['ك','ت','ا','ب'])" class="py-2 bg-emerald-50 border rounded-full font-bold text-[13px]">كِتَاب <span class="text-[11px]">কিতাব</span></button>
-<button onclick="loadWord(['م','د','ر','س','ة'])" class="py-2 bg-emerald-50 border rounded-full font-bold text-[13px]">مَدْرَسَة <span class="text-[11px]">মাদ্রাসা</span></button>
-</div>
+<button onclick="loadWord(['ب','ا','ب'])" class="py-2 bg-[#F9F6EC] border border-[#E8E0C8] rounded-full font-bold text-[13px]">بَاب</button>
+<button onclick="loadWord(['ق','ل','م'])" class="py-2 bg-[#F9F6EC] border border-[#E8E0C8] rounded-full font-bold text-[13px]">قَلَم</button>
+<button onclick="loadWord(['ك','ت','ا','ب'])" class="py-2 bg-[#F9F6EC] border border-[#E8E0C8] rounded-full font-bold text-[13px]">كِتَاب</button>
+<button onclick="loadWord(['م','د','ر','س','ة'])" class="py-2 bg-[#F9F6EC] border border-[#E8E0C8] rounded-full font-bold text-[13px]">مَدْرَسَة</button>
 </div>
 </div>
 
-<!-- LESSON BUTTONS - ALL VISIBLE -->
-<div class="bg-white big-card p-3 mt-3 border-2 border-amber-200">
-<div class="font-black text-[17px]">📚 <span data-bn="সব পাঠ — একটাতে চাপ দিন" data-en="All Lessons — Tap One">সব পাঠ — একটাতে চাপ দিন</span></div>
+<!-- LESSONS -->
+<div class="soft-card p-3 mt-3">
+<div class="font-black text-[16px]" data-i18n="allLessons">📚 সব পাঠ — একটাতে চাপ দিন</div>
 <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-2">
-<button onclick="showLesson('harof')" class="py-3 bg-[#FFF8E1] border-2 border-amber-200 rounded-2xl font-black text-[14px]">ا <br><span class="text-[11px]" data-bn="হরফ" data-en="Letters">হরফ</span></button>
-<button onclick="showLesson('horkot')" class="py-3 bg-[#FFF8E1] border-2 border-amber-200 rounded-2xl font-black text-[14px]">َ <br><span class="text-[11px]" data-bn="হরকত" data-en="Harkat">হরকত</span></button>
-<button onclick="showLesson('tanwin')" class="py-3 bg-[#FFF8E1] border-2 border-amber-200 rounded-2xl font-black text-[14px]">ً <br><span class="text-[11px]" data-bn="তানবীন" data-en="Tanwin">তানবীন</span></button>
-<button onclick="showLesson('jozom')" class="py-3 bg-[#FFF8E1] border-2 border-amber-200 rounded-2xl font-black text-[14px]">ْ <br><span class="text-[11px]" data-bn="জজম" data-en="Jozom">জজম</span></button>
-<button onclick="showLesson('tashdid')" class="py-3 bg-[#FFF8E1] border-2 border-amber-200 rounded-2xl font-black text-[14px]">ّ <br><span class="text-[11px]" data-bn="তাশদীদ" data-en="Tashdid">তাশদীদ</span></button>
-<button onclick="showLesson('mad')" class="py-3 bg-[#FFF8E1] border-2 border-amber-200 rounded-2xl font-black text-[14px]">ا <br><span class="text-[11px]" data-bn="মাদ" data-en="Madd">মাদ</span></button>
+<button onclick="showLesson('harof')" class="py-2 bg-[#F9F6EC] border border-[#E8E0C8] rounded-2xl font-black">ا<br><span class="text-[11px]" data-i18n="lessonHarof">হরফ</span></button>
+<button onclick="showLesson('horkot')" class="py-2 bg-[#F9F6EC] border border-[#E8E0C8] rounded-2xl font-black">َ<br><span class="text-[11px]" data-i18n="lessonHorkot">হরকত</span></button>
+<button onclick="showLesson('tanwin')" class="py-2 bg-[#F9F6EC] border border-[#E8E0C8] rounded-2xl font-black">ً<br><span class="text-[11px]" data-i18n="lessonTanwin">তানবীন</span></button>
+<button onclick="showLesson('jozom')" class="py-2 bg-[#F9F6EC] border border-[#E8E0C8] rounded-2xl font-black">ْ<br><span class="text-[11px]" data-i18n="lessonJozom">জজম</span></button>
+<button onclick="showLesson('tashdid')" class="py-2 bg-[#F9F6EC] border border-[#E8E0C8] rounded-2xl font-black">ّ<br><span class="text-[11px]" data-i18n="lessonTashdid">তাশদীদ</span></button>
+<button onclick="showLesson('mad')" class="py-2 bg-[#F9F6EC] border border-[#E8E0C8] rounded-2xl font-black">ا<br><span class="text-[11px]" data-i18n="lessonMad">মাদ</span></button>
 </div>
-<div id="lessonBox" class="hidden mt-3 bg-[#FFFBEB] border-2 border-amber-200 rounded-2xl p-3"><div id="lessonContent"></div></div>
+<div id="lessonBox" class="hidden mt-3 bg-[#F9F6EC] border border-[#E8E0C8] rounded-2xl p-3"><div id="lessonContent"></div></div>
 </div>
-<div class="text-center mt-4"><p class="text-[11px] tracking-widest uppercase text-zinc-400 font-bold">Developer</p><p class="font-black text-[14px]">JUBAYER A S</p></div>
+<div class="text-center mt-4"><p class="text-[10px] tracking-[3px] font-black text-[#9A9A88]">QARI & DEVELOPER</p><p class="font-black text-[13px] text-[#2F4430]">Qari MD Jubayer Ahmed Siyam</p><p class="text-[10px] text-[#9A9A88]">File: arabic_part1.html • A-S A2Z</p></div>
 </div>
 
-<!-- MENU DRAWER -->
-<div id="menuOverlay" onclick="toggleMenu(false)" class="fixed inset-0 bg-black/50 z-[90] hidden"></div>
-<div id="menuDrawer" class="fixed top-0 left-0 h-full w-[280px] bg-white z-[100] -translate-x-full shadow-2xl p-4 overflow-y-auto">
-<div class="flex justify-between items-center"><div class="flex items-center gap-2"><div class="w-[48px] h-[48px] bg-blue-100 rounded-full flex items-center justify-center text-[28px]">👦</div><div><div class="font-black">আমার প্রোফাইল</div><div class="text-[12px] text-zinc-500 font-bold">Student • নূরানী কায়দা</div></div></div><button onclick="toggleMenu(false)" class="w-[36px] h-[36px] bg-zinc-100 rounded-full font-black">✕</button></div>
+<!-- MENU -->
+<div id="menuOverlay" onclick="toggleMenu(false)" class="fixed inset-0 bg-black/30 z-[90] hidden"></div>
+<div id="menuDrawer" class="fixed top-0 left-0 h-full w-[280px] bg-[#FFFEF9] z-[100] -translate-x-full shadow-2xl p-4 overflow-y-auto">
+<div class="flex justify-between items-center"><div class="flex items-center gap-2"><div class="w-[48px] h-[48px] bg-[#F8F1DC] rounded-full flex items-center justify-center text-[28px]">👦</div><div><div class="font-black" data-i18n="myProfile">আমার প্রোফাইল</div><div class="text-[12px] text-[#7A7A68] font-bold">Student • Nurani Qaida</div></div></div><button onclick="toggleMenu(false)" class="w-[36px] h-[36px] bg-[#F3EFE6] rounded-full font-black">✕</button></div>
 <div class="mt-4 space-y-2">
-<button onclick="toggleMenu(false);toggleLang()" class="w-full text-left bg-emerald-50 p-3 rounded-2xl font-black">🌐 ভাষা বদলান <span class="text-[12px] text-zinc-500 block font-bold">বাংলা / English</span></button>
-<button onclick="toggleMenu(false);toggleFinger()" class="w-full text-left bg-pink-50 p-3 rounded-2xl font-black">👉 আঙুল দেখান / লুকান <span class="text-[12px] text-zinc-500 block font-bold">Finger Show / Hide — টেনে যেকোনো জায়গায় নিন</span></button>
-<button onclick="toggleMenu(false);showLesson('harof')" class="w-full text-left bg-amber-50 p-3 rounded-2xl font-black">ا ২৯ হরফ <span class="text-[12px] text-zinc-500 block font-bold">সব হরফ শিখুন</span></button>
-<button onclick="toggleMenu(false);showLesson('horkot')" class="w-full text-left bg-amber-50 p-3 rounded-2xl font-black">َ হরকত <span class="text-[12px] text-zinc-500 block font-bold">জবর জের পেশ</span></button>
-<button onclick="toggleMenu(false);showLesson('tanwin')" class="w-full text-left bg-amber-50 p-3 rounded-2xl font-black">ً তানবীন <span class="text-[12px] text-zinc-500 block font-bold">দুই জবর জের পেশ</span></button>
-<button onclick="toggleMenu(false);showLesson('jozom')" class="w-full text-left bg-amber-50 p-3 rounded-2xl font-black">ْ জজম <span class="text-[12px] text-zinc-500 block font-bold">সাকিন</span></button>
-<button onclick="toggleMenu(false);showLesson('tashdid')" class="w-full text-left bg-amber-50 p-3 rounded-2xl font-black">ّ তাশদীদ <span class="text-[12px] text-zinc-500 block font-bold">ডবল উচ্চারণ</span></button>
-<button onclick="toggleMenu(false);clearBoard()" class="w-full text-left bg-red-50 p-3 rounded-2xl font-black text-red-600">🗑️ বোর্ড পরিষ্কার করুন</button>
+<button onclick="toggleMenu(false);toggleLang()" class="w-full text-left bg-[#EAF2E8] p-3 rounded-2xl font-black">🌐 <span data-i18n="changeLang">ভাষা বদলান</span> <span class="text-[12px] text-[#7A7A68] block font-bold">Bangla / English</span></button>
+<button onclick="toggleMenu(false);toggleFinger()" class="w-full text-left bg-[#F8F1DC] p-3 rounded-2xl font-black">👆 <span data-i18n="fingerShowHide">আঙুল দেখান / লুকান</span> <span class="text-[12px] text-[#7A7A68] block font-bold" data-i18n="fingerHint">Finger Show / Hide — টেনে যেকোনো জায়গায় নিন</span></button>
+<button onclick="toggleMenu(false);showLesson('harof')" class="w-full text-left bg-[#F9F6EC] p-3 rounded-2xl font-black">ا <span data-i18n="menuHarof">২৯ হরফ</span></button>
+<button onclick="toggleMenu(false);showLesson('horkot')" class="w-full text-left bg-[#F9F6EC] p-3 rounded-2xl font-black">َ <span data-i18n="menuHorkot">হরকত</span></button>
+<button onclick="toggleMenu(false);showLesson('tanwin')" class="w-full text-left bg-[#F9F6EC] p-3 rounded-2xl font-black">ً <span data-i18n="menuTanwin">তানবীন</span></button>
+<button onclick="toggleMenu(false);clearBoard()" class="w-full text-left bg-[#F3E4E4] p-3 rounded-2xl font-black text-[#8A4A4A]" data-i18n="menuClear">🗑️ বোর্ড পরিষ্কার করুন</button>
 </div>
-<div class="mt-4 bg-emerald-900 text-white rounded-2xl p-3 text-center"><div class="text-[12px] opacity-70">কিভাবে ব্যবহার করবেন?</div><div class="font-bold text-[13px] mt-1">১. হরফ চাপ দিন → ২. উপরে সিলেক্ট করুন → ৩. জবর চাপ দিন</div></div>
+<div class="mt-4 bg-[#2F4430] text-white rounded-2xl p-3 text-center"><div class="text-[12px] opacity-70" data-i18n="howToTitle">কিভাবে ব্যবহার করবেন?</div><div class="font-bold text-[13px] mt-1" data-i18n="howTo">১. হরফ চাপ দিন → ২. উপরে সিলেক্ট করুন → ৩. জবর চাপ দিন</div></div>
 </div>
 
 <script>
+// ✅ FULL TRANSLATION - BN + EN, NO BANGLA LEFT IN EN MODE
+const I18N={
+bn:{menu:"মেনু",title:"নূরানী কায়দা",subtitle:"সহজে শিখুন • চাপ দিন • শুনুন",finger:"আঙুল",myBoard:"আমার বোর্ড",boardHint:"👆 এখানে আপনার হরফ জমা হবে",listen:"পড়ে শোনান",clearAll:"সব মুছুন",selected:"সিলেক্ট করা হরফ:",selectedHint:"(সবুজ হলে বুঝবেন সিলেক্ট হয়েছে)",harkatTitle:"জবর / জের / পেশ লাগান",harkatHint:"আগে উপরের হরফ সিলেক্ট করুন",zabar:"জবর",zer:"জের",pesh:"পেশ",jozom:"জজম",remove:"রিমুভ",dzabar:"দুই জবর",dzer:"দুই জের",dpesh:"দুই পেশ",tashdid:"তাশদীদ",letters29:"২৯ টি হরফ",tapBelow:"👇 চাপ দিন",allLessons:"📚 সব পাঠ — একটাতে চাপ দিন",lessonHarof:"হরফ",lessonHorkot:"হরকত",lessonTanwin:"তানবীন",lessonJozom:"জজম",lessonTashdid:"তাশদীদ",lessonMad:"মাদ",myProfile:"আমার প্রোফাইল",changeLang:"ভাষা বদলান",fingerShowHide:"আঙুল দেখান / লুকান",fingerHint:"Finger Show / Hide — টেনে যেকোনো জায়গায় নিন",menuHarof:"২৯ হরফ",menuHorkot:"হরকত",menuTanwin:"তানবীন",menuClear:"🗑️ বোর্ড পরিষ্কার করুন",howToTitle:"কিভাবে ব্যবহার করবেন?",howTo:"১. হরফ চাপ দিন → ২. উপরে সিলেক্ট করুন → ৩. জবর চাপ দিন",tap:"চাপ দিন",boardEmpty:"👇 নিচ থেকে হরফে চাপ দিন — উপরে চলে আসবে",selectFirst:"আগে উপরের একটা হরফে চাপ দিয়ে সিলেক্ট করুন!",boardEmpty2:"বোর্ড খালি! আগে হরফ যোগ করুন",ok:"ঠিক আছে",count:" টি"},
+en:{menu:"Menu",title:"Nurani Qaida",subtitle:"Learn Easy • Tap • Listen",finger:"Finger",myBoard:"My Board",boardHint:"👆 Your letters will appear here",listen:"Listen",clearAll:"Clear All",selected:"Selected Letter:",selectedHint:"(Green = Selected)",harkatTitle:"Add Zabar / Zer / Pesh",harkatHint:"First select a letter on top",zabar:"Zabar",zer:"Zer",pesh:"Pesh",jozom:"Jozom",remove:"Remove",dzabar:"D-Zabar",dzer:"D-Zer",dpesh:"D-Pesh",tashdid:"Tashdid",letters29:"29 Letters",tapBelow:"👇 Tap",allLessons:"📚 All Lessons — Tap One",lessonHarof:"Letters",lessonHorkot:"Harkat",lessonTanwin:"Tanwin",lessonJozom:"Jozom",lessonTashdid:"Tashdid",lessonMad:"Madd",myProfile:"My Profile",changeLang:"Change Language",fingerShowHide:"Show / Hide Finger",fingerHint:"Finger Show / Hide — Drag anywhere",menuHarof:"29 Letters",menuHorkot:"Harkat",menuTanwin:"Tanwin",menuClear:"🗑️ Clear Board",howToTitle:"How to use?",howTo:"1. Tap Letter → 2. Select on Top → 3. Tap Zabar",tap:"Tap",boardEmpty:"👇 Tap a letter below — it will come up here",selectFirst:"First tap a letter on top to select it!",boardEmpty2:"Board is empty! Add a letter first",ok:"OK",count:" Letters"}
+};
 let lang='bn';
 const LETTERS=[
 {nameBn:"আলিফ",nameEn:"Alif",ch:"ا"},{nameBn:"বা",nameEn:"Ba",ch:"ب"},{nameBn:"তা",nameEn:"Ta",ch:"ت"},{nameBn:"ছা",nameEn:"Tha",ch:"ث"},{nameBn:"জীম",nameEn:"Jeem",ch:"ج"},
@@ -142,85 +142,96 @@ const LETTERS=[
 ];
 const MARKS={zabar:"َ",zer:"ِ",pesh:"ُ",tanwin_zabar:"ً",tanwin_zer:"ٍ",tanwin_pesh:"ٌ",jozom:"ْ",tashdid_zabar:"َّ",khara_zabar:"ٰ",none:""};
 let board=[], selected=-1, fingerVisible=false;
+function t(k){ return I18N[lang][k]||k; }
 function toggleLang(){
   lang = lang=='bn'?'en':'bn';
   document.getElementById('langLabel').innerText = lang=='bn'?'English':'বাংলা';
-  document.querySelectorAll('[data-bn]').forEach(el=>{ el.innerText = lang=='bn'? el.getAttribute('data-bn') : el.getAttribute('data-en'); });
-  renderKeyboard();
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ el.innerText = t(el.getAttribute('data-i18n')); });
+  renderKeyboard(); renderBoard();
 }
 function toggleMenu(open){
   document.getElementById('menuOverlay').classList.toggle('hidden',!open);
   document.getElementById('menuDrawer').style.transform = open?'translateX(0)':'translateX(-100%)';
 }
-// 👉 FINGER - SHOW / HIDE + DRAG ANYWHERE
 function toggleFinger(){
   fingerVisible=!fingerVisible;
   const f=document.getElementById('finger');
   f.style.display = fingerVisible?'block':'none';
-  if(fingerVisible && !f.dataset.placed){ f.style.left='50%'; f.style.top='45%'; f.dataset.placed='1'; }
-  document.getElementById('fingerBtn').style.background = fingerVisible?'#10B981':'#EC4899';
+  if(fingerVisible && !f.dataset.placed){ f.style.left='42%'; f.style.top='38%'; f.dataset.placed='1'; }
 }
 (function(){
   const f=document.getElementById('finger'); let drag=false, dx=0, dy=0;
   const start=(e)=>{ drag=true; const p=e.touches?e.touches[0]:e; dx=p.clientX - f.offsetLeft; dy=p.clientY - f.offsetTop; };
-  const move=(e)=>{ if(!drag) return; e.preventDefault(); const p=e.touches?e.touches[0]:e; let x=p.clientX-dx, y=p.clientY-dy; x=Math.max(0,Math.min(window.innerWidth-70,x)); y=Math.max(0,Math.min(window.innerHeight-70,y)); f.style.left=x+'px'; f.style.top=y+'px'; };
+  const move=(e)=>{ if(!drag) return; e.preventDefault(); const p=e.touches?e.touches[0]:e; let x=p.clientX-dx, y=p.clientY-dy; x=Math.max(0,Math.min(window.innerWidth-90,x)); y=Math.max(0,Math.min(window.innerHeight-90,y)); f.style.left=x+'px'; f.style.top=y+'px'; };
   const end=()=>drag=false;
   f.addEventListener('mousedown',start); document.addEventListener('mousemove',move); document.addEventListener('mouseup',end);
   f.addEventListener('touchstart',start,{passive:true}); document.addEventListener('touchmove',move,{passive:false}); document.addEventListener('touchend',end);
+  // ✅ BLOCK LONG-PRESS MENU ON FINGER TOO
+  f.addEventListener('contextmenu',e=>e.preventDefault());
 })();
 function renderKeyboard(){
   const k=document.getElementById('keyboard'); k.innerHTML='';
   LETTERS.forEach(L=>{
     const b=document.createElement('button');
-    b.className='bg-[#FFF8E1] border-2 border-amber-200 rounded-[18px] py-3 active:scale-95 shadow-sm hover:bg-amber-100';
-    b.innerHTML=`<div class="ar text-[38px] leading-none text-emerald-900">${L.ch}</div><div class="font-bold text-[12px]">${lang=='bn'?L.nameBn:L.nameEn}</div><div class="text-[10px] text-zinc-400 font-bold">${lang=='bn'?'চাপ দিন':'Tap'}</div>`;
+    b.className='bg-[#F9F6EC] border border-[#E8E0C8] rounded-[16px] py-2.5 active:scale-95';
+    b.innerHTML=`<div class="ar text-[34px] leading-none text-[#2F4430]">${L.ch}</div><div class="font-bold text-[11px] text-[#5A5A4A]">${lang=='bn'?L.nameBn:L.nameEn}</div><div class="text-[9px] text-[#9A9A88] font-bold">${t('tap')}</div>`;
     b.onclick=()=>addToBoard(L.ch);
+    b.oncontextmenu=e=>e.preventDefault();
     k.appendChild(b);
   });
 }
 function addToBoard(ch){ board.push({ch,mark:""}); selected=board.length-1; renderBoard(); speak(ch); }
 function renderBoard(){
   const b=document.getElementById('board');
-  document.getElementById('boardCount').innerText = board.length+(lang=='bn'?' টি':' Letters');
-  if(board.length==0){ b.innerHTML=`<div class="text-center text-zinc-400 font-bold py-6 text-[15px]">${lang=='bn'?'👇 নিচ থেকে হরফে চাপ দিন — উপরে চলে আসবে':'👇 Tap a letter below — it will come up here'}</div>`; document.getElementById('selectedInfo').innerText='—'; return; }
+  document.getElementById('boardCount').innerText = board.length+t('count');
+  if(board.length==0){ b.innerHTML=`<div class="text-center text-[#9A9A88] font-bold py-4 text-[14px]">${t('boardEmpty')}</div>`; document.getElementById('selectedInfo').innerText='—'; return; }
   b.innerHTML='';
   board.forEach((it,i)=>{
     const d=document.createElement('button');
-    d.className='board-letter w-[72px] h-[84px] bg-white border-2 border-amber-200 rounded-[18px] shadow '+(i==selected?'selected':'');
-    d.innerHTML=`<div class="ar text-[52px] leading-none text-emerald-900">${it.ch}${MARKS[it.mark]||''}</div><div class="text-[10px] font-bold text-zinc-400">${i+1}</div>`;
+    d.className='board-letter w-[64px] h-[76px] bg-white border border-[#E8E0C8] rounded-[16px] '+(i==selected?'selected':'');
+    d.innerHTML=`<div class="ar text-[46px] leading-none text-[#2F4430]">${it.ch}${MARKS[it.mark]||''}</div><div class="text-[9px] font-bold text-[#9A9A88]">${i+1}</div>`;
     d.onclick=()=>{ selected=i; renderBoard(); speak(it.ch); };
+    d.oncontextmenu=e=>e.preventDefault();
     b.appendChild(d);
   });
   document.getElementById('selectedInfo').innerHTML = board[selected] ? board[selected].ch+(MARKS[board[selected].mark]||'') : '—';
 }
 function applyHarakat(mark){
-  if(selected<0||!board[selected]){ showPop(lang=='bn'?'আগে উপরের একটা হরফে চাপ দিয়ে সিলেক্ট করুন!':'First tap a letter on top to select it!'); return; }
+  if(selected<0||!board[selected]){ showPop(t('selectFirst')); return; }
   board[selected].mark=mark;
-  document.querySelectorAll('.harakat-btn').forEach(x=>x.classList.remove('active'));
-  renderBoard(); speak(board[selected].ch+(MARKS[mark]||''));
+  renderBoard();
+}
+function speakMark(mark){
+  const sounds={zabar:"بَ",zer:"بِ",pesh:"بُ",jozom:"بْ",tanwin_zabar:"بً",tanwin_zer:"بٍ",tanwin_pesh:"بٌ",tashdid:"بَّ"};
+  if(sounds[mark]) speak(sounds[mark]);
 }
 function clearBoard(){ board=[]; selected=-1; renderBoard(); }
 function loadWord(arr){ board=arr.map(ch=>({ch,mark:""})); selected=0; renderBoard(); }
 function showPop(m){
-  const d=document.createElement('div'); d.className='fixed inset-0 z-[200] flex items-center justify-center bg-black/50 px-4';
-  d.innerHTML=`<div class="bg-white rounded-[24px] p-5 max-w-[320px] text-center shadow-2xl"><div class="text-[40px]">👆</div><div class="font-black mt-1">${m}</div><button onclick="this.parentElement.parentElement.remove()" class="w-full mt-3 bg-emerald-900 text-white py-3 rounded-full font-black">${lang=='bn'?'ঠিক আছে':'OK'}</button></div>`;
+  const d=document.createElement('div'); d.className='fixed inset-0 z-[200] flex items-center justify-center bg-black/30 px-4';
+  d.innerHTML=`<div class="bg-white rounded-[20px] p-5 max-w-[320px] text-center"><div class="text-[36px]">👆</div><div class="font-black mt-1">${m}</div><button onclick="this.parentElement.parentElement.remove()" class="w-full mt-3 bg-[#2F4430] text-white py-3 rounded-full font-black">${t('ok')}</button></div>`;
   d.onclick=(e)=>{ if(e.target==d) d.remove(); }; document.body.appendChild(d);
 }
-function speak(t){ try{ const u=new SpeechSynthesisUtterance(t); u.lang='ar-SA'; u.rate=0.7; speechSynthesis.cancel(); speechSynthesis.speak(u); }catch(e){} }
-function speakBoard(){ if(board.length==0){ showPop(lang=='bn'?'বোর্ড খালি! আগে হরফ যোগ করুন':'Board is empty! Add a letter first'); return; } speak(board.map(x=>x.ch+(MARKS[x.mark]||'')).join(' ')); }
+function speak(txt){ try{ const u=new SpeechSynthesisUtterance(txt); u.lang='ar-SA'; u.rate=0.7; speechSynthesis.cancel(); speechSynthesis.speak(u); }catch(e){} }
+function speakBoard(){ if(board.length==0){ showPop(t('boardEmpty2')); return; } speak(board.map(x=>x.ch+(MARKS[x.mark]||'')).join(' ')); }
 function showLesson(name){
   const box=document.getElementById('lessonBox'); box.classList.remove('hidden');
   const L={
-    harof:`<div class="font-black text-[18px]">ا ২৯ হরফ — চাপ দিলেই উপরে উঠবে</div><div class="grid grid-cols-5 gap-2 mt-2" dir="rtl">${LETTERS.map(x=>`<button onclick="addToBoard('${x.ch}')" class="bg-white border rounded-xl py-2"><div class="ar text-[32px]">${x.ch}</div><div class="text-[11px] font-bold">${lang=='bn'?x.nameBn:x.nameEn}</div></button>`).join('')}</div>`,
-    horkot:`<div class="font-black">َ হরকত</div><p class="font-bold text-[13px] text-zinc-600 mt-1">${lang=='bn'?'জবর = আ, জের = ই, পেশ = উ':'Zabar = A, Zer = I, Pesh = U'}</p><div class="flex gap-2 mt-2" dir="rtl">${['بَ','بِ','بُ'].map(x=>`<button onclick="speak('${x}')" class="flex-1 bg-white border rounded-xl py-3"><div class="ar text-[36px]">${x}</div><div class="text-[11px] font-bold">🔊 শুনুন</div></button>`).join('')}</div>`,
-    tanwin:`<div class="font-black">ً তানবীন</div><p class="font-bold text-[13px] text-zinc-600 mt-1">${lang=='bn'?'দুই জবর = আন, দুই জের = ইন, দুই পেশ = উন':'Double Zabar = An, Double Zer = In, Double Pesh = Un'}</p><div class="flex gap-2 mt-2" dir="rtl">${['بً','بٍ','بٌ'].map(x=>`<button onclick="speak('${x}')" class="flex-1 bg-white border rounded-xl py-3"><div class="ar text-[36px]">${x}</div><div class="text-[11px] font-bold">🔊</div></button>`).join('')}</div>`,
-    jozom:`<div class="font-black">ْ জজম</div><p class="font-bold text-[13px] text-zinc-600 mt-1">${lang=='bn'?'জজম ওয়ালা হরফ আগের হরফের সাথে মিলিয়ে পড়তে হয়':'Jozom letter joins with previous letter'}</p><div class="flex gap-2 mt-2" dir="rtl">${['أَبْ','مِنْ'].map(x=>`<button onclick="speak('${x}')" class="flex-1 bg-white border rounded-xl py-3"><div class="ar text-[32px]">${x}</div></button>`).join('')}</div>`,
-    tashdid:`<div class="font-black">ّ তাশদীদ</div><p class="font-bold text-[13px] text-zinc-600 mt-1">${lang=='bn'?'তাশদীদ ওয়ালা হরফ ২ বার পড়তে হয়':'Tashdid letter is read twice'}</p><div class="flex gap-2 mt-2" dir="rtl">${['بَّ','مُحَمَّد'].map(x=>`<button onclick="speak('${x}')" class="flex-1 bg-white border rounded-xl py-3"><div class="ar text-[32px]">${x}</div></button>`).join('')}</div>`,
-    mad:`<div class="font-black">মাদ</div><p class="font-bold text-[13px] text-zinc-600 mt-1">${lang=='bn'?'আলিফ, ওয়াও, ইয়া থাকলে ১ আলিফ টেনে পড়তে হয়':'Alif, Waw, Ya — stretch 1 Alif'}</p><div class="flex gap-2 mt-2" dir="rtl">${['بَا','بُو','بِي'].map(x=>`<button onclick="speak('${x}')" class="flex-1 bg-white border rounded-xl py-3"><div class="ar text-[36px]">${x}</div></button>`).join('')}</div>`
+    harof:`<div class="font-black">${lang=='bn'?'ا ২৯ হরফ':'ا 29 Letters'}</div><div class="grid grid-cols-5 gap-2 mt-2" dir="rtl">${LETTERS.map(x=>`<button onclick="addToBoard('${x.ch}')" class="bg-white border rounded-xl py-2"><div class="ar text-[30px]">${x.ch}</div><div class="text-[11px] font-bold">${lang=='bn'?x.nameBn:x.nameEn}</div></button>`).join('')}</div>`,
+    horkot:`<div class="font-black">${lang=='bn'?'َ হরকত':'َ Harkat'}</div><p class="font-bold text-[13px] text-[#7A7A68] mt-1">${lang=='bn'?'জবর = আ, জের = ই, পেশ = উ':'Zabar = A, Zer = I, Pesh = U'}</p><div class="flex gap-2 mt-2" dir="rtl">${['بَ','بِ','بُ'].map(x=>`<button onclick="speak('${x}')" class="flex-1 bg-white border rounded-xl py-3"><div class="ar text-[34px]">${x}</div><div class="text-[11px] font-bold">🔊 ${lang=='bn'?'শুনুন':'Listen'}</div></button>`).join('')}</div>`,
+    tanwin:`<div class="font-black">${lang=='bn'?'ً তানবীন':'ً Tanwin'}</div><p class="font-bold text-[13px] text-[#7A7A68] mt-1">${lang=='bn'?'দুই জবর = আন, দুই জের = ইন, দুই পেশ = উন':'Double Zabar = An, Double Zer = In, Double Pesh = Un'}</p><div class="flex gap-2 mt-2" dir="rtl">${['بً','بٍ','بٌ'].map(x=>`<button onclick="speak('${x}')" class="flex-1 bg-white border rounded-xl py-3"><div class="ar text-[34px]">${x}</div></button>`).join('')}</div>`,
+    jozom:`<div class="font-black">${lang=='bn'?'ْ জজম':'ْ Jozom'}</div><p class="font-bold text-[13px] text-[#7A7A68] mt-1">${lang=='bn'?'জজম ওয়ালা হরফ আগের হরফের সাথে মিলিয়ে পড়তে হয়':'Jozom letter joins with previous letter'}</p><div class="flex gap-2 mt-2" dir="rtl">${['أَبْ','مِنْ'].map(x=>`<button onclick="speak('${x}')" class="flex-1 bg-white border rounded-xl py-3"><div class="ar text-[30px]">${x}</div></button>`).join('')}</div>`,
+    tashdid:`<div class="font-black">${lang=='bn'?'ّ তাশদীদ':'ّ Tashdid'}</div><p class="font-bold text-[13px] text-[#7A7A68] mt-1">${lang=='bn'?'তাশদীদ ওয়ালা হরফ ২ বার পড়তে হয়':'Tashdid letter is read twice'}</p><div class="flex gap-2 mt-2" dir="rtl">${['بَّ','مُحَمَّد'].map(x=>`<button onclick="speak('${x}')" class="flex-1 bg-white border rounded-xl py-3"><div class="ar text-[30px]">${x}</div></button>`).join('')}</div>`,
+    mad:`<div class="font-black">${lang=='bn'?'মাদ':'Madd'}</div><p class="font-bold text-[13px] text-[#7A7A68] mt-1">${lang=='bn'?'আলিফ, ওয়াও, ইয়া থাকলে ১ আলিফ টেনে পড়তে হয়':'Alif, Waw, Ya — stretch 1 Alif'}</p><div class="flex gap-2 mt-2" dir="rtl">${['بَا','بُو','بِي'].map(x=>`<button onclick="speak('${x}')" class="flex-1 bg-white border rounded-xl py-3"><div class="ar text-[34px]">${x}</div></button>`).join('')}</div>`
   };
   document.getElementById('lessonContent').innerHTML=L[name]||'';
   box.scrollIntoView({behavior:'smooth'});
 }
+// ✅ BLOCK COPY EVERYWHERE
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('selectstart',e=>e.preventDefault());
 renderKeyboard(); renderBoard();
 </script>
-</body></html>
+</body>
+</html>
