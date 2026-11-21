@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="bn" class="notranslate" translate="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0f172a">
+<title>Qaida Part 2 • A-S A2Z</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Scheherazade+New:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--primary:#2563eb;--violet:#7c3aed;--gold:#f59e0b;--bg:#f5f7fb}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:linear-gradient(145deg,#eef4ff 0%,#faf7ff 45%,#fff8ed 100%);color:var(--ink);font-family:'Hind Siliguri',sans-serif}
+body{min-height:100vh}
+button{font-family:inherit}
+.app{width:min(100%,520px);margin:auto;min-height:100vh;background:rgba(255,255,255,.72);box-shadow:0 0 60px rgba(15,23,42,.08);position:relative;overflow:hidden}
+.arabic{font-family:'Scheherazade New',serif;line-height:1.55}
+.glass{background:rgba(255,255,255,.78);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.8);box-shadow:0 12px 35px rgba(15,23,42,.07)}
+.header{background:linear-gradient(135deg,#0f172a,#1e3a8a 55%,#6d28d9);color:white}
+.hero-orb{position:absolute;border-radius:999px;filter:blur(2px);opacity:.22}
+.card{border-radius:24px}
+.btn{border:0;border-radius:16px;padding:.72rem .9rem;font-weight:800;transition:.18s;cursor:pointer}
+.btn:active{transform:scale(.96)}
+.iconbtn{width:42px;height:42px;padding:0;display:grid;place-items:center;border-radius:14px;background:rgba(255,255,255,.13);color:#fff}
+.tab{flex:1;min-width:76px;padding:.72rem .45rem;border-radius:15px;font-size:.78rem;font-weight:800;color:#64748b;background:transparent}
+.tab.active{color:#fff;background:#0f172a;box-shadow:0 7px 20px rgba(15,23,42,.18)}
+.tabbar{display:flex;gap:5px;overflow:auto;scrollbar-width:none}
+.tabbar::-webkit-scrollbar{display:none}
+.lesson{border-radius:22px;padding:18px;color:#fff;position:relative;overflow:hidden;cursor:pointer;min-height:125px}
+.lesson:after{content:"";position:absolute;width:110px;height:110px;border-radius:50%;right:-30px;bottom:-35px;background:rgba(255,255,255,.12)}
+.lesson h3{font-size:1.05rem;font-weight:800;margin:0}
+.lesson p{font-size:.78rem;opacity:.88;margin:.2rem 0 0}
+.lesson .arabic{font-size:2.8rem;position:absolute;right:18px;bottom:4px}
+.l1{background:linear-gradient(135deg,#2563eb,#06b6d4)}.l2{background:linear-gradient(135deg,#7c3aed,#ec4899)}
+.l3{background:linear-gradient(135deg,#059669,#14b8a6)}.l4{background:linear-gradient(135deg,#ea580c,#f59e0b)}
+.l5{background:linear-gradient(135deg,#4f46e5,#8b5cf6)}.l6{background:linear-gradient(135deg,#0891b2,#2563eb)}
+.l7{background:linear-gradient(135deg,#b45309,#ef4444)}.l8{background:linear-gradient(135deg,#be123c,#7c3aed)}
+.l9{background:linear-gradient(135deg,#334155,#0f766e)}
+.modalback{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(8px);z-index:50;display:none;align-items:flex-end;justify-content:center}
+.modalback.show{display:flex}
+.sheet{width:min(100%,520px);max-height:88vh;overflow:auto;background:#fff;border-radius:28px 28px 0 0;padding:20px;animation:up .22s ease}
+@keyframes up{from{transform:translateY(30px);opacity:.4}to{transform:none;opacity:1}}
+.drawer{position:fixed;inset:0;z-index:60;display:none;background:rgba(15,23,42,.45);backdrop-filter:blur(6px)}
+.drawer.show{display:block}
+.drawerpanel{width:min(86%,390px);height:100%;background:#fff;padding:20px;box-shadow:20px 0 60px rgba(15,23,42,.2);animation:slide .22s ease}
+@keyframes slide{from{transform:translateX(-100%)}to{transform:none}}
+.choice{border:2px solid #e2e8f0;border-radius:17px;padding:12px;text-align:center;font-weight:800;background:#fff;cursor:pointer}
+.choice.selected{border-color:#2563eb;background:#eff6ff;color:#1d4ed8}
+.boardcell{min-height:88px;border:1px solid #e2e8f0;border-radius:20px;background:linear-gradient(145deg,#fff,#f8fafc);display:grid;place-items:center;cursor:pointer;position:relative}
+.boardcell.selected{outline:3px solid #bfdbfe;background:#eff6ff}
+.boardcell .arabic{font-size:3rem}
+.markchip{padding:12px;border-radius:16px;background:#f8fafc;border:1px solid #e2e8f0;text-align:center;font-weight:800;cursor:pointer}
+.markchip:active{transform:scale(.97)}
+.canvasbox{background:repeating-linear-gradient(0deg,#fff,#fff 47px,#dbeafe 48px),repeating-linear-gradient(90deg,transparent,transparent 47px,#eef2ff 48px);border:2px dashed #93c5fd;border-radius:24px;overflow:hidden}
+#traceCanvas{width:100%;height:310px;display:block;touch-action:none}
+.stat{border-radius:18px;padding:11px;background:rgba(255,255,255,.12)}
+.progress{height:8px;border-radius:99px;background:#e2e8f0;overflow:hidden}.progress>i{display:block;height:100%;background:linear-gradient(90deg,#2563eb,#7c3aed);border-radius:99px;transition:.3s}
+.toast{position:fixed;z-index:100;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#0f172a;color:white;padding:11px 16px;border-radius:14px;font-weight:700;transition:.25s;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.small{font-size:.78rem;color:#64748b}
+
+/* Floating learning finger */
+#fingerTip{
+  position:fixed;
+  z-index:90;
+  left:calc(50% - 24px);
+  top:145px;
+  width:54px;
+  height:54px;
+  border:0;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.94);
+  box-shadow:0 10px 28px rgba(15,23,42,.22),0 0 0 3px rgba(37,99,235,.12);
+  cursor:grab;
+  touch-action:none;
+  user-select:none;
+  font-size:34px;
+  line-height:1;
+  transform:rotate(-90deg);
+  transition:box-shadow .2s,opacity .2s;
+}
+#fingerTip:active{cursor:grabbing;box-shadow:0 6px 18px rgba(15,23,42,.28),0 0 0 4px rgba(37,99,235,.18)}
+#fingerTip.dragging{transition:none}
+#fingerTip::after{
+  content:"";
+  position:absolute;
+  inset:-5px;
+  border-radius:50%;
+  border:2px solid rgba(37,99,235,.18);
+  animation:fingerPulse 1.8s infinite;
+}
+@keyframes fingerPulse{
+  0%,100%{transform:scale(.92);opacity:.15}
+  50%{transform:scale(1.12);opacity:.55}
+}
+#fingerShow{
+  position:fixed;
+  right:14px;
+  bottom:86px;
+  z-index:89;
+  width:46px;
+  height:46px;
+  border:0;
+  border-radius:15px;
+  display:none;
+  place-items:center;
+  background:#0f172a;
+  color:#fff;
+  box-shadow:0 10px 25px rgba(15,23,42,.25);
+  font-size:25px;
+}
+#fingerTip.hidden{display:none}
+#fingerShow.show{display:grid}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header class="header px-4 pt-5 pb-4 relative overflow-hidden">
+  <div class="hero-orb w-44 h-44 bg-cyan-300 -right-16 -top-16"></div>
+  <div class="hero-orb w-32 h-32 bg-fuchsia-300 -left-16 bottom-0"></div>
+  <div class="relative flex items-center gap-3">
+    <button class="iconbtn" onclick="openDrawer()">☰</button>
+    <div class="flex-1">
+      <div class="text-xs font-bold opacity-70" data-t="part">PART 2 • ARABIC QAIDA</div>
+      <h1 class="text-xl font-extrabold" data-t="title">কায়দা পার্ট ২</h1>
+      <p class="text-xs opacity-75" data-t="subtitle">হরকত • তানভীন • জযম • তাশদীদ</p>
+    </div>
+    <button class="iconbtn text-lg" onclick="toggleLang()" id="langBtn">EN</button>
+  </div>
+
+  <div class="mt-4 flex gap-2">
+    <div class="stat flex-1"><div class="text-xs opacity-70" data-t="level">লেভেল</div><b id="levelText">1</b></div>
+    <div class="stat flex-1"><div class="text-xs opacity-70">♥</div><b id="heartText">5</b></div>
+    <div class="stat flex-1"><div class="text-xs opacity-70">★</div><b id="starText">0</b></div>
+    <div class="stat flex-1"><div class="text-xs opacity-70" data-t="points">পয়েন্ট</div><b id="pointText">0</b></div>
+  </div>
+</header>
+
+<main class="px-4 pb-28">
+  <section class="glass card p-4 mt-4">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="small" data-t="journey">আপনার শেখার যাত্রা</p>
+        <h2 class="font-extrabold text-lg" id="progressTitle">0% Complete</h2>
+      </div>
+      <div class="w-16 h-16 rounded-full grid place-items-center bg-blue-50 text-blue-700 font-extrabold" id="progressRing">0%</div>
+    </div>
+    <div class="progress mt-3"><i id="progressBar" style="width:0%"></i></div>
+  </section>
+
+  <div class="tabbar mt-4">
+    <button class="tab active" data-tab="learn" data-t="learn" onclick="setTab('learn')">শিখি</button>
+    <button class="tab" data-tab="board" data-t="board" onclick="setTab('board')">বোর্ড</button>
+    <button class="tab" data-tab="quiz" data-t="quiz" onclick="setTab('quiz')">কুইজ</button>
+    <button class="tab" data-tab="trace" data-t="trace" onclick="setTab('trace')">ট্রেস</button>
+    <button class="tab" data-tab="listen" data-t="listen" onclick="setTab('listen')">শুনি</button>
+    <button class="tab" data-tab="words" data-t="words" onclick="setTab('words')">শব্দ</button>
+  </div>
+
+  <section id="learn" class="mt-4">
+    <div class="flex items-end justify-between mb-3">
+      <div><p class="small" data-t="startHere">এখান থেকে শুরু করুন</p><h2 class="text-2xl font-extrabold" data-t="lessons">পাঠসমূহ</h2></div>
+      <button class="btn bg-slate-900 text-white text-xs" onclick="openLesson(0)" data-t="quickStart">শুরু করি</button>
+    </div>
+    <div id="lessonGrid" class="grid grid-cols-2 gap-3"></div>
+
+    <div class="glass card p-4 mt-4">
+      <div class="flex justify-between items-center"><h3 class="font-extrabold" data-t="daily">আজকের কাজ</h3><span class="text-amber-500">✦</span></div>
+      <div id="tasks" class="mt-3 space-y-2"></div>
+    </div>
+  </section>
+
+  <section id="board" class="hidden mt-4">
+    <div class="glass card p-4">
+      <div class="flex justify-between items-center">
+        <div><h2 class="text-xl font-extrabold" data-t="letterBoard">আরবি অক্ষর বোর্ড</h2><p class="small" data-t="boardHint">অক্ষর বেছে নিয়ে হরকত যোগ করুন</p></div>
+        <button class="btn bg-slate-100 text-slate-700 text-xs" onclick="clearBoard()" data-t="clear">পরিষ্কার</button>
+      </div>
+      <div id="boardGrid" class="grid grid-cols-4 gap-2 mt-4"></div>
+      <div class="mt-4">
+        <div class="flex justify-between items-center mb-2"><b data-t="marks">হরকত</b><span id="selectedName" class="small">—</span></div>
+        <div id="markGrid" class="grid grid-cols-4 gap-2"></div>
+      </div>
+      <div class="mt-4 p-4 rounded-2xl bg-slate-900 text-white text-center">
+        <div id="boardPreview" class="arabic text-5xl min-h-16">ا</div>
+        <div class="flex gap-2 mt-3">
+          <button class="btn flex-1 bg-white/10" onclick="speak(boardPreview.textContent)">🔊 <span data-t="listenBtn">শুনুন</span></button>
+          <button class="btn flex-1 bg-white/10" onclick="removeSelected()" data-t="remove">মুছুন</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quiz" class="hidden mt-4">
+    <div class="glass card p-5">
+      <div class="flex justify-between items-center">
+        <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-extrabold" id="quizCount">1 / 10</span>
+        <span id="quizScore" class="font-extrabold">★ 0</span>
+      </div>
+      <div class="text-center py-7">
+        <p class="small" data-t="chooseCorrect">সঠিক উত্তরটি বেছে নিন</p>
+        <div id="quizChar" class="arabic text-8xl text-slate-900 my-3">بَ</div>
+        <h3 id="quizPrompt" class="font-extrabold text-lg">এটি কী?</h3>
+      </div>
+      <div id="quizOptions" class="grid grid-cols-2 gap-3"></div>
+      <button id="nextQuizBtn" class="btn w-full bg-slate-900 text-white mt-4 hidden" onclick="nextQuiz()" data-t="next">পরেরটি</button>
+    </div>
+  </section>
+
+  <section id="trace" class="hidden mt-4">
+    <div class="glass card p-4">
+      <div class="flex justify-between items-center">
+        <div><h2 class="text-xl font-extrabold" data-t="traceTitle">লিখে অনুশীলন</h2><p class="small" data-t="traceHint">আঙুল দিয়ে আরবি অক্ষরটি অনুসরণ করুন</p></div>
+        <button class="btn bg-slate-100 text-slate-700 text-xs" onclick="clearTrace()" data-t="clear">পরিষ্কার</button>
+      </div>
+      <div class="flex gap-2 mt-3" id="tracePicker"></div>
+      <div class="canvasbox mt-3"><canvas id="traceCanvas"></canvas></div>
+      <div class="flex gap-2 mt-3">
+        <button class="btn flex-1 bg-blue-600 text-white" onclick="goodTrace()" data-t="done">অনুশীলন শেষ</button>
+        <button class="btn flex-1 bg-slate-100" onclick="speak(traceCh)">🔊 <span data-t="listenBtn">শুনুন</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section id="listen" class="hidden mt-4">
+    <div class="glass card p-5 text-center">
+      <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-blue-600 to-violet-600 text-white mx-auto grid place-items-center text-3xl">🔊</div>
+      <h2 class="text-xl font-extrabold mt-4" data-t="listenTitle">শুনে অক্ষর খুঁজুন</h2>
+      <p class="small mt-1" data-t="listenHint">শব্দ শুনে সঠিক অক্ষরটি নির্বাচন করুন</p>
+      <button class="btn bg-slate-900 text-white px-8 mt-5" onclick="playListen()">▶ <span data-t="play">শুনুন</span></button>
+      <div id="listenOptions" class="grid grid-cols-3 gap-3 mt-5"></div>
+      <div id="listenResult" class="font-extrabold mt-4 min-h-6"></div>
+    </div>
+  </section>
+
+  <section id="words" class="hidden mt-4">
+    <div class="glass card p-4">
+      <h2 class="text-xl font-extrabold" data-t="wordTitle">সহজ আরবি শব্দ</h2>
+      <p class="small" data-t="wordHint">শুনুন, দেখুন এবং বারবার পড়ুন</p>
+      <div id="wordGrid" class="grid grid-cols-2 gap-3 mt-4"></div>
+    </div>
+  </section>
+</main>
+
+<button id="fingerTip" aria-label="Learning pointer" title="Drag me / tap to hide">☝️</button>
+<button id="fingerShow" aria-label="Show learning pointer" title="Show pointer">☝️</button>
+
+<nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[520px] z-40 px-3 pb-3">
+  <div class="glass rounded-2xl p-2 flex gap-2">
+    <button class="btn flex-1 bg-slate-900 text-white text-xs" onclick="setTab('learn')">⌂ <span data-t="home">হোম</span></button>
+    <button class="btn flex-1 bg-white text-slate-700 text-xs" onclick="setTab('board')">⌘ <span data-t="practice">অনুশীলন</span></button>
+    <button class="btn flex-1 bg-white text-slate-700 text-xs" onclick="setTab('quiz')">★ <span data-t="challenge">চ্যালেঞ্জ</span></button>
+    <button class="btn flex-1 bg-white text-slate-700 text-xs" onclick="openDrawer()">☰ <span data-t="menu">মেনু</span></button>
+  </div>
+</nav>
+
+</div>
+
+<div id="lessonModal" class="modalback" onclick="if(event.target===this)closeLesson()">
+  <div class="sheet">
+    <div class="flex justify-between items-start gap-3">
+      <div><p class="small" id="lessonTag"></p><h2 id="lessonTitle" class="text-2xl font-extrabold"></h2></div>
+      <button class="btn bg-slate-100" onclick="closeLesson()">✕</button>
+    </div>
+    <div id="lessonBody" class="mt-4"></div>
+  </div>
+</div>
+
+<div id="drawer" class="drawer" onclick="if(event.target===this)closeDrawer()">
+  <div class="drawerpanel">
+    <div class="flex justify-between items-center">
+      <div><b class="text-xl" data-t="settings">সেটিংস</b><p class="small" data-t="personalize">আপনার শেখার অভিজ্ঞতা সাজান</p></div>
+      <button class="btn bg-slate-100" onclick="closeDrawer()">✕</button>
+    </div>
+    <div class="mt-6">
+      <p class="small font-bold mb-2" data-t="language">ভাষা</p>
+      <div class="grid grid-cols-2 gap-2">
+        <button id="bnBtn" class="choice selected" onclick="setLang('bn')">বাংলা</button>
+        <button id="enBtn" class="choice" onclick="setLang('en')">English</button>
+      </div>
+    </div>
+    <div class="mt-6 space-y-2">
+      <button class="btn w-full bg-blue-50 text-blue-700 text-left" onclick="setTab('learn');closeDrawer()">📚 <span data-t="allLessons">সব পাঠ</span></button>
+      <button class="btn w-full bg-violet-50 text-violet-700 text-left" onclick="setTab('quiz');closeDrawer()">🏆 <span data-t="quizMode">কুইজ মোড</span></button>
+      <button class="btn w-full bg-emerald-50 text-emerald-700 text-left" onclick="setTab('trace');closeDrawer()">✍️ <span data-t="traceMode">লেখার অনুশীলন</span></button>
+      <button class="btn w-full bg-amber-50 text-amber-700 text-left" onclick="resetAll()">↻ <span data-t="reset">অগ্রগতি রিসেট</span></button>
+    </div>
+    <div class="mt-8 p-4 rounded-2xl bg-slate-900 text-white">
+      <div class="text-xs opacity-60">A-S A2Z</div>
+      <div class="font-extrabold mt-1">Arabic Qaida • Part 2</div>
+      <div class="text-xs opacity-60 mt-2" data-t="footerMini">শেখা সহজ, অনুশীলন মজার</div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const I18N={
+bn:{
+part:"PART 2 • ARABIC QAIDA",title:"কায়দা পার্ট ২",subtitle:"হরকত • তানভীন • জযম • তাশদীদ",level:"লেভেল",points:"পয়েন্ট",
+journey:"আপনার শেখার যাত্রা",learn:"শিখি",board:"বোর্ড",quiz:"কুইজ",trace:"ট্রেস",listen:"শুনি",words:"শব্দ",
+startHere:"এখান থেকে শুরু করুন",lessons:"পাঠসমূহ",quickStart:"শুরু করি",daily:"আজকের কাজ",
+letterBoard:"আরবি অক্ষর বোর্ড",boardHint:"অক্ষর বেছে নিয়ে হরকত যোগ করুন",clear:"পরিষ্কার",marks:"হরকত",
+listenBtn:"শুনুন",remove:"মুছুন",chooseCorrect:"সঠিক উত্তরটি বেছে নিন",next:"পরেরটি",
+traceTitle:"লিখে অনুশীলন",traceHint:"আঙুল দিয়ে আরবি অক্ষরটি অনুসরণ করুন",done:"অনুশীলন শেষ",
+listenTitle:"শুনে অক্ষর খুঁজুন",listenHint:"শব্দ শুনে সঠিক অক্ষরটি নির্বাচন করুন",play:"শুনুন",
+wordTitle:"সহজ আরবি শব্দ",wordHint:"শুনুন, দেখুন এবং বারবার পড়ুন",home:"হোম",practice:"অনুশীলন",
+challenge:"চ্যালেঞ্জ",menu:"মেনু",settings:"সেটিংস",personalize:"আপনার শেখার অভিজ্ঞতা সাজান",language:"ভাষা",
+allLessons:"সব পাঠ",quizMode:"কুইজ মোড",traceMode:"লেখার অনুশীলন",reset:"অগ্রগতি রিসেট",
+footerMini:"শেখা সহজ, অনুশীলন মজার",correct:"সঠিক! +1 ★",wrong:"আবার চেষ্টা করুন",saved:"অগ্রগতি সংরক্ষিত",
+traceDone:"দারুণ! অনুশীলন সম্পন্ন হয়েছে। +1 ★",selectLetter:"একটি অক্ষর নির্বাচন করুন",empty:"বোর্ড খালি আছে",
+listenCorrect:"সঠিক উত্তর! +1 ★",listenWrong:"ভুল হয়েছে, আবার শুনুন।",resetDone:"অগ্রগতি রিসেট হয়েছে",
+levelWord:"লেভেল",completed:"সম্পন্ন",task1:"একটি পাঠ খুলুন",task2:"কুইজে ৩টি উত্তর দিন",task3:"ট্রেস অনুশীলন করুন"
+},
+en:{
+part:"PART 2 • ARABIC QAIDA",title:"Qaida Part 2",subtitle:"Harakat • Tanwin • Jozom • Tashdid",level:"LEVEL",points:"POINTS",
+journey:"Your learning journey",learn:"Learn",board:"Board",quiz:"Quiz",trace:"Trace",listen:"Listen",words:"Words",
+startHere:"Start here",lessons:"Lessons",quickStart:"Quick start",daily:"Today's tasks",
+letterBoard:"Arabic Letter Board",boardHint:"Choose a letter and add a mark",clear:"Clear",marks:"Harakat",
+listenBtn:"Listen",remove:"Remove",chooseCorrect:"Choose the correct answer",next:"Next",
+traceTitle:"Writing practice",traceHint:"Follow the Arabic letter with your finger",done:"Finish practice",
+listenTitle:"Listen & find",listenHint:"Listen and select the correct letter",play:"Listen",
+wordTitle:"Easy Arabic words",wordHint:"Listen, look and read again",home:"Home",practice:"Practice",
+challenge:"Challenge",menu:"Menu",settings:"Settings",personalize:"Personalize your learning experience",language:"Language",
+allLessons:"All lessons",quizMode:"Quiz mode",traceMode:"Writing practice",reset:"Reset progress",
+footerMini:"Learn simply, practice happily",correct:"Correct! +1 ★",wrong:"Try again",saved:"Progress saved",
+traceDone:"Great! Practice completed. +1 ★",selectLetter:"Select a letter",empty:"The board is empty",
+listenCorrect:"Correct! +1 ★",listenWrong:"Not quite. Listen again.",resetDone:"Progress has been reset",
+levelWord:"Level",completed:"Completed",task1:"Open one lesson",task2:"Answer 3 quiz questions",task3:"Practice tracing"
+}};
+let lang=localStorage.getItem("qaidaLang")||"bn";
+let state=JSON.parse(localStorage.getItem("qaidaState")||'{"stars":0,"points":0,"hearts":5,"doneLessons":[],"tasks":{}}');
+let quizIdx=0,quizLocked=false,listenAns="",traceCh="ب",traceDrawn=false;
+
+const LETTERS=[
+["ا","Alif","আলিফ"],["ب","Ba","বা"],["ت","Ta","তা"],["ث","Tha","ছা"],["ج","Jeem","জীম"],["ح","Haa","হা"],["خ","Kha","খা"],["د","Dal","দাল"],["ذ","Dhal","যাল"],["ر","Ra","রা"],["ز","Zay","যা"],["س","Seen","সীন"],["ش","Sheen","শীন"],["ص","Sad","সোয়াদ"],["ض","Dad","দ্বোয়াদ"],["ط","Ta","তোয়া"],["ظ","Dha","যোয়া"],["ع","Ayn","আইন"],["غ","Ghayn","গাইন"],["ف","Fa","ফা"],["ق","Qaf","ক্বফ"],["ك","Kaf","কাফ"],["ل","Lam","লাম"],["م","Meem","মীম"],["ن","Noon","নূন"],["و","Waw","ওয়াও"],["ه","Ha","হা"],["ء","Hamza","হামযা"],["ي","Ya","ইয়া"]
+];
+const MARKS=[
+["َ","Fatha","যবর"],["ِ","Kasra","যের"],["ُ","Damma","পেশ"],["ً","Fathatan","দুই যবর"],["ٍ","Kasratan","দুই যের"],["ٌ","Dammatan","দুই পেশ"],["ْ","Sukoon","জযম"],["ّ","Shaddah","তাশদীদ"]
+];
+const LESSONS=[
+{cls:"l1",ar:"بَ  بِ  بُ",bn:"হরকত",en:"Harakat",descBn:"যবর, যের ও পেশ",descEn:"Fatha, Kasra & Damma",
+bodyBn:"হরকত অক্ষরের উচ্চারণে স্বরধ্বনি যোগ করে। যবর — بَ, যের — بِ, পেশ — بُ। ধীরে ধীরে দেখে পড়ুন।",
+bodyEn:"Harakat adds vowel sounds to Arabic letters. Fatha — بَ, Kasra — بِ, Damma — بُ. Read each one slowly."},
+{cls:"l2",ar:"بًا  بٍ  بٌ",bn:"তানভীন",en:"Tanwin",descBn:"দুই যবর, দুই যের ও দুই পেশ",descEn:"Double vowel endings",
+bodyBn:"তানভীন হলো দ্বৈত হরকত। যেমন: بًا، بٍ، بٌ। এগুলো সাধারণত শব্দের শেষে আসে।",
+bodyEn:"Tanwin is a doubled vowel ending: بًا, بٍ, بٌ. It commonly appears at the end of words."},
+{cls:"l3",ar:"بْ  نْ",bn:"জযম",en:"Jozom / Sukoon",descBn:"অক্ষরে স্বরধ্বনি নেই",descEn:"No vowel sound",
+bodyBn:"জযম বা সুকূন অক্ষরের উপর থাকলে অক্ষরটি স্বরধ্বনি ছাড়া পড়া হয়। উদাহরণ: بْ।",
+bodyEn:"Jozom, also called Sukoon, indicates that the letter has no vowel sound. Example: بْ."},
+{cls:"l4",ar:"بَّ  رِّ",bn:"তাশদীদ",en:"Tashdid",descBn:"অক্ষরে জোর ও দ্বিত্ব",descEn:"Emphasis and doubling",
+bodyBn:"তাশদীদ অক্ষরের দ্বিত্ব বোঝায়। চিহ্নটি হলো ّ। হরকতের সঙ্গে মিলিয়ে ধীরে পড়ুন।",
+bodyEn:"Tashdid indicates a doubled/emphasized consonant. The mark is ّ. Practice it slowly with its vowel."},
+{cls:"l5",ar:"بَا  بِى  بُو",bn:"মাদ",en:"Madd",descBn:"দীর্ঘ স্বরধ্বনি",descEn:"Long vowel sound",
+bodyBn:"মাদে স্বরধ্বনি কিছুটা দীর্ঘ হয়। আলিফ, ওয়াও ও ইয়ার সঙ্গে বিভিন্ন দীর্ঘ ধ্বনি দেখা যায়।",
+bodyEn:"Madd lengthens the vowel sound. Long sounds can occur with Alif, Waw and Ya."},
+{cls:"l6",ar:"بَيْ  قَوْ",bn:"লীন",en:"Leen",descBn:"নরম ওয়াও/ইয়া",descEn:"Soft Waw / Ya",
+bodyBn:"লীন শব্দের অর্থ নরম। ফাতহার পরে সাকিন ওয়াও বা ইয়া এলে নরম ধ্বনি শোনা যায়।",
+bodyEn:"Leen means soft. A soft sound can occur with a Fatha followed by a sukoon Waw or Ya."},
+{cls:"l7",ar:"قْ  طْ  بْ",bn:"কলকলাহ",en:"Qalqalah",descBn:"প্রতিধ্বনির মতো হালকা শব্দ",descEn:"A light echoing sound",
+bodyBn:"কলকলাহ অক্ষরগুলো জযম অবস্থায় এলে হালকা প্রতিধ্বনির মতো শব্দ শোনা যায়। সাধারণত ق ط ب ج د মনে রাখা হয়।",
+bodyEn:"Qalqalah gives a light echoing effect when its letters are in a sukoon state. The common letters are ق ط ب ج د."},
+{cls:"l8",ar:"مّ  نّ",bn:"গুন্নাহ",en:"Ghunna",descBn:"নাক দিয়ে ধ্বনি",descEn:"Nasal sound",
+bodyBn:"মীম ও নূনের তাশদীদের ক্ষেত্রে নাসিকাধ্বনি বা গুন্নাহ অনুশীলন করা হয়।",
+bodyEn:"Mim and Noon with Tashdid are practiced with a nasal sound called Ghunna."},
+{cls:"l9",ar:"مِنْ  أَنْ",bn:"ইখফা ও ইদগাম",en:"Ikhfa & Idgham",descBn:"পড়ার সংযোগ অনুশীলন",descEn:"Connected reading practice",
+bodyBn:"এখানে অক্ষর ও শব্দকে সংযুক্ত করে পড়ার অনুশীলন করা হয়। ধীরে পড়ে পরে গতি বাড়ান।",
+bodyEn:"This lesson practices connected reading between letters and words. Read slowly first, then increase your pace."}
+];
+const WORDS=[
+["كِتَاب","Kitab","বই"],["قَلَم","Qalam","কলম"],["بَيْت","Bayt","বাড়ি"],["مَاء","Maa","পানি"],
+["نُور","Noor","আলো"],["سَلَام","Salam","শান্তি"],["عِلْم","Ilm","জ্ঞান"],["رَحْمَة","Rahmah","রহমত"]
+];
+const QUIZ=[
+["بَ",["Fatha","Kasra","Damma","Sukoon"],0],["بِ",["Fatha","Kasra","Damma","Tanwin"],1],
+["بُ",["Damma","Fatha","Sukoon","Shaddah"],0],["بْ",["Sukoon","Fatha","Kasra","Damma"],0],
+["بٌ",["Dammatan","Fathatan","Kasratan","Sukoon"],0],["بٍ",["Kasratan","Dammatan","Fathatan","Fatha"],0],
+["بًا",["Fathatan","Dammatan","Kasratan","Sukoon"],0],["بَّ",["Shaddah","Sukoon","Fatha","Kasra"],0],
+["بَا",["Madd","Tanwin","Sukoon","Shaddah"],0],["مّ",["Ghunna","Madd","Leen","Tanwin"],0]
+];
+
+function t(k){return I18N[lang][k]||k}
+function save(){localStorage.setItem("qaidaState",JSON.stringify(state))}
+function toast(msg){const x=document.getElementById("toast");x.textContent=msg;x.classList.add("show");clearTimeout(window.tt);window.tt=setTimeout(()=>x.classList.remove("show"),1800)}
+function setLang(v){lang=v;localStorage.setItem("qaidaLang",v);document.documentElement.lang=v;document.getElementById("langBtn").textContent=v==="bn"?"EN":"বাংলা";document.getElementById("bnBtn").classList.toggle("selected",v==="bn");document.getElementById("enBtn").classList.toggle("selected",v==="en");document.querySelectorAll("[data-t]").forEach(e=>e.textContent=t(e.dataset.t));renderLessons();renderTasks();renderBoard();renderQuiz();renderTracePicker();renderWords();updateStats()}
+function toggleLang(){setLang(lang==="bn"?"en":"bn")}
+function updateStats(){
+ const p=Math.min(100,Math.round((state.points%100)));
+ document.getElementById("heartText").textContent=state.hearts;
+ document.getElementById("starText").textContent=state.stars;
+ document.getElementById("pointText").textContent=state.points;
+ document.getElementById("levelText").textContent=Math.floor(state.points/100)+1;
+ document.getElementById("progressTitle").textContent=p+"% "+(lang==="bn"?"সম্পন্ন":"Complete");
+ document.getElementById("progressRing").textContent=p+"%";
+ document.getElementById("progressBar").style.width=p+"%";
+}
+function renderLessons(){
+ const g=document.getElementById("lessonGrid");g.innerHTML="";
+ LESSONS.forEach((x,i)=>{
+  const done=state.doneLessons.includes(i);
+  g.innerHTML+=`<div class="lesson ${x.cls}" onclick="openLesson(${i})"><div class="relative z-10"><div class="text-[10px] font-bold opacity-75">${String(i+1).padStart(2,"0")} • ${done?"✓":""}</div><h3>${lang==="bn"?x.bn:x.en}</h3><p>${lang==="bn"?x.descBn:x.descEn}</p></div><div class="arabic">${x.ar}</div></div>`;
+ });
+}
+function openLesson(i){
+ const x=LESSONS[i];state.doneLessons=[...new Set([...state.doneLessons,i])];state.points+=5;save();updateStats();
+ document.getElementById("lessonTag").textContent=`${String(i+1).padStart(2,"0")} • ${lang==="bn"?"পাঠ":"LESSON"}`;
+ document.getElementById("lessonTitle").textContent=lang==="bn"?x.bn:x.en;
+ document.getElementById("lessonBody").innerHTML=`
+ <div class="rounded-3xl bg-slate-900 text-white p-6 text-center"><div class="arabic text-6xl">${x.ar}</div><button class="btn bg-white/10 mt-3" onclick="speak('${x.ar}')">🔊 ${t("listenBtn")}</button></div>
+ <div class="mt-4 p-4 rounded-2xl bg-blue-50 text-blue-900">${lang==="bn"?x.bodyBn:x.bodyEn}</div>
+ <div class="mt-4 grid grid-cols-2 gap-3">${["بَ","بِ","بُ","بْ"].map(a=>`<button class="choice arabic text-3xl" onclick="speak('${a}')">${a}</button>`).join("")}</div>`;
+ document.getElementById("lessonModal").classList.add("show");renderTasks()
+}
+function closeLesson(){document.getElementById("lessonModal").classList.remove("show")}
+function renderTasks(){
+ const items=[["task1",state.doneLessons.length>0],["task2",(state.tasks.quiz||0)>=3],["task3",!!state.tasks.trace]];
+ document.getElementById("tasks").innerHTML=items.map(([k,d])=>`<div class="flex items-center gap-3 p-3 rounded-2xl ${d?"bg-emerald-50":"bg-slate-50"}"><span class="w-8 h-8 rounded-full grid place-items-center ${d?"bg-emerald-500 text-white":"bg-white"}">${d?"✓":"•"}</span><span class="font-bold flex-1">${t(k)}</span><span class="text-xs font-bold ${d?"text-emerald-600":"text-slate-400"}">${d?t("completed"):"+"+1+" ★"}</span></div>`).join("")
+}
+function setTab(id){
+ document.querySelectorAll("main section[id]").forEach(s=>s.classList.add("hidden"));
+ document.getElementById(id).classList.remove("hidden");
+ document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));
+ if(id==="quiz")renderQuiz(); if(id==="board")renderBoard(); if(id==="trace"){renderTracePicker();setTimeout(resizeCanvas,30)} if(id==="listen")renderListen(); if(id==="words")renderWords();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function renderBoard(){
+ const g=document.getElementById("boardGrid");
+ g.innerHTML=LETTERS.map((a,i)=>`<button class="boardcell ${window.selected===i?"selected":""}" onclick="selectLetter(${i})"><span class="arabic">${a[0]}</span></button>`).join("");
+ document.getElementById("markGrid").innerHTML=MARKS.map((m,i)=>`<button class="markchip" onclick="applyMark(${i})"><span class="arabic text-3xl">${m[0]}</span><div class="text-[10px]">${lang==="bn"?m[2]:m[1]}</div></button>`).join("");
+ document.getElementById("selectedName").textContent=window.selected>=0?(lang==="bn"?LETTERS[window.selected][2]:LETTERS[window.selected][1]):t("selectLetter");
+ document.getElementById("boardPreview").textContent=window.boardPreview||"ا";
+}
+window.selected=-1;window.boardPreview="ا";
+function selectLetter(i){window.selected=i;window.boardPreview=LETTERS[i][0];renderBoard()}
+function applyMark(i){if(window.selected<0){toast(t("selectLetter"));return}window.boardPreview=LETTERS[window.selected][0]+MARKS[i][0];renderBoard();speak(window.boardPreview)}
+function removeSelected(){window.boardPreview=window.selected>=0?LETTERS[window.selected][0]:"ا";renderBoard()}
+function clearBoard(){window.selected=-1;window.boardPreview="ا";renderBoard();toast(t("empty"))}
+function renderQuiz(){
+ const q=QUIZ[quizIdx];quizLocked=false;document.getElementById("quizCount").textContent=`${quizIdx+1} / ${QUIZ.length}`;
+ document.getElementById("quizChar").textContent=q[0];document.getElementById("quizPrompt").textContent=lang==="bn"?"এটি কোন হরকত/চিহ্ন?":"Which mark is this?";
+ document.getElementById("nextQuizBtn").classList.add("hidden");
+ document.getElementById("quizOptions").innerHTML=q[1].map((o,i)=>`<button class="choice" onclick="answerQuiz(${i},this)">${labelMark(o)}</button>`).join("");
+ document.getElementById("quizScore").textContent="★ "+state.stars;
+}
+function labelMark(x){const m=MARKS.find(a=>a[1]===x);return m?(lang==="bn"?m[2]:m[1]):x}
+function answerQuiz(i,el){
+ if(quizLocked)return;quizLocked=true;
+ const q=QUIZ[quizIdx],buttons=[...document.querySelectorAll("#quizOptions .choice")];
+ buttons.forEach((b,j)=>b.style.pointerEvents="none");
+ if(i===q[2]){el.style.borderColor="#10b981";el.style.background="#ecfdf5";state.stars++;state.points+=10;toast(t("correct"))}
+ else{el.style.borderColor="#ef4444";el.style.background="#fef2f2";buttons[q[2]].style.borderColor="#10b981";toast(t("wrong"))}
+ state.tasks.quiz=(state.tasks.quiz||0)+1;save();updateStats();renderTasks();document.getElementById("quizScore").textContent="★ "+state.stars;
+ if(quizIdx<QUIZ.length-1)document.getElementById("nextQuizBtn").classList.remove("hidden");
+ else setTimeout(()=>toast(lang==="bn"?"কুইজ সম্পন্ন!":"Quiz complete!"),400);
+}
+function nextQuiz(){if(quizIdx<QUIZ.length-1){quizIdx++;renderQuiz()}}
+function renderTracePicker(){document.getElementById("tracePicker").innerHTML=LETTERS.slice(0,6).map(a=>`<button class="choice arabic text-2xl flex-1 ${traceCh===a[0]?"selected":""}" onclick="traceCh='${a[0]}';renderTracePicker();setTimeout(resizeCanvas,20)">${a[0]}</button>`).join("")}
+let ctx,canvas,painting=false;
+function initCanvas(){canvas=document.getElementById("traceCanvas");ctx=canvas.getContext("2d");canvas.addEventListener("pointerdown",e=>{painting=true;traceDrawn=true;ctx.beginPath();ctx.moveTo(...pos(e));});canvas.addEventListener("pointermove",e=>{if(!painting)return;ctx.lineWidth=5;ctx.lineCap="round";ctx.lineTo(...pos(e));ctx.stroke();});["pointerup","pointerleave","pointercancel"].forEach(x=>canvas.addEventListener(x,()=>painting=false));resizeCanvas()}
+function pos(e){const r=canvas.getBoundingClientRect();return[(e.clientX-r.left)*canvas.width/r.width,(e.clientY-r.top)*canvas.height/r.height]}
+function resizeCanvas(){if(!canvas)return;const r=canvas.getBoundingClientRect();const d=devicePixelRatio||1;canvas.width=r.width*d;canvas.height=r.height*d;ctx.setTransform(d,0,0,d,0,0);ctx.textAlign="center";ctx.textBaseline="middle";ctx.globalAlpha=.12;ctx.fillStyle="#2563eb";ctx.font="210px 'Scheherazade New'";ctx.fillText(traceCh,r.width/2,r.height/2+10);ctx.globalAlpha=1}
+function clearTrace(){if(!canvas)return;ctx.clearRect(0,0,canvas.width,canvas.height);traceDrawn=false;resizeCanvas()}
+function goodTrace(){if(!traceDrawn){toast(lang==="bn"?"আগে একটু লিখে অনুশীলন করুন":"Write a little first");return}state.stars++;state.points+=10;state.tasks.trace=true;save();updateStats();renderTasks();toast(t("traceDone"))}
+function renderListen(){const arr=LETTERS.slice(0,6);listenAns=arr[Math.floor(Math.random()*arr.length)][0];document.getElementById("listenOptions").innerHTML=arr.map(a=>`<button class="choice arabic text-4xl" onclick="checkListen('${a[0]}')">${a[0]}</button>`).join("");document.getElementById("listenResult").textContent=""}
+function playListen(){speak(listenAns)}
+function checkListen(ch){const ok=ch===listenAns;document.getElementById("listenResult").textContent=ok?t("listenCorrect"):t("listenWrong");if(ok){state.stars++;state.points+=5;save();updateStats()}setTimeout(renderListen,900)}
+function renderWords(){document.getElementById("wordGrid").innerHTML=WORDS.map(w=>`<div class="p-4 rounded-2xl bg-slate-50 border border-slate-100"><div class="arabic text-4xl text-center">${w[0]}</div><div class="text-center font-extrabold mt-1">${w[lang==="en"?1:2]}</div><button class="btn w-full bg-white mt-2 text-xs" onclick="speak('${w[0]}')">🔊 ${t("listenBtn")}</button></div>`).join("")}
+function speak(text){if(!window.speechSynthesis)return;const u=new SpeechSynthesisUtterance(text);u.lang="ar-SA";u.rate=.75;speechSynthesis.cancel();speechSynthesis.speak(u)}
+function openDrawer(){document.getElementById("drawer").classList.add("show")}
+function closeDrawer(){document.getElementById("drawer").classList.remove("show")}
+function resetAll(){if(confirm(lang==="bn"?"সব অগ্রগতি মুছে ফেলবেন?":"Reset all progress?")){state={stars:0,points:0,hearts:5,doneLessons:[],tasks:{}};save();updateStats();renderLessons();renderTasks();closeDrawer();toast(t("resetDone"))}}
+
+/* Draggable finger pointer */
+(function(){
+  const finger=document.getElementById("fingerTip");
+  const show=document.getElementById("fingerShow");
+  let dragging=false, moved=false, startX=0,startY=0,startL=0,startT=0;
+
+  function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
+  function move(x,y){
+    const w=finger.offsetWidth||54,h=finger.offsetHeight||54;
+    const maxX=Math.max(4,window.innerWidth-w-4);
+    const maxY=Math.max(4,window.innerHeight-h-4);
+    finger.style.left=clamp(startL+(x-startX),4,maxX)+"px";
+    finger.style.top=clamp(startT+(y-startY),4,maxY)+"px";
+  }
+
+  finger.addEventListener("pointerdown",e=>{
+    dragging=true;moved=false;
+    startX=e.clientX;startY=e.clientY;
+    const r=finger.getBoundingClientRect();startL=r.left;startT=r.top;
+    finger.classList.add("dragging");
+    finger.setPointerCapture?.(e.pointerId);
+  });
+
+  finger.addEventListener("pointermove",e=>{
+    if(!dragging)return;
+    if(Math.abs(e.clientX-startX)>5||Math.abs(e.clientY-startY)>5)moved=true;
+    move(e.clientX,e.clientY);
+  });
+
+  function end(e){
+    if(!dragging)return;
+    dragging=false;finger.classList.remove("dragging");
+    if(!moved) hideFinger();
+    try{finger.releasePointerCapture?.(e.pointerId)}catch(_){}
+  }
+  finger.addEventListener("pointerup",end);
+  finger.addEventListener("pointercancel",end);
+
+  function hideFinger(){
+    finger.classList.add("hidden");
+    show.classList.add("show");
+    localStorage.setItem("qaidaFingerHidden","1");
+  }
+  function showFinger(){
+    finger.classList.remove("hidden");
+    show.classList.remove("show");
+    localStorage.setItem("qaidaFingerHidden","0");
+  }
+  show.addEventListener("click",showFinger);
+
+  // Restore saved position
+  try{
+    const pos=JSON.parse(localStorage.getItem("qaidaFingerPos")||"null");
+    if(pos && Number.isFinite(pos.left) && Number.isFinite(pos.top)){
+      finger.style.left=clamp(pos.left,4,window.innerWidth-58)+"px";
+      finger.style.top=clamp(pos.top,4,window.innerHeight-58)+"px";
+    }
+    if(localStorage.getItem("qaidaFingerHidden")==="1")hideFinger();
+  }catch(_){}
+
+  window.addEventListener("resize",()=>{
+    const r=finger.getBoundingClientRect();
+    if(r.right>window.innerWidth-4)finger.style.left=Math.max(4,window.innerWidth-58)+"px";
+    if(r.bottom>window.innerHeight-4)finger.style.top=Math.max(4,window.innerHeight-58)+"px";
+  });
+
+  // Save position after every completed drag
+  finger.addEventListener("pointerup",()=>{
+    if(!finger.classList.contains("hidden")){
+      const r=finger.getBoundingClientRect();
+      localStorage.setItem("qaidaFingerPos",JSON.stringify({left:r.left,top:r.top}));
+    }
+  });
+})();
+
+window.addEventListener("resize",()=>{if(!document.getElementById("trace").classList.contains("hidden"))resizeCanvas()});
+setLang(lang);initCanvas();
+</script>
+</body>
+</html>
