@@ -14,7 +14,6 @@ input,select,textarea{font-size:17px!important;background:#fff!important}
 .card-cash{background:linear-gradient(135deg,#ECFDF5,#D1FAE5)} .card-bank{background:linear-gradient(135deg,#EFF6FF,#DBEAFE)} .card-wallet{background:linear-gradient(135deg,#F5F3FF,#EDE9FE)} .card-baki{background:linear-gradient(135deg,#FFFBEB,#FEF3C7)} .card-dis{background:linear-gradient(135deg,#FDF2F8,#FCE7F3)} .card-exp{background:linear-gradient(135deg,#FFF7ED,#FFEDD5)}
 .dark{ background:#0B1220!important; color:#fff!important } .dark .bg-white{ background:#1A2333!important; color:#fff!important; border-color:#2A3650!important } .dark .noteCard{ background:#1A2333!important; border-color:#2A3650!important; color:#fff!important } .dark input,.dark select,.dark textarea{ background:#243046!important; color:#fff!important; border-color:#3A4A6A!important } .dark .text-zinc-500,.dark .text-zinc-400{ color:#B0BECF!important } .dark .bg-zinc-100{ background:#243046!important } .dark .bg-zinc-50{ background:#111A2C!important }
 @media(min-width:768px){ .wrap{max-width:920px!important} }
-/* ✅ STYLISH ALERT */
 #customAlert{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px)}
 #customAlert.show{display:flex}
 .alert-box{background:linear-gradient(135deg,#ffffff,#F0F9FF);border-radius:28px;padding:26px;width:100%;max-width:360px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.35);border:2px solid #fff;animation:pop .25s ease}
@@ -24,11 +23,9 @@ input,select,textarea{font-size:17px!important;background:#fff!important}
 .alert-icon.warn{background:linear-gradient(135deg,#F59E0B,#D97706);box-shadow:0 8px 20px rgba(245,158,11,.4)}
 </style></head>
 <body><div id="appWrap" class="wrap max-w-[520px] mx-auto min-h-screen bg-white shadow-xl border-x pb-24">
-
-<!-- ✅ STYLISH ALERT MODAL -->
 <div id="customAlert"><div class="alert-box"><div id="alertIcon" class="alert-icon">✅</div><div id="alertMsg" class="font-black text-[18px] text-slate-800 leading-snug"></div><button onclick="closeAlert()" class="w-full mt-5 bg-slate-900 text-white py-3.5 rounded-full font-black text-[16px]">ঠিক আছে</button></div></div>
 
-<div id="authPage" class="p-4 pt-8"><div class="text-center"><div class="text-[70px]">💰</div><div class="font-black text-[30px] text-slate-800">Wallet</div><div class="text-slate-500 text-[15px] font-bold">ক্যাশ • ব্যাংক • ওয়ালেট • বাকি • ডিসকাউন্ট • খরচ✅ </div></div>
+<div id="authPage" class="p-4 pt-8"><div class="text-center"><div class="text-[70px]">💰</div><div class="font-black text-[30px] text-slate-800">Wallet</div><div class="text-slate-500 text-[15px] font-bold">ক্যাশ • ব্যাংক • ওয়ালেট • বাকি • ডিসকাউন্ট • খরচ</div></div>
 <div class="mt-6 border-2 border-slate-100 rounded-[24px] p-4 shadow-sm bg-white"><div class="flex bg-slate-100 rounded-full p-1"><button id="tabLogin" onclick="switchAuth('login')" class="flex-1 py-3 rounded-full bg-slate-900 text-white font-bold">লগইন</button><button id="tabSignup" onclick="switchAuth('signup')" class="flex-1 py-3 rounded-full font-bold">নতুন একাউন্ট</button></div>
 <label class="block mt-4 font-bold text-slate-700">📱 মোবাইল (১১ ডিজিট)</label><input id="phone" type="tel" maxlength="11" placeholder="01XXXXXXXXX" class="w-full mt-1 border-2 border-slate-200 rounded-2xl px-4 py-4 font-bold">
 <label class="block mt-3 font-bold text-slate-700">🔒 পাসওয়ার্ড (কমপক্ষে ৪)</label><input id="pass" type="password" placeholder="****" class="w-full mt-1 border-2 border-slate-200 rounded-2xl px-4 py-4 font-bold"><div id="authErr" class="text-red-500 text-[13px] mt-2 font-bold"></div><button onclick="doAuth()" id="authBtn" class="w-full mt-4 bg-emerald-500 hover:bg-emerald-600 text-white bigbtn">লগইন করুন →</button><div class="text-center text-[12px] text-slate-400 font-bold mt-4">Developer — JUBAYER A S</div></div></div>
@@ -47,7 +44,6 @@ input,select,textarea{font-size:17px!important;background:#fff!important}
 <button onclick="setMainTab('expense')" id="m-expense" class="py-4 rounded-full font-bold bg-orange-100 text-orange-700 text-[14px]">💸 খরচ</button>
 </div>
 </header>
-
 <div id="tab-cash" class="p-3"><div class="flex justify-between items-center"><div class="font-black text-[20px] text-slate-800">💵 ক্যাশ টাকা</div><div class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-bold">মোট: <span id="cashTotalTop">0৳</span></div></div><div id="cashList" class="space-y-3 mt-3"></div><div class="mt-4 bg-slate-900 text-white rounded-[20px] p-4 text-center"><div class="text-[12px] opacity-70">টোটাল ক্যাশ</div><div id="cashTotal" class="font-black text-[28px]">0৳</div></div><div class="mt-3 bg-slate-50 rounded-2xl p-3"><div class="font-black">🕘 ক্যাশ লেনদেন (তারিখ সহ)</div><div id="historyCash" class="text-[13px] mt-2 space-y-1"></div></div></div>
 <div id="tab-bank" class="hidden p-3"><div class="font-black text-[20px] text-slate-800">🏦 ব্যাংক</div><div class="mt-3 card-bank border rounded-[20px] p-3"><select id="bankSelect" class="w-full border-2 border-blue-100 rounded-2xl px-3 py-3 font-bold bg-white"></select><input id="bankAmount" type="number" placeholder="টাকা লিখুন" class="w-full mt-2 border-2 border-blue-100 rounded-2xl px-4 py-3 font-bold"><button onclick="addBank()" class="w-full mt-3 bg-slate-900 text-white bigbtn text-[17px]">+ ব্যাংক যোগ করুন</button></div><div id="bankList" class="space-y-3 mt-3"></div><div class="mt-4 bg-blue-600 text-white rounded-[20px] p-4 text-center"><div class="text-[12px] opacity-80">ব্যাংক টোটাল</div><div id="bankTotal" class="font-black text-[28px]">0৳</div></div><div class="mt-3 bg-slate-50 rounded-2xl p-3"><div class="font-black">🕘 ব্যাংক লেনদেন</div><div id="historyBank" class="text-[13px] mt-2 space-y-1"></div></div></div>
 <div id="tab-wallet" class="hidden p-3"><div class="font-black text-[20px] text-slate-800">📱 ওয়ালেট</div><div class="grid grid-cols-3 gap-2 mt-3" id="walletQuick"></div><div class="mt-3 card-wallet border rounded-[20px] p-3"><input id="customWalletName" placeholder="অন্য অ্যাপের নাম" class="w-full border-2 border-violet-100 rounded-2xl px-4 py-3 font-bold"><input id="customWalletAmount" type="number" placeholder="টাকা" class="w-full mt-2 border-2 border-violet-100 rounded-2xl px-4 py-3 font-bold"><button onclick="addCustomWallet()" class="w-full mt-3 bg-violet-600 text-white bigbtn text-[17px]">+ ওয়ালেট যোগ করুন</button></div><div id="walletList" class="space-y-3 mt-3"></div><div class="mt-4 bg-violet-600 text-white rounded-[20px] p-4 text-center"><div class="text-[12px] opacity-80">টোটাল ওয়ালেট</div><div id="walletTotal" class="font-black text-[28px]">0৳</div></div></div>
@@ -60,7 +56,6 @@ input,select,textarea{font-size:17px!important;background:#fff!important}
 <div id="tab-expense" class="hidden p-3"><div class="font-black text-[20px]">💸 ব্যক্তিগত খরচ</div>
 <div class="card-exp border rounded-[20px] p-4 mt-3"><label class="font-bold">আজকে কত টাকা খরচ করেছেন?</label><input id="expAmount" type="number" placeholder="যেমন: 1000" class="w-full mt-1 border-2 rounded-2xl px-4 py-3 font-bold"><label class="font-bold block mt-3">কিসের জন্য খরচ?</label><input id="expReason" placeholder="যেমন: বাজার, ওষুধ, যাতায়াত" class="w-full mt-1 border-2 rounded-2xl px-4 py-3 font-bold"><label class="font-bold block mt-3">কোথা থেকে নিয়েছেন?</label><select id="expSource" class="w-full mt-1 border-2 rounded-2xl px-3 py-3 font-bold bg-white"><option value="cash">💵 ক্যাশ থেকে</option><option value="bank">🏦 ব্যাংক থেকে</option><option value="wallet">📱 ওয়ালেট থেকে</option></select><button onclick="addExpense()" class="w-full mt-3 bg-orange-500 text-white bigbtn">+ খরচ যোগ করুন</button></div>
 <div class="mt-3 grid grid-cols-2 gap-2"><div class="bg-orange-50 border border-orange-100 rounded-2xl p-3 text-center"><div class="text-[12px] font-bold">আজকের খরচ</div><div id="expenseToday" class="font-black text-[18px]">0৳</div></div><div class="bg-red-50 border border-red-100 rounded-2xl p-3 text-center"><div class="text-[12px] font-bold">মোট খরচ</div><div id="expenseTotal" class="font-black text-[18px]">0৳</div></div></div><div id="expenseList" class="space-y-3 mt-3"></div></div>
-
 <div class="p-3">
 <div class="border-2 border-slate-100 rounded-[20px] p-4 bg-slate-50"><div class="font-black text-[16px]">📄 স্টেটমেন্ট ডাউনলোড</div><div class="text-[13px] text-slate-500 font-bold">কত দিনের স্টেটমেন্ট নিতে চান?</div>
 <div class="grid grid-cols-2 gap-2 mt-2"><div><label class="text-[12px] font-bold">শুরু তারিখ</label><input id="stmtFrom" type="date" class="w-full border-2 rounded-xl px-3 py-3 font-bold bg-white"></div><div><label class="text-[12px] font-bold">শেষ তারিখ</label><input id="stmtTo" type="date" class="w-full border-2 rounded-xl px-3 py-3 font-bold bg-white"></div></div>
@@ -69,17 +64,14 @@ input,select,textarea{font-size:17px!important;background:#fff!important}
 <div class="text-center mt-6"><p class="text-[11px] tracking-widest uppercase text-slate-400 font-bold">Developer</p><p class="font-black text-[14px] text-slate-800">JUBAYER A S</p></div>
 </div>
 </div>
-
 <div id="poster" class="fixed left-[-9999px] top-0 w-[760px] bg-white p-6 border-[8px] border-slate-900 rounded-[24px]"><div class="flex justify-between"><div><div class="font-black text-[22px]">💰 Wallet স্টেটমেন্ট</div><div id="pDate" class="text-[12px] font-bold text-zinc-500"></div><div id="pPhone" class="text-[12px] font-bold"></div></div><div class="text-[48px]">💰</div></div><div id="pBody" class="mt-4"></div><div id="pTotal" class="mt-4 bg-slate-900 text-white text-center py-4 rounded-2xl font-black text-[18px]"></div><div class="text-center text-[11px] text-zinc-400 mt-2">Developer — JUBAYER A S</div></div>
 <div id="bakiPoster" class="fixed left-[-9999px] top-0 w-[760px] bg-white p-6 border-[8px] border-red-500 rounded-[24px]"><div class="text-center"><div class="text-[48px]">📒</div><div class="font-black text-[24px]">বাকি টাকার হিসাব</div><div id="bpDate" class="text-[12px] font-bold text-zinc-500"></div></div><div id="bpBody" class="mt-4"></div><div id="bpTotal" class="mt-4 bg-red-500 text-white text-center py-4 rounded-2xl font-black text-[18px]"></div><div class="text-center text-[11px] text-zinc-400 mt-2">Developer — JUBAYER A S</div></div>
-
 <script>
-const API="https://script.google.com/macros/s/AKfycbyMtK6VqKLGahTy5MLMZquG64LC7IeeZaKMjheRcw3A8dAXU8i8O2agWv-VHWvqYDFbPg/exec";
+const API="https://script.google.com/macros/s/AKfycby1yBsyeV__d__1nm3qm_eLAcVczqtvXr2iZIHJ6sILY87dhmJRRIx3HhJNCoJrPidjcw/exec";
 const BANKS=["সোনালী ব্যাংক","জনতা ব্যাংক","অগ্রণী ব্যাংক","রূপালী ব্যাংক","বাংলাদেশ কৃষি ব্যাংক","ইসলামী ব্যাংক বাংলাদেশ","ব্র্যাক ব্যাংক","ডাচ-বাংলা ব্যাংক","প্রাইম ব্যাংক","পূবালী ব্যাংক","উত্তরা ব্যাংক","ন্যাশনাল ব্যাংক","মিউচুয়াল ট্রাস্ট ব্যাংক","সিটি ব্যাংক","ইস্টার্ন ব্যাংক","যমুনা ব্যাংক","আল-আরাফাহ ইসলামী ব্যাংক","সোশ্যাল ইসলামী ব্যাংক","ফার্স্ট সিকিউরিটি ইসলামী ব্যাংক","শাহজালাল ইসলামী ব্যাংক","এক্সিম ব্যাংক","মার্কেন্টাইল ব্যাংক","ব্যাংক এশিয়া","এবি ব্যাংক","ট্রাস্ট ব্যাংক","সাউথইস্ট ব্যাংক","ওয়ান ব্যাংক","স্ট্যান্ডার্ড ব্যাংক","এনআরবি ব্যাংক","পদ্মা ব্যাংক"];
 const WALLETS=[{name:"বিকাশ",emoji:"🩷"},{name:"নগদ",emoji:"🧡"},{name:"উপায়",emoji:"💛"},{name:"রকেট",emoji:"🚀"},{name:"শিওরক্যাশ",emoji:"💙"},{name:"ট্যাপ",emoji:"💚"}];
 let authMode='login', cashData={1000:0,500:0,200:0,100:0,50:0,20:0,10:0,5:0}, bankData=[], walletData=[], bakiData=[], discountData=[], expenseData=[], history=[], totalPlus=0, totalMinus=0, currentUser=null, isDark=false, saveTimer=null;
 const nowStr=()=>new Date().toLocaleString('bn-BD',{day:'numeric',month:'short',year:'numeric',hour:'numeric',minute:'numeric'});
-// ✅ STYLISH ALERT - সব alert এখানে আসবে
 function showAlert(msg,type='ok'){ const box=document.getElementById('customAlert'); const icon=document.getElementById('alertIcon'); const m=document.getElementById('alertMsg'); m.innerText=msg; if(type=='err'){ icon.className='alert-icon err'; icon.innerText='❌'; } else if(type=='warn'){ icon.className='alert-icon warn'; icon.innerText='⚠️'; } else { icon.className='alert-icon'; icon.innerText='✅'; } box.classList.add('show'); }
 function closeAlert(){ document.getElementById('customAlert').classList.remove('show'); }
 function toggleDark(){ isDark=!isDark; document.getElementById('appWrap').classList.toggle('dark',isDark); document.body.classList.toggle('dark',isDark); document.getElementById('darkBtn').innerText=isDark?'☀️ নরমাল মোড':'🌙 ডার্ক মোড'; localStorage.setItem('fund_dark',isDark?'1':'0'); }
@@ -88,6 +80,7 @@ function autoSave(){ if(!currentUser) return; clearTimeout(saveTimer); saveTimer
 async function saveAllSilent(){ try{ const {cash,bank,wal,grand}=updateGrand(); await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'saveFund',phone:currentUser,cash,bank,wallet:wal,grand,totalPlus,totalMinus,cashData,bankData,walletData,bakiData,discountData,expenseData,history,date:nowStr()})}); }catch(e){} }
 function addHistory(type,detail,amount,plusMinus){ history.unshift({date:nowStr(), dateISO:new Date().toISOString(), type, detail, amount, plusMinus}); if(plusMinus=='plus') totalPlus+=amount; if(plusMinus=='minus') totalMinus+=amount; saveLocal(); autoSave(); }
 function switchAuth(m){ authMode=m; document.getElementById('tabLogin').className=m=='login'?'flex-1 py-3 rounded-full bg-slate-900 text-white font-bold':'flex-1 py-3 rounded-full font-bold'; document.getElementById('tabSignup').className=m=='signup'?'flex-1 py-3 rounded-full bg-slate-900 text-white font-bold':'flex-1 py-3 rounded-full font-bold'; document.getElementById('authBtn').innerText=m=='login'?'লগইন করুন →':'একাউন্ট তৈরি করুন →'; }
+// ✅ FIXED AUTH - GET দিয়ে রেজিস্টার + লগইন, POST এর সমস্যা আর নেই
 async function doAuth(){
   const phone=document.getElementById('phone').value.trim(), pass=document.getElementById('pass').value.trim(), err=document.getElementById('authErr');
   if(phone.length!==11||!phone.startsWith('01')){err.innerText='❌ ১১ ডিজিটের সঠিক নাম্বার দিন';return;}
@@ -96,44 +89,24 @@ async function doAuth(){
   const resetBtn=()=>{ document.getElementById('authBtn').innerText=authMode=='login'?'লগইন করুন →':'একাউন্ট তৈরি করুন →'; document.getElementById('authBtn').disabled=false; };
   try{
     if(authMode=='signup'){
-      let check=await fetch(API+"?action=checkPhone&phone="+phone).then(r=>r.json());
+      let check=await fetch(API+"?action=checkPhone&phone="+phone+"&t="+Date.now()).then(r=>r.json());
       if(check.status=="exists"){ err.innerText='❌ এই নাম্বারে একাউন্ট আছে, লগইন করুন'; resetBtn(); return; }
-      await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'register',phone:phone,pass:pass})});
+      let reg=await fetch(API+"?action=register&phone="+phone+"&pass="+encodeURIComponent(pass)+"&t="+Date.now()).then(r=>r.json());
+      if(reg.status!="ok" && reg.status!="exists"){ err.innerText='❌ রেজিস্ট্রেশন হয়নি, আবার চেষ্টা করুন'; resetBtn(); return; }
       err.innerText=''; showAlert('একাউন্ট তৈরি হয়েছে! এখন একই নাম্বার-পাসওয়ার্ড দিয়ে যেকোনো ডিভাইস থেকে লগইন করতে পারবেন','ok');
       switchAuth('login'); resetBtn(); return;
     } else {
-      let res=await fetch(API+"?action=login&phone="+phone+"&pass="+encodeURIComponent(pass)).then(r=>r.json());
-      if(res.status!="ok"){
-        let users=JSON.parse(localStorage.getItem('fund_users')||'{}');
-        if(users[phone]==pass){ await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'register',phone:phone,pass:pass})}); }
-        else { err.innerText='❌ নাম্বার বা পাসওয়ার্ড ভুল'; resetBtn(); return; }
-      }
-      currentUser=phone; localStorage.setItem('fund_session',phone);
-      let users2=JSON.parse(localStorage.getItem('fund_users')||'{}'); users2[phone]=pass; localStorage.setItem('fund_users',JSON.stringify(users2));
-      showMain();
+      let res=await fetch(API+"?action=login&phone="+phone+"&pass="+encodeURIComponent(pass)+"&t="+Date.now()).then(r=>r.json());
+      if(res.status!="ok"){ err.innerText='❌ নাম্বার বা পাসওয়ার্ড ভুল'; resetBtn(); return; }
+      currentUser=phone; localStorage.setItem('fund_session',phone); showMain();
     }
-  }catch(e){
-    let users=JSON.parse(localStorage.getItem('fund_users')||'{}');
-    if(authMode=='login' && users[phone]==pass){ currentUser=phone; localStorage.setItem('fund_session',phone); showMain(); }
-    else { err.innerText='❌ নেট সমস্যা, আবার চেষ্টা করুন'; resetBtn(); }
-  }
+  }catch(e){ err.innerText='❌ নেট সমস্যা, আবার চেষ্টা করুন'; resetBtn(); }
 }
 async function loadFromServer(){
   try{
-    let res = await fetch(API+"?action=getData&phone="+currentUser).then(r=>r.json());
-    if(res && res.data){
-      let j=res.data;
-      cashData=j.cashData||{1000:0,500:0,200:0,100:0,50:0,20:0,10:0,5:0};
-      bankData=j.bankData||[]; walletData=j.walletData||[];
-      bakiData=j.bakiData||[]; discountData=j.discountData||[];
-      expenseData=j.expenseData||[]; history=j.history||[];
-      totalPlus=j.totalPlus||0; totalMinus=j.totalMinus||0;
-      saveLocal();
-    } else {
-      cashData={1000:0,500:0,200:0,100:0,50:0,20:0,10:0,5:0};
-      bankData=[]; walletData=[]; bakiData=[]; discountData=[]; expenseData=[]; history=[];
-      totalPlus=0; totalMinus=0; localStorage.removeItem('fund_'+currentUser);
-    }
+    let res = await fetch(API+"?action=getData&phone="+currentUser+"&t="+Date.now()).then(r=>r.json());
+    if(res && res.data){ let j=res.data; cashData=j.cashData||{1000:0,500:0,200:0,100:0,50:0,20:0,10:0,5:0}; bankData=j.bankData||[]; walletData=j.walletData||[]; bakiData=j.bakiData||[]; discountData=j.discountData||[]; expenseData=j.expenseData||[]; history=j.history||[]; totalPlus=j.totalPlus||0; totalMinus=j.totalMinus||0; saveLocal(); }
+    else { cashData={1000:0,500:0,200:0,100:0,50:0,20:0,10:0,5:0}; bankData=[]; walletData=[]; bakiData=[]; discountData=[]; expenseData=[]; history=[]; totalPlus=0; totalMinus=0; localStorage.removeItem('fund_'+currentUser); }
   }catch(e){}
 }
 async function showMain(){ document.getElementById('authPage').classList.add('hidden'); document.getElementById('mainPage').classList.remove('hidden'); document.getElementById('userPhone').innerText='📱 '+currentUser; loadData(); renderAll(); await loadFromServer(); renderAll(); }
