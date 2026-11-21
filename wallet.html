@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ডিজিটাল ফান্ড - Final</title>
+<title>Wallet - Digital Fund</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@600;700;900&display=swap" rel="stylesheet">
@@ -14,20 +14,19 @@ input,select,textarea{font-size:17px!important;background:#fff!important}
 .card-cash{background:linear-gradient(135deg,#ECFDF5,#D1FAE5)} .card-bank{background:linear-gradient(135deg,#EFF6FF,#DBEAFE)} .card-wallet{background:linear-gradient(135deg,#F5F3FF,#EDE9FE)} .card-baki{background:linear-gradient(135deg,#FFFBEB,#FEF3C7)} .card-dis{background:linear-gradient(135deg,#FDF2F8,#FCE7F3)} .card-exp{background:linear-gradient(135deg,#FFF7ED,#FFEDD5)}
 .dark{ background:#0B1220!important; color:#fff!important } .dark .bg-white{ background:#1A2333!important; color:#fff!important; border-color:#2A3650!important } .dark .noteCard{ background:#1A2333!important; border-color:#2A3650!important; color:#fff!important } .dark input,.dark select,.dark textarea{ background:#243046!important; color:#fff!important; border-color:#3A4A6A!important } .dark .text-zinc-500,.dark .text-zinc-400{ color:#B0BECF!important } .dark .bg-zinc-100{ background:#243046!important } .dark .bg-zinc-50{ background:#111A2C!important }
 @media(min-width:768px){ .wrap{max-width:920px!important} }
-#saveStatus{transition:all .3s}
 </style></head>
 <body><div id="appWrap" class="wrap max-w-[520px] mx-auto min-h-screen bg-white shadow-xl border-x pb-24">
 
 <!-- AUTH -->
-<div id="authPage" class="p-4 pt-8"><div class="text-center"><div class="text-[70px]">💰</div><div class="font-black text-[30px] text-slate-800">ডিজিটাল ফান্ড</div><div class="text-slate-500 text-[15px] font-bold">ক্যাশ • ব্যাংক • ওয়ালেট • বাকি • ডিসকাউন্ট • খরচ</div><div class="mt-2 inline-block bg-emerald-100 text-emerald-700 text-[12px] font-bold px-3 py-1 rounded-full">✅ অটো সেভ - Google Sheet এ</div></div>
+<div id="authPage" class="p-4 pt-8"><div class="text-center"><div class="text-[70px]">💰</div><div class="font-black text-[30px] text-slate-800">Wallet</div><div class="text-slate-500 text-[15px] font-bold">ক্যাশ • ব্যাংক • ওয়ালেট • বাকি • ডিসকাউন্ট • খরচ</div></div>
 <div class="mt-6 border-2 border-slate-100 rounded-[24px] p-4 shadow-sm bg-white"><div class="flex bg-slate-100 rounded-full p-1"><button id="tabLogin" onclick="switchAuth('login')" class="flex-1 py-3 rounded-full bg-slate-900 text-white font-bold">লগইন</button><button id="tabSignup" onclick="switchAuth('signup')" class="flex-1 py-3 rounded-full font-bold">নতুন একাউন্ট</button></div>
 <label class="block mt-4 font-bold text-slate-700">📱 মোবাইল (১১ ডিজিট)</label><input id="phone" type="tel" maxlength="11" placeholder="01XXXXXXXXX" class="w-full mt-1 border-2 border-slate-200 rounded-2xl px-4 py-4 font-bold">
-<label class="block mt-3 font-bold text-slate-700">🔒 পাসওয়ার্ড (কমপক্ষে ৪)</label><input id="pass" type="password" placeholder="****" class="w-full mt-1 border-2 border-slate-200 rounded-2xl px-4 py-4 font-bold"><div id="authErr" class="text-red-500 text-[13px] mt-2 font-bold"></div><button onclick="doAuth()" id="authBtn" class="w-full mt-4 bg-emerald-500 hover:bg-emerald-600 text-white bigbtn">লগইন করুন →</button></div></div>
+<label class="block mt-3 font-bold text-slate-700">🔒 পাসওয়ার্ড (কমপক্ষে ৪)</label><input id="pass" type="password" placeholder="****" class="w-full mt-1 border-2 border-slate-200 rounded-2xl px-4 py-4 font-bold"><div id="authErr" class="text-red-500 text-[13px] mt-2 font-bold"></div><button onclick="doAuth()" id="authBtn" class="w-full mt-4 bg-emerald-500 hover:bg-emerald-600 text-white bigbtn">লগইন করুন →</button><div class="text-center text-[12px] text-slate-400 font-bold mt-4">Developer — JUBAYER A S</div></div></div>
 
 <!-- MAIN -->
 <div id="mainPage" class="hidden">
 <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-100 p-3">
-<div class="flex justify-between items-center"><div><div class="font-black text-[17px] text-slate-800">আসসালামু আলাইকুম 👋</div><div id="userPhone" class="text-[12px] text-slate-500 font-bold"></div><div id="saveStatus" class="text-[11px] font-bold text-emerald-600 mt-0.5">● অটো সেভ চালু আছে</div></div><div class="flex gap-2"><button onclick="toggleDark()" id="darkBtn" class="px-4 py-2 rounded-full font-bold bg-slate-900 text-white text-[13px]">🌙 ডার্ক মোড</button><button onclick="logout()" class="bg-red-50 text-red-600 px-4 py-2 rounded-full font-bold text-[13px]">লগআউট</button></div></div>
+<div class="flex justify-between items-center"><div><div class="font-black text-[17px] text-slate-800">আসসালামু আলাইকুম 👋</div><div id="userPhone" class="text-[12px] text-slate-500 font-bold"></div></div><div class="flex gap-2"><button onclick="toggleDark()" id="darkBtn" class="px-4 py-2 rounded-full font-bold bg-slate-900 text-white text-[13px]">🌙 ডার্ক মোড</button><button onclick="logout()" class="bg-red-50 text-red-600 px-4 py-2 rounded-full font-bold text-[13px]">লগআউট</button></div></div>
 <div class="mt-3 bg-slate-900 text-white rounded-[24px] p-4 shadow-lg"><div class="flex justify-between"><div><div class="text-[12px] opacity-70 font-bold">সর্বমোট ফান্ড</div><div id="grandTotal" class="font-black text-[34px] leading-none">0৳</div><div id="grandBreak" class="text-[12px] opacity-70 mt-1 font-bold"></div></div><div class="text-[42px]">💰</div></div>
 <div class="grid grid-cols-2 gap-2 mt-3"><div class="bg-emerald-500 rounded-2xl p-3 text-center"><div class="text-[12px] font-bold">✅ মোট প্লাস (প্রথম থেকে)</div><div id="totalPlus" class="font-black text-[19px]">0৳</div></div><div class="bg-rose-500 rounded-2xl p-3 text-center"><div class="text-[12px] font-bold">❌ মোট মাইনাস (প্রথম থেকে)</div><div id="totalMinus" class="font-black text-[19px]">0৳</div></div></div></div>
 <div class="grid grid-cols-3 md:grid-cols-6 gap-2 mt-3">
@@ -40,58 +39,78 @@ input,select,textarea{font-size:17px!important;background:#fff!important}
 </div>
 </header>
 
-<!-- CASH -->
 <div id="tab-cash" class="p-3"><div class="flex justify-between items-center"><div class="font-black text-[20px] text-slate-800">💵 ক্যাশ টাকা</div><div class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full font-bold">মোট: <span id="cashTotalTop">0৳</span></div></div><div id="cashList" class="space-y-3 mt-3"></div><div class="mt-4 bg-slate-900 text-white rounded-[20px] p-4 text-center"><div class="text-[12px] opacity-70">টোটাল ক্যাশ</div><div id="cashTotal" class="font-black text-[28px]">0৳</div></div><div class="mt-3 bg-slate-50 rounded-2xl p-3"><div class="font-black">🕘 ক্যাশ লেনদেন (তারিখ সহ)</div><div id="historyCash" class="text-[13px] mt-2 space-y-1"></div></div></div>
 
-<!-- BANK -->
 <div id="tab-bank" class="hidden p-3"><div class="font-black text-[20px] text-slate-800">🏦 ব্যাংক</div><div class="mt-3 card-bank border rounded-[20px] p-3"><select id="bankSelect" class="w-full border-2 border-blue-100 rounded-2xl px-3 py-3 font-bold bg-white"></select><input id="bankAmount" type="number" placeholder="টাকা লিখুন" class="w-full mt-2 border-2 border-blue-100 rounded-2xl px-4 py-3 font-bold"><button onclick="addBank()" class="w-full mt-3 bg-slate-900 text-white bigbtn text-[17px]">+ ব্যাংক যোগ করুন</button></div><div id="bankList" class="space-y-3 mt-3"></div><div class="mt-4 bg-blue-600 text-white rounded-[20px] p-4 text-center"><div class="text-[12px] opacity-80">ব্যাংক টোটাল</div><div id="bankTotal" class="font-black text-[28px]">0৳</div></div><div class="mt-3 bg-slate-50 rounded-2xl p-3"><div class="font-black">🕘 ব্যাংক লেনদেন</div><div id="historyBank" class="text-[13px] mt-2 space-y-1"></div></div></div>
 
-<!-- WALLET -->
 <div id="tab-wallet" class="hidden p-3"><div class="font-black text-[20px] text-slate-800">📱 ওয়ালেট</div><div class="grid grid-cols-3 gap-2 mt-3" id="walletQuick"></div><div class="mt-3 card-wallet border rounded-[20px] p-3"><input id="customWalletName" placeholder="অন্য অ্যাপের নাম" class="w-full border-2 border-violet-100 rounded-2xl px-4 py-3 font-bold"><input id="customWalletAmount" type="number" placeholder="টাকা" class="w-full mt-2 border-2 border-violet-100 rounded-2xl px-4 py-3 font-bold"><button onclick="addCustomWallet()" class="w-full mt-3 bg-violet-600 text-white bigbtn text-[17px]">+ ওয়ালেট যোগ করুন</button></div><div id="walletList" class="space-y-3 mt-3"></div><div class="mt-4 bg-violet-600 text-white rounded-[20px] p-4 text-center"><div class="text-[12px] opacity-80">টোটাল ওয়ালেট</div><div id="walletTotal" class="font-black text-[28px]">0৳</div></div></div>
 
-<!-- BAKI -->
 <div id="tab-baki" class="hidden p-3"><div class="font-black text-[20px]">📒 বাকি টাকা</div>
 <div class="card-baki border rounded-[20px] p-4 mt-3"><label class="font-bold">যাকে বাকি দিচ্ছেন তার নাম</label><input id="bakiName" placeholder="যেমন: রহিম মিয়া" class="w-full mt-1 border-2 rounded-2xl px-4 py-3 font-bold"><label class="font-bold block mt-3">বাকি টাকা</label><input id="bakiAmount" type="number" placeholder="যেমন: 5000" class="w-full mt-1 border-2 rounded-2xl px-4 py-3 font-bold"><label class="font-bold block mt-3">কোথা থেকে দিচ্ছেন?</label><select id="bakiSource" onchange="showBakiSourceDetail()" class="w-full mt-1 border-2 rounded-2xl px-3 py-3 font-bold bg-white"><option value="cash">💵 ক্যাশ থেকে</option><option value="bank">🏦 ব্যাংক থেকে</option><option value="wallet">📱 ওয়ালেট থেকে</option></select><div id="bakiSourceDetail" class="mt-3"></div><button onclick="addBaki()" class="w-full mt-3 bg-red-500 text-white bigbtn">+ বাকি যোগ করুন</button></div>
 <div class="mt-3 flex gap-2"><div class="flex-1 bg-red-50 border border-red-100 rounded-2xl p-3 text-center"><div class="text-[12px] font-bold">মোট বাকি</div><div id="bakiTotal" class="font-black text-[19px] text-red-600">0৳</div></div><div class="flex-1 bg-emerald-50 border border-emerald-100 rounded-2xl p-3 text-center"><div class="text-[12px] font-bold">মোট পরিশোধ</div><div id="bakiPaidTotal" class="font-black text-[19px] text-emerald-600">0৳</div></div></div><div id="bakiList" class="space-y-3 mt-3"></div></div>
 
-<!-- DISCOUNT -->
 <div id="tab-discount" class="hidden p-3"><div class="font-black text-[20px]">🎁 ডিসকাউন্ট</div>
 <div class="card-dis border rounded-[20px] p-4 mt-3"><label class="font-bold">কিসের জন্য ডিসকাউন্ট?</label><input id="disReason" placeholder="যেমন: ঈদ অফার, পাইকারি" class="w-full mt-1 border-2 rounded-2xl px-4 py-3 font-bold"><label class="font-bold block mt-3">কাকে দিয়েছেন? নাম</label><input id="disName" placeholder="যেমন: করিম" class="w-full mt-1 border-2 rounded-2xl px-4 py-3 font-bold"><label class="font-bold block mt-3">তার পরিচয়</label><input id="disIdentity" placeholder="যেমন: দোকানদার, ফোন: 01..." class="w-full mt-1 border-2 rounded-2xl px-4 py-3 font-bold"><label class="font-bold block mt-3">কত টাকা ডিসকাউন্ট?</label><input id="disAmount" type="number" placeholder="যেমন: 500" class="w-full mt-1 border-2 rounded-2xl px-4 py-3 font-bold"><label class="font-bold block mt-3">কোথা থেকে কাটবেন?</label><select id="disSource" class="w-full mt-1 border-2 rounded-2xl px-3 py-3 font-bold bg-white"><option value="cash">💵 ক্যাশ থেকে</option><option value="bank">🏦 ব্যাংক থেকে</option><option value="wallet">📱 ওয়ালেট থেকে</option></select><button onclick="addDiscount()" class="w-full mt-3 bg-pink-500 text-white bigbtn">+ ডিসকাউন্ট যোগ করুন</button></div>
 <div class="mt-3 bg-pink-50 rounded-2xl p-3 text-center"><div class="text-[12px] font-bold">মোট ডিসকাউন্ট দিয়েছেন</div><div id="discountTotal" class="font-black text-[20px] text-pink-600">0৳</div></div><div id="discountList" class="space-y-3 mt-3"></div></div>
 
-<!-- EXPENSE -->
 <div id="tab-expense" class="hidden p-3"><div class="font-black text-[20px]">💸 ব্যক্তিগত খরচ</div>
 <div class="card-exp border rounded-[20px] p-4 mt-3"><label class="font-bold">আজকে কত টাকা খরচ করেছেন?</label><input id="expAmount" type="number" placeholder="যেমন: 1000" class="w-full mt-1 border-2 rounded-2xl px-4 py-3 font-bold"><label class="font-bold block mt-3">কিসের জন্য খরচ?</label><input id="expReason" placeholder="যেমন: বাজার, ওষুধ, যাতায়াত" class="w-full mt-1 border-2 rounded-2xl px-4 py-3 font-bold"><label class="font-bold block mt-3">কোথা থেকে নিয়েছেন?</label><select id="expSource" class="w-full mt-1 border-2 rounded-2xl px-3 py-3 font-bold bg-white"><option value="cash">💵 ক্যাশ থেকে</option><option value="bank">🏦 ব্যাংক থেকে</option><option value="wallet">📱 ওয়ালেট থেকে</option></select><button onclick="addExpense()" class="w-full mt-3 bg-orange-500 text-white bigbtn">+ খরচ যোগ করুন</button></div>
 <div class="mt-3 grid grid-cols-2 gap-2"><div class="bg-orange-50 border border-orange-100 rounded-2xl p-3 text-center"><div class="text-[12px] font-bold">আজকের খরচ</div><div id="expenseToday" class="font-black text-[18px]">0৳</div></div><div class="bg-red-50 border border-red-100 rounded-2xl p-3 text-center"><div class="text-[12px] font-bold">মোট খরচ</div><div id="expenseTotal" class="font-black text-[18px]">0৳</div></div></div><div id="expenseList" class="space-y-3 mt-3"></div></div>
 
-<!-- STATEMENT -->
 <div class="p-3">
 <div class="border-2 border-slate-100 rounded-[20px] p-4 bg-slate-50"><div class="font-black text-[16px]">📄 স্টেটমেন্ট ডাউনলোড</div><div class="text-[13px] text-slate-500 font-bold">কত দিনের স্টেটমেন্ট নিতে চান?</div>
 <div class="grid grid-cols-2 gap-2 mt-2"><div><label class="text-[12px] font-bold">শুরু তারিখ</label><input id="stmtFrom" type="date" class="w-full border-2 rounded-xl px-3 py-3 font-bold bg-white"></div><div><label class="text-[12px] font-bold">শেষ তারিখ</label><input id="stmtTo" type="date" class="w-full border-2 rounded-xl px-3 py-3 font-bold bg-white"></div></div>
 <div class="flex gap-2 mt-2"><button onclick="setStmtRange(7)" class="flex-1 py-2 bg-white border rounded-full font-bold text-[13px]">৭ দিন</button><button onclick="setStmtRange(30)" class="flex-1 py-2 bg-white border rounded-full font-bold text-[13px]">৩০ দিন</button><button onclick="setStmtRange(365)" class="flex-1 py-2 bg-white border rounded-full font-bold text-[13px]">১ বছর</button></div>
 <button onclick="makeStatement()" class="w-full mt-3 bg-slate-900 text-white bigbtn">📄 স্টেটমেন্ট ডাউনলোড করুন</button><div class="text-[11px] text-slate-500 mt-1 text-center">১ পোস্টারে জায়গা না হলে ২-৩-৪ টা পোস্টার একসাথে ডাউনলোড হবে</div></div>
-<div class="text-center text-[12px] text-slate-400 font-bold mt-3">✅ এই তথ্যগুলো সম্পূর্ণ নিরাপদ এই তথ্যগুলো আপনি ছাড়া কেউ দেখতে পারবে না d.r JUBAYER A S </div>
+<div class="text-center mt-6"><p class="text-[11px] tracking-widest uppercase text-slate-400 font-bold">Developer</p><p class="font-black text-[14px] text-slate-800">JUBAYER A S</p></div>
 </div>
 </div>
 
-<!-- POSTERS -->
-<div id="poster" class="fixed left-[-9999px] top-0 w-[760px] bg-white p-6 border-[8px] border-slate-900 rounded-[24px]"><div class="flex justify-between"><div><div class="font-black text-[22px]">💰 ডিজিটাল ফান্ড স্টেটমেন্ট</div><div id="pDate" class="text-[12px] font-bold text-zinc-500"></div><div id="pPhone" class="text-[12px] font-bold"></div></div><div class="text-[48px]">💰</div></div><div id="pBody" class="mt-4"></div><div id="pTotal" class="mt-4 bg-slate-900 text-white text-center py-4 rounded-2xl font-black text-[18px]"></div></div>
-<div id="bakiPoster" class="fixed left-[-9999px] top-0 w-[760px] bg-white p-6 border-[8px] border-red-500 rounded-[24px]"><div class="text-center"><div class="text-[48px]">📒</div><div class="font-black text-[24px]">বাকি টাকার হিসাব</div><div id="bpDate" class="text-[12px] font-bold text-zinc-500"></div></div><div id="bpBody" class="mt-4"></div><div id="bpTotal" class="mt-4 bg-red-500 text-white text-center py-4 rounded-2xl font-black text-[18px]"></div></div>
+<div id="poster" class="fixed left-[-9999px] top-0 w-[760px] bg-white p-6 border-[8px] border-slate-900 rounded-[24px]"><div class="flex justify-between"><div><div class="font-black text-[22px]">💰 Wallet স্টেটমেন্ট</div><div id="pDate" class="text-[12px] font-bold text-zinc-500"></div><div id="pPhone" class="text-[12px] font-bold"></div></div><div class="text-[48px]">💰</div></div><div id="pBody" class="mt-4"></div><div id="pTotal" class="mt-4 bg-slate-900 text-white text-center py-4 rounded-2xl font-black text-[18px]"></div><div class="text-center text-[11px] text-zinc-400 mt-2">Developer — JUBAYER A S</div></div>
+<div id="bakiPoster" class="fixed left-[-9999px] top-0 w-[760px] bg-white p-6 border-[8px] border-red-500 rounded-[24px]"><div class="text-center"><div class="text-[48px]">📒</div><div class="font-black text-[24px]">বাকি টাকার হিসাব</div><div id="bpDate" class="text-[12px] font-bold text-zinc-500"></div></div><div id="bpBody" class="mt-4"></div><div id="bpTotal" class="mt-4 bg-red-500 text-white text-center py-4 rounded-2xl font-black text-[18px]"></div><div class="text-center text-[11px] text-zinc-400 mt-2">Developer — JUBAYER A S</div></div>
 
 <script>
-const API="https://script.google.com/macros/s/AKfycbxPjyn2zRR5xX5M6ZPT2XnK57N_aWXvaUtKgnn_pnKRSTi0QHE8bcs1wUHyB2zHUbrXTQ/exec";
+const API="https://script.google.com/macros/s/AKfycbxbocxK31Py-9DVEJMvd_yCjwKyJ7HTCbHEl__R0THbV-aFrXHY1tobwkMwpCBhQ7xTEA/exec";
 const BANKS=["সোনালী ব্যাংক","জনতা ব্যাংক","অগ্রণী ব্যাংক","রূপালী ব্যাংক","বাংলাদেশ কৃষি ব্যাংক","ইসলামী ব্যাংক বাংলাদেশ","ব্র্যাক ব্যাংক","ডাচ-বাংলা ব্যাংক","প্রাইম ব্যাংক","পূবালী ব্যাংক","উত্তরা ব্যাংক","ন্যাশনাল ব্যাংক","মিউচুয়াল ট্রাস্ট ব্যাংক","সিটি ব্যাংক","ইস্টার্ন ব্যাংক","যমুনা ব্যাংক","আল-আরাফাহ ইসলামী ব্যাংক","সোশ্যাল ইসলামী ব্যাংক","ফার্স্ট সিকিউরিটি ইসলামী ব্যাংক","শাহজালাল ইসলামী ব্যাংক","এক্সিম ব্যাংক","মার্কেন্টাইল ব্যাংক","ব্যাংক এশিয়া","এবি ব্যাংক","ট্রাস্ট ব্যাংক","সাউথইস্ট ব্যাংক","ওয়ান ব্যাংক","স্ট্যান্ডার্ড ব্যাংক","এনআরবি ব্যাংক","পদ্মা ব্যাংক"];
 const WALLETS=[{name:"বিকাশ",emoji:"🩷"},{name:"নগদ",emoji:"🧡"},{name:"উপায়",emoji:"💛"},{name:"রকেট",emoji:"🚀"},{name:"শিওরক্যাশ",emoji:"💙"},{name:"ট্যাপ",emoji:"💚"}];
 let authMode='login', cashData={1000:0,500:0,200:0,100:0,50:0,20:0,10:0,5:0}, bankData=[], walletData=[], bakiData=[], discountData=[], expenseData=[], history=[], totalPlus=0, totalMinus=0, currentUser=null, isDark=false, saveTimer=null;
 const nowStr=()=>new Date().toLocaleString('bn-BD',{day:'numeric',month:'short',year:'numeric',hour:'numeric',minute:'numeric'});
 function toggleDark(){ isDark=!isDark; document.getElementById('appWrap').classList.toggle('dark',isDark); document.body.classList.toggle('dark',isDark); document.getElementById('darkBtn').innerText=isDark?'☀️ নরমাল মোড':'🌙 ডার্ক মোড'; localStorage.setItem('fund_dark',isDark?'1':'0'); }
 if(localStorage.getItem('fund_dark')=='1') toggleDark();
-// AUTO SAVE - কোনো লেখার দরকার নেই, নিজে নিজে সেভ হবে
-function autoSave(){ if(!currentUser) return; const el=document.getElementById('saveStatus'); if(el) el.innerText='⏳ সেভ হচ্ছে...'; if(el) el.className='text-[11px] font-bold text-amber-600 mt-0.5'; clearTimeout(saveTimer); saveTimer=setTimeout(()=>{ saveAllSilent(); },800); }
-async function saveAllSilent(){ try{ const {cash,bank,wal,grand}=updateGrand(); await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'saveFund',phone:currentUser,cash,bank,wallet:wal,grand,totalPlus,totalMinus,cashData,bankData,walletData,bakiData,discountData,expenseData,history,date:nowStr()})}); const el=document.getElementById('saveStatus'); if(el){ el.innerText='✅ অটো সেভ হয়েছে - '+nowStr(); el.className='text-[11px] font-bold text-emerald-600 mt-0.5'; } }catch(e){ const el=document.getElementById('saveStatus'); if(el) el.innerText='⚠️ নেট নেই, ফোনে সেভ আছে'; } }
+function autoSave(){ if(!currentUser) return; clearTimeout(saveTimer); saveTimer=setTimeout(()=>{ saveAllSilent(); },800); }
+async function saveAllSilent(){ try{ const {cash,bank,wal,grand}=updateGrand(); await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'saveFund',phone:currentUser,cash,bank,wallet:wal,grand,totalPlus,totalMinus,cashData,bankData,walletData,bakiData,discountData,expenseData,history,date:nowStr()})}); }catch(e){} }
 function addHistory(type,detail,amount,plusMinus){ history.unshift({date:nowStr(), dateISO:new Date().toISOString(), type, detail, amount, plusMinus}); if(plusMinus=='plus') totalPlus+=amount; if(plusMinus=='minus') totalMinus+=amount; saveLocal(); autoSave(); }
 function switchAuth(m){ authMode=m; document.getElementById('tabLogin').className=m=='login'?'flex-1 py-3 rounded-full bg-slate-900 text-white font-bold':'flex-1 py-3 rounded-full font-bold'; document.getElementById('tabSignup').className=m=='signup'?'flex-1 py-3 rounded-full bg-slate-900 text-white font-bold':'flex-1 py-3 rounded-full font-bold'; document.getElementById('authBtn').innerText=m=='login'?'লগইন করুন →':'একাউন্ট তৈরি করুন →'; }
-function doAuth(){ const phone=document.getElementById('phone').value.trim(), pass=document.getElementById('pass').value.trim(), err=document.getElementById('authErr'); if(phone.length!==11||!phone.startsWith('01')){err.innerText='❌ ১১ ডিজিটের সঠিক নাম্বার দিন';return;} if(pass.length<4){err.innerText='❌ পাসওয়ার্ড কমপক্ষে ৪ সংখ্যা';return;} let users=JSON.parse(localStorage.getItem('fund_users')||'{}'); if(authMode=='signup'){ if(users[phone]){err.innerText='এই নাম্বারে একাউন্ট আছে';return;} users[phone]=pass; localStorage.setItem('fund_users',JSON.stringify(users)); alert('✅ একাউন্ট তৈরি হয়েছে'); switchAuth('login'); return; } if(users[phone]!==pass){err.innerText='❌ নাম্বার বা পাসওয়ার্ড ভুল';return;} currentUser=phone; localStorage.setItem('fund_session',phone); showMain(); }
+async function doAuth(){
+  const phone=document.getElementById('phone').value.trim(), pass=document.getElementById('pass').value.trim(), err=document.getElementById('authErr');
+  if(phone.length!==11||!phone.startsWith('01')){err.innerText='❌ ১১ ডিজিটের সঠিক নাম্বার দিন';return;}
+  if(pass.length<4){err.innerText='❌ পাসওয়ার্ড কমপক্ষে ৪ সংখ্যা';return;}
+  err.innerText='⏳ একটু দাঁড়ান...'; document.getElementById('authBtn').innerText='লোড হচ্ছে...'; document.getElementById('authBtn').disabled=true;
+  const resetBtn=()=>{ document.getElementById('authBtn').innerText=authMode=='login'?'লগইন করুন →':'একাউন্ট তৈরি করুন →'; document.getElementById('authBtn').disabled=false; };
+  try{
+    if(authMode=='signup'){
+      let check=await fetch(API+"?action=checkPhone&phone="+phone).then(r=>r.json());
+      if(check.status=="exists"){ err.innerText='❌ এই নাম্বারে একাউন্ট আছে, লগইন করুন'; resetBtn(); return; }
+      await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'register',phone:phone,pass:pass})});
+      err.innerText=''; alert('✅ একাউন্ট তৈরি হয়েছে! এখন একই নাম্বার-পাসওয়ার্ড দিয়ে যেকোনো ডিভাইস থেকে লগইন করতে পারবেন');
+      switchAuth('login'); resetBtn(); return;
+    } else {
+      let res=await fetch(API+"?action=login&phone="+phone+"&pass="+encodeURIComponent(pass)).then(r=>r.json());
+      if(res.status!="ok"){
+        let users=JSON.parse(localStorage.getItem('fund_users')||'{}');
+        if(users[phone]==pass){ await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({action:'register',phone:phone,pass:pass})}); }
+        else { err.innerText='❌ নাম্বার বা পাসওয়ার্ড ভুল'; resetBtn(); return; }
+      }
+      currentUser=phone; localStorage.setItem('fund_session',phone);
+      let users2=JSON.parse(localStorage.getItem('fund_users')||'{}'); users2[phone]=pass; localStorage.setItem('fund_users',JSON.stringify(users2));
+      showMain();
+    }
+  }catch(e){
+    let users=JSON.parse(localStorage.getItem('fund_users')||'{}');
+    if(authMode=='login' && users[phone]==pass){ currentUser=phone; localStorage.setItem('fund_session',phone); showMain(); }
+    else { err.innerText='❌ নেট সমস্যা, আবার চেষ্টা করুন'; resetBtn(); }
+  }
+}
 function showMain(){ document.getElementById('authPage').classList.add('hidden'); document.getElementById('mainPage').classList.remove('hidden'); document.getElementById('userPhone').innerText='📱 '+currentUser; loadData(); renderAll(); }
 function logout(){ localStorage.removeItem('fund_session'); location.reload(); }
 function setMainTab(t){ ['cash','bank','wallet','baki','discount','expense'].forEach(x=>{ document.getElementById('tab-'+x).classList.toggle('hidden',x!==t); const btn=document.getElementById('m-'+x); btn.className = x===t?'py-4 rounded-full font-bold bg-emerald-500 text-white text-[14px] shadow':'py-4 rounded-full font-bold bg-slate-100 text-[14px]'; }); }
