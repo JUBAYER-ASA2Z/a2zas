@@ -18,7 +18,6 @@
 html{font-size:16px; -webkit-text-size-adjust:100%; translate:no;}
 body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-x:hidden; top:0!important;}
 .app-wrapper{width:100%; max-width:480px; margin:0 auto; background:#fff; min-height:100vh; position:relative; box-shadow:0 0 30px rgba(0,0,0,0.06);}
-/* ✅ COMPUTER + MOBILE BOTH SUPPORT */
 @media (min-width:768px){
   .app-wrapper{max-width:1100px; box-shadow:0 0 50px rgba(0,0,0,0.08);}
   .app-wrapper .grid{grid-template-columns:repeat(6,1fr)!important;}
@@ -151,8 +150,8 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 </div>
 <script>
 const API_URL="https://script.google.com/macros/s/AKfycbyt07t35S4oRxDY4Ai-wYXlaejv70wQ1-N6Rotz_4-WKZoM9QqGSC0Q8JArx7C6xvw0/exec";
-// ✅ NEW TOTAL VISIT LINK - পুরনো লিংক বাদ, নতুন লিংক বসানো
 const TOTAL_VISIT_URL="https://script.google.com/macros/s/AKfycbz2AxQLRMdxY-EzxWN7ubEyCL2QksqVdXxXkjrWZR1MkxpJe_eCrVL8uVkTkdLllnNJmw/exec";
+const VISIT_START = 571; // ✅ 571 থেকে স্টার্ট, জিরো থেকে না
 let currentLang=localStorage.getItem('app_lang')||'bn'; let adInterval=null, adIndex=0, adDirection=1;
 document.addEventListener('contextmenu', e=>e.preventDefault());
 document.addEventListener('selectstart', e=>e.preventDefault());
@@ -193,17 +192,24 @@ window.addEventListener('load',()=>{
     document.addEventListener('touchstart', tryPlay, {once:true});
     document.addEventListener('click', tryPlay, {once:true});
   }
-  let clicks=0, last=0; const logo=document.querySelector('.logo-3d');
+  // ✅ লোগোতে ১ ক্লিকেই টোটাল ভিজিট দেখাবে
+  const logo=document.querySelector('.logo-3d');
   logo.addEventListener('click', async ()=>{
-    let now=Date.now(); if(now-last>2000) clicks=0; clicks++; last=now;
-    if(clicks>=3){
-      clicks=0;
-      let popup=document.createElement('div');
-      popup.style.cssText="position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px";
-      popup.innerHTML=`<div style="background:white;border-radius:28px;padding:28px;width:100%;max-width:340px;text-align:center"><p style="font-weight:900;font-size:20px">📊 টোটাল ভিজিট</p><p id="totalCountText" style="font-weight:900;font-size:42px;color:#ff2d6b;margin-top:12px">লোড হচ্ছে...</p><p style="font-size:12px;color:#888;margin-top:8px">১০০০+ হলেও কাউন্ট হচ্ছে</p><button onclick="this.parentElement.parentElement.remove()" style="margin-top:18px;background:#111;color:white;font-weight:900;padding:10px 28px;border-radius:999px">বন্ধ</button></div>`;
-      document.body.appendChild(popup);
-      try{ const res=await fetch(TOTAL_VISIT_URL+"?t="+Date.now()).then(r=>r.json()); document.getElementById('totalCountText').innerText=res.totalVisit+" বার"; }catch(e){ document.getElementById('totalCountText').innerText="শিটে দেখুন"; }
-    }
+    let popup=document.createElement('div');
+    popup.style.cssText="position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px";
+    popup.innerHTML=`<div style="background:white;border-radius:28px;padding:28px;width:100%;max-width:340px;text-align:center"><p style="font-weight:900;font-size:20px">📊 টোটাল ভিজিট</p><p id="totalCountText" style="font-weight:900;font-size:42px;color:#ff2d6b;margin-top:12px">লোড হচ্ছে...</p><button onclick="this.parentElement.parentElement.remove()" style="margin-top:18px;background:#111;color:white;font-weight:900;padding:10px 28px;border-radius:999px">বন্ধ</button></div>`;
+    document.body.appendChild(popup);
+    try{
+      const txt = await fetch(TOTAL_VISIT_URL+"?t="+Date.now()).then(r=>r.text());
+      let data = {};
+      try{ data = JSON.parse(txt); }catch(e){}
+      let sheetCount = data.totalVisit ?? data.totalViews ?? data.total ?? data.count ?? data.totalDevices ?? data.visits ?? 0;
+      if(typeof data === 'number') sheetCount = data;
+      sheetCount = parseInt(sheetCount) || 0;
+      // ✅ 571 থেকে স্টার্ট: শিটের কাউন্ট + 571
+      let total = VISIT_START + sheetCount;
+      document.getElementById('totalCountText').innerText = total + " বার";
+    }catch(e){ document.getElementById('totalCountText').innerText = VISIT_START + " বার"; }
   });
 });
 window.addEventListener('appinstalled', ()=>{ localStorage.setItem('asa2z_twa_installed','1'); const b=document.getElementById('apkBanner'); if(b) b.style.display='none'; });
