@@ -28,7 +28,6 @@ body{background:#f8fafc; margin:0;}
 .card-premium.open{ box-shadow: 0 20px 40px rgba(16,185,129,0.18), 0 8px 16px rgba(0,0,0,0.06); border-color: #6ee7b7; }
 .icon-box{ box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 8px 16px rgba(0,0,0,0.15); }
 .locked-premium{ background:linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%)!important; }
-/* ✅ LIVE CLASS - সবার উপরে আলাদা লম্বা বাটন */
 .live-class-btn{
   background: linear-gradient(135deg, #ef4444 0%, #f97316 35%, #ec4899 70%, #8b5cf6 100%);
   background-size: 200% 200%;
@@ -68,17 +67,17 @@ body{background:#f8fafc; margin:0;}
     <div class="w-9 h-9 rounded-full bg-emerald-500 flex items-center justify-center text-white font-black text-[12px]">✓</div>
   </div>
 
-  <!-- ✅ LIVE CLASS - সবার উপরে, আলাদা, লম্বা, আকর্ষণীয় -->
-  <div onclick="location.href='./live_class.html'" class="live-class-btn mt-5 rounded-[22px] p-4 flex items-center gap-3 cursor-pointer">
+  <!-- ✅ LIVE CLASS - এখন v4 তে যাবে, আর ভাষা বদলাবে -->
+  <div onclick="location.href='./live_class_v4.html?v=4'" class="live-class-btn mt-5 rounded-[22px] p-4 flex items-center gap-3 cursor-pointer">
     <div class="w-[56px] h-[56px] shrink-0 rounded-[16px] bg-white flex items-center justify-center text-[30px] shadow-lg relative">👨‍🏫<span class="absolute -bottom-1 -right-1 text-[16px] bg-emerald-500 w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">🧑‍🎓</span></div>
     <div class="flex-1 text-white">
       <div class="flex items-center gap-2">
         <span class="live-dot"></span>
-        <p class="font-black text-[16px] leading-none">LIVE CLASS</p>
+        <p class="font-black text-[16px] leading-none" id="liveTitle">LIVE CLASS</p>
         <span class="bg-white text-red-600 text-[8px] font-black px-2 py-[3px] rounded-full">LIVE</span>
       </div>
-      <p class="font-black text-[13px] mt-1.5 leading-none">লাইভ ক্লাসে ঢুকুন</p>
-      <p class="text-white/90 text-[10px] font-bold mt-1">টিচার দেখাবে • স্টুডেন্ট দেখবে • কথা শোনা যাবে</p>
+      <p class="font-black text-[13px] mt-1.5 leading-none" id="liveMain">লাইভ ক্লাসে ঢুকুন</p>
+      <p class="text-white/90 text-[10px] font-bold mt-1" id="liveSub">টিচার দেখাবে • স্টুডেন্ট দেখবে • কথা শোনা যাবে</p>
     </div>
     <div class="w-9 h-9 shrink-0 rounded-full bg-white flex items-center justify-center font-black text-[16px] text-red-500">➤</div>
   </div>
@@ -92,7 +91,7 @@ body{background:#f8fafc; margin:0;}
       <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-[36px]">🚧</div>
       <p class="font-black text-[18px] mt-4 text-slate-900" id="modalTitle">আপডেট চলছে</p>
       <p class="text-slate-500 text-[12px] mt-2 font-bold" id="modalDesc">এই পর্বটি শীঘ্রই আসছে ইনশাআল্লাহ</p>
-      <button onclick="document.getElementById('updateModal').classList.add('hidden')" class="mt-6 w-full py-3.5 bg-slate-900 text-white rounded-full font-black text-[13px]">ঠিক আছে</button>
+      <button onclick="document.getElementById('updateModal').classList.add('hidden')" class="mt-6 w-full py-3.5 bg-slate-900 text-white rounded-full font-black text-[13px]" id="modalBtn">ঠিক আছে</button>
     </div>
   </div>
 
@@ -120,6 +119,21 @@ const ITEMS=[
 { id:10,bn:"৫ম পর্ব বাংলা", en:"Bangla P5", subBn:"গল্প", subEn:"Story", icon:"📖", grad:"from-teal-400 via-emerald-500 to-green-600", shadow:"shadow-teal-500/30", open:false},
 ];
 
+// ✅ ভাষা অনুযায়ী LIVE CLASS বাটনের সম্পূর্ণ লেখা
+const LIVE_TEXT = {
+  bn:{ title:"LIVE CLASS", main:"লাইভ ক্লাসে ঢুকুন", sub:"টিচার দেখাবে • স্টুডেন্ট দেখবে • কথা শোনা যাবে" },
+  en:{ title:"LIVE CLASS", main:"Join Live Class", sub:"Teacher will show • Student will see • Voice will be heard" }
+};
+
+function applyLiveLang(){
+  document.getElementById('liveTitle').innerText = LIVE_TEXT[lang].title;
+  document.getElementById('liveMain').innerText = LIVE_TEXT[lang].main;
+  document.getElementById('liveSub').innerText = LIVE_TEXT[lang].sub;
+  document.getElementById('subTitle').innerText = lang=='bn'?'ডিজিটাল প্রফেশনাল শিক্ষা':'Digital Professional Education';
+  document.getElementById('subDesc').innerText = lang=='bn'?'১০টি পর্ব • High Quality':'10 Parts • High Quality';
+  document.getElementById('modalBtn').innerText = lang=='bn'?'ঠিক আছে':'OK';
+}
+
 function renderGrid(){
   document.getElementById('eduGrid').innerHTML = ITEMS.map(it=>`
     <div onclick="openItem(${it.id})" class="card-premium ${it.open?'open':'locked-premium'} rounded-[20px] p-3 text-center cursor-pointer relative">
@@ -146,10 +160,10 @@ function toggleLang(){
   lang=lang=='bn'?'en':'bn';
   localStorage.setItem('edu_lang',lang);
   document.getElementById('langBtn').innerText=lang=='bn'?'EN':'BN';
-  document.getElementById('subTitle').innerText=lang=='bn'?'ডিজিটাল প্রফেশনাল শিক্ষা':'Digital Professional Education';
-  document.getElementById('subDesc').innerText=lang=='bn'?'১০টি পর্ব • High Quality':'10 Parts • High Quality';
+  applyLiveLang();
   renderGrid();
 }
+applyLiveLang();
 renderGrid();
 document.getElementById('langBtn').innerText=lang=='bn'?'EN':'BN';
 </script>
