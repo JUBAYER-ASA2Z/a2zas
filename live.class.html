@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Live Class - A-S A2Z</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<style>
+*{font-family:'Hind Siliguri';-webkit-tap-highlight-color:transparent;user-select:none;box-sizing:border-box}
+body{margin:0;background:#0f172a;overflow:hidden;height:100dvh}
+.pointer{position:absolute;width:72px;height:72px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:38px;z-index:50;touch-action:none;cursor:grab;box-shadow:0 10px 25px rgba(0,0,0,.4);border:3px solid #fff}
+.pointer:active{cursor:grabbing;transform:scale(1.1)}
+.pointer .label{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:900;background:#000;color:#fff;padding:2px 8px;border-radius:999px;white-space:nowrap}
+#boardImg{max-width:100%;max-height:100%;object-fit:contain;transition:transform .15s}
+</style>
+</head>
+<body>
+
+<script>
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbnTcHS5ag4Ge_3hOWdXrWe0MoqgnDOX5cdhzA_etEJONIhcY90svq7hn0RpqCRVR6/exec";
+</script>
+
+<!-- TOP BAR -->
+<div class="absolute top-0 left-0 right-0 z-[100] bg-black/60 backdrop-blur px-3 py-2 flex items-center gap-2">
+  <button onclick="leaveAndBack()" class="w-9 h-9 bg-white text-black rounded-full font-black">←</button>
+  <div class="flex-1">
+    <p class="text-white font-black text-[13px] leading-none">📚 Live Class</p>
+    <p class="text-white/60 text-[10px] font-bold mt-0.5">Room: <span id="roomLabel">---</span> • <span id="liveDot">🟢 LIVE • GitHub + Apps Script</span></p>
+  </div>
+  <label class="bg-emerald-500 text-white text-[11px] font-black px-3 py-2 rounded-full cursor-pointer">📸 ছবি<input type="file" id="imgInput" accept="image/*" class="hidden"></label>
+  <button onclick="deleteImage()" class="bg-red-500 text-white text-[11px] font-black px-3 py-2 rounded-full">🗑️ মুছুন</button>
+</div>
+
+<!-- JOIN -->
+<div id="joinBox" class="absolute inset-0 z-[200] bg-slate-900/95 flex items-center justify-center p-6">
+  <div class="bg-white rounded-[24px] p-6 w-full max-w-[340px] text-center">
+    <p class="text-[48px]">👨‍🏫🧑‍🎓</p>
+    <p class="font-black text-[20px] mt-2">Live Class এ ঢুকুন</p>
+    <p class="text-slate-500 text-[12px] font-bold mt-1">টিচার রুম বানাবে, স্টুডেন্ট কোড দিয়ে ঢুকবে</p>
+    <input id="roomInput" placeholder="রুম কোড - যেমন: 1234" class="w-full mt-4 border-2 border-slate-200 rounded-full px-4 py-3 text-center font-black text-[16px] outline-none">
+    <div class="grid grid-cols-2 gap-2 mt-3">
+      <button onclick="joinAs('teacher')" class="bg-blue-600 text-white py-3 rounded-full font-black text-[13px]">👨‍🏫 টিচার</button>
+      <button onclick="joinAs('student')" class="bg-emerald-600 text-white py-3 rounded-full font-black text-[13px]">🧑‍🎓 স্টুডেন্ট</button>
+    </div>
+    <button onclick="createRoom()" class="w-full mt-2 bg-slate-900 text-white py-3 rounded-full font-black text-[12px]">+ নতুন রুম বানান</button>
+    <p class="text-[10px] text-slate-400 mt-3 font-bold">Firebase লাগবে না • ছবি সেভ হবে না • বের হলেই মুছে যাবে</p>
+  </div>
+</div>
+
+<!-- BOARD -->
+<div id="board" class="absolute inset-0 top-[56px] bottom-[76px] flex items-center justify-center bg-slate-900 overflow-hidden">
+  <p id="noImgText" class="text-white/40 font-black text-[14px] text-center px-6">📸 উপরে ছবি আপলোড করুন<br><span class="text-[11px] font-bold">বইয়ের পাতার ছবি সবাই লাইভ দেখবে</span></p>
+  <img id="boardImg" class="hidden">
+  <div id="zoomBox" class="hidden absolute bottom-3 right-3 z-[60] flex gap-2">
+    <button onclick="zoom(-0.2)" class="w-11 h-11 bg-white rounded-full font-black text-[20px] shadow">−</button>
+    <button onclick="zoom(0.2)" class="w-11 h-11 bg-white rounded-full font-black text-[20px] shadow">+</button>
+    <button onclick="resetZoom()" class="px-3 h-11 bg-white rounded-full font-black text-[11px] shadow">Reset</button>
+  </div>
+</div>
+
+<!-- 👆 ২টা পয়েন্টার -->
+<div id="teacherPointer" class="pointer" style="left:20px;top:120px;background:linear-gradient(135deg,#3b82f6,#1d4ed8)">👨‍🏫<span class="label">টিচার</span></div>
+<div id="studentPointer" class="pointer" style="left:120px;top:120px;background:linear-gradient(135deg,#22c55e,#15803d)">🧑‍🎓<span class="label">স্টুডেন্ট</span></div>
+
+<!-- BOTTOM -->
+<div class="absolute bottom-0 left-0 right-0 z-[100] bg-black/80 backdrop-blur px-4 py-3 flex items-center justify-between gap-3">
+  <div class="flex items-center gap-2">
+    <span id="myRoleBadge" class="bg-white/20 text-white text-[11px] font-black px-3 py-1.5 rounded-full">---</span>
+    <span id="voiceStatus" class="text-white/70 text-[11px] font-bold">🎤 কথা বন্ধ</span>
+  </div>
+  <div class="flex gap-2">
+    <button id="speakerBtn" onclick="toggleSpeaker()" class="w-12 h-12 bg-white rounded-full text-[22px] flex items-center justify-center shadow">🔊</button>
+    <button id="micBtn" onclick="toggleMic()" class="w-12 h-12 bg-red-500 text-white rounded-full text-[22px] flex items-center justify-center shadow">🔇</button>
+  </div>
+</div>
+<audio id="remoteAudio" autoplay playsinline></audio>
+
+<script>
+let myRole='', roomId='', myPeer=null, myStream=null, speakerOn=true, micOn=false;
+let scale=1, myId='U'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+let lastImg = '';
+
+function createRoom(){
+  let code = Math.floor(1000 + Math.random()*9000).toString();
+  document.getElementById('roomInput').value = code;
+  alert('আপনার রুম কোড: ' + code + '\nস্টুডেন্টকে এই কোডটা দেন');
+}
+function joinAs(role){
+  roomId = document.getElementById('roomInput').value.trim();
+  if(!roomId){ alert('আগে রুম কোড দিন'); return; }
+  myRole = role;
+  document.getElementById('joinBox').style.display='none';
+  document.getElementById('roomLabel').innerText = roomId;
+  document.getElementById('myRoleBadge').innerText = role==='teacher' ? '👨‍🏫 টিচার' : '🧑‍🎓 স্টুডেন্ট';
+  startPolling();
+  initVoice();
+}
+async function sendToSheet(payload){
+  try{
+    await fetch(APPS_SCRIPT_URL, {method:'POST', mode:'no-cors', body: JSON.stringify(payload)});
+  }catch(e){}
+}
+async function poll(){
+  if(!roomId) return;
+  try{
+    let res = await fetch(APPS_SCRIPT_URL + "?action=getState&room=" + roomId + "&t=" + Date.now());
+    let data = await res.json();
+    if(data.pointer){
+      if(data.pointer.teacher && data.pointer.teacher.by !== myId){
+        let el = document.getElementById('teacherPointer');
+        el.style.left = data.pointer.teacher.x+'px'; el.style.top = data.pointer.teacher.y+'px';
+      }
+      if(data.pointer.student && data.pointer.student.by !== myId){
+        let el = document.getElementById('studentPointer');
+        el.style.left = data.pointer.student.x+'px'; el.style.top = data.pointer.student.y+'px';
+      }
+    }
+    if(data.image && data.image.data){
+      if(data.image.data !== lastImg){ lastImg = data.image.data; showImage(data.image.data); }
+    } else {
+      if(lastImg !== ''){ lastImg=''; hideImage(); }
+    }
+    if(data.peers && myStream && micOn){
+      Object.values(data.peers).forEach(p=>{
+        if(p.peerId === myPeer.id) return;
+        if(!window._called) window._called = {};
+        if(window._called[p.peerId]) return;
+        window._called[p.peerId] = true;
+        try{
+          let call = myPeer.call(p.peerId, myStream);
+          call.on('stream', rs=>{ let a=document.getElementById('remoteAudio'); a.srcObject=rs; a.muted=!speakerOn; a.play().catch(()=>{}); });
+        }catch(e){}
+      });
+    }
+  }catch(e){}
+}
+function startPolling(){ setInterval(poll, 500); }
+function makeDraggable(el, key){
+  let dragging=false, sx=0, sy=0, ox=0, oy=0;
+  el.addEventListener('pointerdown', e=>{ dragging=true; el.setPointerCapture(e.pointerId); sx=e.clientX; sy=e.clientY; ox=el.offsetLeft; oy=el.offsetTop; });
+  el.addEventListener('pointermove', e=>{
+    if(!dragging) return;
+    let x = Math.max(0, Math.min(window.innerWidth-72, ox + (e.clientX - sx)));
+    let y = Math.max(56, Math.min(window.innerHeight-150, oy + (e.clientY - sy)));
+    el.style.left = x+'px'; el.style.top = y+'px';
+    sendToSheet({room: roomId, type:'pointer', key:key, x:x, y:y, by: myId});
+  });
+  el.addEventListener('pointerup', ()=> dragging=false);
+}
+makeDraggable(document.getElementById('teacherPointer'), 'teacher');
+makeDraggable(document.getElementById('studentPointer'), 'student');
+document.getElementById('imgInput').addEventListener('change', e=>{
+  let file = e.target.files[0]; if(!file) return;
+  let reader = new FileReader();
+  reader.onload = ()=>{
+    let img = new Image();
+    img.onload = ()=>{
+      let canvas = document.createElement('canvas');
+      let maxW = 700; let r = Math.min(1, maxW/img.width);
+      canvas.width = img.width*r; canvas.height = img.height*r;
+      canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+      let dataUrl = canvas.toDataURL('image/jpeg', 0.55);
+      showImage(dataUrl);
+      sendToSheet({room: roomId, type:'image', data: dataUrl, by: myId});
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+});
+function showImage(d){ let img=document.getElementById('boardImg'); img.src=d; img.classList.remove('hidden'); document.getElementById('noImgText').style.display='none'; document.getElementById('zoomBox').classList.remove('hidden'); scale=1; img.style.transform='scale(1)'; }
+function hideImage(){ document.getElementById('boardImg').classList.add('hidden'); document.getElementById('noImgText').style.display='block'; document.getElementById('zoomBox').classList.add('hidden'); }
+function deleteImage(){ lastImg=''; hideImage(); sendToSheet({room: roomId, type:'clearImage'}); }
+function zoom(d){ scale=Math.max(0.5, Math.min(4, scale+d)); document.getElementById('boardImg').style.transform='scale('+scale+')'; }
+function resetZoom(){ scale=1; document.getElementById('boardImg').style.transform='scale(1)'; }
+function initVoice(){
+  myPeer = new Peer('a2z-'+roomId+'-'+myRole+'-'+myId);
+  myPeer.on('open', ()=>{
+    sendToSheet({room: roomId, type:'peer', peerId: myPeer.id, role: myRole});
+  });
+  myPeer.on('call', call=>{
+    navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+      myStream = stream;
+      stream.getAudioTracks().forEach(t=> t.enabled = micOn);
+      call.answer(stream);
+      call.on('stream', rs=>{ let a=document.getElementById('remoteAudio'); a.srcObject=rs; a.muted=!speakerOn; a.play().catch(()=>{}); });
+    });
+  });
+}
+function toggleSpeaker(){
+  speakerOn = !speakerOn;
+  document.getElementById('speakerBtn').innerText = speakerOn ? '🔊' : '🔇';
+  document.getElementById('remoteAudio').muted = !speakerOn;
+  document.getElementById('voiceStatus').innerText = speakerOn ? '🔊 অপর প্রান্তের কথা শুনছেন' : '🔇 স্পিকার বন্ধ';
+}
+async function toggleMic(){
+  micOn = !micOn;
+  document.getElementById('micBtn').style.background = micOn ? '#22c55e' : '#ef4444';
+  document.getElementById('micBtn').innerText = micOn ? '🎤' : '🔇';
+  document.getElementById('voiceStatus').innerText = micOn ? '🎤 আপনার কথা সবাই শুনছে' : '🎤 কথা বন্ধ (মিউট)';
+  if(micOn){
+    try{
+      myStream = await navigator.mediaDevices.getUserMedia({audio:true});
+      myStream.getAudioTracks().forEach(t=> t.enabled = true);
+      sendToSheet({room: roomId, type:'peer', peerId: myPeer.id, role: myRole});
+      window._called = {};
+    }catch(e){ alert('Mic Permission Allow করেন'); micOn=false; }
+  } else {
+    if(myStream) myStream.getAudioTracks().forEach(t=> t.enabled = false);
+  }
+}
+function leaveAndBack(){
+  if(roomId){
+    sendToSheet({room: roomId, type:'leave', peerId: myPeer ? myPeer.id : myId});
+    sendToSheet({room: roomId, type:'clearImage'});
+  }
+  location.href='./digital_home.html';
+}
+window.addEventListener('beforeunload', ()=>{
+  if(roomId){
+    navigator.sendBeacon(APPS_SCRIPT_URL, JSON.stringify({room: roomId, type:'clearImage'}));
+  }
+});
+</script>
+</body>
+</html>
