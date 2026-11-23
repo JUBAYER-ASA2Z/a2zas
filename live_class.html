@@ -10,9 +10,12 @@
 <style>
 *{font-family:'Hind Siliguri';-webkit-tap-highlight-color:transparent;user-select:none;box-sizing:border-box}
 body{margin:0;background:#0f172a;overflow:hidden;height:100dvh}
-.pointer{position:absolute;width:72px;height:72px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:38px;z-index:50;touch-action:none;cursor:grab;box-shadow:0 10px 25px rgba(0,0,0,.4);border:3px solid #fff}
-.pointer:active{cursor:grabbing;transform:scale(1.1)}
-.pointer .label{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:900;background:#000;color:#fff;padding:2px 8px;border-radius:999px;white-space:nowrap}
+/* 👆 ফিঙ্গার পয়েন্টার - বড় + গ্লো */
+.finger{position:absolute;width:64px;height:64px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:38px;z-index:50;touch-action:none;cursor:grab;box-shadow:0 10px 25px rgba(0,0,0,.45);border:3px solid #fff}
+.finger:active{cursor:grabbing;transform:scale(1.15)}
+.finger .label{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:900;background:#000;color:#fff;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.finger.mine{box-shadow:0 0 0 3px #fff, 0 0 20px rgba(34,197,94,.8), 0 10px 25px rgba(0,0,0,.4)}
+.finger.locked{opacity:.95}
 #boardImg{max-width:100%;max-height:100%;object-fit:contain;transition:transform .15s}
 </style>
 </head>
@@ -27,7 +30,7 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbnTcHS5ag4Ge_
   <button onclick="leaveAndBack()" class="w-9 h-9 bg-white text-black rounded-full font-black">←</button>
   <div class="flex-1">
     <p class="text-white font-black text-[13px] leading-none">📚 Live Class</p>
-    <p class="text-white/60 text-[10px] font-bold mt-0.5">Room: <span id="roomLabel">---</span> • <span id="liveDot">🟢 LIVE • GitHub + Apps Script</span></p>
+    <p class="text-white/60 text-[10px] font-bold mt-0.5">Room: <span id="roomLabel">---</span> • <span id="netStatus">🟢 FAST • Low MB</span></p>
   </div>
   <label class="bg-emerald-500 text-white text-[11px] font-black px-3 py-2 rounded-full cursor-pointer">📸 ছবি<input type="file" id="imgInput" accept="image/*" class="hidden"></label>
   <button onclick="deleteImage()" class="bg-red-500 text-white text-[11px] font-black px-3 py-2 rounded-full">🗑️ মুছুন</button>
@@ -36,16 +39,16 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbnTcHS5ag4Ge_
 <!-- JOIN -->
 <div id="joinBox" class="absolute inset-0 z-[200] bg-slate-900/95 flex items-center justify-center p-6">
   <div class="bg-white rounded-[24px] p-6 w-full max-w-[340px] text-center">
-    <p class="text-[48px]">👨‍🏫🧑‍🎓</p>
+    <p class="text-[48px]">👆👆</p>
     <p class="font-black text-[20px] mt-2">Live Class এ ঢুকুন</p>
     <p class="text-slate-500 text-[12px] font-bold mt-1">টিচার রুম বানাবে, স্টুডেন্ট কোড দিয়ে ঢুকবে</p>
     <input id="roomInput" placeholder="রুম কোড - যেমন: 1234" class="w-full mt-4 border-2 border-slate-200 rounded-full px-4 py-3 text-center font-black text-[16px] outline-none">
     <div class="grid grid-cols-2 gap-2 mt-3">
-      <button onclick="joinAs('teacher')" class="bg-blue-600 text-white py-3 rounded-full font-black text-[13px]">👨‍🏫 টিচার</button>
-      <button onclick="joinAs('student')" class="bg-emerald-600 text-white py-3 rounded-full font-black text-[13px]">🧑‍🎓 স্টুডেন্ট</button>
+      <button onclick="joinAs('teacher')" class="bg-blue-600 text-white py-3 rounded-full font-black text-[13px]">👆 টিচার</button>
+      <button onclick="joinAs('student')" class="bg-emerald-600 text-white py-3 rounded-full font-black text-[13px]">👆 স্টুডেন্ট</button>
     </div>
     <button onclick="createRoom()" class="w-full mt-2 bg-slate-900 text-white py-3 rounded-full font-black text-[12px]">+ নতুন রুম বানান</button>
-    <p class="text-[10px] text-slate-400 mt-3 font-bold">Firebase লাগবে না • ছবি সেভ হবে না • বের হলেই মুছে যাবে</p>
+    <p class="text-[10px] text-slate-400 mt-3 font-bold">অল্প নেটেও ক্লিয়ার শোনা যাবে • ছবি সেভ হবে না</p>
   </div>
 </div>
 
@@ -60,11 +63,12 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbnTcHS5ag4Ge_
   </div>
 </div>
 
-<!-- 👆 ২টা পয়েন্টার -->
-<div id="teacherPointer" class="pointer" style="left:20px;top:120px;background:linear-gradient(135deg,#3b82f6,#1d4ed8)">👨‍🏫<span class="label">টিচার</span></div>
-<div id="studentPointer" class="pointer" style="left:120px;top:120px;background:linear-gradient(135deg,#22c55e,#15803d)">🧑‍🎓<span class="label">স্টুডেন্ট</span></div>
+<!-- 👆 টিচার ফিঙ্গার - শুধু টিচার কন্ট্রোল করবে -->
+<div id="teacherFinger" class="finger" style="left:20px;top:140px;background:linear-gradient(135deg,#3b82f6,#1d4ed8)">👆<span class="label">টিচার 👆</span></div>
+<!-- 👆 স্টুডেন্ট ফিঙ্গার - শুধু স্টুডেন্ট কন্ট্রোল করবে -->
+<div id="studentFinger" class="finger" style="left:120px;top:140px;background:linear-gradient(135deg,#22c55e,#15803d)">👆<span class="label">স্টুডেন্ট 👆</span></div>
 
-<!-- BOTTOM -->
+<!-- BOTTOM - ভয়েস -->
 <div class="absolute bottom-0 left-0 right-0 z-[100] bg-black/80 backdrop-blur px-4 py-3 flex items-center justify-between gap-3">
   <div class="flex items-center gap-2">
     <span id="myRoleBadge" class="bg-white/20 text-white text-[11px] font-black px-3 py-1.5 rounded-full">---</span>
@@ -80,7 +84,7 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbnTcHS5ag4Ge_
 <script>
 let myRole='', roomId='', myPeer=null, myStream=null, speakerOn=true, micOn=false;
 let scale=1, myId='U'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
-let lastImg = '';
+let lastImg = '', lastPointerSent = 0;
 
 function createRoom(){
   let code = Math.floor(1000 + Math.random()*9000).toString();
@@ -93,27 +97,36 @@ function joinAs(role){
   myRole = role;
   document.getElementById('joinBox').style.display='none';
   document.getElementById('roomLabel').innerText = roomId;
-  document.getElementById('myRoleBadge').innerText = role==='teacher' ? '👨‍🏫 টিচার' : '🧑‍🎓 স্টুডেন্ট';
+  document.getElementById('myRoleBadge').innerText = role==='teacher' ? '👆 টিচার' : '👆 স্টুডেন্ট';
+
+  // ✅ নিজের ফিঙ্গার চিনিয়ে দাও - সবুজ গ্লো, অন্যেরটা লক
+  let myFinger = document.getElementById(role==='teacher' ? 'teacherFinger' : 'studentFinger');
+  let otherFinger = document.getElementById(role==='teacher' ? 'studentFinger' : 'teacherFinger');
+  myFinger.classList.add('mine');
+  otherFinger.classList.add('locked');
+  myFinger.querySelector('.label').innerText = (role==='teacher'?'আপনার 👆':'আপনার 👆');
+  otherFinger.querySelector('.label').innerText = (role==='teacher'?'স্টুডেন্ট 👆':'টিচার 👆');
+
   startPolling();
   initVoice();
 }
 async function sendToSheet(payload){
-  try{
-    await fetch(APPS_SCRIPT_URL, {method:'POST', mode:'no-cors', body: JSON.stringify(payload)});
-  }catch(e){}
+  try{ await fetch(APPS_SCRIPT_URL, {method:'POST', mode:'no-cors', body: JSON.stringify(payload)}); }catch(e){}
 }
+// ✅ FAST POLLING - ১৫০ms (আগে ৫০০ms ছিল) - ফিঙ্গার ল্যাগ করবে না
 async function poll(){
   if(!roomId) return;
   try{
     let res = await fetch(APPS_SCRIPT_URL + "?action=getState&room=" + roomId + "&t=" + Date.now());
     let data = await res.json();
     if(data.pointer){
+      // নিজেরটা নিজে আপডেট করবো না - ল্যাগ কমবে
       if(data.pointer.teacher && data.pointer.teacher.by !== myId){
-        let el = document.getElementById('teacherPointer');
+        let el = document.getElementById('teacherFinger');
         el.style.left = data.pointer.teacher.x+'px'; el.style.top = data.pointer.teacher.y+'px';
       }
       if(data.pointer.student && data.pointer.student.by !== myId){
-        let el = document.getElementById('studentPointer');
+        let el = document.getElementById('studentFinger');
         el.style.left = data.pointer.student.x+'px'; el.style.top = data.pointer.student.y+'px';
       }
     }
@@ -136,21 +149,65 @@ async function poll(){
     }
   }catch(e){}
 }
-function startPolling(){ setInterval(poll, 500); }
-function makeDraggable(el, key){
+function startPolling(){ setInterval(poll, 150); }
+
+// ✅ ফিঙ্গার কন্ট্রোল - শুধু নিজেরটা
+function makeDraggable(el, key, canControl){
+  if(!canControl){
+    // অন্যের ফিঙ্গার টানা যাবে না - শুধু দেখা যাবে
+    el.style.pointerEvents = 'none';
+    // কিন্তু label দেখা যাবে, তাই pointerEvents none হলে label ও যাবে না - আমরা el কে touch-none রাখি
+    // সহজ উপায়: el এর উপর transparent lock - drag হবে না
+    el.addEventListener('pointerdown', e=>{ e.preventDefault(); e.stopPropagation(); }, true);
+    return;
+  }
   let dragging=false, sx=0, sy=0, ox=0, oy=0;
   el.addEventListener('pointerdown', e=>{ dragging=true; el.setPointerCapture(e.pointerId); sx=e.clientX; sy=e.clientY; ox=el.offsetLeft; oy=el.offsetTop; });
   el.addEventListener('pointermove', e=>{
     if(!dragging) return;
-    let x = Math.max(0, Math.min(window.innerWidth-72, ox + (e.clientX - sx)));
+    let x = Math.max(0, Math.min(window.innerWidth-64, ox + (e.clientX - sx)));
     let y = Math.max(56, Math.min(window.innerHeight-150, oy + (e.clientY - sy)));
     el.style.left = x+'px'; el.style.top = y+'px';
-    sendToSheet({room: roomId, type:'pointer', key:key, x:x, y:y, by: myId});
+    // ✅ Throttle - ৩০ms পর পর পাঠাবে, নেট কম খাবে, ফাস্ট লাগবে
+    let now = Date.now();
+    if(now - lastPointerSent > 30){
+      lastPointerSent = now;
+      sendToSheet({room: roomId, type:'pointer', key:key, x:x, y:y, by: myId});
+    }
   });
-  el.addEventListener('pointerup', ()=> dragging=false);
+  el.addEventListener('pointerup', ()=>{
+    dragging=false;
+    sendToSheet({room: roomId, type:'pointer', key:key, x: el.offsetLeft, y: el.offsetTop, by: myId});
+  });
 }
-makeDraggable(document.getElementById('teacherPointer'), 'teacher');
-makeDraggable(document.getElementById('studentPointer'), 'student');
+// কন্ট্রোল পরে joinAs এ ঠিক হবে, প্রথমে ২টাই লক রাখি, join এর পর unlock করি
+function setupFingers(){
+  let teacherCan = (myRole === 'teacher');
+  let studentCan = (myRole === 'student');
+  // পুরানো listener মুছতে clone করি
+  let t = document.getElementById('teacherFinger');
+  let s = document.getElementById('studentFinger');
+  // নতুন করে draggable বসাই
+  makeDraggable(t, 'teacher', teacherCan);
+  makeDraggable(s, 'student', studentCan);
+}
+// joinAs এর ভিতরে setupFingers কল করতে হবে - তাই joinAs কে override করি
+let _oldJoin = joinAs;
+joinAs = function(role){
+  _oldJoin(role);
+  // ফিঙ্গার লক/আনলক
+  let t = document.getElementById('teacherFinger');
+  let s = document.getElementById('studentFinger');
+  if(role === 'teacher'){
+    t.style.pointerEvents = 'auto'; s.style.pointerEvents = 'none';
+    makeDraggable(t, 'teacher', true);
+  } else {
+    s.style.pointerEvents = 'auto'; t.style.pointerEvents = 'none';
+    makeDraggable(s, 'student', true);
+  }
+};
+
+// --- ছবি - অল্প MB ---
 document.getElementById('imgInput').addEventListener('change', e=>{
   let file = e.target.files[0]; if(!file) return;
   let reader = new FileReader();
@@ -158,10 +215,10 @@ document.getElementById('imgInput').addEventListener('change', e=>{
     let img = new Image();
     img.onload = ()=>{
       let canvas = document.createElement('canvas');
-      let maxW = 700; let r = Math.min(1, maxW/img.width);
+      let maxW = 550; let r = Math.min(1, maxW/img.width);
       canvas.width = img.width*r; canvas.height = img.height*r;
       canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
-      let dataUrl = canvas.toDataURL('image/jpeg', 0.55);
+      let dataUrl = canvas.toDataURL('image/jpeg', 0.45);
       showImage(dataUrl);
       sendToSheet({room: roomId, type:'image', data: dataUrl, by: myId});
     };
@@ -174,18 +231,46 @@ function hideImage(){ document.getElementById('boardImg').classList.add('hidden'
 function deleteImage(){ lastImg=''; hideImage(); sendToSheet({room: roomId, type:'clearImage'}); }
 function zoom(d){ scale=Math.max(0.5, Math.min(4, scale+d)); document.getElementById('boardImg').style.transform='scale('+scale+')'; }
 function resetZoom(){ scale=1; document.getElementById('boardImg').style.transform='scale(1)'; }
+
+// ✅ ভয়েস - FAST + CLEAR + LOW MB
+// Opus 16kbps, Echo Cancel, Noise Suppress, Auto Gain
 function initVoice(){
-  myPeer = new Peer('a2z-'+roomId+'-'+myRole+'-'+myId);
+  myPeer = new Peer('a2z-'+roomId+'-'+myRole+'-'+myId, {
+    config: { iceServers: [{urls:'stun:stun.l.google.com:19302'}, {urls:'stun:global.stun.twilio.com:3478'}] }
+  });
   myPeer.on('open', ()=>{
     sendToSheet({room: roomId, type:'peer', peerId: myPeer.id, role: myRole});
   });
   myPeer.on('call', call=>{
-    navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+    getClearAudio().then(stream=>{
       myStream = stream;
-      stream.getAudioTracks().forEach(t=> t.enabled = micOn);
+      // ✅ অল্প নেটের জন্য Bitrate কমাই - 16kbps, তাও ক্লিয়ার
+      try{
+        let sender = call.peerConnection.getSenders().find(s=> s.track && s.track.kind==='audio');
+        if(sender && sender.setParameters){
+          let params = sender.getParameters();
+          if(!params.encodings) params.encodings = [{}];
+          params.encodings[0].maxBitrate = 16000;
+          sender.setParameters(params);
+        }
+      }catch(e){}
       call.answer(stream);
       call.on('stream', rs=>{ let a=document.getElementById('remoteAudio'); a.srcObject=rs; a.muted=!speakerOn; a.play().catch(()=>{}); });
     });
+  });
+}
+// ✅ ক্লিয়ার অডিও - নয়েজ বাদ, ইকো বাদ
+async function getClearAudio(){
+  return await navigator.mediaDevices.getUserMedia({
+    audio: {
+      echoCancellation: true,
+      noiseSuppression: true,
+      autoGainControl: true,
+      channelCount: 1,
+      sampleRate: 24000,
+      latency: 0.01
+    },
+    video: false
   });
 }
 function toggleSpeaker(){
@@ -198,13 +283,14 @@ async function toggleMic(){
   micOn = !micOn;
   document.getElementById('micBtn').style.background = micOn ? '#22c55e' : '#ef4444';
   document.getElementById('micBtn').innerText = micOn ? '🎤' : '🔇';
-  document.getElementById('voiceStatus').innerText = micOn ? '🎤 আপনার কথা সবাই শুনছে' : '🎤 কথা বন্ধ (মিউট)';
+  document.getElementById('voiceStatus').innerText = micOn ? '🎤 আপনার কথা সবাই শুনছে (Clear)' : '🎤 কথা বন্ধ (মিউট)';
   if(micOn){
     try{
-      myStream = await navigator.mediaDevices.getUserMedia({audio:true});
+      myStream = await getClearAudio();
       myStream.getAudioTracks().forEach(t=> t.enabled = true);
       sendToSheet({room: roomId, type:'peer', peerId: myPeer.id, role: myRole});
       window._called = {};
+      document.getElementById('netStatus').innerText = '🟢 FAST • Clear Voice';
     }catch(e){ alert('Mic Permission Allow করেন'); micOn=false; }
   } else {
     if(myStream) myStream.getAudioTracks().forEach(t=> t.enabled = false);
