@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -15,16 +16,9 @@
 body{margin:0;background:#0f172a;overflow:hidden;height:100dvh}
 button,label{pointer-events:auto !important;touch-action:manipulation !important;cursor:pointer}
 #boardWrap{position:absolute;inset:56px 0 76px 0;display:flex;align-items:center;justify-content:center;background:#0f172a;padding:6px;overflow:hidden}
-/* ✅ বোর্ড - 4:5 ফিক্সড, সব ডিভাইসে একই */
-#board{position:relative;background:#000;border-radius:12px;overflow:hidden;box-shadow:0 0 0 2px #334155;
-  height:100%;
-  aspect-ratio:4 / 5;
-  max-width:100%;
-  flex-shrink:0;
-}
+#board{position:relative;background:#000;border-radius:12px;overflow:hidden;box-shadow:0 0 0 2px #334155;height:100%;aspect-ratio:4 / 5;max-width:100%;flex-shrink:0}
 #boardImg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
-/* ✅ ফিঙ্গার - transform দিয়ে স্মুথ, ল্যাগ করবে না */
-.finger{position:absolute;width:52px;height:68px;display:flex;flex-direction:column;align-items:center;z-index:50;touch-action:none;will-change:transform;transition:none}
+.finger{position:absolute;width:52px;height:68px;display:flex;flex-direction:column;align-items:center;z-index:50;touch-action:none;will-change:left,top;transform:translate(-50%,-50%)}
 .finger .emoji{font-size:42px;line-height:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.6))}
 .finger .label{margin-top:2px;background:#000;color:#fff;font-size:11px;font-weight:900;padding:3px 10px;border-radius:999px;white-space:nowrap;border:1.5px solid #fff}
 .finger.mine .emoji{filter:drop-shadow(0 0 12px rgba(34,197,94,0.9)) drop-shadow(0 4px 8px rgba(0,0,0,0.6))}
@@ -126,10 +120,9 @@ var myRole='',roomId='',myPeer=null,myStream=null,speakerOn=true,micOn=false;
 var myId='U'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
 var lastImg='',pollTimer=null,calledPeers={};
 var dataConns={};
+var pendingRole='';
 var fingerTarget={teacher:{x:20,y:30},student:{x:70,y:30}};
 var fingerCurrent={teacher:{x:20,y:30},student:{x:70,y:30}};
-
-// ✅ মাইক একদম ছেড়ে দেওয়া - এটাই ব্লক ঠিক করবে
 function releaseMic(){
   micOn=false;
   var b=document.getElementById('micBtn'); if(b){ b.style.background='#ef4444'; b.innerText='🔇'; }
@@ -139,7 +132,6 @@ function releaseMic(){
   Object.values(dataConns).forEach(function(c){ try{ c.close(); }catch(e){} }); dataConns={};
   if(pollTimer) clearInterval(pollTimer);
 }
-// ✅ ফিঙ্গার স্মুথ - লাফ দিবে না, আটকাবে না
 function smoothLoop(){
   ['teacher','student'].forEach(function(k){
     var cur=fingerCurrent[k], tgt=fingerTarget[k];
@@ -148,7 +140,6 @@ function smoothLoop(){
     if(Math.abs(tgt.x-cur.x)<0.1) cur.x=tgt.x;
     if(Math.abs(tgt.y-cur.y)<0.1) cur.y=tgt.y;
     var el=document.getElementById(k==='teacher'?'teacherFinger':'studentFinger');
-    if(el) el.style.transform='translate(-50%,-50%) translate('+cur.x+'vw,0px)';
     if(el){ el.style.left=cur.x+'%'; el.style.top=cur.y+'%'; }
   });
   requestAnimationFrame(smoothLoop);
@@ -156,7 +147,8 @@ function smoothLoop(){
 smoothLoop();
 function setFinger(key,x,y){
   fingerTarget[key]={x:x,y:y};
-  if(key===(myRole==='teacher'?'teacher':'student')) fingerCurrent[key]={x:x,y:y};
+  var myKey=myRole==='teacher'?'teacher':'student';
+  if(key===myKey) fingerCurrent[key]={x:x,y:y};
 }
 function createRoom(){ var code=Math.floor(1000+Math.random()*9000).toString(); document.getElementById('roomInput').value=code; sendToSheet({room:code,type:'createRoom'}); sendToSheet({room:code,type:'clearAll'}); showAlert(T[lang].alertRoomCode+code,'🎉'); }
 function joinAs(role){
@@ -186,14 +178,14 @@ function enterRoom(role){
   }).catch(function(){ showAlert(T[lang].alertCheck,'⚠️'); });
 }
 function sendToSheet(p){ try{ fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(p)}); }catch(e){} }
-// ✅ ফিঙ্গার - হালকা, শুধু Peer দিয়ে, Sheet দিয়ে না - তাই ল্যাগ নাই
 function sendFingerFast(key,x,y){
   var hasPeer=Object.keys(dataConns).length>0;
   if(hasPeer){
     var msg=key==='teacher'?('t:'+Math.round(x*10)+','+Math.round(y*10)):('s:'+Math.round(x*10)+','+Math.round(y*10));
     Object.values(dataConns).forEach(function(c){ try{ if(c.open) c.send(msg); }catch(e){} });
   } else {
-    sendToSheet({room:roomId,type:'pointer',key:key,x:x,y:y,by:myId});
+    var payload={room:roomId,type:'pointer',key:key,x:x,y:y,sender:myId};
+    sendToSheet(payload);
   }
 }
 function onFingerData(d){
@@ -212,10 +204,9 @@ function poll(){
   fetch(APPS_SCRIPT_URL+"?action=getState&room="+roomId+"&t="+Date.now())
   .then(function(r){ return r.json(); })
   .then(function(data){
-    // ফিঙ্গার Poll শুধু Peer না থাকলে - নইলে ডাবল এসে ল্যাগ করবে
     if(Object.keys(dataConns).length===0 && data.pointer){
-      if(data.pointer.teacher && data.pointer.teacher.by!==myId) setFinger('teacher',data.pointer.teacher.x,data.pointer.teacher.y);
-      if(data.pointer.student && data.pointer.student.by!==myId) setFinger('student',data.pointer.student.x,data.pointer.student.y);
+      if(data.pointer.teacher && data.pointer.teacher.sender!==myId) setFinger('teacher',data.pointer.teacher.x,data.pointer.teacher.y);
+      if(data.pointer.student && data.pointer.student.sender!==myId) setFinger('student',data.pointer.student.x,data.pointer.student.y);
     }
     if(data.image && data.image.data){ if(data.image.data!==lastImg){ lastImg=data.image.data; showImage(data.image.data); } }
     else{ if(lastImg!==''){ lastImg=''; hideImage(); } }
@@ -231,7 +222,6 @@ function poll(){
     }
   }).catch(function(){});
 }
-// ✅ Poll হালকা - 500ms, ছবির জন্য যথেষ্ট
 function startPolling(){ if(pollTimer) clearInterval(pollTimer); pollTimer=setInterval(poll,500); }
 function playRemote(rs){ var a=document.getElementById('remoteAudio'); a.srcObject=rs; a.muted=!speakerOn; a.volume=1; a.play().catch(function(){ document.addEventListener('click',function(){ a.play(); },{once:true}); }); }
 function makeDraggable(el,key){
@@ -257,7 +247,6 @@ document.getElementById('imgInput').addEventListener('change',function(e){
   reader.onload=function(){
     var img=new Image();
     img.onload=function(){
-      // ✅ ছবি ছোট + হালকা - 4:5, কোয়ালিটি লো কিন্তু পরিষ্কার
       var targetW=640, targetH=800;
       var c=document.createElement('canvas'); c.width=targetW; c.height=targetH;
       var ctx=c.getContext('2d'); ctx.fillStyle='#000'; ctx.fillRect(0,0,targetW,targetH);
@@ -266,7 +255,8 @@ document.getElementById('imgInput').addEventListener('change',function(e){
       ctx.drawImage(img,(targetW-w)/2,(targetH-h)/2,w,h);
       var d=c.toDataURL('image/jpeg',0.45);
       showImage(d);
-      sendToSheet({room:roomId,type:'image',data:d,[STRIPPED]
+      var payload={room:roomId,type:'image',data:d,sender:myId};
+      sendToSheet(payload);
     };
     img.src=reader.result;
   };
@@ -276,7 +266,6 @@ function showImage(d){ var img=document.getElementById('boardImg'); img.src=d; i
 function hideImage(){ document.getElementById('boardImg').classList.add('hidden'); document.getElementById('noImgText').style.display='flex'; }
 function deleteImage(){ lastImg=''; hideImage(); sendToSheet({room:roomId,type:'clearImage'}); }
 function initVoice(){
-  // ✅ ঢুকলেই মাইক নিবো না - মাইক ব্লক হবে না
   myPeer=new Peer('a2z-'+roomId+'-'+myRole+'-'+myId,{config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:global.stun.twilio.com:3478'}]}});
   myPeer.on('open',function(){ sendToSheet({room:roomId,type:'peer',peerId:myPeer.id,role:myRole}); });
   myPeer.on('connection',function(conn){ setupDataConn(conn); });
@@ -308,7 +297,6 @@ function toggleMic(){
       document.getElementById('remoteAudio').play().catch(function(){});
     }).catch(function(){ showAlert(T[lang].alertMic,'🎤'); micOn=false; document.getElementById('micBtn').style.background='#ef4444'; });
   }else{
-    // ✅ মাইক বন্ধ করলেই সাথে সাথে ছেড়ে দিবে
     if(myStream){ try{ myStream.getTracks().forEach(function(t){ t.stop(); }); }catch(e){} myStream=null; }
   }
 }
@@ -317,10 +305,8 @@ function leaveAndBack(){
   releaseMic();
   lastImg=''; location.href='./digital_home.html?v='+Date.now();
 }
-// ✅ পেজ বন্ধ / মিনিমাইজ করলেও মাইক ছেড়ে দিবে
 window.addEventListener('pagehide',function(){ releaseMic(); if(roomId){ try{ navigator.sendBeacon(APPS_SCRIPT_URL,JSON.stringify({room:roomId,type:'clearAll'})); }catch(e){} } });
 window.addEventListener('beforeunload',function(){ releaseMic(); });
-document.addEventListener('visibilitychange',function(){ if(document.hidden){ /* মিনিমাইজে মাইক ধরে রাখবো না - শুধু ট্র্যাক বন্ধ না করে রাখলাম, বের হলে ছাড়বে */ } });
 applyLang();
 </script>
 </body>
