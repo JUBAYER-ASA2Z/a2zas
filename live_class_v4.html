@@ -4,11 +4,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<!-- ✅ v4 - Cache ধরবে না -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>Live Class v4 - A-S A2Z</title>
+<title>Live Class - A-S A2Z</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
@@ -16,19 +15,15 @@
 *{font-family:'Hind Siliguri';-webkit-tap-highlight-color:transparent;user-select:none;box-sizing:border-box}
 body{margin:0;background:#0f172a;overflow:hidden;height:100dvh}
 button,label{pointer-events:auto !important;touch-action:manipulation !important;cursor:pointer}
-/* ✅ বোর্ড - সব ডিভাইসে একই ফ্রেম, ফিক্সড */
 #boardWrap{position:absolute;inset:56px 0 76px 0;display:flex;align-items:center;justify-content:center;background:#0f172a;padding:8px;overflow:hidden}
-#board{position:relative;width:100%;max-width:900px;height:100%;max-height:100%;background:#000;border-radius:12px;overflow:hidden;box-shadow:0 0 0 2px #334155}
-/* ছবি - বোর্ডের ভিতরে ফিক্সড, বাইরে যাবে না */
+#board{position:relative;width:100%;max-width:900px;height:100%;background:#000;border-radius:12px;overflow:hidden;box-shadow:0 0 0 2px #334155}
 #boardImg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
-/* ফিঙ্গার - বোর্ডের ভিতরে, বাইরে যাবে না */
-.finger{position:absolute;width:60px;height:80px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;z-index:50;touch-action:none;transform:translate(-50%,-50%)}
+.finger{position:absolute;width:60px;height:80px;display:flex;flex-direction:column;align-items:center;z-index:50;touch-action:none;transform:translate(-50%,-50%)}
 .finger .emoji{font-size:48px;line-height:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.6))}
 .finger .label{margin-top:2px;background:#000;color:#fff;font-size:11px;font-weight:900;padding:3px 10px;border-radius:999px;white-space:nowrap;border:1.5px solid #fff}
 .finger.mine .emoji{filter:drop-shadow(0 0 12px rgba(34,197,94,0.9)) drop-shadow(0 4px 8px rgba(0,0,0,0.6))}
 .finger.mine .label{background:#22c55e}
 .finger.locked{pointer-events:none !important}
-/* ✅ সুন্দর অ্যালার্ট */
 #alertBox{position:fixed;inset:0;z-index:999;background:linear-gradient(135deg,rgba(15,23,42,0.85),rgba(30,27,75,0.9));backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}
 #alertBox.show{display:flex}
 #alertCard{background:#fff;border-radius:28px;padding:24px 20px;width:100%;max-width:320px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.4)}
@@ -38,12 +33,7 @@ button,label{pointer-events:auto !important;touch-action:manipulation !important
 </style>
 </head>
 <body>
-<script>
-var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzNxqVW6RX0eH9e9JCTVNvF2hLBfgRZy972_gavzXE2axmSADefYV04gqWh0sFxpIoBgA/exec";
-var TEACHER_PIN = "123";
-</script>
 
-<!-- ✅ সুন্দর অ্যালার্ট -->
 <div id="alertBox" onclick="hideAlert()">
   <div id="alertCard" onclick="event.stopPropagation()">
     <div id="alertIcon">🔔</div>
@@ -52,7 +42,6 @@ var TEACHER_PIN = "123";
   </div>
 </div>
 
-<!-- TOP BAR -->
 <div class="absolute top-0 left-0 right-0 z-[100] bg-black/60 backdrop-blur px-3 py-2 flex items-center gap-2">
   <button onclick="leaveAndBack()" class="w-9 h-9 bg-white text-black rounded-full font-black shrink-0">←</button>
   <div class="flex-1 min-w-0">
@@ -64,7 +53,6 @@ var TEACHER_PIN = "123";
   <button onclick="deleteImage()" class="bg-red-500 text-white text-[11px] font-black px-3 py-2 rounded-full shrink-0"><span data-t="delete">🗑️ মুছুন</span></button>
 </div>
 
-<!-- JOIN -->
 <div id="joinBox" class="absolute inset-0 z-[200] bg-slate-900/95 flex items-center justify-center p-6">
   <div class="bg-white rounded-[24px] p-6 w-full max-w-[340px] text-center">
     <p class="text-[48px]">👆👆</p>
@@ -76,11 +64,9 @@ var TEACHER_PIN = "123";
     </div>
     <button onclick="createRoom()" class="w-full mt-2 bg-slate-900 text-white py-4 rounded-full font-black text-[13px] active:scale-95" data-t="createRoom">+ নতুন রুম বানান</button>
     <p class="text-[11px] text-slate-500 mt-4 font-black">Developer JUBAYER A S</p>
-    <p class="text-[10px] text-slate-400 mt-1">v4 - Board Fixed • Voice Fast • No Zoom</p>
   </div>
 </div>
 
-<!-- TEACHER PIN -->
 <div id="pinModal" class="hidden fixed inset-0 z-[300] bg-slate-900/80 backdrop-blur flex items-center justify-center p-6">
   <div class="bg-white rounded-[24px] p-6 w-full max-w-[300px] text-center">
     <p class="text-[40px]">🔐</p>
@@ -92,23 +78,15 @@ var TEACHER_PIN = "123";
   </div>
 </div>
 
-<!-- ✅ বোর্ড - ছবি + ফিঙ্গার ২টাই এর ভিতরে -->
 <div id="boardWrap">
   <div id="board">
     <p id="noImgText" class="absolute inset-0 flex items-center justify-center text-white/40 font-black text-[14px] text-center px-6" data-t="uploadText">📸 উপরে ছবি আপলোড করুন</p>
     <img id="boardImg" class="hidden">
-    <!-- টিচার 👆 - বোর্ডের ভিতরে -->
-    <div id="teacherFinger" class="finger locked" style="left:20%;top:30%;">
-      <span class="emoji">👆</span><span class="label" data-t="teacherLabel">টিচার</span>
-    </div>
-    <!-- স্টুডেন্ট 👆 - বোর্ডের ভিতরে -->
-    <div id="studentFinger" class="finger locked" style="left:70%;top:30%;">
-      <span class="emoji">👆</span><span class="label" data-t="studentLabel">স্টুডেন্ট</span>
-    </div>
+    <div id="teacherFinger" class="finger locked" style="left:20%;top:30%;"><span class="emoji">👆</span><span class="label" data-t="teacherLabel">টিচার</span></div>
+    <div id="studentFinger" class="finger locked" style="left:70%;top:30%;"><span class="emoji">👆</span><span class="label" data-t="studentLabel">স্টুডেন্ট</span></div>
   </div>
 </div>
 
-<!-- BOTTOM -->
 <div class="absolute bottom-0 left-0 right-0 z-[100] bg-black/80 backdrop-blur px-4 py-3 flex items-center justify-between gap-3">
   <div class="flex items-center gap-2 min-w-0">
     <span id="myRoleBadge" class="bg-white/20 text-white text-[11px] font-black px-3 py-1.5 rounded-full shrink-0">---</span>
@@ -122,6 +100,8 @@ var TEACHER_PIN = "123";
 <audio id="remoteAudio" autoplay playsinline></audio>
 
 <script>
+var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzNxqVW6RX0eH9e9JCTVNvF2hLBfgRZy972_gavzXE2axmSADefYV04gqWh0sFxpIoBgA/exec";
+var TEACHER_PIN = "123";
 var lang = localStorage.getItem('live_lang') || 'bn';
 var T = {
 bn:{liveClass:'📚 Live Class',room:'Room',photo:'📸 ছবি',delete:'🗑️ মুছুন',joinTitle:'Live Class',teacherBtn:'👆 টিচার',studentBtn:'👆 স্টুডেন্ট',createRoom:'+ নতুন রুম বানান',pinTitle:'টিচার কোড দিন',pinDesc:'টিচার ছাড়া কেউ এই কোড জানে না',enter:'প্রবেশ করুন',cancel:'বাতিল',uploadText:'📸 উপরে ছবি আপলোড করুন',teacherLabel:'টিচার',studentLabel:'স্টুডেন্ট',micOff:'🎤 কথা বন্ধ',micOn:'🎤 আপনার কথা সবাই শুনছে',speakerOn:'🔊 অপর প্রান্তের কথা শুনছেন',speakerOff:'🔇 স্পিকার বন্ধ',roomPlaceholder:'রুম কোড',alertRoom:'রুম কোড দিন',alertWrongPin:'ভুল কোড! টিচার কোড সঠিক নয়',alertWrongRoom:'ভুল রুম কোড! সঠিক কোড দিন',alertCheck:'রুম চেক করা যাচ্ছে না, আবার চেষ্টা করুন',alertMic:'Mic Permission Allow করেন',alertRoomCode:'আপনার রুম কোড: ',badgeTeacher:'👆 টিচার',badgeStudent:'👆 স্টুডেন্ট'},
@@ -136,11 +116,9 @@ function applyLang(){
   if(myRole){ document.getElementById('myRoleBadge').innerText=myRole==='teacher'?T[lang].badgeTeacher:T[lang].badgeStudent; document.getElementById('voiceStatus').innerText=micOn?T[lang].micOn:T[lang].micOff; }
 }
 function toggleLang(){ lang=lang==='bn'?'en':'bn'; localStorage.setItem('live_lang',lang); applyLang(); }
-
 var myRole='',roomId='',myPeer=null,myStream=null,speakerOn=true,micOn=false;
 var myId='U'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
 var lastImg='',lastPointerSent=0,pendingRole='',pollTimer=null,calledPeers={};
-
 function createRoom(){ var code=Math.floor(1000+Math.random()*9000).toString(); document.getElementById('roomInput').value=code; sendToSheet({room:code,type:'createRoom'}); sendToSheet({room:code,type:'clearAll'}); showAlert(T[lang].alertRoomCode+code,'🎉'); }
 function joinAs(role){
   roomId=document.getElementById('roomInput').value.trim();
@@ -155,7 +133,7 @@ function checkTeacherPin(){
   document.getElementById('pinModal').classList.add('hidden'); enterRoom('teacher');
 }
 function enterRoom(role){
-  if(role==='teacher'){ sendToSheet({room:role,type:'createRoom'}); sendToSheet({room:roomId,type:'clearAll'}); sendToSheet({room:roomId,type:'createRoom'}); }
+  if(role==='teacher'){ sendToSheet({room:roomId,type:'createRoom'}); sendToSheet({room:roomId,type:'clearAll'}); sendToSheet({room:roomId,type:'createRoom'}); }
   fetch(APPS_SCRIPT_URL+"?action=checkRoom&room="+roomId+"&t="+Date.now())
   .then(function(r){ return r.json(); })
   .then(function(data){
@@ -169,15 +147,12 @@ function enterRoom(role){
   }).catch(function(){ showAlert(T[lang].alertCheck,'⚠️'); });
 }
 function sendToSheet(p){ try{ fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(p)}); }catch(e){} }
-
-// ✅ ফিঙ্গার লাইভ - 50ms এ Poll হবে, তাই 0.05 সেকেন্ডে দেখাবে
 function poll(){
   if(!roomId) return;
   fetch(APPS_SCRIPT_URL+"?action=getState&room="+roomId+"&t="+Date.now())
   .then(function(r){ return r.json(); })
   .then(function(data){
     if(data.pointer){
-      // ✅ % - তাই সব ডিভাইসে একই শব্দের উপর
       if(data.pointer.teacher && data.pointer.teacher.by!==myId){ var el=document.getElementById('teacherFinger'); el.style.left=data.pointer.teacher.x+'%'; el.style.top=data.pointer.teacher.y+'%'; }
       if(data.pointer.student && data.pointer.student.by!==myId){ var el2=document.getElementById('studentFinger'); el2.style.left=data.pointer.student.x+'%'; el2.style.top=data.pointer.student.y+'%'; }
     }
@@ -193,8 +168,6 @@ function poll(){
 }
 function startPolling(){ if(pollTimer) clearInterval(pollTimer); pollTimer=setInterval(poll,50); }
 function playRemote(rs){ var a=document.getElementById('remoteAudio'); a.srcObject=rs; a.muted=!speakerOn; a.volume=1; a.play().catch(function(){ document.addEventListener('click',function(){ a.play(); },{once:true}); }); }
-
-// ✅ ফিঙ্গার - শুধু বোর্ডের ভিতরে ঘুরবে, বাইরে যাবে না, % হিসেবে সেভ হবে
 function makeDraggable(el,key){
   var dragging=false,sx=0,sy=0,ox=0,oy=0;
   el.addEventListener('pointerdown',function(e){
@@ -205,7 +178,6 @@ function makeDraggable(el,key){
   el.addEventListener('pointermove',function(e){
     if(!dragging) return; if((myRole==='teacher'&&key!=='teacher')||(myRole==='student'&&key!=='student')) return;
     var b=document.getElementById('board').getBoundingClientRect();
-    // ✅ বোর্ডের ভিতরে আটকে রাখা - 2% থেকে 98%, 5% থেকে 95%
     var px=Math.max(2,Math.min(98,ox+((e.clientX-sx)/b.width)*100));
     var py=Math.max(5,Math.min(95,oy+((e.clientY-sy)/b.height)*100));
     el.style.left=px+'%'; el.style.top=py+'%';
@@ -214,24 +186,23 @@ function makeDraggable(el,key){
   var end=function(){ if(!dragging) return; dragging=false; var b=document.getElementById('board').getBoundingClientRect(); var r=el.getBoundingClientRect(); sendToSheet({room:roomId,type:'pointer',key:key,x:((r.left+30-b.left)/b.width)*100,y:((r.top+40-b.top)/b.height)*100,by:myId}); };
   el.addEventListener('pointerup',end); el.addEventListener('pointercancel',end);
 }
-
 document.getElementById('imgInput').addEventListener('change',function(e){
   var file=e.target.files[0]; if(!file) return; var reader=new FileReader();
   reader.onload=function(){
     var img=new Image();
     img.onload=function(){
       var c=document.createElement('canvas'); var maxW=800; var r=Math.min(1,maxW/img.width); c.width=img.width*r; c.height=img.height*r; c.getContext('2d').drawImage(img,0,0,c.width,c.height);
-      var d=c.toDataURL('image/jpeg',0.55); showImage(d); sendToSheet({room:roomId,type:'image',data:d,[STRIPPED]
+      var d=c.toDataURL('image/jpeg',0.55);
+      showImage(d);
+      sendToSheet({room:roomId,type:'image',data:d,by:myId});
     };
     img.src=reader.result;
   };
   reader.readAsDataURL(file);
 });
-// ✅ ছবি - বোর্ডের ভিতরে ফিক্সড
 function showImage(d){ var img=document.getElementById('boardImg'); img.src=d; img.classList.remove('hidden'); document.getElementById('noImgText').style.display='none'; }
 function hideImage(){ document.getElementById('boardImg').classList.add('hidden'); document.getElementById('noImgText').style.display='flex'; }
 function deleteImage(){ lastImg=''; hideImage(); sendToSheet({room:roomId,type:'clearImage'}); }
-
 function initVoice(){
   myPeer=new Peer('a2z-'+roomId+'-'+myRole+'-'+myId,{config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:global.stun.twilio.com:3478'}]}});
   myPeer.on('open',function(){
@@ -241,23 +212,18 @@ function initVoice(){
   myPeer.on('call',function(call){
     getClearAudio().then(function(stream){
       if(!myStream) myStream=stream;
-      // ✅ অল্প নেটে ফাস্ট - বিটরেট কম
       try{ var s=call.peerConnection.getSenders().find(function(x){ return x.track&&x.track.kind==='audio'; }); if(s&&s.setParameters){ var pr=s.getParameters(); if(!pr.encodings) pr.encodings=[{}]; pr.encodings[0].maxBitrate=16000; s.setParameters(pr); } }catch(e){}
       call.answer(myStream); call.on('stream',function(rs){ playRemote(rs); });
     });
   });
 }
-// ✅ ক্লিয়ার + ফাস্ট ভয়েস - অল্প নেটেও চলবে
 function getClearAudio(){ return navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1,sampleRate:16000},video:false}); }
-
-// ✅ স্পিকার - ক্লিক করলেই Permission নিয়ে কথা শোনা যাবে
 function toggleSpeaker(){
   speakerOn=!speakerOn;
   document.getElementById('speakerBtn').innerText=speakerOn?'🔊':'🔇';
   document.getElementById('remoteAudio').muted=!speakerOn;
   document.getElementById('voiceStatus').innerText=speakerOn?T[lang].speakerOn:T[lang].speakerOff;
   if(speakerOn){
-    // Permission নিয়ে অডিও চালু করি, যাতে কথা আটকে না থাকে
     getClearAudio().then(function(st){ if(!myStream) myStream=st; document.getElementById('remoteAudio').play().catch(function(){}); }).catch(function(){});
     document.getElementById('remoteAudio').play().catch(function(){});
   }
