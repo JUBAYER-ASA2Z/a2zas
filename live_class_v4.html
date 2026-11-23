@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -16,9 +15,15 @@
 body{margin:0;background:#0f172a;overflow:hidden;height:100dvh}
 button,label{pointer-events:auto !important;touch-action:manipulation !important;cursor:pointer}
 #boardWrap{position:absolute;inset:56px 0 76px 0;display:flex;align-items:center;justify-content:center;background:#0f172a;padding:8px;overflow:hidden}
-#board{position:relative;width:100%;max-width:900px;height:100%;background:#000;border-radius:12px;overflow:hidden;box-shadow:0 0 0 2px #334155}
-#boardImg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
-.finger{position:absolute;width:60px;height:80px;display:flex;flex-direction:column;align-items:center;z-index:50;touch-action:none;transform:translate(-50%,-50%)}
+/* ✅ বোর্ড - সব ডিভাইসে একই 4:3 ফিক্সড সাইজ */
+#board{position:relative;background:#000;border-radius:12px;overflow:hidden;box-shadow:0 0 0 2px #334155;
+  width:min(100%, calc((100dvh - 150px) * 1.333));
+  aspect-ratio:4 / 3;
+  flex-shrink:0;
+}
+/* ✅ ছবি - অটো কাট হয়ে বোর্ডে ফিট, সব ডিভাইসে একরকম */
+#boardImg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.finger{position:absolute;width:60px;height:80px;display:flex;flex-direction:column;align-items:center;z-index:50;touch-action:none;transform:translate(-50%,-50%);will-change:left,top}
 .finger .emoji{font-size:48px;line-height:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.6))}
 .finger .label{margin-top:2px;background:#000;color:#fff;font-size:11px;font-weight:900;padding:3px 10px;border-radius:999px;white-space:nowrap;border:1.5px solid #fff}
 .finger.mine .emoji{filter:drop-shadow(0 0 12px rgba(34,197,94,0.9)) drop-shadow(0 4px 8px rgba(0,0,0,0.6))}
@@ -119,6 +124,7 @@ function toggleLang(){ lang=lang==='bn'?'en':'bn'; localStorage.setItem('live_la
 var myRole='',roomId='',myPeer=null,myStream=null,speakerOn=true,micOn=false;
 var myId='U'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
 var lastImg='',lastPointerSent=0,pendingRole='',pollTimer=null,calledPeers={};
+var dataConns={};
 function createRoom(){ var code=Math.floor(1000+Math.random()*9000).toString(); document.getElementById('roomInput').value=code; sendToSheet({room:code,type:'createRoom'}); sendToSheet({room:code,type:'clearAll'}); showAlert(T[lang].alertRoomCode+code,'🎉'); }
 function joinAs(role){
   roomId=document.getElementById('roomInput').value.trim();
@@ -147,6 +153,22 @@ function enterRoom(role){
   }).catch(function(){ showAlert(T[lang].alertCheck,'⚠️'); });
 }
 function sendToSheet(p){ try{ fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(p)}); }catch(e){} }
+// ✅ ফিঙ্গার - Peer-to-Peer সরাসরি, তাই সাথে সাথে
+function sendFingerFast(key,x,y){
+  var msg={type:'pointer',key:key,x:x,y:y,by:myId};
+  Object.values(dataConns).forEach(function(c){ try{ if(c.open) c.send(msg); }catch(e){} });
+  var now=Date.now(); if(now-lastPointerSent>100){ lastPointerSent=now; sendToSheet({room:roomId,type:'pointer',key:key,x:x,y:y,by:myId}); }
+}
+function onFingerData(d){
+  if(!d || d.type!=='pointer') return; if(d.by===myId) return;
+  var el=document.getElementById(d.key==='teacher'?'teacherFinger':'studentFinger');
+  if(el){ el.style.left=d.x+'%'; el.style.top=d.y+'%'; }
+}
+function setupDataConn(conn){
+  dataConns[conn.peer]=conn;
+  conn.on('data',function(d){ onFingerData(d); });
+  conn.on('close',function(){ delete dataConns[conn.peer]; });
+}
 function poll(){
   if(!roomId) return;
   fetch(APPS_SCRIPT_URL+"?action=getState&room="+roomId+"&t="+Date.now())
@@ -160,16 +182,20 @@ function poll(){
     else{ if(lastImg!==''){ lastImg=''; hideImage(); } }
     if(data.peers && myStream){
       Object.values(data.peers).forEach(function(p){
-        if(p.peerId===myPeer.id) return; if(calledPeers[p.peerId]) return; calledPeers[p.peerId]=true;
-        try{ var call=myPeer.call(p.peerId,myStream); call.on('stream',function(rs){ playRemote(rs); }); }catch(e){}
+        if(p.peerId===myPeer.id) return;
+        if(!calledPeers[p.peerId]){
+          calledPeers[p.peerId]=true;
+          try{ var conn=myPeer.connect(p.peerId); setupDataConn(conn); }catch(e){}
+          try{ var call=myPeer.call(p.peerId,myStream); call.on('stream',function(rs){ playRemote(rs); }); }catch(e){}
+        }
       });
     }
   }).catch(function(){});
 }
-function startPolling(){ if(pollTimer) clearInterval(pollTimer); pollTimer=setInterval(poll,50); }
+function startPolling(){ if(pollTimer) clearInterval(pollTimer); pollTimer=setInterval(poll,500); }
 function playRemote(rs){ var a=document.getElementById('remoteAudio'); a.srcObject=rs; a.muted=!speakerOn; a.volume=1; a.play().catch(function(){ document.addEventListener('click',function(){ a.play(); },{once:true}); }); }
 function makeDraggable(el,key){
-  var dragging=false,sx=0,sy=0,ox=0,oy=0;
+  var dragging=false,sx=0,sy=0,ox=0,oy=0,lastSend=0;
   el.addEventListener('pointerdown',function(e){
     if((myRole==='teacher'&&key!=='teacher')||(myRole==='student'&&key!=='student')) return;
     dragging=true; try{ el.setPointerCapture(e.pointerId); }catch(err){}
@@ -181,9 +207,9 @@ function makeDraggable(el,key){
     var px=Math.max(2,Math.min(98,ox+((e.clientX-sx)/b.width)*100));
     var py=Math.max(5,Math.min(95,oy+((e.clientY-sy)/b.height)*100));
     el.style.left=px+'%'; el.style.top=py+'%';
-    var now=Date.now(); if(now-lastPointerSent>20){ lastPointerSent=now; sendToSheet({room:roomId,type:'pointer',key:key,x:px,y:py,by:myId}); }
+    var now=Date.now(); if(now-lastSend>16){ lastSend=now; sendFingerFast(key,px,py); }
   });
-  var end=function(){ if(!dragging) return; dragging=false; var b=document.getElementById('board').getBoundingClientRect(); var r=el.getBoundingClientRect(); sendToSheet({room:roomId,type:'pointer',key:key,x:((r.left+30-b.left)/b.width)*100,y:((r.top+40-b.top)/b.height)*100,by:myId}); };
+  var end=function(){ if(!dragging) return; dragging=false; var b=document.getElementById('board').getBoundingClientRect(); var r=el.getBoundingClientRect(); var px=((r.left+30-b.left)/b.width)*100; var py=((r.top+40-b.top)/b.height)*100; sendFingerFast(key,px,py); };
   el.addEventListener('pointerup',end); el.addEventListener('pointercancel',end);
 }
 document.getElementById('imgInput').addEventListener('change',function(e){
@@ -191,8 +217,14 @@ document.getElementById('imgInput').addEventListener('change',function(e){
   reader.onload=function(){
     var img=new Image();
     img.onload=function(){
-      var c=document.createElement('canvas'); var maxW=800; var r=Math.min(1,maxW/img.width); c.width=img.width*r; c.height=img.height*r; c.getContext('2d').drawImage(img,0,0,c.width,c.height);
-      var d=c.toDataURL('image/jpeg',0.55);
+      // ✅ ছবিকে 4:3 তে অটো কাট করে বানাই - সব ডিভাইসে একরকম
+      var targetW=1200, targetH=900;
+      var c=document.createElement('canvas'); c.width=targetW; c.height=targetH;
+      var ctx=c.getContext('2d'); ctx.fillStyle='#000'; ctx.fillRect(0,0,targetW,targetH);
+      var scale=Math.max(targetW/img.width, targetH/img.height);
+      var w=img.width*scale, h=img.height*scale;
+      ctx.drawImage(img,(targetW-w)/2,(targetH-h)/2,w,h);
+      var d=c.toDataURL('image/jpeg',0.6);
       showImage(d);
       sendToSheet({room:roomId,type:'image',data:d,by:myId});
     };
@@ -209,6 +241,7 @@ function initVoice(){
     sendToSheet({room:roomId,type:'peer',peerId:myPeer.id,role:myRole});
     getClearAudio().then(function(st){ myStream=st; myStream.getAudioTracks().forEach(function(t){ t.enabled=false; }); }).catch(function(){});
   });
+  myPeer.on('connection',function(conn){ setupDataConn(conn); });
   myPeer.on('call',function(call){
     getClearAudio().then(function(stream){
       if(!myStream) myStream=stream;
