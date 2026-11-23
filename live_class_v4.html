@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -55,7 +54,7 @@ button,label{pointer-events:auto !important;touch-action:manipulation !important
 
 <div id="joinBox" class="absolute inset-0 z-[200] bg-slate-900/95 flex items-center justify-center p-6">
   <div class="bg-white rounded-[24px] p-6 w-full max-w-[340px] text-center">
-    <p class="text-[48px]">👆👆</p>
+    <p class="text-[48px]">👆✅👆</p>
     <p class="font-black text-[20px] mt-2" data-t="joinTitle">Live Class</p>
     <input id="roomInput" placeholder="রুম কোড" class="w-full mt-4 border-2 border-slate-200 rounded-full px-4 py-3 text-center font-black text-[16px] outline-none" inputmode="numeric">
     <div class="grid grid-cols-2 gap-2 mt-3">
@@ -97,7 +96,9 @@ button,label{pointer-events:auto !important;touch-action:manipulation !important
     <button id="micBtn" onclick="toggleMic()" class="w-12 h-12 bg-red-500 text-white rounded-full text-[22px] flex items-center justify-center shadow">🔇</button>
   </div>
 </div>
+<!-- 🔊🔊🔊🔊 SOUND START - নিচের audio টা সাউন্ডের অংশ -->
 <audio id="remoteAudio" autoplay playsinline></audio>
+<!-- 🔊🔊🔊🔊 SOUND END -->
 
 <script>
 var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzNxqVW6RX0eH9e9JCTVNvF2hLBfgRZy972_gavzXE2axmSADefYV04gqWh0sFxpIoBgA/exec";
@@ -123,14 +124,7 @@ var dataConns={};
 var pendingRole='';
 var fingerTarget={teacher:{x:20,y:30},student:{x:70,y:30}};
 var fingerCurrent={teacher:{x:20,y:30},student:{x:70,y:30}};
-function unlockAudio(){
-  var a=document.getElementById('remoteAudio');
-  a.muted=false; a.volume=1;
-  var p=a.play(); if(p) p.catch(function(){});
-  try{ var AC=window.AudioContext||window.webkitAudioContext; if(AC){ if(!window.myAC) window.myAC=new AC(); if(window.myAC.state==='suspended') window.myAC.resume(); } }catch(e){}
-}
-document.addEventListener('click',unlockAudio);
-document.addEventListener('touchstart',unlockAudio);
+// 🔊🔊🔊🔊 SOUND START - এই লাইন থেকে সাউন্ড / স্পিকার / মাইক্রোফোনের অংশ শুরু
 function releaseMic(){
   micOn=false;
   var b=document.getElementById('micBtn'); if(b){ b.style.background='#ef4444'; b.innerText='🔇'; }
@@ -160,7 +154,6 @@ function setFinger(key,x,y){
 }
 function createRoom(){ var code=Math.floor(1000+Math.random()*9000).toString(); document.getElementById('roomInput').value=code; sendToSheet({room:code,type:'createRoom'}); sendToSheet({room:code,type:'clearAll'}); showAlert(T[lang].alertRoomCode+code,'🎉'); }
 function joinAs(role){
-  unlockAudio();
   roomId=document.getElementById('roomInput').value.trim();
   if(!roomId){ showAlert(T[lang].alertRoom,'⚠️'); return; }
   if(role==='teacher'){ pendingRole='teacher'; document.getElementById('pinInput').value=''; document.getElementById('pinModal').classList.remove('hidden'); setTimeout(function(){ document.getElementById('pinInput').focus(); },100); return; }
@@ -168,7 +161,6 @@ function joinAs(role){
 }
 function closePin(){ document.getElementById('pinModal').classList.add('hidden'); pendingRole=''; }
 function checkTeacherPin(){
-  unlockAudio();
   var pin=document.getElementById('pinInput').value.trim();
   if(pin!==TEACHER_PIN){ showAlert(T[lang].alertWrongPin,'❌'); document.getElementById('pinInput').value=''; return; }
   document.getElementById('pinModal').classList.add('hidden'); enterRoom('teacher');
@@ -194,7 +186,8 @@ function sendFingerFast(key,x,y){
     var msg=key==='teacher'?('t:'+Math.round(x*10)+','+Math.round(y*10)):('s:'+Math.round(x*10)+','+Math.round(y*10));
     Object.values(dataConns).forEach(function(c){ try{ if(c.open) c.send(msg); }catch(e){} });
   } else {
-    sendToSheet({room:roomId,type:'pointer',key:key,x:x,y:y,sender:myId});
+    var payload={room:roomId,type:'pointer',key:key,x:x,y:y,sender:myId};
+    sendToSheet(payload);
   }
 }
 function onFingerData(d){
@@ -219,20 +212,20 @@ function poll(){
     }
     if(data.image && data.image.data){ if(data.image.data!==lastImg){ lastImg=data.image.data; showImage(data.image.data); } }
     else{ if(lastImg!==''){ lastImg=''; hideImage(); } }
-    if(data.peers && myStream){
+    if(data.peers){
       Object.values(data.peers).forEach(function(p){
         if(!myPeer || p.peerId===myPeer.id) return;
         if(!calledPeers[p.peerId]){
           calledPeers[p.peerId]=true;
           try{ var conn=myPeer.connect(p.peerId); setupDataConn(conn); }catch(e){}
-          try{ var call=myPeer.call(p.peerId,myStream); call.on('stream',function(rs){ playRemote(rs); }); }catch(e){}
+          if(myStream){ try{ var call=myPeer.call(p.peerId,myStream); call.on('stream',function(rs){ playRemote(rs); }); }catch(e){} }
         }
       });
     }
   }).catch(function(){});
 }
 function startPolling(){ if(pollTimer) clearInterval(pollTimer); pollTimer=setInterval(poll,500); }
-function playRemote(rs){ var a=document.getElementById('remoteAudio'); a.srcObject=rs; a.muted=!speakerOn; a.volume=1; unlockAudio(); a.play().catch(function(){ document.addEventListener('click',function(){ a.play(); },{once:true}); }); }
+function playRemote(rs){ var a=document.getElementById('remoteAudio'); a.srcObject=rs; a.muted=!speakerOn; a.volume=1; a.play().catch(function(){ document.addEventListener('click',function(){ a.play(); },{once:true}); }); }
 function makeDraggable(el,key){
   var dragging=false,sx=0,sy=0,ox=0,oy=0,lastSend=0,pending=null;
   el.addEventListener('pointerdown',function(e){
@@ -264,7 +257,8 @@ document.getElementById('imgInput').addEventListener('change',function(e){
       ctx.drawImage(img,(targetW-w)/2,(targetH-h)/2,w,h);
       var d=c.toDataURL('image/jpeg',0.45);
       showImage(d);
-      sendToSheet({room:roomId,type:'image',data:d});
+      var payload={room:roomId,type:'image',data:d,sender:myId};
+      sendToSheet(payload);
     };
     img.src=reader.result;
   };
@@ -275,41 +269,40 @@ function hideImage(){ document.getElementById('boardImg').classList.add('hidden'
 function deleteImage(){ lastImg=''; hideImage(); sendToSheet({room:roomId,type:'clearImage'}); }
 function initVoice(){
   myPeer=new Peer('a2z-'+roomId+'-'+myRole+'-'+myId,{config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:global.stun.twilio.com:3478'}]}});
-  myPeer.on('open',function(){
-    sendToSheet({room:roomId,type:'peer',peerId:myPeer.id,role:myRole});
-    getClearAudio().then(function(st){
-      myStream=st;
-      myStream.getAudioTracks().forEach(function(t){ t.enabled=false; });
-    }).catch(function(){ showAlert(T[lang].alertMic,'🎤'); });
-  });
+  myPeer.on('open',function(){ sendToSheet({room:roomId,type:'peer',peerId:myPeer.id,role:myRole}); });
   myPeer.on('connection',function(conn){ setupDataConn(conn); });
   myPeer.on('call',function(call){
-    if(myStream){ call.answer(myStream); }
-    else{ getClearAudio().then(function(st){ myStream=st; myStream.getAudioTracks().forEach(function(t){ t.enabled=micOn; }); call.answer(myStream); }).catch(function(){ call.answer(); }); }
-    call.on('stream',function(rs){ playRemote(rs); });
+    if(!micOn){ call.answer(); call.on('stream',function(rs){ playRemote(rs); }); return; }
+    getClearAudio().then(function(stream){
+      myStream=stream;
+      try{ var s=call.peerConnection.getSenders().find(function(x){ return x.track&&x.track.kind==='audio'; }); if(s&&s.setParameters){ var pr=s.getParameters(); if(!pr.encodings) pr.encodings=[{}]; pr.encodings[0].maxBitrate=12000; s.setParameters(pr); } }catch(e){}
+      call.answer(myStream); call.on('stream',function(rs){ playRemote(rs); });
+    }).catch(function(){ call.answer(); });
   });
 }
 function getClearAudio(){ return navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1,sampleRate:16000},video:false}); }
 function toggleSpeaker(){
   speakerOn=!speakerOn;
   document.getElementById('speakerBtn').innerText=speakerOn?'🔊':'🔇';
-  var a=document.getElementById('remoteAudio'); a.muted=!speakerOn; a.volume=1;
+  document.getElementById('remoteAudio').muted=!speakerOn;
   document.getElementById('voiceStatus').innerText=speakerOn?T[lang].speakerOn:T[lang].speakerOff;
-  if(speakerOn){ unlockAudio(); a.play().catch(function(){}); }
+  if(speakerOn){ document.getElementById('remoteAudio').play().catch(function(){}); }
 }
 function toggleMic(){
-  unlockAudio();
   micOn=!micOn;
   document.getElementById('micBtn').style.background=micOn?'#22c55e':'#ef4444'; document.getElementById('micBtn').innerText=micOn?'🎤':'🔇'; document.getElementById('voiceStatus').innerText=micOn?T[lang].micOn:T[lang].micOff;
-  if(myStream){
-    myStream.getAudioTracks().forEach(function(t){ t.enabled=micOn; });
-  } else if(micOn){
+  if(micOn){
     getClearAudio().then(function(st){
-      myStream=st; myStream.getAudioTracks().forEach(function(t){ t.enabled=true; });
+      myStream=st;
+      myStream.getAudioTracks().forEach(function(t){ t.enabled=true; });
       calledPeers={}; sendToSheet({room:roomId,type:'peer',peerId:myPeer.id,role:myRole});
+      document.getElementById('remoteAudio').play().catch(function(){});
     }).catch(function(){ showAlert(T[lang].alertMic,'🎤'); micOn=false; document.getElementById('micBtn').style.background='#ef4444'; });
+  }else{
+    if(myStream){ try{ myStream.getTracks().forEach(function(t){ t.stop(); }); }catch(e){} myStream=null; }
   }
 }
+// 🔊🔊🔊🔊 SOUND END - এই লাইন পর্যন্ত সাউন্ড / স্পিকার / মাইক্রোফোনের অংশ শেষ
 function leaveAndBack(){
   if(roomId){ try{ sendToSheet({room:roomId,type:'leave',peerId:myPeer?myPeer.id:myId}); sendToSheet({room:roomId,type:'clearAll'}); }catch(e){} }
   releaseMic();
