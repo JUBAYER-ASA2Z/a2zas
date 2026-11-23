@@ -123,7 +123,6 @@ var dataConns={};
 var pendingRole='';
 var fingerTarget={teacher:{x:20,y:30},student:{x:70,y:30}};
 var fingerCurrent={teacher:{x:20,y:30},student:{x:70,y:30}};
-// ✅ সাউন্ড আনলক - ব্রাউজার যাতে আওয়াজ আটকাতে না পারে
 function unlockAudio(){
   var a=document.getElementById('remoteAudio');
   a.muted=false; a.volume=1;
@@ -195,8 +194,7 @@ function sendFingerFast(key,x,y){
     var msg=key==='teacher'?('t:'+Math.round(x*10)+','+Math.round(y*10)):('s:'+Math.round(x*10)+','+Math.round(y*10));
     Object.values(dataConns).forEach(function(c){ try{ if(c.open) c.send(msg); }catch(e){} });
   } else {
-    var payload={room:roomId,type:'pointer',key:key,x:x,y:y,sender:myId};
-    sendToSheet(payload);
+    sendToSheet({room:roomId,type:'pointer',key:key,x:x,y:y,sender:myId});
   }
 }
 function onFingerData(d){
@@ -266,8 +264,7 @@ document.getElementById('imgInput').addEventListener('change',function(e){
       ctx.drawImage(img,(targetW-w)/2,(targetH-h)/2,w,h);
       var d=c.toDataURL('image/jpeg',0.45);
       showImage(d);
-      var payload={room:roomId,type:'image',data:d,[STRIPPED]
-      sendToSheet(payload);
+      sendToSheet({room:roomId,type:'image',data:d});
     };
     img.src=reader.result;
   };
@@ -280,7 +277,6 @@ function initVoice(){
   myPeer=new Peer('a2z-'+roomId+'-'+myRole+'-'+myId,{config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:global.stun.twilio.com:3478'}]}});
   myPeer.on('open',function(){
     sendToSheet({room:roomId,type:'peer',peerId:myPeer.id,role:myRole});
-    // ✅ ঢুকলেই মাইক রেডি, কিন্তু বন্ধ (enabled=false) - তাই পরে চালু করলেও কানেকশন ভাঙবে না
     getClearAudio().then(function(st){
       myStream=st;
       myStream.getAudioTracks().forEach(function(t){ t.enabled=false; });
@@ -288,7 +284,6 @@ function initVoice(){
   });
   myPeer.on('connection',function(conn){ setupDataConn(conn); });
   myPeer.on('call',function(call){
-    // ✅ সবসময় নিজের মাইক স্ট্রিম দিয়েই Answer - খালি Answer না
     if(myStream){ call.answer(myStream); }
     else{ getClearAudio().then(function(st){ myStream=st; myStream.getAudioTracks().forEach(function(t){ t.enabled=micOn; }); call.answer(myStream); }).catch(function(){ call.answer(); }); }
     call.on('stream',function(rs){ playRemote(rs); });
@@ -306,7 +301,6 @@ function toggleMic(){
   unlockAudio();
   micOn=!micOn;
   document.getElementById('micBtn').style.background=micOn?'#22c55e':'#ef4444'; document.getElementById('micBtn').innerText=micOn?'🎤':'🔇'; document.getElementById('voiceStatus').innerText=micOn?T[lang].micOn:T[lang].micOff;
-  // ✅ মাইক অন/অফ = শুধু Track চালু/বন্ধ, নতুন কানেকশন না - তাই আওয়াজ কাটবে না
   if(myStream){
     myStream.getAudioTracks().forEach(function(t){ t.enabled=micOn; });
   } else if(micOn){
