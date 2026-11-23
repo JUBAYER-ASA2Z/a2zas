@@ -124,184 +124,239 @@ var dataConns={};
 var pendingRole='';
 var fingerTarget={teacher:{x:20,y:30},student:{x:70,y:30}};
 var fingerCurrent={teacher:{x:20,y:30},student:{x:70,y:30}};
-// 🔊🔊🔊🔊 SOUND START - এই লাইন থেকে সাউন্ড / স্পিকার / মাইক্রোফোনের অংশ শুরু
+
+  
+  
+  // 🔊🔊🔊🔊 SOUND START - এই লাইন থেকে সাউন্ড / স্পিকার / মাইক্রোফোনের অংশ শুরু
+var activeCalls = {};
+var audioPromise = null;
+
 function releaseMic(){
-  micOn=false;
-  var b=document.getElementById('micBtn'); if(b){ b.style.background='#ef4444'; b.innerText='🔇'; }
-  if(myStream){ try{ myStream.getTracks().forEach(function(t){ try{ t.stop(); }catch(e){} }); }catch(e){} myStream=null; }
-  var a=document.getElementById('remoteAudio'); if(a){ a.srcObject=null; }
-  if(myPeer){ try{ myPeer.destroy(); }catch(e){} myPeer=null; }
-  Object.values(dataConns).forEach(function(c){ try{ c.close(); }catch(e){} }); dataConns={};
+  micOn = false;
+  var b = document.getElementById('micBtn');
+  if(b){ b.style.background = '#ef4444'; b.innerText = '🔇'; }
+  Object.keys(activeCalls).forEach(function(k){ try{ activeCalls[k].close(); }catch(e){} });
+  activeCalls = {};
+  if(myStream){ try{ myStream.getTracks().forEach(function(t){ try{ t.stop(); }catch(e){} }); }catch(e){} myStream = null; }
+  audioPromise = null;
+  var a = document.getElementById('remoteAudio');
+  if(a){ a.srcObject = null; }
+  if(myPeer){ try{ myPeer.destroy(); }catch(e){} myPeer = null; }
+  Object.values(dataConns).forEach(function(c){ try{ c.close(); }catch(e){} });
+  dataConns = {};
   if(pollTimer) clearInterval(pollTimer);
 }
 function smoothLoop(){
   ['teacher','student'].forEach(function(k){
-    var cur=fingerCurrent[k], tgt=fingerTarget[k];
+    var cur = fingerCurrent[k], tgt = fingerTarget[k];
     cur.x += (tgt.x - cur.x) * 0.35;
     cur.y += (tgt.y - cur.y) * 0.35;
-    if(Math.abs(tgt.x-cur.x)<0.1) cur.x=tgt.x;
-    if(Math.abs(tgt.y-cur.y)<0.1) cur.y=tgt.y;
-    var el=document.getElementById(k==='teacher'?'teacherFinger':'studentFinger');
-    if(el){ el.style.left=cur.x+'%'; el.style.top=cur.y+'%'; }
+    if(Math.abs(tgt.x - cur.x) < 0.1) cur.x = tgt.x;
+    if(Math.abs(tgt.y - cur.y) < 0.1) cur.y = tgt.y;
+    var el = document.getElementById(k === 'teacher' ? 'teacherFinger' : 'studentFinger');
+    if(el){ el.style.left = cur.x + '%'; el.style.top = cur.y + '%'; }
   });
   requestAnimationFrame(smoothLoop);
 }
 smoothLoop();
 function setFinger(key,x,y){
-  fingerTarget[key]={x:x,y:y};
-  var myKey=myRole==='teacher'?'teacher':'student';
-  if(key===myKey) fingerCurrent[key]={x:x,y:y};
+  fingerTarget[key] = {x:x,y:y};
+  var myKey = myRole === 'teacher' ? 'teacher' : 'student';
+  if(key === myKey) fingerCurrent[key] = {x:x,y:y};
 }
-function createRoom(){ var code=Math.floor(1000+Math.random()*9000).toString(); document.getElementById('roomInput').value=code; sendToSheet({room:code,type:'createRoom'}); sendToSheet({room:code,type:'clearAll'}); showAlert(T[lang].alertRoomCode+code,'🎉'); }
+function createRoom(){ var code = Math.floor(1000 + Math.random() * 9000).toString(); document.getElementById('roomInput').value = code; sendToSheet({room:code,type:'createRoom'}); sendToSheet({room:code,type:'clearAll'}); showAlert(T[lang].alertRoomCode + code,'🎉'); }
 function joinAs(role){
-  roomId=document.getElementById('roomInput').value.trim();
+  roomId = document.getElementById('roomInput').value.trim();
   if(!roomId){ showAlert(T[lang].alertRoom,'⚠️'); return; }
-  if(role==='teacher'){ pendingRole='teacher'; document.getElementById('pinInput').value=''; document.getElementById('pinModal').classList.remove('hidden'); setTimeout(function(){ document.getElementById('pinInput').focus(); },100); return; }
+  if(role === 'teacher'){ pendingRole = 'teacher'; document.getElementById('pinInput').value = ''; document.getElementById('pinModal').classList.remove('hidden'); setTimeout(function(){ document.getElementById('pinInput').focus(); },100); return; }
   enterRoom('student');
 }
-function closePin(){ document.getElementById('pinModal').classList.add('hidden'); pendingRole=''; }
+function closePin(){ document.getElementById('pinModal').classList.add('hidden'); pendingRole = ''; }
 function checkTeacherPin(){
-  var pin=document.getElementById('pinInput').value.trim();
-  if(pin!==TEACHER_PIN){ showAlert(T[lang].alertWrongPin,'❌'); document.getElementById('pinInput').value=''; return; }
+  var pin = document.getElementById('pinInput').value.trim();
+  if(pin !== TEACHER_PIN){ showAlert(T[lang].alertWrongPin,'❌'); document.getElementById('pinInput').value = ''; return; }
   document.getElementById('pinModal').classList.add('hidden'); enterRoom('teacher');
 }
 function enterRoom(role){
-  if(role==='teacher'){ sendToSheet({room:roomId,type:'createRoom'}); sendToSheet({room:roomId,type:'clearAll'}); sendToSheet({room:roomId,type:'createRoom'}); }
-  fetch(APPS_SCRIPT_URL+"?action=checkRoom&room="+roomId+"&t="+Date.now())
+  if(role === 'teacher'){ sendToSheet({room:roomId,type:'createRoom'}); sendToSheet({room:roomId,type:'clearAll'}); sendToSheet({room:roomId,type:'createRoom'}); }
+  fetch(APPS_SCRIPT_URL + "?action=checkRoom&room=" + roomId + "&t=" + Date.now())
   .then(function(r){ return r.json(); })
   .then(function(data){
     if(!data.exists){ showAlert(T[lang].alertWrongRoom,'❌'); return; }
-    myRole=role; document.getElementById('joinBox').style.display='none'; document.getElementById('roomLabel').innerText=roomId;
-    document.getElementById('myRoleBadge').innerText=role==='teacher'?T[lang].badgeTeacher:T[lang].badgeStudent;
-    var t=document.getElementById('teacherFinger'), s=document.getElementById('studentFinger');
-    if(role==='teacher'){ t.classList.remove('locked'); t.classList.add('mine'); t.style.pointerEvents='auto'; s.classList.remove('mine'); s.classList.add('locked'); s.style.pointerEvents='none'; makeDraggable(t,'teacher'); }
-    else{ s.classList.remove('locked'); s.classList.add('mine'); s.style.pointerEvents='auto'; t.classList.remove('mine'); t.classList.add('locked'); t.style.pointerEvents='none'; makeDraggable(s,'student'); }
+    myRole = role; document.getElementById('joinBox').style.display = 'none'; document.getElementById('roomLabel').innerText = roomId;
+    document.getElementById('myRoleBadge').innerText = role === 'teacher' ? T[lang].badgeTeacher : T[lang].badgeStudent;
+    var t = document.getElementById('teacherFinger'), s = document.getElementById('studentFinger');
+    if(role === 'teacher'){ t.classList.remove('locked'); t.classList.add('mine'); t.style.pointerEvents = 'auto'; s.classList.remove('mine'); s.classList.add('locked'); s.style.pointerEvents = 'none'; makeDraggable(t,'teacher'); }
+    else{ s.classList.remove('locked'); s.classList.add('mine'); s.style.pointerEvents = 'auto'; t.classList.remove('mine'); t.classList.add('locked'); t.style.pointerEvents = 'none'; makeDraggable(s,'student'); }
     startPolling(); initVoice();
   }).catch(function(){ showAlert(T[lang].alertCheck,'⚠️'); });
 }
 function sendToSheet(p){ try{ fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(p)}); }catch(e){} }
 function sendFingerFast(key,x,y){
-  var hasPeer=Object.keys(dataConns).length>0;
+  var hasPeer = Object.keys(dataConns).length > 0;
   if(hasPeer){
-    var msg=key==='teacher'?('t:'+Math.round(x*10)+','+Math.round(y*10)):('s:'+Math.round(x*10)+','+Math.round(y*10));
+    var msg = key === 'teacher' ? ('t:' + Math.round(x*10) + ',' + Math.round(y*10)) : ('s:' + Math.round(x*10) + ',' + Math.round(y*10));
     Object.values(dataConns).forEach(function(c){ try{ if(c.open) c.send(msg); }catch(e){} });
   } else {
-    var payload={room:roomId,type:'pointer',key:key,x:x,y:y,sender:myId};
+    var payload = {room:roomId,type:'pointer',key:key,x:x,y:y,sender:myId};
     sendToSheet(payload);
   }
 }
 function onFingerData(d){
-  if(typeof d!=='string') return;
-  var isT=d.charAt(0)==='t'; var parts=d.slice(2).split(','); var x=parseFloat(parts[0])/10, y=parseFloat(parts[1])/10;
-  if(isNaN(x)||isNaN(y)) return;
-  setFinger(isT?'teacher':'student',x,y);
+  if(typeof d !== 'string') return;
+  var isT = d.charAt(0) === 't'; var parts = d.slice(2).split(','); var x = parseFloat(parts[0]) / 10, y = parseFloat(parts[1]) / 10;
+  if(isNaN(x) || isNaN(y)) return;
+  setFinger(isT ? 'teacher' : 'student',x,y);
 }
 function setupDataConn(conn){
-  dataConns[conn.peer]=conn;
+  dataConns[conn.peer] = conn;
   conn.on('data',function(d){ onFingerData(d); });
   conn.on('close',function(){ delete dataConns[conn.peer]; });
 }
 function poll(){
   if(!roomId) return;
-  fetch(APPS_SCRIPT_URL+"?action=getState&room="+roomId+"&t="+Date.now())
+  fetch(APPS_SCRIPT_URL + "?action=getState&room=" + roomId + "&t=" + Date.now())
   .then(function(r){ return r.json(); })
   .then(function(data){
-    if(Object.keys(dataConns).length===0 && data.pointer){
-      if(data.pointer.teacher && data.pointer.teacher.sender!==myId) setFinger('teacher',data.pointer.teacher.x,data.pointer.teacher.y);
-      if(data.pointer.student && data.pointer.student.sender!==myId) setFinger('student',data.pointer.student.x,data.pointer.student.y);
+    if(Object.keys(dataConns).length === 0 && data.pointer){
+      if(data.pointer.teacher && data.pointer.teacher.sender !== myId) setFinger('teacher',data.pointer.teacher.x,data.pointer.teacher.y);
+      if(data.pointer.student && data.pointer.student.sender !== myId) setFinger('student',data.pointer.student.x,data.pointer.student.y);
     }
-    if(data.image && data.image.data){ if(data.image.data!==lastImg){ lastImg=data.image.data; showImage(data.image.data); } }
-    else{ if(lastImg!==''){ lastImg=''; hideImage(); } }
+    if(data.image && data.image.data){ if(data.image.data !== lastImg){ lastImg = data.image.data; showImage(data.image.data); } }
+    else{ if(lastImg !== ''){ lastImg = ''; hideImage(); } }
     if(data.peers){
       Object.values(data.peers).forEach(function(p){
-        if(!myPeer || p.peerId===myPeer.id) return;
+        if(!myPeer || p.peerId === myPeer.id) return;
         if(!calledPeers[p.peerId]){
-          calledPeers[p.peerId]=true;
-          try{ var conn=myPeer.connect(p.peerId); setupDataConn(conn); }catch(e){}
-          if(myStream){ try{ var call=myPeer.call(p.peerId,myStream); call.on('stream',function(rs){ playRemote(rs); }); }catch(e){} }
+          calledPeers[p.peerId] = true;
+          try{ var conn = myPeer.connect(p.peerId); setupDataConn(conn); }catch(e){}
+          // ✅ সাউন্ডের কল - ১ জনের সাথে ১টাই কল, ডাবল কল না
+          if(myStream && !activeCalls[p.peerId]){
+            try{
+              var call = myPeer.call(p.peerId,myStream);
+              activeCalls[p.peerId] = call;
+              call.on('stream',function(rs){ playRemote(rs); });
+              call.on('close',function(){ delete activeCalls[p.peerId]; });
+              call.on('error',function(){ delete activeCalls[p.peerId]; });
+            }catch(e){}
+          }
         }
       });
     }
   }).catch(function(){});
 }
-function startPolling(){ if(pollTimer) clearInterval(pollTimer); pollTimer=setInterval(poll,500); }
-function playRemote(rs){ var a=document.getElementById('remoteAudio'); a.srcObject=rs; a.muted=!speakerOn; a.volume=1; a.play().catch(function(){ document.addEventListener('click',function(){ a.play(); },{once:true}); }); }
+function startPolling(){ if(pollTimer) clearInterval(pollTimer); pollTimer = setInterval(poll,500); }
+function playRemote(rs){
+  var a = document.getElementById('remoteAudio');
+  if(a.srcObject !== rs){ a.srcObject = rs; }
+  a.muted = !speakerOn; a.volume = 1;
+  var p = a.play(); if(p) p.catch(function(){ document.addEventListener('click',function(){ a.play(); },{once:true}); });
+}
 function makeDraggable(el,key){
-  var dragging=false,sx=0,sy=0,ox=0,oy=0,lastSend=0,pending=null;
+  var dragging = false,sx = 0,sy = 0,ox = 0,oy = 0,lastSend = 0,pending = null;
   el.addEventListener('pointerdown',function(e){
-    if((myRole==='teacher'&&key!=='teacher')||(myRole==='student'&&key!=='student')) return;
-    dragging=true; try{ el.setPointerCapture(e.pointerId); }catch(err){}
-    var b=document.getElementById('board').getBoundingClientRect(); sx=e.clientX; sy=e.clientY; var r=el.getBoundingClientRect(); ox=((r.left+26-b.left)/b.width)*100; oy=((r.top+34-b.top)/b.height)*100;
+    if((myRole === 'teacher' && key !== 'teacher') || (myRole === 'student' && key !== 'student')) return;
+    dragging = true; try{ el.setPointerCapture(e.pointerId); }catch(err){}
+    var b = document.getElementById('board').getBoundingClientRect(); sx = e.clientX; sy = e.clientY; var r = el.getBoundingClientRect(); ox = ((r.left + 26 - b.left) / b.width) * 100; oy = ((r.top + 34 - b.top) / b.height) * 100;
   });
   el.addEventListener('pointermove',function(e){
-    if(!dragging) return; if((myRole==='teacher'&&key!=='teacher')||(myRole==='student'&&key!=='student')) return;
-    var b=document.getElementById('board').getBoundingClientRect();
-    var px=Math.max(2,Math.min(98,ox+((e.clientX-sx)/b.width)*100));
-    var py=Math.max(5,Math.min(95,oy+((e.clientY-sy)/b.height)*100));
-    setFinger(key,px,py); pending={x:px,y:py};
-    var now=Date.now(); if(now-lastSend>30){ lastSend=now; if(pending) sendFingerFast(key,pending.x,pending.y); }
+    if(!dragging) return; if((myRole === 'teacher' && key !== 'teacher') || (myRole === 'student' && key !== 'student')) return;
+    var b = document.getElementById('board').getBoundingClientRect();
+    var px = Math.max(2,Math.min(98,ox + ((e.clientX - sx) / b.width) * 100));
+    var py = Math.max(5,Math.min(95,oy + ((e.clientY - sy) / b.height) * 100));
+    setFinger(key,px,py); pending = {x:px,y:py};
+    var now = Date.now(); if(now - lastSend > 30){ lastSend = now; if(pending) sendFingerFast(key,pending.x,pending.y); }
   });
-  var end=function(){ if(!dragging) return; dragging=false; if(pending) sendFingerFast(key,pending.x,pending.y); };
+  var end = function(){ if(!dragging) return; dragging = false; if(pending) sendFingerFast(key,pending.x,pending.y); };
   el.addEventListener('pointerup',end); el.addEventListener('pointercancel',end);
 }
 document.getElementById('imgInput').addEventListener('change',function(e){
-  var file=e.target.files[0]; if(!file) return; var reader=new FileReader();
-  reader.onload=function(){
-    var img=new Image();
-    img.onload=function(){
-      var targetW=640, targetH=800;
-      var c=document.createElement('canvas'); c.width=targetW; c.height=targetH;
-      var ctx=c.getContext('2d'); ctx.fillStyle='#000'; ctx.fillRect(0,0,targetW,targetH);
-      var scale=Math.max(targetW/img.width, targetH/img.height);
-      var w=img.width*scale, h=img.height*scale;
-      ctx.drawImage(img,(targetW-w)/2,(targetH-h)/2,w,h);
-      var d=c.toDataURL('image/jpeg',0.45);
+  var file = e.target.files[0]; if(!file) return; var reader = new FileReader();
+  reader.onload = function(){
+    var img = new Image();
+    img.onload = function(){
+      var targetW = 640, targetH = 800;
+      var c = document.createElement('canvas'); c.width = targetW; c.height = targetH;
+      var ctx = c.getContext('2d'); ctx.fillStyle = '#000'; ctx.fillRect(0,0,targetW,targetH);
+      var scale = Math.max(targetW / img.width, targetH / img.height);
+      var w = img.width * scale, h = img.height * scale;
+      ctx.drawImage(img,(targetW - w) / 2,(targetH - h) / 2,w,h);
+      var d = c.toDataURL('image/jpeg',0.45);
       showImage(d);
-      var payload={room:roomId,type:'image',data:d,sender:myId};
+      var payload = {room:roomId,type:'image',data:d,sender:myId};
       sendToSheet(payload);
     };
-    img.src=reader.result;
+    img.src = reader.result;
   };
   reader.readAsDataURL(file);
 });
-function showImage(d){ var img=document.getElementById('boardImg'); img.src=d; img.classList.remove('hidden'); document.getElementById('noImgText').style.display='none'; }
-function hideImage(){ document.getElementById('boardImg').classList.add('hidden'); document.getElementById('noImgText').style.display='flex'; }
-function deleteImage(){ lastImg=''; hideImage(); sendToSheet({room:roomId,type:'clearImage'}); }
+function showImage(d){ var img = document.getElementById('boardImg'); img.src = d; img.classList.remove('hidden'); document.getElementById('noImgText').style.display = 'none'; }
+function hideImage(){ document.getElementById('boardImg').classList.add('hidden'); document.getElementById('noImgText').style.display = 'flex'; }
+function deleteImage(){ lastImg = ''; hideImage(); sendToSheet({room:roomId,type:'clearImage'}); }
 function initVoice(){
-  myPeer=new Peer('a2z-'+roomId+'-'+myRole+'-'+myId,{config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:global.stun.twilio.com:3478'}]}});
-  myPeer.on('open',function(){ sendToSheet({room:roomId,type:'peer',peerId:myPeer.id,role:myRole}); });
+  myPeer = new Peer('a2z-' + roomId + '-' + myRole + '-' + myId,{config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:global.stun.twilio.com:3478'}]}});
+  myPeer.on('open',function(){
+    sendToSheet({room:roomId,type:'peer',peerId:myPeer.id,role:myRole});
+    // ✅ ঢুকলেই ১ বার মাইক রেডি - বারবার নতুন মাইক নিবে না
+    getClearAudio().then(function(st){ myStream = st; }).catch(function(){ showAlert(T[lang].alertMic,'🎤'); });
+  });
   myPeer.on('connection',function(conn){ setupDataConn(conn); });
   myPeer.on('call',function(call){
-    if(!micOn){ call.answer(); call.on('stream',function(rs){ playRemote(rs); }); return; }
-    getClearAudio().then(function(stream){
-      myStream=stream;
-      try{ var s=call.peerConnection.getSenders().find(function(x){ return x.track&&x.track.kind==='audio'; }); if(s&&s.setParameters){ var pr=s.getParameters(); if(!pr.encodings) pr.encodings=[{}]; pr.encodings[0].maxBitrate=12000; s.setParameters(pr); } }catch(e){}
-      call.answer(myStream); call.on('stream',function(rs){ playRemote(rs); });
+    // ✅ ডাবল কল আটকানো - আগে থেকে কল থাকলে পুরানটা কাটবে
+    if(activeCalls[call.peer]){ try{ activeCalls[call.peer].close(); }catch(e){} }
+    activeCalls[call.peer] = call;
+    getClearAudio().then(function(st){
+      myStream = st;
+      call.answer(myStream);
     }).catch(function(){ call.answer(); });
+    call.on('stream',function(rs){ playRemote(rs); });
+    call.on('close',function(){ delete activeCalls[call.peer]; });
+    call.on('error',function(){ delete activeCalls[call.peer]; });
   });
 }
-function getClearAudio(){ return navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1,sampleRate:16000},video:false}); }
+// ✅ ১টাই মাইক স্ট্রিম - সবসময় একইটা ব্যবহার হবে, হঠাৎ বন্ধ হবে না
+function getClearAudio(){
+  if(audioPromise) return audioPromise;
+  audioPromise = navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1,sampleRate:48000,echoCancellationType:'system'},video:false})
+  .then(function(st){
+    myStream = st;
+    st.getAudioTracks().forEach(function(t){
+      t.enabled = micOn;
+      t.onended = function(){ audioPromise = null; if(micOn) getClearAudio(); };
+    });
+    return st;
+  })
+  .catch(function(err){ audioPromise = null; throw err; });
+  return audioPromise;
+}
 function toggleSpeaker(){
-  speakerOn=!speakerOn;
-  document.getElementById('speakerBtn').innerText=speakerOn?'🔊':'🔇';
-  document.getElementById('remoteAudio').muted=!speakerOn;
-  document.getElementById('voiceStatus').innerText=speakerOn?T[lang].speakerOn:T[lang].speakerOff;
-  if(speakerOn){ document.getElementById('remoteAudio').play().catch(function(){}); }
+  speakerOn = !speakerOn;
+  document.getElementById('speakerBtn').innerText = speakerOn ? '🔊' : '🔇';
+  var a = document.getElementById('remoteAudio');
+  a.muted = !speakerOn; a.volume = 1;
+  document.getElementById('voiceStatus').innerText = speakerOn ? T[lang].speakerOn : T[lang].speakerOff;
+  if(speakerOn){ var p = a.play(); if(p) p.catch(function(){}); }
 }
 function toggleMic(){
-  micOn=!micOn;
-  document.getElementById('micBtn').style.background=micOn?'#22c55e':'#ef4444'; document.getElementById('micBtn').innerText=micOn?'🎤':'🔇'; document.getElementById('voiceStatus').innerText=micOn?T[lang].micOn:T[lang].micOff;
-  if(micOn){
+  micOn = !micOn;
+  document.getElementById('micBtn').style.background = micOn ? '#22c55e' : '#ef4444';
+  document.getElementById('micBtn').innerText = micOn ? '🎤' : '🔇';
+  document.getElementById('voiceStatus').innerText = micOn ? T[lang].micOn : T[lang].micOff;
+  // ✅ মাইক অন/অফ = শুধু enabled চালু/বন্ধ - ট্র্যাক কাটবে না, কল কাটবে না
+  if(myStream){
+    myStream.getAudioTracks().forEach(function(t){ t.enabled = micOn; });
+  } else if(micOn){
     getClearAudio().then(function(st){
-      myStream=st;
-      myStream.getAudioTracks().forEach(function(t){ t.enabled=true; });
-      calledPeers={}; sendToSheet({room:roomId,type:'peer',peerId:myPeer.id,role:myRole});
-      document.getElementById('remoteAudio').play().catch(function(){});
-    }).catch(function(){ showAlert(T[lang].alertMic,'🎤'); micOn=false; document.getElementById('micBtn').style.background='#ef4444'; });
-  }else{
-    if(myStream){ try{ myStream.getTracks().forEach(function(t){ t.stop(); }); }catch(e){} myStream=null; }
+      myStream = st;
+      myStream.getAudioTracks().forEach(function(t){ t.enabled = true; });
+      calledPeers = {}; sendToSheet({room:roomId,type:'peer',peerId:myPeer.id,role:myRole});
+    }).catch(function(){ showAlert(T[lang].alertMic,'🎤'); micOn = false; document.getElementById('micBtn').style.background = '#ef4444'; });
   }
 }
+// 🔊🔊🔊🔊 SOUND END - এই লাইন পর্যন্ত সাউন্ড / স্পিকার / মাইক্রোফোনের অংশ শেষ
+  
+  
+
 // 🔊🔊🔊🔊 SOUND END - এই লাইন পর্যন্ত সাউন্ড / স্পিকার / মাইক্রোফোনের অংশ শেষ
 function leaveAndBack(){
   if(roomId){ try{ sendToSheet({room:roomId,type:'leave',peerId:myPeer?myPeer.id:myId}); sendToSheet({room:roomId,type:'clearAll'}); }catch(e){} }
