@@ -11,7 +11,6 @@
 <style>
 *{font-family:'Hind Siliguri';-webkit-tap-highlight-color:transparent;user-select:none;box-sizing:border-box}
 body{margin:0;background:#0f172a;overflow:hidden;height:100dvh}
-/* ✅ জাস্ট 👆 আইকন - কোনো ছবি / গোল ব্যাকগ্রাউন্ড নাই */
 .finger{position:absolute;width:60px;height:80px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;z-index:50;touch-action:none;background:transparent;border:none;box-shadow:none}
 .finger .emoji{font-size:48px;line-height:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.6));}
 .finger .label{margin-top:2px;background:#000;color:#fff;font-size:11px;font-weight:900;padding:3px 10px;border-radius:999px;white-space:nowrap;border:1.5px solid #fff}
@@ -24,63 +23,76 @@ body{margin:0;background:#0f172a;overflow:hidden;height:100dvh}
 <body>
 
 <script>
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbnTcHS5ag4Ge_3hOWdXrWe0MoqgnDOX5cdhzA_etEJONIhcY90svq7hn0RpqCRVR6/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzNxqVW6RX0eH9e9JCTVNvF2hLBfgRZy972_gavzXE2axmSADefYV04gqWh0sFxpIoBgA/exec";
+const TEACHER_PIN = "123";
 </script>
 
 <!-- TOP BAR -->
 <div class="absolute top-0 left-0 right-0 z-[100] bg-black/60 backdrop-blur px-3 py-2 flex items-center gap-2">
   <button onclick="leaveAndBack()" class="w-9 h-9 bg-white text-black rounded-full font-black">←</button>
   <div class="flex-1">
-    <p class="text-white font-black text-[13px] leading-none">📚 Live Class</p>
-    <p class="text-white/60 text-[10px] font-bold mt-0.5">Room: <span id="roomLabel">---</span> • 🟢 FAST • Low MB</p>
+    <p class="text-white font-black text-[13px] leading-none" data-t="liveClass">📚 Live Class</p>
+    <p class="text-white/60 text-[10px] font-bold mt-0.5"><span data-t="room">Room</span>: <span id="roomLabel">---</span></p>
   </div>
-  <label class="bg-emerald-500 text-white text-[11px] font-black px-3 py-2 rounded-full cursor-pointer">📸 ছবি<input type="file" id="imgInput" accept="image/*" class="hidden"></label>
-  <button onclick="deleteImage()" class="bg-red-500 text-white text-[11px] font-black px-3 py-2 rounded-full">🗑️ মুছুন</button>
+  <button onclick="toggleLang()" id="langBtn" class="w-11 h-9 bg-white text-black rounded-full text-[11px] font-black">EN</button>
+  <label class="bg-emerald-500 text-white text-[11px] font-black px-3 py-2 rounded-full cursor-pointer"><span data-t="photo">📸 ছবি</span><input type="file" id="imgInput" accept="image/*" class="hidden"></label>
+  <button onclick="deleteImage()" class="bg-red-500 text-white text-[11px] font-black px-3 py-2 rounded-full"><span data-t="delete">🗑️ মুছুন</span></button>
 </div>
 
 <!-- JOIN -->
 <div id="joinBox" class="absolute inset-0 z-[200] bg-slate-900/95 flex items-center justify-center p-6">
   <div class="bg-white rounded-[24px] p-6 w-full max-w-[340px] text-center">
     <p class="text-[48px]">👆👆</p>
-    <p class="font-black text-[20px] mt-2">Live Class এ ঢুকুন</p>
-    <p class="text-slate-500 text-[12px] font-bold mt-1">টিচার রুম বানাবে, স্টুডেন্ট কোড দিয়ে ঢুকবে</p>
-    <input id="roomInput" placeholder="রুম কোড - যেমন: 1234" class="w-full mt-4 border-2 border-slate-200 rounded-full px-4 py-3 text-center font-black text-[16px] outline-none">
+    <p class="font-black text-[20px] mt-2" data-t="joinTitle">Live Class</p>
+    <input id="roomInput" placeholder="রুম কোড" class="w-full mt-4 border-2 border-slate-200 rounded-full px-4 py-3 text-center font-black text-[16px] outline-none" inputmode="numeric">
     <div class="grid grid-cols-2 gap-2 mt-3">
-      <button onclick="joinAs('teacher')" class="bg-blue-600 text-white py-3 rounded-full font-black text-[13px]">👆 টিচার</button>
-      <button onclick="joinAs('student')" class="bg-emerald-600 text-white py-3 rounded-full font-black text-[13px]">👆 স্টুডেন্ট</button>
+      <button onclick="joinAs('teacher')" class="bg-blue-600 text-white py-3 rounded-full font-black text-[13px]" data-t="teacherBtn">👆 টিচার</button>
+      <button onclick="joinAs('student')" class="bg-emerald-600 text-white py-3 rounded-full font-black text-[13px]" data-t="studentBtn">👆 স্টুডেন্ট</button>
     </div>
-    <button onclick="createRoom()" class="w-full mt-2 bg-slate-900 text-white py-3 rounded-full font-black text-[12px]">+ নতুন রুম বানান</button>
-    <p class="text-[10px] text-slate-400 mt-3 font-bold">অল্প নেটেও ক্লিয়ার শোনা যাবে • ছবি সেভ হবে না</p>
+    <button onclick="createRoom()" class="w-full mt-2 bg-slate-900 text-white py-3 rounded-full font-black text-[12px]" data-t="createRoom">+ নতুন রুম বানান</button>
+    <p class="text-[11px] text-slate-500 mt-4 font-black">Developer JUBAYER A S</p>
+  </div>
+</div>
+
+<!-- TEACHER PIN MODAL -->
+<div id="pinModal" class="hidden fixed inset-0 z-[300] bg-slate-900/80 backdrop-blur flex items-center justify-center p-6">
+  <div class="bg-white rounded-[24px] p-6 w-full max-w-[300px] text-center">
+    <p class="text-[40px]">🔐</p>
+    <p class="font-black text-[17px] mt-2" data-t="pinTitle">টিচার কোড দিন</p>
+    <p class="text-slate-500 text-[11px] font-bold mt-1" data-t="pinDesc">টিচার ছাড়া কেউ এই কোড জানে না</p>
+    <input id="pinInput" type="password" inputmode="numeric" placeholder="•••" class="w-full mt-4 border-2 border-blue-200 rounded-full px-4 py-3 text-center font-black text-[20px] outline-none tracking-[8px]">
+    <button onclick="checkTeacherPin()" class="w-full mt-3 bg-blue-600 text-white py-3 rounded-full font-black text-[13px]" data-t="enter">প্রবেশ করুন</button>
+    <button onclick="closePin()" class="w-full mt-2 bg-slate-100 text-slate-600 py-3 rounded-full font-black text-[12px]" data-t="cancel">বাতিল</button>
   </div>
 </div>
 
 <!-- BOARD -->
 <div id="board" class="absolute inset-0 top-[56px] bottom-[76px] flex items-center justify-center bg-slate-900 overflow-hidden">
-  <p id="noImgText" class="text-white/40 font-black text-[14px] text-center px-6">📸 উপরে ছবি আপলোড করুন<br><span class="text-[11px] font-bold">বইয়ের পাতার ছবি সবাই লাইভ দেখবে</span></p>
+  <p id="noImgText" class="text-white/40 font-black text-[14px] text-center px-6" data-t="uploadText">📸 উপরে ছবি আপলোড করুন</p>
   <img id="boardImg" class="hidden">
   <div id="zoomBox" class="hidden absolute bottom-3 right-3 z-[60] flex gap-2">
     <button onclick="zoom(-0.2)" class="w-11 h-11 bg-white rounded-full font-black text-[20px] shadow">−</button>
     <button onclick="zoom(0.2)" class="w-11 h-11 bg-white rounded-full font-black text-[20px] shadow">+</button>
-    <button onclick="resetZoom()" class="px-3 h-11 bg-white rounded-full font-black text-[11px] shadow">Reset</button>
+    <button onclick="resetZoom()" class="px-3 h-11 bg-white rounded-full font-black text-[11px] shadow" data-t="reset">Reset</button>
   </div>
 </div>
 
-<!-- ✅ টিচার 👆 - জাস্ট আঙুল + নিচে বাংলা লেখা -->
+<!-- টিচার 👆 -->
 <div id="teacherFinger" class="finger locked" style="left:20px;top:140px;">
   <span class="emoji">👆</span>
-  <span class="label">টিচার</span>
+  <span class="label" data-t="teacherLabel">টিচার</span>
 </div>
-<!-- ✅ স্টুডেন্ট 👆 - জাস্ট আঙুল + নিচে বাংলা লেখা -->
+<!-- স্টুডেন্ট 👆 -->
 <div id="studentFinger" class="finger locked" style="left:120px;top:140px;">
   <span class="emoji">👆</span>
-  <span class="label">স্টুডেন্ট</span>
+  <span class="label" data-t="studentLabel">স্টুডেন্ট</span>
 </div>
 
 <!-- BOTTOM -->
 <div class="absolute bottom-0 left-0 right-0 z-[100] bg-black/80 backdrop-blur px-4 py-3 flex items-center justify-between gap-3">
   <div class="flex items-center gap-2">
     <span id="myRoleBadge" class="bg-white/20 text-white text-[11px] font-black px-3 py-1.5 rounded-full">---</span>
-    <span id="voiceStatus" class="text-white/70 text-[11px] font-bold">🎤 কথা বন্ধ</span>
+    <span id="voiceStatus" class="text-white/70 text-[11px] font-bold" data-t="micOff">🎤 কথা বন্ধ</span>
   </div>
   <div class="flex gap-2">
     <button id="speakerBtn" onclick="toggleSpeaker()" class="w-12 h-12 bg-white rounded-full text-[22px] flex items-center justify-center shadow">🔊</button>
@@ -90,51 +102,127 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbnTcHS5ag4Ge_
 <audio id="remoteAudio" autoplay playsinline></audio>
 
 <script>
+// ✅ বাংলা / English - সব লেখা
+let lang = localStorage.getItem('live_lang') || 'bn';
+const T = {
+bn:{
+  liveClass:'📚 Live Class', room:'Room', photo:'📸 ছবি', delete:'🗑️ মুছুন',
+  joinTitle:'Live Class', teacherBtn:'👆 টিচার', studentBtn:'👆 স্টুডেন্ট', createRoom:'+ নতুন রুম বানান',
+  pinTitle:'টিচার কোড দিন', pinDesc:'টিচার ছাড়া কেউ এই কোড জানে না', enter:'প্রবেশ করুন', cancel:'বাতিল',
+  uploadText:'📸 উপরে ছবি আপলোড করুন', reset:'Reset',
+  teacherLabel:'টিচার', studentLabel:'স্টুডেন্ট',
+  micOff:'🎤 কথা বন্ধ', micOn:'🎤 আপনার কথা সবাই শুনছে', speakerOn:'🔊 অপর প্রান্তের কথা শুনছেন', speakerOff:'🔇 স্পিকার বন্ধ',
+  roomPlaceholder:'রুম কোড', alertRoom:'রুম কোড দিন', alertWrongPin:'ভুল কোড! টিচার কোড সঠিক নয়',
+  alertWrongRoom:'ভুল রুম কোড! সঠিক কোড দিন', alertCheck:'রুম চেক করা যাচ্ছে না, আবার চেষ্টা করুন',
+  alertMic:'Mic Permission Allow করেন', alertRoomCode:'আপনার রুম কোড: ',
+  badgeTeacher:'👆 টিচার', badgeStudent:'👆 স্টুডেন্ট'
+},
+en:{
+  liveClass:'📚 Live Class', room:'Room', photo:'📸 Photo', delete:'🗑️ Delete',
+  joinTitle:'Live Class', teacherBtn:'👆 Teacher', studentBtn:'👆 Student', createRoom:'+ Create New Room',
+  pinTitle:'Enter Teacher Code', pinDesc:'Only teacher knows this code', enter:'Enter', cancel:'Cancel',
+  uploadText:'📸 Upload photo from top', reset:'Reset',
+  teacherLabel:'Teacher', studentLabel:'Student',
+  micOff:'🎤 Muted', micOn:'🎤 Everyone can hear you', speakerOn:'🔊 You can hear them', speakerOff:'🔇 Speaker Off',
+  roomPlaceholder:'Room Code', alertRoom:'Enter Room Code', alertWrongPin:'Wrong Code! Teacher code is not correct',
+  alertWrongRoom:'Wrong Room Code! Enter correct code', alertCheck:'Cannot check room, try again',
+  alertMic:'Please Allow Mic Permission', alertRoomCode:'Your Room Code: ',
+  badgeTeacher:'👆 Teacher', badgeStudent:'👆 Student'
+}
+};
+function applyLang(){
+  document.querySelectorAll('[data-t]').forEach(el=>{
+    let k = el.getAttribute('data-t');
+    if(T[lang][k]) el.innerText = T[lang][k];
+  });
+  document.getElementById('roomInput').placeholder = T[lang].roomPlaceholder;
+  document.getElementById('langBtn').innerText = lang==='bn' ? 'EN' : 'BN';
+  // ফিঙ্গার লেবেল + ব্যাজ আপডেট
+  let tL = document.querySelector('#teacherFinger .label');
+  let sL = document.querySelector('#studentFinger .label');
+  if(tL) tL.innerText = T[lang].teacherLabel;
+  if(sL) sL.innerText = T[lang].studentLabel;
+  if(myRole){
+    document.getElementById('myRoleBadge').innerText = myRole==='teacher' ? T[lang].badgeTeacher : T[lang].badgeStudent;
+    document.getElementById('voiceStatus').innerText = micOn ? T[lang].micOn : T[lang].micOff;
+  }
+}
+function toggleLang(){
+  lang = lang==='bn' ? 'en' : 'bn';
+  localStorage.setItem('live_lang', lang);
+  applyLang();
+}
+
 let myRole='', roomId='', myPeer=null, myStream=null, speakerOn=true, micOn=false;
 let scale=1, myId='U'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
 let lastImg = '', lastPointerSent = 0;
+let pendingRole = '';
 
 function createRoom(){
   let code = Math.floor(1000 + Math.random()*9000).toString();
   document.getElementById('roomInput').value = code;
-  alert('আপনার রুম কোড: ' + code + '\nস্টুডেন্টকে এই কোডটা দেন');
+  sendToSheet({room: code, type:'createRoom'});
+  alert(T[lang].alertRoomCode + code);
 }
-
-function joinAs(role){
+async function joinAs(role){
   roomId = document.getElementById('roomInput').value.trim();
-  if(!roomId){ alert('আগে রুম কোড দিন'); return; }
+  if(!roomId){ alert(T[lang].alertRoom); return; }
+  if(role === 'teacher'){
+    pendingRole = 'teacher';
+    document.getElementById('pinInput').value = '';
+    document.getElementById('pinModal').classList.remove('hidden');
+    document.getElementById('pinInput').focus();
+    return;
+  }
+  await enterRoom('student');
+}
+function closePin(){
+  document.getElementById('pinModal').classList.add('hidden');
+  pendingRole = '';
+}
+async function checkTeacherPin(){
+  let pin = document.getElementById('pinInput').value.trim();
+  if(pin !== TEACHER_PIN){
+    alert(T[lang].alertWrongPin);
+    document.getElementById('pinInput').value = '';
+    return;
+  }
+  document.getElementById('pinModal').classList.add('hidden');
+  await enterRoom('teacher');
+}
+async function enterRoom(role){
+  if(role === 'teacher'){
+    await sendToSheet({room: roomId, type:'createRoom'});
+  }
+  try{
+    let res = await fetch(APPS_SCRIPT_URL + "?action=checkRoom&room=" + roomId + "&t=" + Date.now());
+    let data = await res.json();
+    if(!data.exists){
+      alert(T[lang].alertWrongRoom);
+      return;
+    }
+  }catch(e){
+    alert(T[lang].alertCheck);
+    return;
+  }
   myRole = role;
   document.getElementById('joinBox').style.display='none';
   document.getElementById('roomLabel').innerText = roomId;
-  document.getElementById('myRoleBadge').innerText = role==='teacher' ? '👆 টিচার' : '👆 স্টুডেন্ট';
-
+  document.getElementById('myRoleBadge').innerText = role==='teacher' ? T[lang].badgeTeacher : T[lang].badgeStudent;
   let t = document.getElementById('teacherFinger');
   let s = document.getElementById('studentFinger');
-
-  // ✅ ১০০% ফিক্স - শুধু নিজেরটা টানা যাবে, অন্যেরটা pointer-events:none
   if(role === 'teacher'){
-    // টিচারেরটা চালু
-    t.classList.remove('locked'); t.classList.add('mine');
-    t.style.pointerEvents = 'auto';
-    // স্টুডেন্টেরটা একদম লক - টাচ করলেও নড়বে না
-    s.classList.remove('mine'); s.classList.add('locked');
-    s.style.pointerEvents = 'none';
-    // শুধু নিজেরটায় ড্রাগ লাগাও
+    t.classList.remove('locked'); t.classList.add('mine'); t.style.pointerEvents = 'auto';
+    s.classList.remove('mine'); s.classList.add('locked'); s.style.pointerEvents = 'none';
     makeDraggable(t, 'teacher');
   } else {
-    // স্টুডেন্টেরটা চালু
-    s.classList.remove('locked'); s.classList.add('mine');
-    s.style.pointerEvents = 'auto';
-    // টিচারেরটা একদম লক - স্টুডেন্ট টানতে পারবে না
-    t.classList.remove('mine'); t.classList.add('locked');
-    t.style.pointerEvents = 'none';
-    // শুধু নিজেরটায় ড্রাগ লাগাও
+    s.classList.remove('locked'); s.classList.add('mine'); s.style.pointerEvents = 'auto';
+    t.classList.remove('mine'); t.classList.add('locked'); t.style.pointerEvents = 'none';
     makeDraggable(s, 'student');
   }
   startPolling();
   initVoice();
 }
-
 async function sendToSheet(payload){
   try{ await fetch(APPS_SCRIPT_URL, {method:'POST', mode:'no-cors', body: JSON.stringify(payload)}); }catch(e){}
 }
@@ -173,12 +261,9 @@ async function poll(){
   }catch(e){}
 }
 function startPolling(){ setInterval(poll, 150); }
-
-// ✅ শুধু যাকে ডাকা হবে তারই ড্রাগ চলবে, অন্যজনের কোনো লিসেনারই লাগানো হবে না
 function makeDraggable(el, key){
   let dragging=false, sx=0, sy=0, ox=0, oy=0;
   el.addEventListener('pointerdown', e=>{
-    // ডাবল চেক - আমি টিচার হলে শুধু teacher, স্টুডেন্ট হলে শুধু student
     if((myRole==='teacher' && key!=='teacher') || (myRole==='student' && key!=='student')) return;
     dragging=true; el.setPointerCapture(e.pointerId); sx=e.clientX; sy=e.clientY; ox=el.offsetLeft; oy=el.offsetTop;
   });
@@ -200,7 +285,6 @@ function makeDraggable(el, key){
     sendToSheet({room: roomId, type:'pointer', key:key, x: el.offsetLeft, y: el.offsetTop, by: myId});
   });
 }
-
 document.getElementById('imgInput').addEventListener('change', e=>{
   let file = e.target.files[0]; if(!file) return;
   let reader = new FileReader();
@@ -224,7 +308,6 @@ function hideImage(){ document.getElementById('boardImg').classList.add('hidden'
 function deleteImage(){ lastImg=''; hideImage(); sendToSheet({room: roomId, type:'clearImage'}); }
 function zoom(d){ scale=Math.max(0.5, Math.min(4, scale+d)); document.getElementById('boardImg').style.transform='scale('+scale+')'; }
 function resetZoom(){ scale=1; document.getElementById('boardImg').style.transform='scale(1)'; }
-
 function initVoice(){
   myPeer = new Peer('a2z-'+roomId+'-'+myRole+'-'+myId, {
     config: { iceServers: [{urls:'stun:stun.l.google.com:19302'}, {urls:'stun:global.stun.twilio.com:3478'}] }
@@ -257,20 +340,20 @@ function toggleSpeaker(){
   speakerOn = !speakerOn;
   document.getElementById('speakerBtn').innerText = speakerOn ? '🔊' : '🔇';
   document.getElementById('remoteAudio').muted = !speakerOn;
-  document.getElementById('voiceStatus').innerText = speakerOn ? '🔊 অপর প্রান্তের কথা শুনছেন' : '🔇 স্পিকার বন্ধ';
+  document.getElementById('voiceStatus').innerText = speakerOn ? T[lang].speakerOn : T[lang].speakerOff;
 }
 async function toggleMic(){
   micOn = !micOn;
   document.getElementById('micBtn').style.background = micOn ? '#22c55e' : '#ef4444';
   document.getElementById('micBtn').innerText = micOn ? '🎤' : '🔇';
-  document.getElementById('voiceStatus').innerText = micOn ? '🎤 আপনার কথা সবাই শুনছে (Clear)' : '🎤 কথা বন্ধ (মিউট)';
+  document.getElementById('voiceStatus').innerText = micOn ? T[lang].micOn : T[lang].micOff;
   if(micOn){
     try{
       myStream = await getClearAudio();
       myStream.getAudioTracks().forEach(t=> t.enabled = true);
       sendToSheet({room: roomId, type:'peer', peerId: myPeer.id, role: myRole});
       window._called = {};
-    }catch(e){ alert('Mic Permission Allow করেন'); micOn=false; }
+    }catch(e){ alert(T[lang].alertMic); micOn=false; }
   } else {
     if(myStream) myStream.getAudioTracks().forEach(t=> t.enabled = false);
   }
@@ -285,6 +368,7 @@ function leaveAndBack(){
 window.addEventListener('beforeunload', ()=>{
   if(roomId){ navigator.sendBeacon(APPS_SCRIPT_URL, JSON.stringify({room: roomId, type:'clearImage'})); }
 });
+applyLang();
 </script>
 </body>
 </html>
