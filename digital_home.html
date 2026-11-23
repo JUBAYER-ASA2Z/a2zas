@@ -28,6 +28,21 @@ body{background:#f8fafc; margin:0;}
 .card-premium.open{ box-shadow: 0 20px 40px rgba(16,185,129,0.18), 0 8px 16px rgba(0,0,0,0.06); border-color: #6ee7b7; }
 .icon-box{ box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 8px 16px rgba(0,0,0,0.15); }
 .locked-premium{ background:linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%)!important; }
+/* ✅ LIVE CLASS - সবার উপরে আলাদা লম্বা বাটন */
+.live-class-btn{
+  background: linear-gradient(135deg, #ef4444 0%, #f97316 35%, #ec4899 70%, #8b5cf6 100%);
+  background-size: 200% 200%;
+  animation: liveGrad 3s ease infinite;
+  border: 2px solid rgba(255,255,255,0.9);
+  box-shadow: 0 15px 35px rgba(239,68,68,0.35), 0 8px 16px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.6);
+  position:relative; overflow:hidden;
+}
+@keyframes liveGrad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.live-class-btn::before{content:'';position:absolute;top:0;left:-60%;width:60%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,0.9),transparent);animation:liveShine 2.2s infinite;}
+@keyframes liveShine{0%{transform:translateX(-100%)}100%{transform:translateX(280%)}}
+.live-class-btn:active{transform:scale(0.97)}
+.live-dot{width:10px;height:10px;background:#fff;border-radius:999px;box-shadow:0 0 0 0 rgba(255,255,255,0.8);animation:livePulse 1.2s infinite}
+@keyframes livePulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,0.8)}70%{box-shadow:0 0 0 8px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
 </style>
 </head>
 <body translate="no" class="notranslate">
@@ -51,6 +66,21 @@ body{background:#f8fafc; margin:0;}
       <p class="text-slate-500 text-[11px] font-bold mt-0.5" id="subDesc">১০টি পর্ব • High Quality</p>
     </div>
     <div class="w-9 h-9 rounded-full bg-emerald-500 flex items-center justify-center text-white font-black text-[12px]">✓</div>
+  </div>
+
+  <!-- ✅ LIVE CLASS - সবার উপরে, আলাদা, লম্বা, আকর্ষণীয় -->
+  <div onclick="location.href='./live_class.html'" class="live-class-btn mt-5 rounded-[22px] p-4 flex items-center gap-3 cursor-pointer">
+    <div class="w-[56px] h-[56px] shrink-0 rounded-[16px] bg-white flex items-center justify-center text-[30px] shadow-lg relative">👨‍🏫<span class="absolute -bottom-1 -right-1 text-[16px] bg-emerald-500 w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">🧑‍🎓</span></div>
+    <div class="flex-1 text-white">
+      <div class="flex items-center gap-2">
+        <span class="live-dot"></span>
+        <p class="font-black text-[16px] leading-none">LIVE CLASS</p>
+        <span class="bg-white text-red-600 text-[8px] font-black px-2 py-[3px] rounded-full">LIVE</span>
+      </div>
+      <p class="font-black text-[13px] mt-1.5 leading-none">লাইভ ক্লাসে ঢুকুন</p>
+      <p class="text-white/90 text-[10px] font-bold mt-1">টিচার দেখাবে • স্টুডেন্ট দেখবে • কথা শোনা যাবে</p>
+    </div>
+    <div class="w-9 h-9 shrink-0 rounded-full bg-white flex items-center justify-center font-black text-[16px] text-red-500">➤</div>
   </div>
 
   <!-- Grid 3 per row -->
