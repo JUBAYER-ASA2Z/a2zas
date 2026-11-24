@@ -112,6 +112,20 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 <div class="bg-white border border-zinc-100 rounded-[18px] p-3 text-center active:scale-95 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.05)]" onclick="location.href='./memo.html'"><div class="w-11 h-11 mx-auto rounded-[13px] bg-[#fef9c3] flex items-center justify-center text-[20px]">📝</div><p class="text-[11px] font-bold mt-2 text-black leading-[12px]" data-bn="ব্যবসায়িক মেমো" data-en="Business Memo">ব্যবসায়িক মেমো</p></div>
 </div>
 <div class="mt-6 space-y-3">
+<!-- ✅ দারুন কিরাত - ফ্রি কল চ্যাটের উপরে, একই ফরমেটে -->
+<a href="darul-qirat.html" class="flex items-center justify-between bg-white border border-green-200 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)] relative overflow-hidden">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-600 to-emerald-600 flex items-center justify-center text-white shadow">📚</div>
+<div>
+<p class="font-black text-[13px] text-black" data-bn="দারুন কিরাত মজিদিয়া" data-en="Darul Qirat Majidia">দারুন কিরাত মজিদিয়া</p>
+<p class="text-[10px] text-zinc-500" data-bn="কুরআন ও তাজবীদ শিক্ষার বই - PDF ফ্রি" data-en="Quran & Tajweed Books - Free PDF">কুরআন ও তাজবীদ শিক্ষার বই - PDF ফ্রি</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="bg-[#075c43] text-[8px] font-black px-2 py-1 rounded-full text-white animate-pulse">FREE</span>
+<span>➤</span>
+</div>
+</a>
 <a href="whatsapp.html" class="flex items-center justify-between bg-white border border-green-200 rounded-[16px] p-4 shadow-[0_4px_15px_rgba(0,0,0,0.05)] relative overflow-hidden">
 <div class="flex items-center gap-3">
 <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white shadow">📞</div>
@@ -151,7 +165,7 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 <script>
 const API_URL="https://script.google.com/macros/s/AKfycbyt07t35S4oRxDY4Ai-wYXlaejv70wQ1-N6Rotz_4-WKZoM9QqGSC0Q8JArx7C6xvw0/exec";
 const TOTAL_VISIT_URL="https://script.google.com/macros/s/AKfycbz2AxQLRMdxY-EzxWN7ubEyCL2QksqVdXxXkjrWZR1MkxpJe_eCrVL8uVkTkdLllnNJmw/exec";
-const VISIT_START = 571; // ✅ 571 থেকে স্টার্ট, জিরো থেকে না
+const VISIT_START = 571;
 let currentLang=localStorage.getItem('app_lang')||'bn'; let adInterval=null, adIndex=0, adDirection=1;
 document.addEventListener('contextmenu', e=>e.preventDefault());
 document.addEventListener('selectstart', e=>e.preventDefault());
@@ -192,7 +206,6 @@ window.addEventListener('load',()=>{
     document.addEventListener('touchstart', tryPlay, {once:true});
     document.addEventListener('click', tryPlay, {once:true});
   }
-  // ✅ লোগোতে ১ ক্লিকেই টোটাল ভিজিট দেখাবে
   const logo=document.querySelector('.logo-3d');
   logo.addEventListener('click', async ()=>{
     let popup=document.createElement('div');
@@ -206,7 +219,6 @@ window.addEventListener('load',()=>{
       let sheetCount = data.totalVisit ?? data.totalViews ?? data.total ?? data.count ?? data.totalDevices ?? data.visits ?? 0;
       if(typeof data === 'number') sheetCount = data;
       sheetCount = parseInt(sheetCount) || 0;
-      // ✅ 571 থেকে স্টার্ট: শিটের কাউন্ট + 571
       let total = VISIT_START + sheetCount;
       document.getElementById('totalCountText').innerText = total + " বার";
     }catch(e){ document.getElementById('totalCountText').innerText = VISIT_START + " বার"; }
