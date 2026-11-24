@@ -33,6 +33,26 @@ footer{text-align:center;margin:28px 0 6px;color:#53645d;font-size:14px}
 footer strong{display:block;color:#075c43;margin-top:3px}
 @media(max-width:700px){.page{padding:9px}.logo{width:96px;height:96px}h1{font-size:24px}.books{gap:8px}.book{padding:6px;border-radius:13px}.open{font-size:12px;padding:9px 3px}}
 </style>
+<!-- OneSignal - Auto Prompt -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "9d5ffe89-bf6a-4ac0-bae8-af2ff4f0c048",
+      notifyButton: { enable: false },
+    });
+    // সাইটে ঢুকার ৩ সেকেন্ড পর অটো Allow চাইবে
+    setTimeout(async () => {
+      try{
+        const permission = await OneSignal.Notifications.permission;
+        if(!permission){
+          await OneSignal.Slidedown.promptPush();
+        }
+      }catch(e){}
+    }, 3000);
+  });
+</script>
 </head>
 <body>
 <div class="page">
@@ -51,8 +71,6 @@ footer strong{display:block;color:#075c43;margin-top:3px}
 <div class="title"><h2>📚 বইসমূহ</h2><p>বইয়ের ছবিতে অথবা বই খুলুন বাটনে ক্লিক করুন</p></div>
 
 <section class="books">
-
-<!-- বই ১ : প্রাথমিক তাজবীদ -->
 <article class="book">
 <a href="darul_qirat/prathomik-tajweed.pdf" target="_blank">
 <img class="cover" src="darul_qirat/prathomik-tajweed-cover.jpg" alt="প্রাথমিক তাজবীদ">
@@ -60,7 +78,6 @@ footer strong{display:block;color:#075c43;margin-top:3px}
 <a class="open" href="darul_qirat/prathomik-tajweed.pdf" target="_blank">বই খুলুন ↗</a>
 </article>
 
-<!-- বই ২ : আল-কাউলুছ ছাদীদ - ৫টা নাম ট্রাই করবে -->
 <article class="book">
 <a href="darul_qirat/al-qawlus-sadeed.pdf" target="_blank">
 <img class="cover" id="qawlusCover" src="darul_qirat/al-qawlus-sadeed-cover.jpg?v=3" alt="আল কাউলুছ ছাদীদ" onerror="tryNextCover(this)">
@@ -68,12 +85,10 @@ footer strong{display:block;color:#075c43;margin-top:3px}
 <a class="open" href="darul_qirat/al-qawlus-sadeed.pdf" target="_blank">বই খুলুন ↗</a>
 </article>
 
-<!-- বই ৩ : নতুন বই -->
 <article class="book">
 <div class="placeholder"><div class="icon">📖</div><b>তৃতীয় বই</b><span>নতুন বই পরে এখানে যুক্ত করা হবে</span></div>
 <a class="open" href="#" onclick="return false" style="background:#9db8ad">শীঘ্রই যুক্ত হবে</a>
 </article>
-
 </section>
 
 <footer>Qari Md Jubayer ahmed siyam<strong>এর পক্ষ থেকে সম্পূর্ণ ফ্রি</strong></footer>
@@ -83,8 +98,6 @@ function goBack(){
   if(window.history.length > 1){ window.history.back(); }
   else { window.location.href = 'index.html'; }
 }
-
-// আল-কাউলুছ এর জন্য ৫টা সম্ভাব্য নাম - একটা না মিললে পরেরটা
 const qawlusNames = [
   "darul_qirat/al-qawlus-sadeed-cover.jpg",
   "darul_qirat/al-qawlus-sadeed-cover.jpeg",
@@ -96,12 +109,8 @@ const qawlusNames = [
 let qawlusTry = 0;
 function tryNextCover(img){
   qawlusTry++;
-  if(qawlusTry < qawlusNames.length){
-    img.src = qawlusNames[qawlusTry];
-  } else {
-    img.onerror = null;
-    img.style.display = 'none';
-  }
+  if(qawlusTry < qawlusNames.length){ img.src = qawlusNames[qawlusTry]; }
+  else { img.onerror = null; img.style.display = 'none'; }
 }
 </script>
 </body>
