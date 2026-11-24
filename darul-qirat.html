@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -22,7 +23,10 @@ h1{margin:10px 0 3px;color:#075c43;font-size:clamp(24px,5vw,40px);line-height:1.
 .title p{margin:2px 0;color:#68746e;font-size:13px}
 .books{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .book{background:#fff;border:1px solid rgba(7,92,67,.12);border-radius:18px;padding:9px;box-shadow:0 10px 25px rgba(35,79,58,.10)}
-.cover{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:12px;cursor:pointer}
+.cover{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:12px;cursor:pointer;background:#eaf7f1}
+.cover-fallback{width:100%;aspect-ratio:3/4;border-radius:12px;background:linear-gradient(145deg,#f8fffb,#eaf7f1);border:2px dashed #9bc7b5;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#52796b;padding:15px;cursor:pointer}
+.cover-fallback .icon{font-size:50px;margin-bottom:8px}
+.cover-fallback b{font-size:18px;color:#276650}
 .info{padding:9px 2px 2px}
 .name{margin:0;color:#075c43;font-size:19px;font-weight:800}
 .desc{margin:3px 0 9px;color:#707a76;font-size:12px;line-height:1.4}
@@ -56,7 +60,8 @@ footer strong{display:block;color:#075c43;margin-top:3px}
 <section class="books">
 <article class="book">
 <a href="darul_qirat/prathomik-tajweed.pdf" target="_blank">
-<img class="cover" src="darul_qirat/prathomik-tajweed-cover.jpg" alt="প্রাথমিক তাজবীদ">
+<img class="cover" src="darul_qirat/prathomik-tajweed-cover.jpg" alt="প্রাথমিক তাজবীদ" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+<div class="cover-fallback"><div class="icon">📖</div><b>প্রাথমিক তাজবীদ</b></div>
 </a>
 <div class="info">
 <h3 class="name">প্রাথমিক তাজবীদ</h3>
@@ -67,7 +72,8 @@ footer strong{display:block;color:#075c43;margin-top:3px}
 
 <article class="book">
 <a href="darul_qirat/al-qawlus-sadeed.pdf" target="_blank">
-<img class="cover" src="darul_qirat/al-qawlus-sadeed-cover.jpg" alt="আল কাউলুছ ছাদীদ">
+<img class="cover" src="darul_qirat/al-qawlus-sadeed-cover.jpg" alt="আল কাউলুছ ছাদীদ" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+<div class="cover-fallback"><div class="icon">📖</div><b>আল কাউলুছ ছাদীদ</b></div>
 </a>
 <div class="info">
 <h3 class="name">আল কাউলুছ ছাদীদ</h3>
