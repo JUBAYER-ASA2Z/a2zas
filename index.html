@@ -13,99 +13,135 @@
 <meta name="mobile-web-app-capable" content="yes">
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&family=Poppins:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<!-- OneSignal - FIXED Gate Lock -->
+<!-- OneSignal - FINAL Gate + Bottom Bar -->
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
-  // আগেই Allow করা থাকলে পেজ লোডের সাথে সাথে Gate খুলে দিবে
   function checkSavedAllow(){
     if(localStorage.getItem('asa_notify_allowed') === 'yes' && Notification.permission === 'granted'){
       const g = document.getElementById('notifyGate');
       if(g) g.style.display = 'none';
       document.body.style.overflow = '';
+      updateBottomBar();
       return true;
     }
     return false;
+  }
+  function updateBottomBar(){
+    const bar = document.getElementById('notifyBottomBar');
+    if(!bar) return;
+    // Allow করা থাকলে নিচের বার লুকিয়ে যাবে, না করা থাকলে সবসময় দেখাবে
+    if(Notification.permission === 'granted' && localStorage.getItem('asa_notify_allowed') === 'yes'){
+      bar.style.display = 'none';
+    } else {
+      bar.style.display = 'flex';
+    }
   }
   OneSignalDeferred.push(async function(OneSignal) {
     await OneSignal.init({
       appId: "9d5ffe89-bf6a-4ac0-bae8-af2ff4f0c048",
       notifyButton: { enable: false },
       allowLocalhostAsSecureOrigin: true,
+      serviceWorkerParam: { scope: "/a2zas/" },
+      serviceWorkerPath: "OneSignalSDKWorker.js"
     });
-    // Permission বদলালেই সেভ হবে
     try{
       OneSignal.Notifications.addEventListener('permissionChange', (granted) => {
         if(granted){
           localStorage.setItem('asa_notify_allowed', 'yes');
-          // Cookie তেও সেভ রাখলাম যাতে Background থেকে সরালেও মুছে না যায়
-          document.cookie = "asa_notify_allowed=yes; max-age=31536000; path=/";
+          document.cookie = "asa_notify_allowed=yes; max-age=31536000; path=/a2zas/";
           unlockGate();
-        } else { showBlockedMsg(); }
+        } else {
+          showBlockedMsg();
+          updateBottomBar();
+        }
+        updateBottomBar();
       });
     }catch(e){}
-
-    // OneSignal থেকে আসল Subscription আছে কিনা চেক
     try{
       const optedIn = await OneSignal.User.PushSubscription.optedIn;
       const perm = await OneSignal.Notifications.permission;
       if(optedIn && perm){
         localStorage.setItem('asa_notify_allowed', 'yes');
-        document.cookie = "asa_notify_allowed=yes; max-age=31536000; path=/";
         unlockGate();
+        updateBottomBar();
         return;
       }
     }catch(e){}
-
-    // ব্রাউজারে আগেই granted থাকলে
     if(Notification.permission === 'granted'){
       localStorage.setItem('asa_notify_allowed', 'yes');
       unlockGate();
+      updateBottomBar();
       return;
     }
-    // নতুন লোক - 2 সেকেন্ড পর একবারই চাইবে
+    updateBottomBar();
+    // নতুন লোক - 2 সেকেন্ড পর একবার অটো চাইবে
     setTimeout(async () => {
       if(checkSavedAllow()) return;
       try{
         const p2 = await OneSignal.Notifications.permission;
         if(!p2){ await OneSignal.Slidedown.promptPush(); }
       }catch(e){}
+      updateBottomBar();
     }, 2000);
+    // 3 সেকেন্ড পর পর চেক করবে - Allow না করলে নিচের বার আবার আসবে
+    setInterval(updateBottomBar, 3000);
   });
   function unlockGate(){
     const gate = document.getElementById('notifyGate');
     if(gate){ gate.style.display = 'none'; }
     document.body.style.overflow = '';
+    updateBottomBar();
   }
   function showBlockedMsg(){
     const msg = document.getElementById('gateBlockedMsg');
     const btn = document.getElementById('gateAllowBtn');
     if(msg) msg.style.display = 'block';
     if(btn) btn.innerText = '🔔 আবার Allow চেষ্টা করুন';
+    // Block করলেও নিচের বার দেখাবে
+    updateBottomBar();
   }
+  // Gate + নিচের বার - ২টা থেকেই একই ফাংশন
   async function gateAllowClick(){
     try{
       const OneSignal = window.OneSignal;
       if(OneSignal){
-        await OneSignal.User.PushSubscription.optIn();
+        // Block করা থাকলেও আবার চেষ্টা করবে
+        try{ await OneSignal.User.PushSubscription.optIn(); }catch(e){}
+        try{ await OneSignal.Slidedown.promptPush(); }catch(e){}
         const p = await OneSignal.Notifications.permission;
         if(p){
           localStorage.setItem('asa_notify_allowed', 'yes');
-          document.cookie = "asa_notify_allowed=yes; max-age=31536000; path=/";
+          document.cookie = "asa_notify_allowed=yes; max-age=31536000; path=/a2zas/";
           unlockGate();
-        } else { showBlockedMsg(); }
+        } else {
+          showBlockedMsg();
+          // ব্রাউজার আর পপআপ দিবে না, তাই নিচে কিভাবে Allow করবে দেখাবে
+          showHowToAllow();
+        }
       } else {
-        // OneSignal লোড না হলে ব্রাউজারের আসল Permission চাইবে
         const res = await Notification.requestPermission();
         if(res === 'granted'){
           localStorage.setItem('asa_notify_allowed', 'yes');
           unlockGate();
-        } else { showBlockedMsg(); }
+        } else { showBlockedMsg(); showHowToAllow(); }
       }
-    }catch(e){ showBlockedMsg(); }
+    }catch(e){ showBlockedMsg(); showHowToAllow(); }
+    updateBottomBar();
   }
-  // পেজ লোডের সাথে সাথে সেভ থাকলে Gate খুলে দাও
-  document.addEventListener('DOMContentLoaded', checkSavedAllow);
+  function showHowToAllow(){
+    const h1 = document.getElementById('gateBlockedMsg');
+    if(h1) h1.style.display = 'block';
+    const h2 = document.getElementById('bottomHowTo');
+    if(h2) h2.style.display = 'block';
+    const btn = document.getElementById('bottomAllowBtn');
+    if(btn) btn.innerText = '🔒 লক আইকনে চাপ দিয়ে Allow করুন';
+  }
+  function toggleHowTo(){
+    const h = document.getElementById('bottomHowTo');
+    if(h) h.style.display = h.style.display === 'block' ? 'none' : 'block';
+  }
+  document.addEventListener('DOMContentLoaded', () => { checkSavedAllow(); updateBottomBar(); });
 </script>
 <style>
 *{font-family:'Hind Siliguri'; -webkit-touch-callout:none; -webkit-user-select:none; -khtml-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; -webkit-tap-highlight-color:transparent; box-sizing:border-box;}
@@ -119,7 +155,15 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 #notifyGate .gate-btn{margin-top:18px;width:100%;background:#075c43;color:#fff;border:0;border-radius:999px;padding:13px;font-size:15px;font-weight:900;cursor:pointer}
 #notifyGate .gate-small{font-size:11px;color:#888;margin-top:10px;line-height:1.5}
 #gateBlockedMsg{display:none;margin-top:14px;background:#fef3c7;border:1px solid #fcd34d;border-radius:12px;padding:10px;font-size:12px;color:#92400e;line-height:1.6;text-align:left}
-.app-wrapper{width:100%; max-width:480px; margin:0 auto; background:#fff; min-height:100vh; position:relative; box-shadow:0 0 30px rgba(0,0,0,0.06);}
+/* 🔔 নিচে সবসময় লেগে থাকা Allow বার */
+#notifyBottomBar{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;width:calc(100% - 24px);max-width:460px;z-index:99999;background:#111;border:1.5px solid #fcd34d;border-radius:18px;padding:12px;display:none;flex-direction:column;gap:8px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+#notifyBottomBar .bar-row{display:flex;align-items:center;gap:10px}
+#notifyBottomBar .bar-text{flex:1;color:#fff}
+#notifyBottomBar .bar-text b{font-size:13px}
+#notifyBottomBar .bar-text span{font-size:11px;color:#bbb;display:block}
+#notifyBottomBar .bar-btn{background:#fbbf24;color:#000;border:0;border-radius:999px;padding:9px 14px;font-size:12px;font-weight:900;white-space:nowrap;cursor:pointer}
+#bottomHowTo{display:none;background:#fef3c7;border-radius:10px;padding:9px;font-size:11px;color:#92400e;line-height:1.6}
+.app-wrapper{width:100%; max-width:480px; margin:0 auto; background:#fff; min-height:100vh; position:relative; box-shadow:0 0 30px rgba(0,0,0,0.06); padding-bottom:70px;}
 @media (min-width:768px){
   .app-wrapper{max-width:1100px; box-shadow:0 0 50px rgba(0,0,0,0.08);}
   .app-wrapper .grid{grid-template-columns:repeat(6,1fr)!important;}
@@ -178,6 +222,30 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
     <div class="gate-small">একবার Allow করলেই হয়ে যাবে,<br>বার বার চাইবে না।</div>
   </div>
 </div>
+
+<!-- 🔔 নিচে সবসময় লেগে থাকা Allow বার - Allow না করা পর্যন্ত যাবে না -->
+<div id="notifyBottomBar">
+  <div class="bar-row">
+    <div style="font-size:26px">🔔</div>
+    <div class="bar-text">
+      <b>নোটিফিকেশন চালু করুন</b>
+      <span>নতুন আপডেট মিস করতে না চাইলে Allow করুন</span>
+    </div>
+    <button id="bottomAllowBtn" class="bar-btn" onclick="gateAllowClick()">ALLOW</button>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button onclick="toggleHowTo()" style="flex:1;background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:999px;padding:6px;font-size:11px;font-weight:700">❓ কিভাবে Allow করবো?</button>
+    <button onclick="gateAllowClick()" style="flex:1;background:#fff;color:#000;border:0;border-radius:999px;padding:6px;font-size:11px;font-weight:900">🔄 আবার চেষ্টা করুন</button>
+  </div>
+  <div id="bottomHowTo">
+    <b>Block চাপলেও চিন্তা নাই:</b><br>
+    ১. উপরে Address Bar এর <b>🔒 লক আইকন</b> এ চাপ দিন<br>
+    ২. <b>Site Settings → Notifications → Allow</b> করুন<br>
+    ৩. এই পেজটা Refresh দিন — হয়ে যাবে ✅<br>
+    অথবা উপরের <b>ALLOW</b> বাটনে আবার চাপ দিন।
+  </div>
+</div>
+
 <div id="offlineBadge" class="hidden fixed top-2 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] font-black px-4 py-1.5 rounded-full z-[100] shadow">📴 Offline Mode</div>
 <div id="launchOverlay" class="fixed inset-0 z-[9999] bg-white/90 backdrop-blur-[6px] hidden flex-col items-center justify-start overflow-hidden">
   <div id="emojiContainer" class="absolute inset-0 overflow-hidden"></div>
