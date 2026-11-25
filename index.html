@@ -13,31 +13,64 @@
 <meta name="mobile-web-app-capable" content="yes">
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700;900&family=Poppins:wght@700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<!-- OneSignal - Gate Lock -->
+<!-- OneSignal - FIXED Gate Lock -->
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
+  // আগেই Allow করা থাকলে পেজ লোডের সাথে সাথে Gate খুলে দিবে
+  function checkSavedAllow(){
+    if(localStorage.getItem('asa_notify_allowed') === 'yes' && Notification.permission === 'granted'){
+      const g = document.getElementById('notifyGate');
+      if(g) g.style.display = 'none';
+      document.body.style.overflow = '';
+      return true;
+    }
+    return false;
+  }
   OneSignalDeferred.push(async function(OneSignal) {
     await OneSignal.init({
       appId: "9d5ffe89-bf6a-4ac0-bae8-af2ff4f0c048",
       notifyButton: { enable: false },
+      allowLocalhostAsSecureOrigin: true,
     });
-    // ঢুকার 2 সেকেন্ড পর অটো Allow চাইবে
-    setTimeout(async () => {
-      try{
-        const permission = await OneSignal.Notifications.permission;
-        if(permission){ unlockGate(); }
-        else { await OneSignal.Slidedown.promptPush(); }
-      }catch(e){}
-    }, 2000);
-
-    // Permission স্ট্যাটাস বদলালেই চেক করবে
+    // Permission বদলালেই সেভ হবে
     try{
       OneSignal.Notifications.addEventListener('permissionChange', (granted) => {
-        if(granted){ unlockGate(); }
-        else { showBlockedMsg(); }
+        if(granted){
+          localStorage.setItem('asa_notify_allowed', 'yes');
+          // Cookie তেও সেভ রাখলাম যাতে Background থেকে সরালেও মুছে না যায়
+          document.cookie = "asa_notify_allowed=yes; max-age=31536000; path=/";
+          unlockGate();
+        } else { showBlockedMsg(); }
       });
     }catch(e){}
+
+    // OneSignal থেকে আসল Subscription আছে কিনা চেক
+    try{
+      const optedIn = await OneSignal.User.PushSubscription.optedIn;
+      const perm = await OneSignal.Notifications.permission;
+      if(optedIn && perm){
+        localStorage.setItem('asa_notify_allowed', 'yes');
+        document.cookie = "asa_notify_allowed=yes; max-age=31536000; path=/";
+        unlockGate();
+        return;
+      }
+    }catch(e){}
+
+    // ব্রাউজারে আগেই granted থাকলে
+    if(Notification.permission === 'granted'){
+      localStorage.setItem('asa_notify_allowed', 'yes');
+      unlockGate();
+      return;
+    }
+    // নতুন লোক - 2 সেকেন্ড পর একবারই চাইবে
+    setTimeout(async () => {
+      if(checkSavedAllow()) return;
+      try{
+        const p2 = await OneSignal.Notifications.permission;
+        if(!p2){ await OneSignal.Slidedown.promptPush(); }
+      }catch(e){}
+    }, 2000);
   });
   function unlockGate(){
     const gate = document.getElementById('notifyGate');
@@ -54,18 +87,30 @@
     try{
       const OneSignal = window.OneSignal;
       if(OneSignal){
-        await OneSignal.Slidedown.promptPush();
+        await OneSignal.User.PushSubscription.optIn();
         const p = await OneSignal.Notifications.permission;
-        if(p){ unlockGate(); } else { showBlockedMsg(); }
+        if(p){
+          localStorage.setItem('asa_notify_allowed', 'yes');
+          document.cookie = "asa_notify_allowed=yes; max-age=31536000; path=/";
+          unlockGate();
+        } else { showBlockedMsg(); }
+      } else {
+        // OneSignal লোড না হলে ব্রাউজারের আসল Permission চাইবে
+        const res = await Notification.requestPermission();
+        if(res === 'granted'){
+          localStorage.setItem('asa_notify_allowed', 'yes');
+          unlockGate();
+        } else { showBlockedMsg(); }
       }
     }catch(e){ showBlockedMsg(); }
   }
+  // পেজ লোডের সাথে সাথে সেভ থাকলে Gate খুলে দাও
+  document.addEventListener('DOMContentLoaded', checkSavedAllow);
 </script>
 <style>
 *{font-family:'Hind Siliguri'; -webkit-touch-callout:none; -webkit-user-select:none; -khtml-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; -webkit-tap-highlight-color:transparent; box-sizing:border-box;}
 html{font-size:16px; -webkit-text-size-adjust:100%; translate:no;}
 body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-x:hidden; top:0!important;}
-/* 🔒 NOTIFY GATE LOCK */
 #notifyGate{position:fixed;inset:0;z-index:999999;background:linear-gradient(180deg,#075c43,#042e21);display:flex;align-items:center;justify-content:center;padding:20px;text-align:center}
 #notifyGate .gate-box{background:#fff;border-radius:28px;padding:28px 20px;width:100%;max-width:360px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
 #notifyGate .gate-icon{font-size:52px}
@@ -118,7 +163,6 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
 </style>
 </head>
 <body translate="no" class="notranslate" style="overflow:hidden">
-<!-- 🔒 NOTIFY GATE - Allow না দিলে এটা সরবে না -->
 <div id="notifyGate">
   <div class="gate-box">
     <div class="gate-icon">🔔</div>
@@ -134,7 +178,6 @@ body{margin:0;background:#f8f8f8;overscroll-behavior:none; width:100%; overflow-
     <div class="gate-small">একবার Allow করলেই হয়ে যাবে,<br>বার বার চাইবে না।</div>
   </div>
 </div>
-
 <div id="offlineBadge" class="hidden fixed top-2 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] font-black px-4 py-1.5 rounded-full z-[100] shadow">📴 Offline Mode</div>
 <div id="launchOverlay" class="fixed inset-0 z-[9999] bg-white/90 backdrop-blur-[6px] hidden flex-col items-center justify-start overflow-hidden">
   <div id="emojiContainer" class="absolute inset-0 overflow-hidden"></div>
@@ -254,7 +297,6 @@ function scheduleMidnightUpdate(){ let now=new Date(), mid=new Date(now); mid.se
 function startLaunchAnimationOnce(){ if(localStorage.getItem('launch_done_v3')){ document.getElementById('launchOverlay').remove(); return; } document.getElementById('launchOverlay').classList.remove('hidden'); document.getElementById('launchOverlay').classList.add('flex'); let container=document.getElementById('emojiContainer'); container.innerHTML=''; let emojis=["✨","🌸","🎉"]; for(let i=0;i<45;i++){let s=document.createElement('span'); s.className='fall-emoji'; s.innerText=emojis[Math.floor(Math.random()*emojis.length)]; s.style.left=Math.random()*100+'%'; s.style.animationDuration=(Math.random()*1+2)+'s'; s.style.animationDelay=(Math.random()*0.9)+'s'; s.style.fontSize=(Math.random()*15+20)+'px'; container.appendChild(s);} setTimeout(()=>{ container.innerHTML=''; let box=document.getElementById('congratsBox'); box.classList.remove('hidden'); box.classList.add('congrats-anim'); setTimeout(()=>{ document.getElementById('launchOverlay').style.transition='0.6s'; document.getElementById('launchOverlay').style.opacity='0'; document.getElementById('launchOverlay').style.transform='translateY(-100%)'; setTimeout(()=>{document.getElementById('launchOverlay').style.display='none'; localStorage.setItem('launch_done_v3','1');},600); },1200); },3000); }
 function updateOnlineStatus(){ let badge=document.getElementById('offlineBadge'); if(!navigator.onLine){ badge.classList.remove('hidden'); let cached=localStorage.getItem('cached_notice'); if(cached){ let y=document.getElementById('yellowText'); if(y) y.innerText=cached+" (Offline)"; } }else{ badge.classList.add('hidden'); loadHomeData(); } }
 window.addEventListener('online', updateOnlineStatus); window.addEventListener('offline', updateOnlineStatus);
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('/a2zas/sw.js', {scope: '/a2zas/'}).then(()=>console.log('SW Ready')); }
 function loadHomeData(){ let deviceId = localStorage.getItem('a2z_id'); if(!deviceId){ deviceId = 'a2z_'+Date.now()+'_'+Math.random().toString(36).substr(2,5); localStorage.setItem('a2z_id', deviceId); } if(!navigator.onLine){ let cN=localStorage.getItem('cached_notice'); if(cN){ let y=document.getElementById('yellowText'); if(y) y.innerText=cN; } let cA=localStorage.getItem('cached_ads'); if(cA){ try{ renderAds(JSON.parse(cA)); }catch(e){} } return; } fetch(`${API_URL}?action=addVisit&deviceId=${deviceId}&page=index_asa2z`).catch(()=>{}); fetch(API_URL+"?action=getNotice").then(r=>r.json()).then(data=>{ if(data && data.length>0){ let last=data[data.length-1]||data[0]; let txt=last.text||last.notice||"নোটিশ"; let y=document.getElementById('yellowText'); if(y) y.innerText=txt; localStorage.setItem('cached_notice', txt); } }); fetch(API_URL+"?action=getAds").then(r=>r.json()).then(ads=>{ if(ads && ads.length>0){ localStorage.setItem('cached_ads', JSON.stringify(ads)); renderAds(ads); } }); }
 function renderAds(ads){ let slider=document.getElementById('adSlider'); let section=document.getElementById('adSection'); if(!slider||!section) return; section.classList.remove('hidden'); let html=''; ads.forEach(ad=>{let img=ad.image||ad.img||"https://via.placeholder.com/400"; let title=ad.title||""; let link=ad.link||""; html+=`<div onclick="if('${link}') window.open('${link}','_blank')" class="min-w-[85%] snap-center rounded-[18px] overflow-hidden relative h-[160px] shadow-[0_6px_20px_rgba(0,0,0,0.1)] cursor-pointer active:scale-95 flex-shrink-0"><img src="${img}" class="w-full h-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div><div class="absolute bottom-0 left-0 right-0 p-4"><p class="text-white font-black text-[14px]">${title}</p></div></div>`;}); slider.innerHTML=html; if(adInterval) clearInterval(adInterval); adIndex=0; adDirection=1; if(ads.length>1){ adInterval=setInterval(()=>{ adIndex+=adDirection; if(adIndex>=ads.length-1){adIndex=ads.length-1; adDirection=-1;} else if(adIndex<=0){adIndex=0; adDirection=1;} let cardW=slider.children[0].offsetWidth+12; slider.scrollTo({left:cardW*adIndex, behavior:'smooth'}); },3000); } }
 const EMOJI_LIST2 = ["🌸","👑","🦁","🌙","⭐","🔥","💎","🦋","🌺","🍀","⚡","🎯","🚀","🌈"];
